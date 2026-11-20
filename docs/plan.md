@@ -74,7 +74,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 | Route | Artboard | Status |
 |---|---|---|
 | `/` | Home | [~] Header, Hero (+ carian popular), HeroCarousel, Semakan fakta terkini siap; section lain belum |
-| `/article` | Artikel | [~] Paper: design system diterapkan (header/footer/AIFA Home, token, chip, verdict, Lucide); kod belum |
+| `/article` | Artikel | [~] Paper: design system diterapkan (header/footer/AIFA Home, token, chip, verdict, Lucide); grid 4 kolom kini 3 baris (12 kad; baris baharu = 4 artikel Oktober dengan foto unik); kod belum |
 | `/article/[slug]` | Mesej pautan pendaftaran… | [~] Paper: design system diterapkan (Verdict, Chip, Display/48, Lucide); kod belum |
 | `/about-us` | Tentang Kami | [~] Paper: token diterapkan; **masih ada kandungan templat bukan Sebenarnya.my** (blok tenis "Horizon", fakta 12 000+/89%, baris fakta pendua bawah footer, "Folow us", ayat berulang di Empat fungsi); kod belum |
 | `/logo` | (Logo) | [ ] |
