@@ -5,3 +5,4 @@ export { default as Verdict } from './Verdict';
 export { default as SearchField } from './SearchField';
 export { default as NavLink } from './NavLink';
 export { default as DropdownMenu } from './DropdownMenu';
+export { default as Icon } from './Icon';

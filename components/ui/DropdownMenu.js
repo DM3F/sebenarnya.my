@@ -1,14 +1,8 @@
 'use client';
 
 import { useEffect, useId, useRef, useState } from 'react';
-
-function Chevron() {
-  return (
-    <svg className="ui-dropdown__chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M4.5 6.5 8 10l3.5-3.5" />
-    </svg>
-  );
-}
+import { ChevronDown } from 'lucide-react';
+import Icon from './Icon';
 
 /**
  * DropdownMenu — nav-style disclosure: a pill trigger with a chevron that opens
@@ -55,7 +49,7 @@ export default function DropdownMenu({ label, items, current = false, align = 's
         onClick={() => setOpen((o) => !o)}
       >
         {label}
-        <Chevron />
+        <Icon icon={ChevronDown} className="ui-dropdown__chevron" />
       </button>
       <ul id={menuId} className="ui-dropdown__menu" hidden={!open}>
         {items.map((item) => (

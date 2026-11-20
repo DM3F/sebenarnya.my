@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { articles, articleCategories, articleStatus } from '@/data/content';
 import { matchesQuery } from '@/lib/searchArticles';
 import { articleHref, formatDate } from '@/lib/articles';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 
 const DATE_OPTIONS = [
   { id: 'all', label: 'Semua tarikh' },
@@ -167,7 +169,7 @@ export default function Articles() {
           disabled={!scroll.prev}
           onClick={() => scrollBar(-1)}
         >
-          <svg width="8" height="14" viewBox="0 0 8 14" aria-hidden="true"><path d="M7 1L1 7l6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          <Icon icon={ChevronLeft} />
         </button>
 
         <div
@@ -201,7 +203,7 @@ export default function Articles() {
           disabled={!scroll.next}
           onClick={() => scrollBar(1)}
         >
-          <svg width="8" height="14" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          <Icon icon={ChevronRight} />
         </button>
       </div>
 

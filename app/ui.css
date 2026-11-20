@@ -35,6 +35,8 @@
   outline-offset: 2px;
 }
 
+/* Icons: Lucide via components/ui/Icon.js — 1.75px stroke, currentColor */
+.ui-icon { display: inline-block; flex-shrink: 0; vertical-align: middle; }
 .ui-btn svg,
 .ui-chip svg { width: 16px; height: 16px; flex-shrink: 0; }
 

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import ShareButton from './ShareButton';
 import { articleStatus } from '@/data/content';
 import { agencyParts, articleActions, formatDate, getCategoryLabel } from '@/lib/articles';
+import { ArrowLeft } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 
 // Full article page: tags, title, meta + share, image, body
 export default function ArticleDetail({ article }) {
@@ -13,9 +15,7 @@ export default function ArticleDetail({ article }) {
     <article className="post-page">
       <header className="post-head container">
         <Link className="post-back" href="/article">
-          <svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true">
-            <path d="M13 6H2M6 2L2 6l4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <Icon icon={ArrowLeft} />
           Semua artikel
         </Link>
 

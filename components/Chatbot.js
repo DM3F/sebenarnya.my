@@ -5,6 +5,8 @@ import { articleStatus } from '@/data/content';
 import { rankArticles } from '@/lib/searchArticles';
 import { articleHref, formatDate } from '@/lib/articles';
 import { withBase } from '@/lib/basePath';
+import { ArrowRight, MessageSquareText, X } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 
 // AIFA chatbot: a floating assistant on every page.
 // Rule-based for now — it answers by searching the site's published fact-checks.
@@ -140,9 +142,7 @@ export default function Chatbot() {
               toggleRef.current?.focus();
             }}
           >
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <Icon icon={X} size={20} />
           </button>
         </header>
 
@@ -209,9 +209,7 @@ export default function Chatbot() {
             maxLength={300}
           />
           <button type="submit" aria-label="Hantar" disabled={!input.trim() || typing}>
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-              <path d="M4 12h14M12 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <Icon icon={ArrowRight} size={18} />
           </button>
         </form>
 
@@ -228,21 +226,10 @@ export default function Chatbot() {
         onClick={() => setOpen(!open)}
       >
         {open ? (
-          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
+          <Icon icon={X} size={24} />
         ) : (
           <>
-            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-              <path
-                d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A2.5 2.5 0 0 1 4 13.5z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinejoin="round"
-              />
-              <path d="M8.5 9.5h7M8.5 12.5h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
+            <Icon icon={MessageSquareText} size={24} />
             <span className="aifa-toggle-label">Tanya AIFA</span>
           </>
         )}

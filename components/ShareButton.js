@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Share } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 
 // Share links; {url} and {text} are filled in when the menu opens
 const TARGETS = [
@@ -59,9 +61,7 @@ export default function ShareButton({ title }) {
   return (
     <div className="share" ref={wrapRef}>
       <button type="button" className="share-btn" aria-expanded={open} aria-haspopup="true" onClick={share}>
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path d="M10 13V3M6 6.5L10 2.5l4 4M4 10v6.5h12V10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <Icon icon={Share} />
         Kongsi
       </button>
 

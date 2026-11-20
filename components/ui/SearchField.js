@@ -2,15 +2,8 @@
 
 import { useId } from 'react';
 import Button from './Button';
-
-function SearchIcon() {
-  return (
-    <svg className="ui-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-3.5-3.5" />
-    </svg>
-  );
-}
+import { Search } from 'lucide-react';
+import Icon from './Icon';
 
 /**
  * SearchField — pill search with a filled submit button, in a <form role="search">.
@@ -46,7 +39,7 @@ export default function SearchField({
         {label}
       </label>
       <div className="ui-search" data-invalid={error ? '' : undefined}>
-        <SearchIcon />
+        <Icon icon={Search} size={18} className="ui-search__icon" />
         <input
           id={id}
           name={name}

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { stories, socialLinks } from '@/data/content';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Calendar } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 
 const COUNT = stories.length;
 const platforms = Object.fromEntries(socialLinks.map((p) => [p.id, p]));
@@ -144,12 +146,7 @@ export default function Stories() {
                       {social.label}
                     </span>
                     <span className="story-info">
-                      <svg viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                        <line x1="16" y1="2" x2="16" y2="6" />
-                        <line x1="8" y1="2" x2="8" y2="6" />
-                        <line x1="3" y1="10" x2="21" y2="10" />
-                      </svg>
+                      <Icon icon={Calendar} size={14} />
                       {story.date}
                     </span>
                   </div>
@@ -159,7 +156,7 @@ export default function Stories() {
                   <p className="story-summary">{story.summary}</p>
                   <a href={story.href} className="story-open" target="_blank" rel="noopener noreferrer" tabIndex={linkTab}>
                     Buka di {social.label}
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+                    <Icon icon={ArrowUpRight} />
                   </a>
                 </div>
 
@@ -193,10 +190,10 @@ export default function Stories() {
         </div>
         <div className="stories-nav">
           <button className="round-btn" type="button" aria-label="Cerita Sebelumnya" onClick={() => goTo(index - 1)}>
-            <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
+            <Icon icon={ArrowLeft} size={20} />
           </button>
           <button className="round-btn" type="button" aria-label="Cerita Seterusnya" onClick={() => goTo(index + 1)}>
-            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+            <Icon icon={ArrowRight} size={20} />
           </button>
         </div>
       </div>

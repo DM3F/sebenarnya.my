@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { withBase } from '@/lib/basePath';
+import { Check, CloudUpload, Flag, Link, X } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 
 // "Lapor berita tular" form, shown as a pop-up on every page.
 // Any link pointing to CLAIM_HREF (header nav, footer, AIFA chatbot) opens it instead of navigating.
@@ -175,27 +177,21 @@ export default function ClaimForm() {
     >
       <header className="claim-head">
         <span className="claim-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="20" height="20">
-            <path d="M5 21V4M5 4h11l-2 4 2 4H5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <Icon icon={Flag} size={20} />
         </span>
         <div className="claim-heading">
           <h2 id="claim-title">Lapor berita tular</h2>
           <p id="claim-desc">Hantar berita atau mesej yang meragukan supaya pasukan kami boleh menyemaknya.</p>
         </div>
         <button type="button" className="claim-close" aria-label="Tutup borang" onClick={close}>
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
+          <Icon icon={X} size={20} />
         </button>
       </header>
 
       {status === 'sent' ? (
         <div className="claim-done" role="status">
           <span className="claim-done-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="28" height="28">
-              <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <Icon icon={Check} size={28} />
           </span>
           <h3>Laporan anda telah dihantar</h3>
           <p>
@@ -223,15 +219,7 @@ export default function ClaimForm() {
                   Sumber / URL<span className="claim-req" aria-hidden="true">*</span>
                 </label>
                 <div className="claim-input-icon">
-                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-                    <path
-                      d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <Icon icon={Link} />
                   <input
                     id="claim-source"
                     name="source"
@@ -282,13 +270,7 @@ export default function ClaimForm() {
                   onDragLeave={() => setDragging(false)}
                   onDrop={onDrop}
                 >
-                  <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true">
-                    <path
-                      d="M7 18.5a4.5 4.5 0 0 1-.6-8.96 6 6 0 0 1 11.48 1.46A3.75 3.75 0 0 1 17.25 18.5H7z"
-                      fill="currentColor"
-                    />
-                    <path d="M12 16v-5.5M9.5 12.5L12 10l2.5 2.5" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <Icon icon={CloudUpload} size={40} />
                   <strong>Pilih fail atau seret ke sini.</strong>
                   <span>jpg, png, pdf · maksimum 10MB</span>
                   <label className="claim-pick">

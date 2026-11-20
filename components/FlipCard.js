@@ -2,16 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 
 const VERDICT_LABEL = { palsu: 'Palsu', waspada: 'Waspada', makluman: 'Makluman', benar: 'Benar' };
-
-function ArrowUpRight() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-      <path d="M4 10 10 4M5 4h5v5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 /**
  * FactCheckCard (Paper › 06 Brand components › FactCheckCard – States).
@@ -101,7 +95,7 @@ export default function FlipCard({ post }) {
           <Link ref={readRef} className="fc-read" href={post.href}>
             Baca semakan
             <span className="fc-read-icon" aria-hidden="true">
-              <ArrowUpRight />
+              <Icon icon={ArrowUpRight} />
             </span>
           </Link>
         </div>

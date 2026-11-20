@@ -1,4 +1,6 @@
 import { logoPage } from '@/data/content';
+import { Download } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 
 // Logo page: title, intro, and a card per file with a preview and a download button
 export default function LogoKit() {
@@ -24,9 +26,7 @@ export default function LogoKit() {
               </div>
 
               <a className="btn logo-card-btn" href={item.file} download={item.filename}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M3 13h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <Icon icon={Download} />
                 Muat turun
                 <span className="sr-only"> {item.name} ({item.meta})</span>
               </a>

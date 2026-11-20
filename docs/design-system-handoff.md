@@ -110,6 +110,21 @@ Mobile (<600px, `--breakpoint-type`): Display → `--text-38`/`--leading-42`, He
 ```
 Elevation datang dari tona (Eggshell → Warm Taupe → Stone), bukan shadow.
 
+### 2.6b Ikon — Lucide ✅
+Semua ikon UI guna **Lucide** (`lucide-react`, https://lucide.dev) melalui `components/ui/Icon.js`:
+```jsx
+import { ArrowRight } from 'lucide-react';
+import { Icon } from '@/components/ui';
+<Icon icon={ArrowRight} />          // 16px (default)
+<Icon icon={Search} size={18} />
+```
+- Garis **1.75px pada semua saiz** (`absoluteStrokeWidth`), warna `currentColor` (ikut token teks), `aria-hidden` — nama boleh-capai datang dari kawalan.
+- Saiz: 16 dalam button/label/kad · 18–20 kawalan (search, tutup, anak panah carousel) · 24 butang terapung (Tanya AIFA) · 28–40 ilustrasi status (borang).
+- Dipakai: ArrowLeft, ArrowRight, ArrowUpRight, ChevronDown/Left/Right, Search, X, MessageSquareText, Flag, Check, Link, CloudUpload, Share, Download, Calendar, Play, Pause.
+- **Pengecualian:** logo jenama (Facebook, Instagram, Threads, X, TikTok) bukan dalam Lucide → kekal SVG jenama (`data/content.js`).
+- Jangan guna glyph teks (↗ → ‹ ›), SVG tulis tangan atau set ikon lain. Jangan override `stroke-width` dalam CSS.
+- Paper: Design system › 12 — Components › Icons · Lucide.
+
 ### 2.7 Layout
 Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1624 = 81px side padding), rails 1180, side 32 / 16. Editorial grid 12 kolum, gap 12 (heading span 7, copy col 9–12). Breakpoints: `--breakpoint-nav` 1100 · `--breakpoint-stack` 900 · `--breakpoint-type` 600 (rujukan; media query tak boleh baca variable).
 

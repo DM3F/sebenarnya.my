@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { heroSlides } from '@/data/content';
 import { articleHref, getArticle } from '@/lib/articles';
 import { withBase } from '@/lib/basePath';
+import { ArrowRight, Pause, Play } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 
 // Each slide points at an article; it links to that article and falls back to its image.
 // `eyebrow` is "Verdict | Agency" (e.g. "Palsu | KPDN"); the verdict sets the dot colour.
@@ -214,9 +216,7 @@ export default function Carousel() {
                   <p>{s.text}</p>
                   <a className="hcta" href={s.href} draggable={false} tabIndex={cur ? 0 : -1}>
                     {s.cta}
-                    <svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true">
-                      <path d="M1 6h11M8 2l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <Icon icon={ArrowRight} />
                   </a>
                 </div>
                 {cur && (
@@ -247,16 +247,7 @@ export default function Carousel() {
           ))}
         </div>
         <button type="button" className="play" aria-label={playing ? 'Jeda slaid' : 'Main slaid'} onClick={togglePlay}>
-          <svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true">
-            {playing ? (
-              <>
-                <rect x="2" y="2" width="3" height="12" rx="1" />
-                <rect x="9" y="2" width="3" height="12" rx="1" />
-              </>
-            ) : (
-              <path d="M3 2v12l10-6z" />
-            )}
-          </svg>
+          {playing ? <Icon icon={Pause} /> : <Icon icon={Play} />}
         </button>
       </div>
     </section>

@@ -911,9 +911,6 @@ input::placeholder { color: var(--text); }
 .story-info svg {
   width: 14px;
   height: 14px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
   opacity: .85;
 }
 
@@ -964,11 +961,6 @@ input::placeholder { color: var(--text); }
 .story-open svg {
   width: 16px;
   height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
   transition: transform .2s ease;
 }
 
@@ -1070,11 +1062,6 @@ input::placeholder { color: var(--text); }
 .round-btn svg {
   width: 20px;
   height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 @media (max-width: 1200px) {
@@ -2289,7 +2276,6 @@ input::placeholder { color: var(--text); }
 .hero-carousel .dots button.on.run i { animation: hero-carousel-fill 6s linear forwards; }
 .hero-carousel .paused .dots button.on i { animation: none; transform: scaleX(1); }
 .hero-carousel .play { display: grid; place-items: center; width: 48px; height: 48px; flex-shrink: 0; border: 0; border-radius: var(--radius-full); background: var(--color-muted); color: var(--color-foreground); cursor: pointer; }
-.hero-carousel .play svg { fill: currentColor; }
 .hero-carousel .play:hover, .hero-carousel .dots:hover { background: var(--color-muted-strong); }
 
 @keyframes hero-carousel-fill { to { transform: scaleX(1); } }
