@@ -1,0 +1,106 @@
+# Audit: localhost vs Paper canvas
+
+Tarikh semakan asal: 21 November 2026, pada commit `90560b7`.
+Status dikemas kini: 21 November 2026, selepas commit `3d629f7` dan `70eac60`.
+Dibandingkan: `http://localhost:3000` (branch `endahbyu`) dengan fail Paper `sebenarnya.my` › page **Artwork** (artboard Home, Artikel, detail artikel, Tentang Kami).
+Cara semak: tangkapan skrin desktop (1624px) dan mobile (390px, emulasi peranti), serta nilai yang dibaca terus dari DOM dan Paper (`get_computed_styles`).
+
+Legend: ✅ selesai / sepadan · ⏸️ dibiarkan atas keputusan · ❓ perlu keputusan · ℹ️ bukan pepijat
+
+---
+
+## Ringkasan — status
+
+| # | Halaman | Isu | Status |
+|---|---|---|---|
+| 1 | Home | Hero carousel: semua 5 slaid tunjuk teks; permintaan = hanya slaid tengah | ✅ `70eac60`: slaid sisi gambar sahaja |
+| 2 | Home | Slaid "RON95 tidak naik 20 sen esok." guna foto jalan bandar; Paper = pam minyak | ✅ `70eac60`: guna foto pam yang sama dengan Paper |
+| 3 | Tentang Kami | Tajuk langkah "Bagaimana kami menyemak fakta" 27.36px weight 600 | ✅ Tidak relevan lagi, seksyen dibuang (`3d629f7`) |
+| 4 | Artikel | Chip kategori: kod 16 chip; Paper 5 | ✅ `3d629f7`: Semua, Palsu, Penjelasan, Waspada, Makluman |
+| 5 | Tentang Kami | Seksyen 6 langkah ada dalam kod, tiada dalam Paper | ✅ `3d629f7`: dibuang dari halaman (data `howItWorks` dikekalkan) |
+| 6 | Tentang Kami | Seksyen "About" ada dalam Paper, tiada dalam kod | ✅ `3d629f7`: susun atur Paper, kandungan Sebenarnya.my (bukan teks templat tenis) |
+| 7 | Detail artikel | Lebar kolum isi: Paper 514px, kod 680px | ✅ `3d629f7`: 514px |
+| 8 | Home | Kad "Semakan fakta terkini": Paper foto kembar, kod 12 foto unik | ⏸️ Dibiarkan (keputusan "leave it") |
+| 9 | Home | Pembilang slaid "04 / 05" pada slaid aktif tiada dalam kod (tidak dicatat dalam audit asal) | ✅ `70eac60`: ditambah, disembunyikan ≤600px |
+| 10 | Semua | Butang Tanya AIFA merah, sedangkan merah bukan warna tindakan | ❓ Perlu keputusan: merah atau hitam |
+
+---
+
+## 1. Home (`/`)
+
+### ✅ Diselesaikan
+1. **Hero carousel — teks hanya pada slaid tengah.** Slaid sisi kini gambar sahaja. Teks pudar keluar dalam .2s dan masuk dalam .3s, tiada animasi untuk `prefers-reduced-motion`.
+2. **Foto slaid RON95** — slaid guna `budimadani.jpg` (foto pam minyak yang sama dengan aset Paper). Artikel RON95 sendiri mengekalkan fotonya supaya gambar artikel kekal unik.
+3. **Pembilang slaid** "03 / 05" — 14px tnum, pill hitam 60%, kanan bawah slaid aktif (Paper › HeroSlide / Active › Counter).
+
+### ⏸️ Dibiarkan
+4. Kad "Semakan fakta terkini": Paper ada 3 foto kembar (WhatsApp); kod 12 foto unik.
+
+### ℹ️ Bukan pepijat
+5. Angka statistik: pada 1624px, angka 72px dan akhiran 30px (`.42em`), sama dengan Paper. Pada skrin lebih kecil ia mengecil melalui `clamp(48px, 5vw, 72px)`.
+6. Jalur logo "Kenyataan rasmi daripada": kod render 20 imej kerana senarai diduplikasi untuk ticker bergerak tanpa putus.
+
+### ❓ Perlu keputusan
+7. Butang Tanya AIFA masih merah (juga di Artikel, detail dan Tentang Kami).
+
+### ✅ Sepadan
+- Header, hero (tajuk, lede 2 baris, carian, chip "Carian popular").
+- Semakan fakta terkini: tajuk 2 baris, baris kad full-bleed, gelangsar automatik, flip tanpa ubah tinggi.
+- Tentang ringkas, Aktiviti media sosial (kad WSIS "Juara Dunia" + carousel sosial), footer.
+- Mobile 390px: tiada limpahan mendatar.
+
+---
+
+## 2. Artikel (`/article/`)
+
+### ✅ Diselesaikan
+1. **Susun atur** mengikut Paper terkini: baris kad utama + senarai sisi dibuang; semua hasil dalam grid kad 4 kolum.
+2. **Chip kategori:** 5 chip, susunan Palsu → Penjelasan → Waspada → Makluman.
+3. **Kad melimpah:** setiap kad 28px lebih tinggi daripada slot grid (tiada `box-sizing: border-box`), jadi jarak antara baris nampak terlalu besar. Dibetulkan dalam `70eac60`.
+4. **Tajuk kad** menyentuh tepi kanan kad. Dibetulkan dengan `box-sizing: border-box` pada tajuk (`3d629f7`).
+
+### ℹ️ Bukan pepijat
+5. Kiraan "32 artikel" vs Paper "12 artikel": kod guna data sebenar; Paper hanya contoh 12 kad.
+6. Grid tiada kad kembar (Paper ada 2 kad zakat kembar sebagai contoh).
+7. Pada skrin lebih kecil daripada 1624px, lebar kad mengecil (responsif).
+
+---
+
+## 3. Detail artikel (`/article/pautan-bantuan-tunai-whatsapp-palsu/`)
+
+### ✅ Diselesaikan
+1. **Lebar kolum isi:** 514px seperti Paper.
+
+### ℹ️ Bukan pepijat
+2. **Butang "Kongsi" 46px:** Paper juga 46px (min-height 44 + padding 10 + border 1px). Catatan audit asal ("Paper 44px") tersilap.
+3. Garis pemisah antara lede dan "Penjelasan rasmi" wujud dalam kod (disahkan dalam tangkapan skrin).
+
+---
+
+## 4. Tentang Kami (`/about-us/`)
+
+### ✅ Diselesaikan
+1. **Seksyen "About"** ditambah di bawah hero dengan susun atur Paper:
+   - Pill "Tentang kami" dan lead 24/32 (lebar 700).
+   - Tiga kad tinggi 340: kad hitam (semakan berasaskan sumber rasmi), kad kelabu dengan pill "Bersama lebih 20 agensi", dan kad "20+ Agensi rakan" dengan bar Palsu/Penjelasan/Waspada yang dikira daripada data artikel.
+   - Baris fakta: 275 juta+, 1,016, 200 ribu, 20+.
+
+   Teks templat tenis tidak disalin.
+2. **"Bagaimana kami menyemak fakta"** dibuang dari halaman. Isu tajuk 27.36px weight 600 turut hilang bersamanya.
+3. **Mobile:**
+   - Lead "Tentang kami" tidak lagi meninggalkan ruang kosong ~560px.
+   - Kad kecil "Empat fungsi" tidak lagi runtuh ke 48px dan bertindih.
+
+### ℹ️ Sengaja berbeza
+4. "Facts" di bawah footer dalam Paper (baris fakta pendua) tidak dilaksanakan; ia kelihatan seperti elemen tertinggal di luar halaman.
+5. Hero: Paper "Folow us" (Inggeris, salah ejaan); kod "Ikuti kami". Paper perlu dikemas.
+
+### ✅ Sepadan
+- Tajuk "Empat fungsi utama kami" dan "Berita dan Galeri" 56px Medium, sama dengan Paper.
+- Hero dengan pautan sosial, Empat fungsi, Berita dan Galeri, Logo Sebenarnya.my, anchor `#berita-galeri`.
+
+---
+
+## Nota
+- Halaman `/logo/` tidak dibandingkan (tiada artboard Logo berasingan dalam Paper › Artwork).
+- Butiran nilai token untuk setiap perubahan ada dalam `docs/design-system-handoff.md`.
