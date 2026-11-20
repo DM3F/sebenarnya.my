@@ -23,13 +23,15 @@ const blocks = [
   ['.logo-card:nth-child(1)', 0.14],
   ['.logo-card:nth-child(2)', 0.22],
   // Stories
-  ['.stories-head', 0],
+  ['.activity__title', 0],
   ['.stories-viewport', 0.08],
   ['.stories-footer', 0.16],
   // Posts
   ['.posts-head', 0],
   // Bento
-  ['.bento-divider', 0],
+  ['.wsis-banner', 0.08],
+  ['.viewership-inner', 0],
+  ['.partners-inner', 0.08],
   // Footer
   ['.newsletter', 0],
   ['.site-footer__top', 0.12],

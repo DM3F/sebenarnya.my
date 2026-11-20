@@ -25,18 +25,18 @@ export default function HomePage() {
         {/* Latest fact-checks */}
         <Latest />
 
-        {/* Bento: WSIS award + AIFA assistant */}
-        <Bento />
-
-        {/* Stories: announcements & activities carousel */}
-        <Stories />
-      
-        {/* Viewership */}
+        {/* Tentang ringkas: statement, stats and agency logos (Paper order) */}
         <Viewership />
-
-        {/* Collaborators */}
         <Collaborators />
-        
+
+        {/* Aktiviti media sosial terkini: WSIS banner + social posts */}
+        <section className="activity" aria-labelledby="activity-title">
+          <h2 className="activity__title" id="activity-title">Aktiviti media sosial terkini</h2>
+          <div className="activity__grid">
+            <Bento />
+            <Stories />
+          </div>
+        </section>
       </main>
 
       {/* Footer */}

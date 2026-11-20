@@ -152,7 +152,7 @@ function NewsGallery() {
   const { news, gallery } = aboutNews;
 
   return (
-    <section className="about-news" aria-labelledby="about-news-title">
+    <section className="about-news" id="berita-galeri" aria-labelledby="about-news-title">
       <h2 className="about-title" id="about-news-title">
         {aboutNews.title}
       </h2>

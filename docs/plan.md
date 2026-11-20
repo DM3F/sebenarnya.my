@@ -62,9 +62,9 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [ ] Logo agensi baharu: MOF, JAIS, Kesultanan Pahang, PMO, JPM, Caltex, KTMB (kini monogram)
 - [x] HeroCarousel: infinite loop, teks pada semua kad, mobile teks di dalam kad, autoplay + dots + jeda
 - [x] Page transition antara route (`components/PageTransition.js`, View Transitions API)
-- [ ] PromoBanner / Award (WSIS)
-- [ ] SocialCarousel (Aktiviti media sosial)
-- [ ] AgencyLogoStrip (Sumber kenyataan rasmi)
+- [x] PromoBanner / Award (WSIS)
+- [x] SocialCarousel (Aktiviti media sosial)
+- [x] AgencyLogoStrip (Sumber kenyataan rasmi)
 - [ ] Band: Closing, Announcement
 - [ ] Timeline (Tentang Kami)
 - [ ] Fungsi card, Feature card, Logo download card

@@ -11,15 +11,15 @@ const platforms = Object.fromEntries(socialLinks.map((p) => [p.id, p]));
 // Three copies (before / real / after) so the side previews fill the screen and the loop looks endless
 const slides = [...stories, ...stories, ...stories];
 
-// Card widths and gap for the current screen width
-function getSizes(width) {
-  if (width <= 768) {
-    return { small: Math.max(Math.round(width * 0.18), 70), big: Math.min(Math.round(width * 0.82), 380), gap: 12 };
+// Card widths and gap, measured against the row's own width (Paper: 3 folded cards
+// + 1 open card fill the content width, gap 8, height 560)
+function getSizes(rowWidth) {
+  if (rowWidth <= 700) {
+    return { small: Math.max(Math.round(rowWidth * 0.16), 56), big: Math.min(Math.round(rowWidth * 0.8), 380), gap: 8 };
   }
-  if (width <= 1200) {
-    return { small: Math.max(Math.round(width * 0.16), 140), big: Math.min(Math.round(width * 0.65), 680), gap: 16 };
-  }
-  return { small: Math.min(Math.max(Math.round(width * 0.14), 170), 220), big: Math.min(Math.round(width * 0.58), 920), gap: 20 };
+  const gap = 8;
+  const small = Math.round(rowWidth * 0.153);
+  return { small, big: rowWidth - 3 * small - 3 * gap, gap };
 }
 
 export default function Stories() {
@@ -34,7 +34,8 @@ export default function Stories() {
     let timer;
     const measure = () => {
       setAnimate(false);
-      setSize({ ...getSizes(window.innerWidth), viewport: viewportRef.current.offsetWidth });
+      const viewport = viewportRef.current.offsetWidth;
+      setSize({ ...getSizes(viewport), viewport });
     };
     const onResize = () => {
       clearTimeout(timer);
@@ -89,20 +90,14 @@ export default function Stories() {
     else if (distance > 40) goTo(index - 1);
   }
 
-  const s = size || { small: 180, big: 880, gap: 20, viewport: 0 };
+  const s = size || { small: 219, big: 746, gap: 8, viewport: 0 };
   const offset = s.viewport / 2 - (index * (s.small + s.gap) + s.big / 2);
   const storyNumber = index % COUNT;
   const progress = 100 / COUNT + (storyNumber / (COUNT - 1)) * (100 - 100 / COUNT);
   const transition = animate ? undefined : 'none';
 
   return (
-    <section className="stories">
-      <div className="stories-head">
-        <small className="big-title stories-title">
-          <strong>Aktiviti Sosial Media</strong>
-          <span> Terkini</span>
-        </small>
-      </div>
+    <div className="stories">
 
       <div
         className="stories-viewport"
@@ -197,6 +192,6 @@ export default function Stories() {
           </button>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -1,62 +1,41 @@
-import { Fragment } from 'react';
+import { ArrowRight } from 'lucide-react';
+import Icon from '@/components/ui/Icon';
 import { withBase } from '@/lib/basePath';
 
-const metrics = [
-  { value: '10K', plus: true, label: 'Dakwaan Tular Disangkal' },
-  { value: '33M', label: 'Rakyat Malaysia Dilindungi' },
-  { value: 'No. 1', red: true, label: 'Anugerah Global PBB' },
-];
-
+/**
+ * WSIS award banner (Paper › Home › Aktiviti media sosial › PromoBanner / Award).
+ * Dark story card + trophy photo, 1.62 : 1, 560 tall on desktop.
+ */
 export default function Bento() {
   return (
-    <section className="bento container">
-      <div className="bento-divider" />
-
-      {/* Row 1: WSIS award story + trophy photo */}
-      <div className="bento-row top">
-        <div className="bento-card dots">
-          <div>
-            <div className="badge">
-              <img src={withBase('/images/bento/gold-award-medal.webp')} alt="Pingat Emas WSIS Pertubuhan Bangsa-Bangsa Bersatu" className="badge-medal" loading="lazy" />
-              <span>Geneva &bull; WSIS Pertubuhan Bangsa-Bangsa Bersatu</span>
-            </div>
-            <h3 className="headline">
-              <span className="headline-lead">Pengiktirafan Tertinggi</span>
-              <span className="headline-big">Juara Dunia</span>
-              <span className="headline-tail">dalam Kepercayaan Digital &amp; Semakan Fakta Awam</span>
-            </h3>
-            <p className="lead">
-              Apabila khabar angin tular tersebar pantas, fakta yang sahih mesti bergerak lebih pantas. Sebenarnya.my
-              meraih penghormatan antarabangsa tertinggi di Anugerah WSIS PBB di Geneva — diiktiraf sebagai perisai utama
-              Malaysia yang melindungi <strong>33 juta rakyat</strong> bersama <strong>lebih 20 agensi persekutuan</strong>.
-            </p>
-            <div className="metrics">
-              {metrics.map((metric, i) => (
-                <Fragment key={metric.label}>
-                  {i > 0 && <div className="metric-line" />}
-                  <div className="metric">
-                    <span className={metric.red ? 'metric-value red' : 'metric-value'}>
-                      {metric.value}
-                      {metric.plus && <span className="metric-plus">+</span>}
-                    </span>
-                    <span className="metric-label">{metric.label}</span>
-                  </div>
-                </Fragment>
-              ))}
-            </div>
-          </div>
-          <div>
-            <a href={withBase('/tentang-kami/')} className="pill-btn">
-              <span>Terokai Kisah WSIS</span>
-              <span className="pill-icon">→</span>
-            </a>
-          </div>
+    <div className="wsis-banner">
+      <div className="wsis-banner__story">
+        <div className="wsis-banner__top">
+          <span className="wsis-banner__badge">Geneva · WSIS Pertubuhan Bangsa-Bangsa Bersatu</span>
+          <h3 className="wsis-banner__heading">
+            <span className="wsis-banner__eyebrow">Pengiktirafan tertinggi</span>
+            <span className="wsis-banner__title">Juara Dunia</span>
+            <span className="wsis-banner__sub">dalam Kepercayaan Digital &amp; Semakan Fakta Awam</span>
+          </h3>
+          <p className="wsis-banner__text">
+            Apabila khabar angin tular tersebar pantas, fakta yang sahih mesti bergerak lebih pantas. Sebenarnya.my
+            meraih penghormatan antarabangsa tertinggi di Anugerah WSIS PBB di Geneva — diiktiraf sebagai perisai utama
+            Malaysia yang melindungi <strong>33 juta rakyat</strong> bersama <strong>lebih 20 agensi persekutuan</strong>.
+          </p>
         </div>
-
-        <div className="bento-card image">
-          <img src={withBase('/images/bento/wsis-prize-award.webp')} alt="Trofi pemenang Anugerah WSIS - Geneva, Switzerland" className="bento-img" loading="lazy" />
-        </div>
+        <a href={withBase('/about-us/#berita-galeri')} className="wsis-banner__cta">
+          Ketahui lebih lanjut
+          <Icon icon={ArrowRight} />
+        </a>
       </div>
-    </section>
+
+      <div className="wsis-banner__media">
+        <img
+          src={withBase('/images/bento/wsis-prize-award.webp')}
+          alt="Trofi Anugerah WSIS 2026, Geneva, Switzerland"
+          loading="lazy"
+        />
+      </div>
+    </div>
   );
 }

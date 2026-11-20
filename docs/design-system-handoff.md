@@ -327,3 +327,10 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - Warna butang Tanya AIFA (merah vs Ink).
 - Page Artikel masih guna Montserrat dan radius 26 — tukar ke Manrope / 20 (cadangan: ya).
 - Perlu mode Dark sekarang atau kemudian.
+
+## Home — bagian bawah (Paper › Home › 3KA-0, 3IW-0)
+
+- **Tentang ringkas** (`.viewership`, `.partners`): sisi `--brief-side` 96 → 48 (≤1280) → 24 (≤960) → 16 (≤600). Kicker 24 Medium, lead 20/130%. Angka statistik `clamp(48px, 5vw, 72px)` Medium, keterangan 16 Light. Label mitra 14 semibold uppercase `--color-muted-foreground`, jarak logo 40, ticker tetap.
+- **Aktiviti media sosial terkini** (`.activity`): padding sisi 96, gap 32, judul Heading/36 Medium.
+- **WSIS PromoBanner** (`components/Bento.js`, `.wsis-banner`): baris flex tinggi 560, gap 24. Kartu cerita flex 1.62, padding 48, `--radius-lg`, latar `--color-black`; eyebrow merah merek (bukan aksi); CTA pil terang 44px, label 16/24 Medium, ikon Lucide `ArrowRight`, scale .96 saat ditekan → `/about-us/#berita-galeri`. Media flex 1, border 1px, `--radius-lg`. Menumpuk di ≤1100.
+- **SocialCarousel** (`components/Stories.js`): tanpa judul sendiri (judul dari `.activity`). Ukuran dari lebar viewport: kecil = 15.3%, besar = sisa, gap 8; ≤700: kecil max(16%, 56), besar min(80%, 380). Kartu `--radius-lg`, progress track `--color-muted-strong` / bar `--color-foreground`, tombol bulat 44px outline dengan focus ring.
