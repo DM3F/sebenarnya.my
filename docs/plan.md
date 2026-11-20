@@ -75,7 +75,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 |---|---|---|
 | `/` | Home | [~] Header, Hero (+ carian popular), HeroCarousel, Semakan fakta terkini siap; section lain belum |
 | `/article` | Artikel | [x] Paper + kod: penapis, kad utama, senarai sisi, grid 4 kolum, footer (`components/Articles.js`, `components/Footer.js`) |
-| `/article/[slug]` | Mesej pautan pendaftaran… | [~] Paper: design system diterapkan (Verdict, Chip, Display/48, Lucide); kod belum |
+| `/article/[slug]` | detail artikel page | [x] Paper + kod: Verdict + pil kategori, tajuk 48/52, meta + Kongsi, imej 1100×550, lajur bacaan 680 (`components/ArticleDetail.js`) |
 | `/about-us` | Tentang Kami | [~] Paper: token diterapkan; **masih ada kandungan templat bukan Sebenarnya.my** (blok tenis "Horizon", fakta 12 000+/89%, baris fakta pendua bawah footer, "Folow us", ayat berulang di Empat fungsi); kod belum |
 | `/logo` | (Logo) | [ ] |
 

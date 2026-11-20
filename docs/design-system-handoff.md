@@ -251,6 +251,9 @@ Baseline asal dari Figma:
 ### Footer ✅ (Paper › Footer; `components/Footer.js`)
 Border-top 1px `--color-border`, padding 96 atas / 32 bawah, sisi 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 64. Kiri: logo 180 + teks Medium 18/24 (max 400). Kanan: 3 kolum lebar 180, gap 48 — **Sosial** (teks sahaja, buka di tab baharu), **Semak & Lapor** (Semak Fakta, AIFA, Salur Kepada Kami), **Sebenarnya.my** (Tentang Kami, Berita dan Galeri). Tajuk kolum 14 semibold UPPERCASE `--tracking-label` `--color-muted-foreground`; pautan 16/24 Medium, gap 12, garis bawah semasa hover. Hak cipta 14/21 `--color-muted-foreground`. ≤1100 bertindan; ≤600 kolum 2 sebaris.
 
+### Halaman detail artikel ✅ (Paper › Artwork › detail artikel page; `components/ArticleDetail.js`)
+Padding 32 atas / 96 bawah, sisi 81 (48 ≤1280, 24 ≤900, 16 ≤600). "Semua artikel" 16/24 Medium + ikon 20. Tag: `Verdict tone="single"` dengan agensi + pil kategori 14/20 Medium, kedua-duanya border .5px `--color-border`, tinggi 44. Tajuk 48/52 Medium `--tracking-display` (32/36 ≤600), subtajuk 18/28 `--color-text-secondary`, meta 14/21 `--color-muted-foreground` + butang Kongsi (border 1px, 16/24 Medium, ikon 20). Imej 1100 × 2:1, `--radius-card` (4:3 ≤600). Lajur bacaan 680: lead 18/28, garis pemisah, "Penjelasan rasmi" 24/32 Medium.
+
 ### Halaman Artikel ✅ (Paper › Artwork › Artikel; `components/Articles.js`)
 - Sisi `--articles-side` 96 / 48 / 24 / 16, padding atas 40, bawah 96.
 - **Penapis:** carian pill 44 (border 1px `--color-border-strong`, ikon Search 18, input Inter 16) + 2 `<select>` asli bergaya pill 44 (border `--color-border`, label 16 Medium, ChevronDown Lucide) + kiraan 14 `--color-muted-foreground`. Chip kategori pill 44 bg `--color-muted`, label 16 Medium, dot verdict 7px; terpilih = `--color-primary` + `--color-primary-foreground`; baris boleh skrol dengan butang ‹ › 44 bila melimpah.

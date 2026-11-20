@@ -1,29 +1,28 @@
 import Link from 'next/link';
 import ShareButton from './ShareButton';
-import { articleStatus } from '@/data/content';
-import { agencyParts, articleActions, formatDate, getCategoryLabel } from '@/lib/articles';
+import { agencyParts, formatDate, getCategoryLabel } from '@/lib/articles';
 import { ArrowLeft } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
+import Verdict from '@/components/ui/Verdict';
 
-// Full article page: tags, title, meta + share, image, body
+/**
+ * Article detail (Paper › Artwork › detail artikel page).
+ * Back link, verdict + category pills, title, subtitle, meta + share,
+ * 1100×550 image, then a 680px reading column: lead, divider, "Penjelasan rasmi".
+ */
 export default function ArticleDetail({ article }) {
-  const status = articleStatus[article.status];
   const { short, full } = agencyParts(article.agency.name);
-  const actions = articleActions(article);
 
   return (
     <article className="post-page">
-      <header className="post-head container">
+      <header className="post-head">
         <Link className="post-back" href="/article">
-          <Icon icon={ArrowLeft} />
+          <Icon icon={ArrowLeft} size={20} />
           Semua artikel
         </Link>
 
         <div className="post-tags">
-          <span className="post-status" style={{ '--status': status.color }}>
-            <i />
-            {status.label}
-          </span>
+          <Verdict type={article.status} tone="single" agency={short} />
           {article.categories.map((id) => (
             <span key={id} className="post-category">{getCategoryLabel(id)}</span>
           ))}
@@ -40,30 +39,17 @@ export default function ArticleDetail({ article }) {
           </span>
           <ShareButton title={article.title} />
         </div>
-      </header>
 
-      <div className="post-image container">
-        <img src={article.image} alt={article.alt} />
-      </div>
+        <img className="post-image" src={article.image} alt={article.alt} />
+      </header>
 
       <div className="post-body">
         <p className="post-lead">{article.lead}</p>
 
-        <section>
-          <h2>Penjelasan Rasmi</h2>
+        <section className="post-section">
+          <h2>Penjelasan rasmi</h2>
           {article.explanation && <p>{article.explanation}</p>}
           <p>Sentiasa rujuk saluran rasmi {short} untuk perkembangan terkini.</p>
-        </section>
-
-        <section>
-          <h2>Apa Yang Perlu Anda Buat</h2>
-          <ul>
-            {actions.map((a) => (
-              <li key={a.title}>
-                <b>{a.title}:</b> {a.text}
-              </li>
-            ))}
-          </ul>
         </section>
       </div>
     </article>
