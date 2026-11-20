@@ -45,7 +45,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [ ] Button: saiz kecil + varian "on media" (butang putih atas imej, cth. "Baca semakan")
 - [ ] Icon button bulat (prev/next carousel 48px, jeda 56px)
 - [ ] Field teks biasa / textarea / select (Paper 12 › Inputs) — guna dalam ClaimForm
-- [ ] Pagination dots (badge kiraan "04 / 05" **dibuang** — carousel kini infinite)
+- [ ] Pagination dots sebagai komponen kongsi (kini hanya dalam HeroCarousel). Pembilang "03 / 05" dipulihkan pada slaid aktif ikut Paper
 - [ ] Avatar agensi (30 / 40px)
 - [ ] Semak semula ketepatan dengan Paper 12 › Button, Inputs, Verdict (nilai tepat via `get_computed_styles`)
 
@@ -55,12 +55,12 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [ ] Nav/Header: item "Hubungi kami" (perlu page `/contact/`)
 - [x] Footer (Paper 12 › Footer) — semua halaman
 - [?] Tanya AIFA floating button — merah (artwork) vs Ink + `--shadow-float` (peraturan)
-- [x] Article card (grid Artikel) + kad utama + senarai sisi
+- [x] Article card (grid Artikel). Kad utama + senarai sisi dibuang ikut Paper terkini
 - [x] FactCheckCard / Flip card: satu kad terbuka pada satu masa, hover intent 90/140ms, buka 0.7s ease-out, tutup 0.45s
 - [x] Seksyen "Semakan fakta terkini": gelangsar automatik tanpa hujung, berhenti bila hover, butang ‹ ›, Lihat lagi
 - [x] 20 artikel baharu (Oktober 2026) dengan gambar unik; monogram agensi bila tiada logo
 - [ ] Logo agensi baharu: MOF, JAIS, Kesultanan Pahang, PMO, JPM, Caltex, KTMB (kini monogram)
-- [x] HeroCarousel: infinite loop, teks pada semua kad, mobile teks di dalam kad, autoplay + dots + jeda
+- [x] HeroCarousel: infinite loop, teks pada slaid tengah sahaja (ikut Paper), pembilang slaid, autoplay + dots + jeda
 - [x] Page transition antara route (`components/PageTransition.js`, View Transitions API)
 - [x] PromoBanner / Award (WSIS)
 - [x] SocialCarousel (Aktiviti media sosial)
@@ -73,10 +73,10 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 
 | Route | Artboard | Status |
 |---|---|---|
-| `/` | Home | [~] Header, Hero (+ carian popular), HeroCarousel, Semakan fakta terkini siap; section lain belum |
-| `/article` | Artikel | [x] Paper + kod: penapis, kad utama, senarai sisi, grid 4 kolum, footer (`components/Articles.js`, `components/Footer.js`) |
-| `/article/[slug]` | detail artikel page | [x] Paper + kod: Verdict + pil kategori, tajuk 48/52, meta + Kongsi, imej 1100×550, lajur bacaan 680 (`components/ArticleDetail.js`) |
-| `/about-us` | Tentang Kami | [x] Kod: Hero (foto + Ikuti kami), Empat fungsi (kad pilihan + 3 kad kecil, ‹ › dan bar kemajuan), Bagaimana kami menyemak (sedia ada), Berita dan Galeri, Logo (`components/AboutUs.js`, `LogoKit.js`). **Tidak dipasang:** blok templat "Horizon" (tenis) dan angka 12 000+/89%/1,200+/125+ — bukan kandungan Sebenarnya.my; padam di Paper |
+| `/` | Home | [x] Header, Hero (+ carian popular), HeroCarousel, Semakan fakta terkini, Tentang ringkas, Aktiviti media sosial (WSIS + SocialCarousel), footer |
+| `/article` | Artikel | [x] Paper + kod: penapis (5 chip keputusan), grid kad 4 kolum, footer (`components/Articles.js`, `components/Footer.js`) |
+| `/article/[slug]` | detail artikel page | [x] Paper + kod: Verdict + pil kategori, tajuk 48/52, meta + Kongsi, imej 1100×550, lajur bacaan 514 (`components/ArticleDetail.js`) |
+| `/about-us` | Tentang Kami | [x] Kod: Hero (foto + Ikuti kami), About (susun atur Paper, kandungan Sebenarnya.my), Empat fungsi, Berita dan Galeri, Logo (`components/AboutUs.js`, `LogoKit.js`). "Bagaimana kami menyemak" dibuang (tiada dalam Paper). Teks templat tenis dalam Paper masih perlu diganti di Paper |
 | `/logo` | (Logo) | [ ] |
 
 - [x] Hero: tajuk baru "Tidak pasti? Jangan kongsi / Semak dakwaan, Temukan kebenaran"
@@ -100,7 +100,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 
 ## Fasa 6 — Kualiti & serahan (laman web)
 
-- [ ] Semakan visual setiap page desktop + mobile (375) berbanding Paper
+- [x] Semakan visual setiap page desktop (1624) + mobile (390) berbanding Paper — lihat [`audit-localhost-vs-paper.md`](audit-localhost-vs-paper.md)
 - [ ] Aksesibiliti: kontras, fokus, keyboard, `prefers-reduced-motion`
 - [x] `npm run build` (export statik) lulus
 - [ ] Halaman katalog komponen `/design-system` (dev sahaja) — rujukan visual untuk CMS/extension
