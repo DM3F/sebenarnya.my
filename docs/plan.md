@@ -60,7 +60,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] Seksyen "Semakan fakta terkini": gelangsar automatik tanpa hujung, berhenti bila hover, butang ‹ ›, Lihat lagi
 - [x] 20 artikel baharu (Oktober 2026) dengan gambar unik; monogram agensi bila tiada logo
 - [ ] Logo agensi baharu: MOF, JAIS, Kesultanan Pahang, PMO, JPM, Caltex, KTMB (kini monogram)
-- [x] HeroCarousel: infinite loop, tepi melengkung (mask `clip-path`, imej diam), teks pada semua kad, mobile teks di dalam kad, autoplay + dots + jeda
+- [x] HeroCarousel: infinite loop, teks pada semua kad, mobile teks di dalam kad, autoplay + dots + jeda
 - [x] Page transition antara route (`components/PageTransition.js`, View Transitions API)
 - [ ] PromoBanner / Award (WSIS)
 - [ ] SocialCarousel (Aktiviti media sosial)

@@ -2205,13 +2205,10 @@ input::placeholder { color: var(--text); }
 .hero-carousel .gal:focus-visible { outline-offset: -2px; }
 
 /* Gallery + track */
-/* Infinite curved slider: Carousel.js positions every slide with translate3d and bends the
-   edge ones (scaleY + clip-path). --h and --lift are measured in JS; --lift is the room the
-   flared edges need above and below. */
+/* Infinite slider: Carousel.js positions every slide with translate3d; --h is measured in JS. */
 .hero-carousel .gal {
   position: relative;
-  height: calc(var(--h, min(480px, calc(var(--w) / 2))) + 2 * var(--lift, 0px));
-  margin-block: calc(-1 * var(--lift, 0px));
+  height: var(--h, min(480px, calc(var(--w) / 2)));
   overflow: hidden;
   touch-action: pan-y;
   cursor: grab;
@@ -2224,7 +2221,7 @@ input::placeholder { color: var(--text); }
 /* Slides */
 .hero-carousel .slide {
   position: absolute;
-  top: var(--lift, 0px);
+  top: 0;
   left: 50%;
   width: var(--w);
   height: min(480px, calc(var(--w) / 2));
@@ -2236,14 +2233,13 @@ input::placeholder { color: var(--text); }
 /* Before JS measures: only the centre slide, centred */
 .hero-carousel .gal:not(.ready) .slide { transform: translateX(-50%); }
 .hero-carousel .gal:not(.ready) .slide:not(.cur) { visibility: hidden; }
-/* Taller than the slide by --lift on each side; the mask (clip-path) shows the slide's
-   box when flat and curves outward near the screen edges. The image never moves. */
+/* Card face: rounded, clips the image */
 .hero-carousel .curve {
   position: absolute;
-  inset: calc(-1 * var(--lift, 0px)) 0;
+  inset: 0;
   overflow: hidden;
+  border-radius: var(--radius-card);
   background: var(--color-black);
-  clip-path: inset(var(--lift, 0px) 0 round var(--radius-card));
 }
 .hero-carousel .slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transform: scale(1.04); transition: transform 6s linear; }
 .hero-carousel .slide.cur img { transform: scale(1); }

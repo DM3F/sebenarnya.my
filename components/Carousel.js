@@ -29,77 +29,42 @@ const HALF = Math.floor(COUNT / 2);
 const DELAY = 6000; // autoplay interval, matches the dot fill animation in global.css
 const START = Math.min(2, COUNT - 1); // open on the 3rd slide
 const TAU = 0.11; // seconds; exponential ease toward the target (interruptible, no fixed duration)
-const BEND = 0.045; // how far the edge slides flare, as a fraction of slide height
-const RADIUS = 20; // --radius-card, used by the curved clip path
 
 const wrap = (n) => ((n % COUNT) + COUNT) % COUNT;
 
 /**
  * Hero carousel (Paper › Home › HeroCarousel).
  * Infinite loop: slides are placed around a continuous position, so there is no first or last.
- * Edge slides flare taller toward the screen sides, like a curved display — only the mask
- * bends; the image stays still (adapted from the
- * Krea 3 "use cases" slider). Auto-advances every 6s; every slide shows its text.
+ * Auto-advances every 6s; every slide shows its text.
  * Pause button, dots, drag/swipe with momentum, trackpad and arrow keys.
  * Reduced motion: no autoplay and moves jump instead of gliding.
  */
 export default function Carousel() {
   const galRef = useRef(null);
   const slideRefs = useRef([]);
-  const curveRefs = useRef([]);
-  const st = useRef({ pos: START, target: START, raf: 0, last: 0, drag: null, w: 0, h: 0, vw: 0, lift: 0, gap: 20, bend: BEND, idx: START, reduce: false });
+  const st = useRef({ pos: START, target: START, raf: 0, last: 0, drag: null, w: 0, h: 0, vw: 0, gap: 20, idx: START, reduce: false });
   const [index, setIndex] = useState(START);
   const [tick, setTick] = useState(0); // bumps on every move so the timer and dot fill restart
   const [playing, setPlaying] = useState(true);
 
-  // Lay every slide out around the current position and bend the ones near the edges
+  // Lay every slide out around the current position
   const layout = useCallback(() => {
     const s = st.current;
-    const { w, h, vw, gap, bend } = s;
-    if (!w || !h || !vw) return;
+    const { w, vw, gap } = s;
+    if (!w || !vw) return;
     const step = w + gap;
     const base = Math.floor(s.pos);
     const frac = s.pos - base;
-    const centre = w / 2 + gap / 2; // flat zone around the middle
-    const flare = (x) => {
-      const room = vw / 2 - centre;
-      if (room <= 0) return 0;
-      const r = Math.max(0, Math.abs(x) - centre) / room;
-      return bend * h * r * r;
-    };
 
     for (let i = 0; i < COUNT; i++) {
       const el = slideRefs.current[i];
-      const curve = curveRefs.current[i];
-      if (!el || !curve) continue;
+      if (!el) continue;
       const slot = wrap(i - base + HALF) - HALF; // -HALF … HALF around the centre
       const x = slot * step - frac * step; // slide centre relative to the stage centre
       el.style.transform = `translate3d(${(x - w / 2).toFixed(2)}px,0,0)`;
       const hidden = Math.abs(x) - w / 2 > vw / 2 + 40;
       el.style.visibility = hidden ? 'hidden' : '';
-      if (hidden) continue;
 
-      const f = (px) => flare(x - w / 2 + px);
-      const xs = Array.from({ length: 33 }, (_, k) => (w * k) / 32);
-      if (Math.max(...xs.map(f)) < 0.5) {
-        curve.style.clipPath = ''; // flat: CSS inset() with rounded corners
-        continue;
-      }
-      // The container is permanently taller than the slide (by --lift top and bottom) and the
-      // image covers it without moving. Only the mask changes: its top and bottom edges curve
-      // outward, taller on the side facing the screen edge.
-      const lift = s.lift;
-      const top = (px) => lift - f(px);
-      const bot = (px) => lift + h + f(px);
-      const R = RADIUS;
-      const mid = xs.filter((px) => px > R && px < w - R);
-      let d = `M0 ${top(0) + R} Q0 ${top(0)} ${R} ${top(R)}`;
-      for (const px of mid) d += ` L${px.toFixed(1)} ${top(px).toFixed(2)}`;
-      d += ` L${w - R} ${top(w - R)} Q${w} ${top(w)} ${w} ${top(w) + R}`;
-      d += ` L${w} ${bot(w) - R} Q${w} ${bot(w)} ${w - R} ${bot(w - R)}`;
-      for (const px of [...mid].reverse()) d += ` L${px.toFixed(1)} ${bot(px).toFixed(2)}`;
-      d += ` L${R} ${bot(R)} Q0 ${bot(0)} 0 ${bot(0) - R} Z`;
-      curve.style.clipPath = `path('${d}')`;
     }
 
     const idx = wrap(Math.round(s.pos));
@@ -149,14 +114,11 @@ export default function Carousel() {
     if (s.reduce) setPlaying(false);
     const measure = () => {
       const phone = window.matchMedia('(max-width: 700px)').matches;
-      s.bend = phone ? 0 : BEND;
       s.gap = phone ? 12 : 20;
       const first = slideRefs.current[0];
       s.w = first?.offsetWidth ?? 0;
       s.h = Math.max(...slideRefs.current.map((el) => el?.offsetHeight ?? 0));
       s.vw = gal.clientWidth;
-      s.lift = Math.ceil(s.bend * s.h);
-      gal.style.setProperty('--lift', `${s.lift}px`);
       gal.style.setProperty('--h', `${s.h}px`);
       layout();
     };
@@ -305,7 +267,7 @@ export default function Carousel() {
                 data-i={i}
                 ref={(el) => (slideRefs.current[i] = el)}
               >
-                <div className="curve" ref={(el) => (curveRefs.current[i] = el)}>
+                <div className="curve">
                   <img
                     src={s.image}
                     alt=""

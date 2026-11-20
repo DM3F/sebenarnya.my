@@ -140,7 +140,6 @@ Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1
 ### 2.y Motion — hero carousel
 - Infinite loop (tiada slide pertama/terakhir); slide disusun di sekitar posisi kontinu dengan `translate3d`.
 - Gerak: ease eksponensial τ 0.11s ke arah sasaran (boleh disentuh di tengah gerakan). Drag ikut jari, flick > 0.6 slide/s cukup untuk tukar slide; trackpad ikut jari lalu snap selepas 140ms.
-- Tepi kiri/kanan melengkung macam skrin cekung: container lebih tinggi sebanyak `--lift` di atas/bawah, gambar `cover` diam; hanya mask `clip-path: path()` yang melengkung, flare maksimum 4.5% tinggi slide. Mati di ≤700px.
 - Teks dipaparkan pada semua kad (tengah, kiri, kanan); tiada badge kiraan (infinite loop). Mobile: kad potret, teks di bahagian bawah dalam kad.
 - `prefers-reduced-motion`: tiada autoplay, perpindahan terus tanpa glide.
 
