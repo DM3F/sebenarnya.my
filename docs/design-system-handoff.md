@@ -3,6 +3,8 @@
 Untuk: agent coding (Claude Code) yang akan implement design system baru ke repo `DM3F/sebenarnya.my` (branch `endahbyu`).
 Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork") dan Paper file `sebenarnya.my` (`01M7VAW17RGCJXGYKR590PX12M`, page "Design system" & "Artwork").
 
+> Checklist kemajuan: [`plan.md`](plan.md) — kemas kini bersama fail ini setiap commit.
+
 > Baca `AGENTS.md` dulu. Next.js dalam repo ni versi 16 — semak `node_modules/next/dist/docs/` sebelum ubah API/konvensyen.
 
 ---
