@@ -708,8 +708,8 @@ input::placeholder { color: var(--color-foreground); }
 .round-btn:active { transform: scale(.96); }
 
 .round-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 @media (max-width: 1200px) {
@@ -787,6 +787,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 .agency-viewport:hover .agency-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .agency-track { animation: none; } }
 
 .agency {
   position: relative;
@@ -1351,8 +1352,9 @@ input::placeholder { color: var(--color-foreground); }
   margin: 0;
   font-family: var(--font-sans);
   font-size: var(--text-18);
-  line-height: var(--leading-24);
-  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-28);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-secondary);
 }
 
 .site-footer__links { display: flex; gap: var(--spacing-48); }
@@ -1411,7 +1413,7 @@ input::placeholder { color: var(--color-foreground); }
   .site-footer { --footer-side: var(--spacing-16); }
   .site-footer__links { gap: var(--spacing-32) var(--spacing-24); }
   .site-footer__col { width: calc(50% - var(--spacing-12)); }
-  .site-footer__text { font-size: var(--text-16); }
+  .site-footer__text { font-size: var(--text-16); line-height: var(--leading-24); }
 }
 
 /* Scroll motion (classes added by ScrollMotion.js) */
@@ -3188,7 +3190,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 .about-fn-arrows button:active { transform: scale(.94); }
 /* Progress: a quarter-width thumb slides to the selected function */
-.about-fn-track { flex: 1; height: 3px; overflow: hidden; border-radius: var(--radius-full); background: var(--color-muted-strong); }
+.about-fn-track { flex: 1; height: 4px; overflow: hidden; border-radius: var(--radius-full); background: var(--color-muted-strong); }
 .about-fn-track span {
   display: block;
   width: 25%;

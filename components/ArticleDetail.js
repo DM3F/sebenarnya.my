@@ -17,7 +17,7 @@ export default function ArticleDetail({ article }) {
     <article className="post-page">
       <header className="post-head">
         <Link className="post-back" href="/article">
-          <Icon icon={ArrowLeft} size={20} />
+          <Icon icon={ArrowLeft} />
           Semua artikel
         </Link>
 

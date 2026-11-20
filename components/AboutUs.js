@@ -150,10 +150,10 @@ function Functions() {
           <div className="about-fn-controls">
             <div className="about-fn-arrows">
               <button type="button" aria-label="Fungsi sebelumnya" onClick={() => move(-1)}>
-                <Icon icon={ChevronLeft} size={20} />
+                <Icon icon={ChevronLeft} />
               </button>
               <button type="button" aria-label="Fungsi seterusnya" onClick={() => move(1)}>
-                <Icon icon={ChevronRight} size={20} />
+                <Icon icon={ChevronRight} />
               </button>
             </div>
             <div className="about-fn-track" aria-hidden="true">

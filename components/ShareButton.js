@@ -61,7 +61,7 @@ export default function ShareButton({ title }) {
   return (
     <div className="share" ref={wrapRef}>
       <button type="button" className="share-btn" aria-expanded={open} aria-haspopup="true" onClick={share}>
-        <Icon icon={Share} size={20} />
+        <Icon icon={Share} />
         Kongsi
       </button>
 
