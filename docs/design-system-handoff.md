@@ -86,8 +86,8 @@ Font: **Manrope** 300/400/500/600 (ganti Montserrat via `next/font/google`, vari
 
 | Token / style | Weight | Size / line | Tracking | Guna |
 |---|---|---|---|---|
-| Display/56 | 400 | 56 / 60 | -0.02em | cover sahaja |
-| Display/48 | 400 | 48 / 52 | -0.02em | hero |
+| Display/56 Medium | 500 | 56 / 60 | -0.02em | cover, hero headline, section display |
+| Display/48 Medium | 500 | 48 / 52 | -0.02em | hero |
 | Heading/48 Medium | 500 | 48 / 52 | -0.02em | tajuk slide carousel |
 | Heading/36 | 500 | 36 / 42 | -0.02em | tajuk section |
 | Heading/32 | 500 | 32 / 36 | -0.02em | closing band, lead story |
@@ -104,6 +104,8 @@ Font: **Manrope** 300/400/500/600 (ganti Montserrat via `next/font/google`, vari
 | Caption/12 | 500 | 12 / 16 | +0.01em | tarikh, kredit |
 | Stat/40 Light | 300 | 40 / 44 | -0.02em | angka statistik |
 | Stat/32 Light | 300 | 32 / 36 | 0 | angka kecil (WSIS) |
+
+**Peraturan: semua tajuk besar (Display & Heading) guna Medium 500** — contoh "Warm cream editorial, clear headlines." pada cover. Regular 400 hanya untuk body; Light 300 hanya untuk statistik.
 
 Mobile (<600px): Display 38/42, Heading/36 → 30/36, Heading/32 → 28/34. Body kekal 400, max 68ch.
 
