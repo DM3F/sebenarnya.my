@@ -15,7 +15,7 @@ function ArrowUpRight() {
 
 /**
  * FactCheckCard (Paper › 06 Brand components › FactCheckCard – States).
- * Front: photo, verdict pill, title, agency avatar, arrow cue.
+ * Front: photo, verdict pill, title, agency avatar.
  * Back (rotateY 180°): verdict · agency, title, summary, checked date + source, "Baca semakan".
  * Mouse: flips on hover. Touch, click or keyboard: tap/click/Enter toggles it,
  * and keyboard focus moves to the side that is showing.
@@ -67,9 +67,6 @@ export default function FlipCard({ post }) {
           </div>
           <span className="fc-avatar" title={post.agency.name}>
             <img src={post.agency.image} alt={post.agency.short} loading="lazy" />
-          </span>
-          <span className="fc-cue" aria-hidden="true">
-            <ArrowUpRight />
           </span>
           <button
             ref={frontBtnRef}

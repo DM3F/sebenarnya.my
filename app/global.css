@@ -1802,20 +1802,6 @@ input::placeholder { color: var(--text); }
 .fc-avatar--sm { width: 36px; height: 36px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); }
 .fc-avatar--sm img { width: 24px; height: 24px; }
 
-.fc-cue {
-  position: absolute;
-  z-index: 1;
-  right: var(--spacing-24);
-  bottom: calc(var(--lift, 0px) + var(--spacing-24));
-  display: grid;
-  place-items: center;
-  width: var(--spacing-44);
-  height: var(--spacing-44);
-  border-radius: var(--radius-full);
-  background: var(--color-card);
-  color: var(--color-foreground);
-}
-
 @media (hover: hover) and (pointer: fine) {
   .fc:hover .fc-photo { transform: scale(1.03); }
 }

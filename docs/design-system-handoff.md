@@ -126,6 +126,7 @@ Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1
 - Infinite loop (tiada slide pertama/terakhir); slide disusun di sekitar posisi kontinu dengan `translate3d`.
 - Gerak: ease eksponensial τ 0.11s ke arah sasaran (boleh disentuh di tengah gerakan). Drag ikut jari, flick > 0.6 slide/s cukup untuk tukar slide; trackpad ikut jari lalu snap selepas 140ms.
 - Tepi kiri/kanan melengkung macam skrin cekung: container lebih tinggi sebanyak `--lift` di atas/bawah, gambar `cover` diam; hanya mask `clip-path: path()` yang melengkung, flare maksimum 4.5% tinggi slide. Mati di ≤700px.
+- Teks dipaparkan pada semua kad (tengah, kiri, kanan); tiada badge kiraan (infinite loop). Mobile: kad potret, teks di bahagian bawah dalam kad.
 - `prefers-reduced-motion`: tiada autoplay, perpindahan terus tanpa glide.
 
 ## 3. Pemetaan variable lama → token baru (`app/global.css`)
@@ -235,7 +236,7 @@ Pill `padding 10px 22px 10px 18px; min-height 44`, ikon chat 24px + "Tanya AIFA"
 ### Kad
 - **Article card (page Artikel):** lebar 230; imej 276 tinggi radius 26→`--radius-card`; pill verdict kiri atas (bg white 90% + blur 10, padding 6px 10px, dot 7px, 13 SemiBold); avatar agensi 30px bulat kiri bawah; tajuk Heading/20; tarikh Body/14 @60%.
 - **FactCheckCard ✅ (Home "Semakan fakta terkini"; Paper › 06 › FactCheckCard – States):** `components/FlipCard.js`, 340×480, radius `--radius-card`. Flip dikekalkan: hover tetikus, klik/tap, Enter/Space (fokus pindah ke sisi yang kelihatan), `rotateY(180deg)` .6s `cubic-bezier(.77,0,.175,1)`, tiada animasi jika reduced motion.
-  - Depan: foto penuh + scrim atas (0.66→0, 280px) dan bawah (0.35→0, 120px); pill verdict putih 94% (dot + PERKATAAN 13 semibold); tajuk 24/125% Medium putih; avatar agensi 44 putih (logo 30) kiri bawah; isyarat ↗ 44 putih kanan bawah.
+  - Depan: foto penuh + scrim atas (0.66→0, 280px) dan bawah (0.35→0, 120px); pill verdict putih 94% (dot + PERKATAAN 13 semibold); tajuk 24/125% Medium putih; avatar agensi 44 putih (logo 30) kiri bawah; tiada ikon panah di depan (dibuang — kad sudah boleh diklik/flip).
   - Belakang: bg `--color-muted`, border 1px `--color-border`, padding 24; `● PALSU · MCMC` (perkataan warna `--color-verdict-*`) + avatar 36; tajuk 20/130% Medium; ringkasan 16/24 `--color-text-secondary`; meta 13 `--color-muted-foreground` "Disemak {tarikh}" + "Sumber: kenyataan rasmi {agensi}" atas garisan; CTA penuh lebar tinggi 48, padding 6/6/6/20, `--color-primary`, label Inter 16 Medium "Baca semakan" + bulatan ↗ putih 36 (konsentrik dengan radius pill); hover `--color-primary-hover` + ikon geser 2px ↗; tekan `scale .96`. Kedua-dua sisi tepat 480px (`box-sizing: border-box`) supaya tinggi kad tidak berubah semasa flip; ringkasan max 4 baris.
 - **Seksyen "Semakan fakta terkini" ✅:** `components/Latest.js`. Padding 96 (64/48 ≤1280, 64/24 ≤900, 48/16 ≤600), gap 48; tajuk Heading/36 Medium. Baris kartu = scroll mendatar asli + scroll-snap (gap 24, 6 artikel terbaru); butang ‹ › 44 bulat (border `--color-border`, nonaktif di hujung) di kanan bawah; "Lihat lagi" `Button` outline dengan border `--color-foreground`, di tengah.
 - **Feature card / WSIS:** bg `--color-muted`, radius 20, padding 46 44; stats Stat/32 Light + caption 12 Smoke.
