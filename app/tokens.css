@@ -1,0 +1,118 @@
+/* ==========================================================================
+   Sebenarnya.my — design tokens
+   Source: Paper file "sebenarnya.my" (Design system page) and
+   docs/design-system-handoff.md. Values in px; global.css keeps its
+   62.5% root, so 1rem = 10px if you prefer rem.
+   Components should use the semantic aliases, not the primitives.
+   ========================================================================== */
+
+:root {
+  /* Fonts — loaded in app/layout.js via next/font */
+  --font-sans: var(--font-manrope), 'Manrope', system-ui, sans-serif; /* content, headings */
+  --font-ui: var(--font-inter), 'Inter', system-ui, sans-serif;       /* buttons, inputs, labels */
+
+  /* Primitive colors: neutrals */
+  --color-white: #ffffff;
+  --color-eggshell: #fdfcfc;   /* canvas, cards */
+  --color-warm-taupe: #f5f3f1; /* bands, stages, card fill */
+  --color-stone: #ebe8e4;      /* dividers, plates, thumbnails */
+  --color-pill-edge: #d7d2cc;  /* 0.5px pill edge */
+  --color-ash: #a59f97;        /* decorative only, never text */
+  --color-field-edge: #878179; /* 1px input border (3:1) */
+  --color-smoke: #6f6a63;      /* muted body, eyebrows */
+  --color-graphite: #44403b;   /* strong body text, hover */
+  --color-ink: #000000;        /* text, primary pill */
+
+  /* Primitive colors: brand sparks (visual only, never actions) */
+  --color-kebenaran-red: #e8302a;
+  --color-red-ink: #c8211c;    /* small red text 5.6:1, error */
+  --color-violet-spark: #3a46f5;
+
+  /* Verdict: dot / text */
+  --color-palsu-dot: #e8302a;    --color-palsu-text: #c8211c;
+  --color-waspada-dot: #e08a00;  --color-waspada-text: #a35a00;
+  --color-makluman-dot: #3a46f5; --color-makluman-text: #2f5fd0;
+  --color-benar-dot: #1fa463;    --color-benar-text: #137a49;
+
+  --color-focus: #2b7fff;
+  --color-hairline: rgba(0, 0, 0, .05);
+
+  /* Semantic aliases — use these in components */
+  --surface-canvas: var(--color-eggshell);
+  --surface-subtle: var(--color-warm-taupe);
+  --surface-inset: var(--color-stone);
+  --surface-raised: var(--color-white);
+  --text-primary: var(--color-ink);
+  --text-body: var(--color-graphite);
+  --text-secondary: var(--color-smoke);
+  --border-subtle: var(--color-stone);
+  --border-field: var(--color-field-edge);
+  --border-hairline: var(--color-hairline);
+  --action-fill: var(--color-ink);
+  --action-hover: var(--color-graphite);
+  --action-foreground: var(--color-white);
+  --focus-ring: var(--color-violet-spark);
+
+  /* Font weights — all headlines (Display & Heading) are Medium 500 */
+  --font-weight-light: 300;    /* statistics only */
+  --font-weight-regular: 400;  /* body only */
+  --font-weight-medium: 500;   /* display, headings, labels */
+  --font-weight-semibold: 600; /* verdict */
+
+  /* Type scale: size / line-height / tracking */
+  --text-display-56: 56px;  --leading-display-56: 60px;
+  --text-display-48: 48px;  --leading-display-48: 52px;
+  --text-heading-36: 36px;  --leading-heading-36: 42px;
+  --text-heading-32: 32px;  --leading-heading-32: 36px;
+  --text-heading-24: 24px;  --leading-heading-24: 32px;
+  --text-heading-20: 20px;  --leading-heading-20: 26px;
+  --text-heading-18: 18px;  --leading-heading-18: 28px;
+  --text-body-24: 24px;     --leading-body-24: 32px;
+  --text-body-18: 18px;     --leading-body-18: 28px;
+  --text-body-16: 16px;     --leading-body-16: 24px;
+  --text-body-14: 14px;     --leading-body-14: 21px;
+  --text-label-18: 18px;    --leading-label-18: 24px;
+  --text-eyebrow-14: 14px;  --leading-eyebrow-14: 20px;
+  --text-verdict-13: 13px;  --leading-verdict-13: 18px;
+  --text-caption-12: 12px;  --leading-caption-12: 16px;
+  --text-stat-40: 40px;     --leading-stat-40: 44px;
+  --text-stat-32: 32px;     --leading-stat-32: 36px;
+  --tracking-display: -.02em;
+  --tracking-tight: -.01em;
+  --tracking-body: .01em;
+  --tracking-label: .04em;
+
+  /* Spacing (4px base) */
+  --space-4: 4px;   --space-8: 8px;   --space-12: 12px; --space-16: 16px;
+  --space-20: 20px; --space-24: 24px; --space-28: 28px; --space-32: 32px;
+  --space-40: 40px; --space-48: 48px; --space-64: 64px; --space-72: 72px;
+  --space-96: 96px; --space-120: 120px;
+
+  /* Radius */
+  --radius-input: 8px;
+  --radius-small: 12px;   /* thumbnails, media */
+  --radius-card: 20px;    /* cards, stages, panels */
+  --radius-card-lg: 24px; /* feature card, hero stage */
+  --radius-pill: 9999px;  /* every button, tab, chip, search */
+
+  /* Effects — elevation comes from tone, not shadow */
+  --shadow-subtle: 0 0 0 .5px rgba(0, 0, 0, .125), 0 1px 1px rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .04);
+  --shadow-subtle-2: inset 0 0 0 .5px rgba(0, 0, 0, .075);
+  --shadow-subtle-3: inset 0 0 0 .5px rgba(0, 0, 0, .10);
+  --shadow-float: 0 0 0 .5px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12); /* Tanya AIFA only */
+
+  /* Layout */
+  --container-page: 1280px;
+  --container-rail: 1180px;
+}
+
+/* Mobile type scale (<600px) */
+@media (max-width: 599px) {
+  :root {
+    --text-display-56: 38px; --leading-display-56: 42px;
+    --text-display-48: 38px; --leading-display-48: 42px;
+    --text-heading-36: 30px; --leading-heading-36: 36px;
+    --text-heading-32: 28px; --leading-heading-32: 34px;
+  }
+}
+

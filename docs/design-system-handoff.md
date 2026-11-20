@@ -12,7 +12,8 @@ Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork"
 - Next.js 16 + React 19, **JavaScript** (bukan TS), App Router, `output: "export"`, `basePath` `/sebenarnya-design` untuk production (GitHub Pages). Guna `withBase()` dari `lib/basePath.js` untuk path aset.
 - Routes: `/` (Home), `/about-us`, `/logo`, `/article`, `/article/[slug]`.
 - Styling: satu fail `app/global.css` (~3,900 baris), **tiada Tailwind**. Root font-size 62.5% → `1rem = 10px`.
-- Font sekarang: Montserrat via `next/font` (`--font-montserrat`) dalam `app/layout.js`.
+- Font: **Manrope** (kandungan & tajuk, `--font-manrope` → `--font-sans`) dan **Inter** (UI: button, input, select, textarea, `--font-inter` → `--font-ui`) via `next/font/google` dalam `app/layout.js`. ✅ Siap.
+- Tokens: `app/tokens.css` (diimport sebelum `global.css`). Variable lama dalam `:root` `global.css` sudah dipetakan ke token (bahagian 3). ✅ Siap.
 - Komponen sedia ada: `Header, Footer, Hero, Carousel, Latest, FlipCard, Bento, Stories, Viewership, Collaborators, Articles, ArticleDetail, AboutUs, Logo, LogoKit, ShareButton, Chatbot, ClaimForm, ScrollMotion`.
 
 **Prinsip:** jangan tulis semula dari kosong. Tambah tokens → petakan variable lama ke tokens → kemas komponen satu per satu. Kekalkan routes, data (`data/content.js`, `lib/*`) dan behaviour (carousel, flip card, chatbot).
@@ -27,7 +28,7 @@ Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork"
 
 ## 2. Design tokens
 
-Cadangan: cipta `app/tokens.css`, import di atas `global.css` (dalam `layout.js`). Nilai dalam px — dalam CSS repo boleh tukar ke rem (÷10) ikut konvensyen sedia ada.
+Dilaksanakan dalam `app/tokens.css`, diimport di atas `global.css` (dalam `layout.js`). Juga ada token type scale (`--text-*`, `--leading-*`, `--tracking-*`), `--font-weight-*`, `--space-*`, radius, shadow dan container; skala mobile (<600px) ditukar automatik. Nilai dalam px — dalam CSS repo boleh tukar ke rem (÷10) ikut konvensyen sedia ada.
 
 ### 2.1 Primitive colors
 ```css
@@ -82,7 +83,7 @@ Cadangan: cipta `app/tokens.css`, import di atas `global.css` (dalam `layout.js`
 (Mode dark ada dalam Figma frame "11 · Forms & themes" — belum wajib.)
 
 ### 2.3 Typography
-Font: **Manrope** 300/400/500/600 (ganti Montserrat via `next/font/google`, variable `--font-manrope`).
+Font: **Manrope** 300/400/500/600 untuk kandungan & tajuk (`--font-sans`); **Inter** untuk UI — button, input, label (`--font-ui`).
 
 | Token / style | Weight | Size / line | Tracking | Guna |
 |---|---|---|---|---|
@@ -134,7 +135,7 @@ Page max 1280 (artwork frame 1624 = 81px side padding), rails 1180, side 32 / 16
 
 | Lama | Nilai lama | Baru |
 |---|---|---|
-| `--font` | Montserrat | `var(--font-manrope), 'Manrope', system-ui, sans-serif` |
+| `--font` | Montserrat | `var(--font-sans)` (Manrope) |
 | `--text`, `--dark` | #151618 | `var(--text-primary)` |
 | `--bg` | #fff | `var(--surface-canvas)` |
 | `--white` | #fff | `var(--surface-raised)` |
@@ -236,9 +237,9 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 ## 6. Urutan kerja dicadangkan
 
 1. Branch baru dari `endahbyu` (contoh `design-system`).
-2. Tukar font ke Manrope dalam `layout.js`.
-3. Tambah `app/tokens.css` (bahagian 2) dan import.
-4. Petakan variable lama dalam `:root` `global.css` (bahagian 3) → semak visual semua page.
+2. ✅ Tukar font ke Manrope + Inter (UI) dalam `layout.js`.
+3. ✅ Tambah `app/tokens.css` (bahagian 2) dan import.
+4. ✅ Petakan variable lama dalam `:root` `global.css` (bahagian 3). Semak visual setiap page masih perlu.
 5. Bina `components/ui/` (Button, Chip, Tabs, Verdict, FieldSearch) dan guna dalam komponen sedia ada.
 6. Kemas Header (ikut versi Paper terbaru), Footer, Tanya AIFA.
 7. Kemas section ikut page (bahagian 4 & 5), satu commit setiap section.
