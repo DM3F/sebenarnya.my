@@ -5,10 +5,21 @@ import { heroSlides } from '@/data/content';
 import { articleHref, getArticle } from '@/lib/articles';
 import { withBase } from '@/lib/basePath';
 
-// Each slide points at an article; it links to that article and falls back to its image
+// Each slide points at an article; it links to that article and falls back to its image.
+// `eyebrow` is "Verdict | Agency" (e.g. "Palsu | KPDN"); the verdict sets the dot colour.
+const VERDICTS = ['palsu', 'waspada', 'makluman', 'benar'];
 const slides = heroSlides.map((s) => {
   const article = getArticle(s.slug);
-  return { ...s, href: withBase(articleHref(article)), image: s.image || article.image };
+  const [verdict = '', agency = ''] = s.eyebrow.split('|').map((x) => x.trim());
+  const type = verdict.toLowerCase();
+  return {
+    ...s,
+    verdict,
+    agency,
+    type: VERDICTS.includes(type) ? type : 'makluman',
+    href: withBase(articleHref(article)),
+    image: s.image || article.image,
+  };
 });
 
 const COUNT = slides.length;
@@ -18,6 +29,12 @@ const START = Math.min(2, COUNT - 1); // open on the 3rd slide
 
 const pad = (n) => String(n).padStart(2, '0');
 
+/**
+ * Hero carousel (Paper › Home › HeroCarousel).
+ * Auto-advances every 6s; only the centre slide shows its text, the neighbours
+ * peek in as images. Pause button, dots, drag/swipe, trackpad and arrow keys.
+ * Starts paused when the user prefers reduced motion.
+ */
 export default function Carousel() {
   const galRef = useRef(null);
   const trackRef = useRef(null);
@@ -36,6 +53,11 @@ export default function Carousel() {
     indexRef.current = next;
     setIndex(next);
     setTick((t) => t + 1);
+  }, []);
+
+  // Respect reduced motion: no autoplay
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPlaying(false);
   }, []);
 
   // Move the track
@@ -57,7 +79,7 @@ export default function Carousel() {
     return () => window.removeEventListener('resize', onResize);
   }, [go]);
 
-  // Drag / swipe with mouse, pen or finger; trackpad two-finger swipe
+  // Drag / swipe with mouse, pen or finger; trackpad two-finger swipe; arrow keys
   useEffect(() => {
     const gal = galRef.current;
     const track = trackRef.current;
@@ -66,7 +88,7 @@ export default function Carousel() {
     let wheelLock = false;
 
     const down = (e) => {
-      if (e.button !== 0 || e.target.closest('.harr')) return;
+      if (e.button !== 0) return;
       start = { x: e.clientX, y: e.clientY, base: -indexRef.current * slideW(), id: e.pointerId };
       moved = false;
     };
@@ -100,7 +122,8 @@ export default function Carousel() {
       else go(i);
     };
 
-    // Swallow the click that follows a drag; otherwise a click on a slide opens it
+    // Swallow the click that follows a drag. A click on a side slide brings it to
+    // the centre; a click on the centre slide opens its article.
     const click = (e) => {
       if (moved) {
         moved = false;
@@ -108,9 +131,12 @@ export default function Carousel() {
         e.stopPropagation();
         return;
       }
-      if (e.target.closest('.harr, .hcta')) return;
+      if (e.target.closest('.hcta')) return;
       const slide = e.target.closest('.slide');
-      if (slide) window.location.href = slides[+slide.dataset.i].href;
+      if (!slide) return;
+      const i = +slide.dataset.i;
+      if (i === indexRef.current) window.location.href = slides[i].href;
+      else go(i);
     };
 
     const key = (e) => {
@@ -151,66 +177,67 @@ export default function Carousel() {
   };
 
   return (
-    <section id="utama" className="hero-carousel">
-      {/* Same container as other section headings, so it lines up with "Latest fact-checks" */}
-      <div className="container carousel-head">
-        <div className="section-head">
-          <small className="section-label big-title"><span>Semakan Fakta Popular</span></small>
-        </div>
-      </div>
-      <div className="gal" ref={galRef} aria-roledescription="carousel" aria-label="Fokus utama">
+    <section className="hero-carousel" aria-roledescription="carousel" aria-label="Semakan fakta pilihan">
+      <div className="gal" ref={galRef} tabIndex={0} aria-live={playing ? 'off' : 'polite'}>
         {/* Initial offset in CSS so the page loads already on START, with no slide-in from the first card */}
         <div className="gtrack" ref={trackRef} style={{ transform: `translateX(calc(${-START} * (var(--w) + ${GAP}px)))` }}>
-          {slides.map((s, i) => (
-            <div
-              key={s.href}
-              className={`slide hs${s.position ? ' dk' : ''}${s.wide ? ' wd' : ''}${i === index ? ' cur' : ''}`}
-              role="group"
-              aria-roledescription="slide"
-              aria-label={`${i + 1} daripada ${COUNT}`}
-              data-i={i}
-            >
-              <img
-                src={s.image}
-                alt=""
-                draggable={false}
-                style={s.position ? { objectPosition: s.position } : undefined}
-              />
-              <div className="ct">
-                <span className="ey">{s.eyebrow}</span>
-                <h3>
-                  {s.title}
-                  <br />
-                  <em>{s.titleEm}</em>
-                </h3>
-                <p>{s.text}</p>
-                <a className="hcta" href={s.href} draggable={false}>
-                  {s.cta}{' '}
-                  <svg width="14" height="12" viewBox="0 0 14 12">
-                    <path d="M1 6h11M8 2l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </a>
+          {slides.map((s, i) => {
+            const cur = i === index;
+            return (
+              <div
+                key={s.href}
+                className={`slide hs${s.position ? ' dk' : ''}${s.wide ? ' wd' : ''}${cur ? ' cur' : ''}`}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${i + 1} daripada ${COUNT}`}
+                aria-hidden={!cur}
+                data-i={i}
+              >
+                <img
+                  src={s.image}
+                  alt=""
+                  draggable={false}
+                  style={s.position ? { objectPosition: s.position } : undefined}
+                />
+                {/* Text shows on the centre slide only */}
+                <div className="ct">
+                  <span className={`ey ey--${s.type}`}>
+                    <span className="ey-dot" aria-hidden="true" />
+                    {s.verdict}
+                    {s.agency && <> · {s.agency}</>}
+                  </span>
+                  <h3>
+                    {s.title}
+                    <br />
+                    {s.titleEm}
+                  </h3>
+                  <p>{s.text}</p>
+                  <a className="hcta" href={s.href} draggable={false} tabIndex={cur ? 0 : -1}>
+                    {s.cta}
+                    <svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true">
+                      <path d="M1 6h11M8 2l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
+                </div>
+                {cur && (
+                  <span className="hcnt">
+                    {pad(index + 1)} / {pad(COUNT)}
+                  </span>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-
-        <button className="harr l" aria-label="Slaid sebelumnya" onClick={() => go(index - 1)}>
-          <svg width="10" height="16" viewBox="0 0 10 16"><path d="M8 2L2 8l6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        </button>
-        <button className="harr r" aria-label="Slaid seterusnya" onClick={() => go(index + 1)}>
-          <svg width="10" height="16" viewBox="0 0 10 16"><path d="M2 2l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        </button>
-        <span className="hcnt"><b>{pad(index + 1)}</b> / {pad(COUNT)}</span>
       </div>
 
       <div className={`gctl${playing ? '' : ' paused'}`}>
-        <div className="dots" role="tablist">
+        <div className="dots" role="tablist" aria-label="Pilih slaid">
           {slides.map((s, i) => (
             <button
               key={s.href}
+              type="button"
               role="tab"
-              aria-label={`Slaid ${i + 1}`}
+              aria-label={`Slaid ${i + 1}: ${s.title} ${s.titleEm}`}
               aria-selected={i === index}
               className={i === index ? 'on run' : undefined}
               onClick={() => go(i)}
@@ -219,15 +246,15 @@ export default function Carousel() {
             </button>
           ))}
         </div>
-        <button className="play" aria-label={playing ? 'Jeda' : 'Main'} onClick={togglePlay}>
-          <svg width="14" height="16" viewBox="0 0 14 16">
+        <button type="button" className="play" aria-label={playing ? 'Jeda slaid' : 'Main slaid'} onClick={togglePlay}>
+          <svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true">
             {playing ? (
               <>
-                <rect x="1" y="1" width="4" height="14" rx="1" />
-                <rect x="9" y="1" width="4" height="14" rx="1" />
+                <rect x="2" y="2" width="3" height="12" rx="1" />
+                <rect x="9" y="2" width="3" height="12" rx="1" />
               </>
             ) : (
-              <path d="M2 1.5v13l11-6.5z" />
+              <path d="M3 2v12l10-6z" />
             )}
           </svg>
         </button>

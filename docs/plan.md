@@ -53,7 +53,7 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 - [?] Tanya AIFA floating button — merah (artwork) vs Ink + `--shadow-float` (peraturan)
 - [ ] Article card (Paper 12 › Card)
 - [ ] FactCheckCard / Flip card + states (Paper 06 › FactCheckCard – States)
-- [ ] HeroCarousel (Paper 12 › Home patterns)
+- [x] HeroCarousel (Paper Home): autoplay, teks hanya slide tengah, kawalan dots + jeda
 - [ ] PromoBanner / Award (WSIS)
 - [ ] SocialCarousel (Aktiviti media sosial)
 - [ ] AgencyLogoStrip (Sumber kenyataan rasmi)
@@ -65,13 +65,13 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 
 | Route | Artboard | Status |
 |---|---|---|
-| `/` | Home | [~] Header + Hero siap; section lain belum |
+| `/` | Home | [~] Header, Hero + HeroCarousel siap; section lain belum |
 | `/article` | Artikel | [ ] |
 | `/article/[slug]` | Mesej pautan pendaftaran… | [ ] |
 | `/about-us` | Tentang Kami | [ ] |
 | `/logo` | (Logo) | [ ] |
 
-- [ ] Hero: teks kecil bawah tajuk (Paper masih placeholder — tunggu copy)
+- [x] Hero: copy baru (tajuk + lede 2 baris), dikemas kini di Paper juga
 
 ## Fasa 5 — Pembersihan
 

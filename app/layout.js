@@ -3,6 +3,7 @@ import './global.css';
 import './ui.css';
 import { Inter, Manrope } from 'next/font/google';
 import Chatbot from '@/components/Chatbot';
+import PageTransition from '@/components/PageTransition';
 import ClaimForm from '@/components/ClaimForm';
 import { withBase } from '@/lib/basePath';
 
@@ -47,6 +48,8 @@ export default function RootLayout({ children }) {
     <html lang="ms" className={`${manrope.variable} ${inter.variable}`}>
       <body>
         {children}
+        {/* Page transition between routes (animation in global.css) */}
+        <PageTransition />
         {/* AIFA chatbot: floating on every page */}
         <Chatbot />
         {/* Submit-claim form: opens as a pop-up from any /submit-claim/ link */}

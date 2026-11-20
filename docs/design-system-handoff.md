@@ -115,6 +115,13 @@ Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1
 
 ---
 
+### 2.x Motion — page transition
+- Token (`app/global.css`): `--ease-in-out cubic-bezier(.87,0,.13,1)` · `--duration-page 1.2s`.
+- `components/PageTransition.js` (dalam `app/layout.js`): tangkap klik link dalaman, jalankan `document.startViewTransition`, lalu `router.push`. Link `/submit-claim/`, tab baru, link luar dan hash tidak disentuh.
+- CSS `::view-transition-old/new(root)`: page lama naik 35% + redup ke .4; page baru di-wipe dari bawah (clip-path polygon).
+- `prefers-reduced-motion`: crossfade 200ms sahaja.
+- Browser tanpa `startViewTransition`: navigasi biasa.
+
 ## 3. Pemetaan variable lama → token baru (`app/global.css`)
 
 | Lama | Nilai lama | Baru |
@@ -197,7 +204,21 @@ Baseline asal dari Figma:
 - Header dalam artwork Paper sekarang: tinggi 120, padding sisi 81, nav gap 45, language switcher bg `#efeef0` dengan BM aktif bg Ink — **selaraskan ke token** (bg `--color-muted`, aktif `--color-primary`).
 
 ### Hero ✅ (ikut Paper Artwork › Home › Hero)
-`components/Hero.js`: tajuk tengah Display/56 Medium (baris 2 `--color-muted-foreground`), `SearchField` lebar max 800 dengan placeholder "Contoh: bantuan tunai WhatsApp" dan mesej ralat bawah field. Copy tajuk lama dikekalkan. Teks kecil bawah tajuk dalam Paper masih placeholder — belum dimasukkan.
+`components/Hero.js` + `components/Carousel.js`. Hero: padding atas 96, gap 48; heading group gap 16.
+- Tajuk Display/56 Medium, **2 baris**: "Tidak pasti? / Semak sebelum kongsi." (≤600px: `--text-38`, baris mengalir dengan `text-wrap: balance`, tetap 2 baris).
+- Lede 18/32 Medium `--color-text-secondary`, **2 baris** (69 + 69 aksara): "Portal rujukan rasmi yang disahkan terus oleh kementerian dan agensi. / Tampal tajuk mesej tular di sini, atau tanya AIFA 24 jam di WhatsApp." (≤760px mengalir bebas).
+- `SearchField` max 800, placeholder "Contoh: bantuan tunai WhatsApp", ralat bawah field.
+
+### HeroCarousel ✅ (Paper › Home › HeroCarousel)
+- Slide 960×480 (lebar `min(960, 100vw − 128)`), radius `--radius-card`, gap 20; slide tengah di tengah, jiran kiri/kanan mengintai.
+- **Hanya slide tengah tunjuk teks** (eyebrow, tajuk, teks, CTA, kaunter); slide sisi imej sahaja dengan scrim gelap 25%. Teks muncul selepas slide berhenti (fade .5s, delay .6s).
+- Kandungan: kiri 64, lebar max 484, gap 16. Eyebrow Verdict/13 putih + dot 8px warna `--color-verdict-*-dot` (halo 3px 25%) — "PALSU · KPDN". Tajuk Heading/48 Medium putih 2 baris (`title` + `titleEm`). Teks Body/16 putih, max 400. CTA pill `--color-background` + teks `--color-foreground` + anak panah.
+- Overlay: `linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.05) 85%)`.
+- Kaunter "04 / 05": pill bawah kanan 24, bg rgba(0,0,0,.6), 14/21 tabular.
+- Kawalan: pill dots bg `--color-muted` h48 padding 20 gap 12; dot 8 `--color-border-strong`, aktif 32 lebar dengan isian progres `--color-foreground` 6s; butang jeda/main 48 bulat `--color-muted`.
+- **Autoplay 6s**; jeda/main; mula dijeda jika `prefers-reduced-motion`. Seret/swipe, trackpad, kekunci ←/→ (gallery boleh difokus). Klik slide sisi = bawa ke tengah; klik slide tengah = buka artikel.
+- ≤900px: lebar `100vw − 64`, tajuk 36/42. ≤700px: imej atas (16:10), teks bawah, tajuk 28/34, slide sisi 50% opacity.
+- Tajuk seksyen lama "Semakan Fakta Popular" dibuang (Paper tiada).
 
 ### Footer
 Border-top 1px `--color-border`, padding atas 78. Kiri: logo 180×60 + teks 20/28 Medium (lebar 400). Kanan 3 kolum (Sosial · Semak & Lapor · Sebenarnya.my), tajuk 18/22 Medium, link Label/18 gap 12. Copyright Body/14. Gantikan Montserrat → Manrope.
@@ -256,7 +277,6 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 10. Buka PR ke `endahbyu`.
 
 ## 7. Perkara terbuka (sahkan dengan user)
-- Teks kecil bawah tajuk hero (Paper masih placeholder).
 - Warna butang Tanya AIFA (merah vs Ink).
 - Page Artikel masih guna Montserrat dan radius 26 — tukar ke Manrope / 20 (cadangan: ya).
 - Perlu mode Dark sekarang atau kemudian.
