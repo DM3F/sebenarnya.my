@@ -6,8 +6,7 @@ import { useEffect } from 'react';
 const blocks = [
   // Hero
   ['.hero-title', 0.04],
-  ['.claim-form', 0.14],
-  ['.claim-caption', 0.22],
+  ['.hero-search', 0.14],
   ['.latest .section-head', 0.28],
   ['.slider', 0.36],
   // About us hero

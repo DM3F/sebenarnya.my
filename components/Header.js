@@ -1,22 +1,34 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Logo from './Logo';
+import { Button, NavLink, Tabs } from '@/components/ui';
+import { CLAIM_HREF } from './ClaimForm';
 import { navLinks } from '@/data/content';
 import { withBase } from '@/lib/basePath';
 
 const languages = [
-  { code: 'EN', lang: 'en', name: 'English' },
-  { code: 'BM', lang: 'ms', name: 'Bahasa Melayu' },
+  { value: 'BM', label: 'BM', lang: 'ms', title: 'Bahasa Melayu' },
+  { value: 'EN', label: 'EN', lang: 'en', title: 'English' },
 ];
 
+// "Salur Kepada Kami" is the header's action button, not a nav link
+const pageLinks = navLinks.filter((link) => link.href !== CLAIM_HREF);
+const claimLink = navLinks.find((link) => link.href === CLAIM_HREF);
+
+const trim = (path) => (path.length > 1 ? path.replace(/\/$/, '') : path);
+const isCurrent = (pathname, href) =>
+  href === '/' ? trim(pathname) === '/' : trim(pathname).startsWith(trim(href));
+
 export default function Header() {
+  const pathname = usePathname() ?? '/';
   const [open, setOpen] = useState(false);
   const [lang, setLang] = useState('BM'); // UI state only; content is not translated yet
 
-  // Close the mobile menu if the window grows back to desktop size
+  // Close the compact menu if the window grows back to desktop size
   useEffect(() => {
-    const desktop = window.matchMedia('(min-width: 1025px)');
+    const desktop = window.matchMedia('(min-width: 1101px)');
     const close = (e) => e.matches && setOpen(false);
     desktop.addEventListener('change', close);
     return () => desktop.removeEventListener('change', close);
@@ -29,11 +41,36 @@ export default function Header() {
           <Logo />
         </div>
 
-        <div className="nav">
+        <nav id="site-menu" className={open ? 'menu open' : 'menu'} aria-label="Utama">
+          <ul>
+            {pageLinks.map((link) => (
+              <li key={link.href}>
+                <NavLink href={withBase(link.href)} current={isCurrent(pathname, link.href)}>
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+            {claimLink && (
+              <li className="menu-claim">
+                <NavLink href={withBase(claimLink.href)}>{claimLink.label}</NavLink>
+              </li>
+            )}
+          </ul>
+        </nav>
+
+        <div className="header-actions">
+          {/* Language selector: visual only for now, no translation wired up */}
+          <Tabs mode="toggle" label="Bahasa" items={languages} value={lang} onChange={setLang} />
+          {claimLink && (
+            <Button href={withBase(claimLink.href)} className="header-claim">
+              {claimLink.label}
+            </Button>
+          )}
           <button
             type="button"
             className={open ? 'menu-toggle open' : 'menu-toggle'}
             aria-label="Menu"
+            aria-controls="site-menu"
             aria-expanded={open}
             onClick={() => setOpen(!open)}
           >
@@ -43,32 +80,6 @@ export default function Header() {
               <span className="bar" />
             </span>
           </button>
-
-          <nav className={open ? 'menu open' : 'menu'}>
-            <ul>
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <a href={withBase(link.href)}>{link.label}</a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* Language selector: visual only for now, no translation wired up */}
-          <div className="lang-switch" role="group" aria-label="Bahasa">
-            {languages.map((l) => (
-              <button
-                key={l.code}
-                type="button"
-                lang={l.lang}
-                aria-label={l.name}
-                aria-pressed={lang === l.code}
-                onClick={() => setLang(l.code)}
-              >
-                {l.code}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </header>

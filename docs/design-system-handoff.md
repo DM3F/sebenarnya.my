@@ -185,9 +185,12 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 - `Chip` (`href?`) + `ChipRow` (`label` cth. "Popular:")
 - `Tabs` (`items`, `value`, `onChange`, `label`) — juga language switcher; ikut corak ARIA tabs (anak panah, Home/End)
 - `Verdict` (`type`: palsu | waspada | makluman | benar | penjelasan→benar, `tone`: default | single, `agency`)
-- `SearchField` (`label`, `hideLabel`, `placeholder`, `buttonLabel`, `action` atau `onSubmit(query)`)
+- `SearchField` (`label`, `hideLabel`, `placeholder`, `buttonLabel`, `value`+`onChange(text)` atau `defaultValue`, `error`, `action` atau `onSubmit(query)`)
+- `Tabs` `mode="toggle"` → `role=group` + `aria-pressed` (untuk language switcher; tiada tab panel)
+- `NavLink` (`href`, `current`) — link nav tanpa border; halaman aktif bg `--surface-subtle`
+- `Button`/`Chip`/`NavLink` dengan `href` render `<a>` biasa (tiada kebergantungan Next.js) supaya boleh guna di CMS/extension.
 
-Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Komponen belum dipasang ke komponen halaman sedia ada (langkah 5–6).
+Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Sudah dipasang: **Header** dan **Hero** (lihat di bawah). Komponen lain belum.
 
 ### Button
 - Asas: `height 44px; min-height 44px; padding 10px 20px; radius pill; Label/18; gap 8px` (ikon 16px).
@@ -213,12 +216,20 @@ Container `padding 3px; gap 2px; radius pill; bg --surface-canvas; border .5px -
 - `tone="single"`: perkataan guna warna text verdict.
 - Selalu dot + perkataan + agensi (WCAG 1.4.1). Varian: `palsu | waspada | makluman | benar` (page Artikel ada juga "Penjelasan" — petakan ke `benar`).
 
-### Nav/Header ⚠️
-**Versi terbaru diedit oleh user dalam Paper (page Artwork / Design system) — ambil spec dari situ dulu** sebelum implement. Baseline dari Figma:
+### Nav/Header ✅ (ikut Paper Artwork › Home › Nav/Header)
+Dilaksanakan dalam `components/Header.js`: logo kiri · `NavLink` (Utama, Semak Fakta, Tentang Kami, Logo; aktif ikut `usePathname`) · kanan `Tabs mode="toggle"` BM/EN + `Button` filled "Salur Kepada Kami". Border bawah 1px `--border-subtle`, padding 16.
+- ≤1100px: nav jadi dropdown (bg canvas, border, radius 12, `--shadow-float`) dibuka butang menu 44×44.
+- ≤600px: Button "Salur Kepada Kami" disembunyi dan muncul sebagai item terakhir dalam dropdown; logo mengecil (max 140).
+- Belum: dropdown "Tentang Kami ▾" (Paper) — data `navLinks` masih rata.
+
+Baseline asal dari Figma:
 - Wide: `padding 16; flex space-between; bg --surface-canvas`. Logo 133×40 dalam slot 160×56. Nav items: Chip tanpa border (active bg `--surface-subtle`), gap 4: Utama, Artikel, Tentang Kami ▾ (dropdown), Berita dan Galeri, Salur Kepada Kami. Kanan: Language switcher + Button filled "Tanya AIFA".
 - Compact (<1100): baris 1 logo + utilities, baris 2 nav.
 - Dropdown menu: `padding 8; radius 12; bg canvas; border 1px --border-subtle`; item 44px, padding 10px 16px, Label/18. Item: Tentang kami, Logo, Hubungi kami.
 - Header dalam artwork Paper sekarang: tinggi 120, padding sisi 81, nav gap 45, language switcher bg `#efeef0` dengan BM aktif bg Ink — **selaraskan ke token** (bg `--surface-subtle`, aktif `--action-fill`).
+
+### Hero ✅ (ikut Paper Artwork › Home › Hero)
+`components/Hero.js`: tajuk tengah Display/56 Medium (baris 2 `--text-secondary`), `SearchField` lebar max 800 dengan placeholder "Contoh: bantuan tunai WhatsApp" dan mesej ralat bawah field. Copy tajuk lama dikekalkan. Teks kecil bawah tajuk dalam Paper masih placeholder — belum dimasukkan.
 
 ### Footer
 Border-top 1px `--border-subtle`, padding atas 78. Kiri: logo 180×60 + teks 20/28 Medium (lebar 400). Kanan 3 kolum (Sosial · Semak & Lapor · Sebenarnya.my), tajuk 18/22 Medium, link Label/18 gap 12. Copyright Body/14. Gantikan Montserrat → Manrope.
@@ -270,14 +281,15 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 3. ✅ Tambah `app/tokens.css` (bahagian 2) dan import.
 4. ✅ Petakan variable lama dalam `:root` `global.css` (bahagian 3). Semak visual setiap page masih perlu.
 5. ✅ Bina `components/ui/` (Button, Chip, Tabs, Verdict, SearchField). Belum: guna dalam komponen sedia ada.
-6. Kemas Header (ikut versi Paper terbaru), Footer, Tanya AIFA.
+6. ✅ Header + Hero (ikut Paper). Belum: Footer, Tanya AIFA.
 7. Kemas section ikut page (bahagian 4 & 5), satu commit setiap section.
 8. Ganti hex keras yang tinggal dengan token.
 9. `npm run build` (export statik mesti lulus), semak dengan `npm run dev`, banding screenshot dengan Paper.
 10. Buka PR ke `endahbyu`.
 
 ## 7. Perkara terbuka (sahkan dengan user)
-- Spec Nav/Header terbaru dalam Paper.
+- Dropdown "Tentang Kami ▾" dalam header (Paper) — perlu ubah `navLinks`.
+- Teks kecil bawah tajuk hero (Paper masih placeholder).
 - Warna butang Tanya AIFA (merah vs Ink).
 - Page Artikel masih guna Montserrat dan radius 26 — tukar ke Manrope / 20 (cadangan: ya).
 - Perlu mode Dark sekarang atau kemudian.

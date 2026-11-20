@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { SearchField } from '@/components/ui';
 import { keywords, searchArticles } from '@/lib/searchArticles';
 
 export default function Hero() {
@@ -10,19 +11,16 @@ export default function Hero() {
   const [error, setError] = useState('');
 
   // Go to the articles page with the results, or show an error if nothing matches
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const q = query.trim();
-
-    if (!keywords(q).length) {
+  const handleSearch = (text) => {
+    if (!keywords(text).length) {
       setError('Sila masukkan kata kunci untuk dicari, cth. "petrol", "hujan" atau "JPJ".');
       return;
     }
-    if (!searchArticles(q).length) {
-      setError(`Tiada semakan fakta dijumpai untuk “${q}”. Cuba kata kunci lain.`);
+    if (!searchArticles(text).length) {
+      setError(`Tiada semakan fakta dijumpai untuk “${text}”. Cuba kata kunci lain.`);
       return;
     }
-    router.push(`/article?q=${encodeURIComponent(q)}`);
+    router.push(`/article?q=${encodeURIComponent(text)}`);
   };
 
   return (
@@ -30,34 +28,24 @@ export default function Hero() {
       <div className="hero-inner">
         <div className="hero-content container">
           <h1 className="hero-title">
-            <span>Hai, kami Sebenarnya.my.</span>
+            Hai, kami Sebenarnya.my.
             <br />
-            <em className="hero-tagline">Semak dakwaan. Temukan kebenaran.</em>
+            <span className="hero-tagline">Semak dakwaan. Temukan kebenaran.</span>
           </h1>
 
-          <div className="form-wrap">
-            <form className="pill-form claim-form" role="search" onSubmit={handleSearch}>
-              <input
-                type="text"
-                placeholder="Cari dakwaan, topik atau kata kunci..."
-                aria-label="Cari dakwaan, topik atau kata kunci"
-                aria-invalid={error ? true : undefined}
-                aria-describedby={error ? 'claim-error' : undefined}
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setError('');
-                }}
-                required
-              />
-              <button className="btn" type="submit">Semak</button>
-            </form>
-            {error ? (
-              <div className="claim-error" id="claim-error" role="alert">{error}</div>
-            ) : (
-              <div className="claim-caption"></div>
-            )}
-          </div>
+          <SearchField
+            className="hero-search"
+            label="Cari dakwaan, topik atau kata kunci"
+            hideLabel
+            placeholder="Contoh: bantuan tunai WhatsApp"
+            value={query}
+            onChange={(text) => {
+              setQuery(text);
+              setError('');
+            }}
+            error={error}
+            onSubmit={handleSearch}
+          />
         </div>
       </div>
     </section>

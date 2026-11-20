@@ -1,8 +1,7 @@
-import Link from 'next/link';
-
 /**
  * Button — pill control. Variants: filled (default), outline, ghost.
- * Pass `href` to render a link that looks like a button.
+ * Pass `href` to render a plain <a> that looks like a button (no framework
+ * dependency, so it also works in the CMS and the browser extension).
  */
 export default function Button({ variant = 'filled', icon, href, className = '', children, ...props }) {
   const cls = `ui-btn ui-btn--${variant} ${className}`.trim();
@@ -14,9 +13,9 @@ export default function Button({ variant = 'filled', icon, href, className = '',
   );
   if (href) {
     return (
-      <Link href={href} className={cls} {...props}>
+      <a href={href} className={cls} {...props}>
         {content}
-      </Link>
+      </a>
     );
   }
   return (
