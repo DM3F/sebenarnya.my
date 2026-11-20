@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ChevronDown, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { Button } from '@/components/ui';
 import Icon from '@/components/ui/Icon';
-import { articles, articleCategories, articleStatus } from '@/data/content';
+import { articles, articleStatus } from '@/data/content';
 import { matchesQuery } from '@/lib/searchArticles';
 import { agencyInitials, articleHref, formatDate } from '@/lib/articles';
 
@@ -26,8 +26,8 @@ const SORT_OPTIONS = [
   { id: 'za', label: 'Tajuk Z–A', compare: (a, b) => b.title.localeCompare(a.title, 'ms', { sensitivity: 'base' }) },
 ];
 
-// Featured card + 4-item side list when there are enough results (Paper › Artikel › Top row)
-const SIDE_COUNT = 4;
+// Category chips: the four verdicts only (Paper › Artikel › Kategori)
+const CHIP_IDS = ['palsu', 'benar', 'waspada', 'makluman'];
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -58,7 +58,7 @@ function filterArticles(query, category, range, from, to, sort) {
 /**
  * Artikel page (Paper › Artwork › Artikel).
  * Filters: search, date range, sort, result count, category chips.
- * Results: a featured card + four-item side list, then a 4-column grid.
+ * Results: a 4-column card grid.
  */
 export default function Articles() {
   const [query, setQuery] = useState('');
@@ -107,10 +107,7 @@ export default function Articles() {
   };
 
   const list = filterArticles(query, category, range, from, to, sort);
-  const hasTop = list.length > SIDE_COUNT;
-  const featured = hasTop ? list[0] : null;
-  const side = hasTop ? list.slice(1, 1 + SIDE_COUNT) : [];
-  const grid = hasTop ? list.slice(1 + SIDE_COUNT) : list;
+  const chips = CHIP_IDS.map((id) => ({ id, label: articleStatus[id]?.label ?? id }));
 
   const reset = () => {
     changeQuery('');
@@ -197,7 +194,7 @@ export default function Articles() {
             aria-label="Tapis mengikut kategori"
             onScroll={updateScroll}
           >
-            {[{ id: 'all', label: 'Semua' }, ...articleCategories].map((c) => (
+            {[{ id: 'all', label: 'Semua' }, ...chips].map((c) => (
               <button
                 key={c.id}
                 type="button"
@@ -228,29 +225,13 @@ export default function Articles() {
 
       {/* Results */}
       {list.length > 0 ? (
-        <div className="articles-results">
-          {hasTop && (
-            <div className="articles-top">
-              <FeaturedCard article={featured} />
-              <ul className="articles-side">
-                {side.map((a) => (
-                  <li key={a.slug}>
-                    <SideItem article={a} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {grid.length > 0 && (
-            <ul className="articles-grid">
-              {grid.map((a) => (
-                <li key={a.slug}>
-                  <GridCard article={a} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <ul className="articles-grid">
+          {list.map((a) => (
+            <li key={a.slug}>
+              <GridCard article={a} />
+            </li>
+          ))}
+        </ul>
       ) : (
         <div className="articles-empty" role="status">
           <p>
@@ -292,40 +273,6 @@ function AgencyAvatar({ agency }) {
 }
 
 // The title link stretches over the whole card, so the card is one click target
-function FeaturedCard({ article }) {
-  return (
-    <article className="articles-featured">
-      <img className="articles-featured__photo" src={article.image} alt={article.alt} />
-      <VerdictTag status={article.status} />
-      <div className="articles-featured__body">
-        <AgencyAvatar agency={article.agency} />
-        <h2 className="articles-featured__title">
-          <Link href={articleHref(article)} className="card-link">{article.title}</Link>
-        </h2>
-        <time className="articles-featured__date" dateTime={article.date}>{formatDate(article.date)}</time>
-      </div>
-    </article>
-  );
-}
-
-function SideItem({ article }) {
-  return (
-    <article className="articles-side__item">
-      <div className="articles-side__media">
-        <img src={article.image} alt={article.alt} loading="lazy" />
-        <VerdictTag status={article.status} />
-        <AgencyAvatar agency={article.agency} />
-      </div>
-      <div className="articles-side__text">
-        <h3 className="articles-card__title">
-          <Link href={articleHref(article)} className="card-link">{article.title}</Link>
-        </h3>
-        <time className="articles-card__date" dateTime={article.date}>{formatDate(article.date)}</time>
-      </div>
-    </article>
-  );
-}
-
 function GridCard({ article }) {
   return (
     <article className="articles-card">

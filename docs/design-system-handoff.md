@@ -334,3 +334,10 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - **Aktiviti media sosial terkini** (`.activity`): padding sisi 96, gap 32, judul Heading/36 Medium.
 - **WSIS PromoBanner** (`components/Bento.js`, `.wsis-banner`): baris flex tinggi 560, gap 24. Kartu cerita flex 1.62, padding 48, `--radius-lg`, latar `--color-black`; eyebrow merah merek (bukan aksi); CTA pil terang 44px, label 16/24 Medium, ikon Lucide `ArrowRight`, scale .96 saat ditekan → `/about-us/#berita-galeri`. Media flex 1, border 1px, `--radius-lg`. Menumpuk di ≤1100.
 - **SocialCarousel** (`components/Stories.js`): tanpa judul sendiri (judul dari `.activity`). Ukuran dari lebar viewport: kecil = 15.3%, besar = sisa, gap 8; ≤700: kecil max(16%, 56), besar min(80%, 380). Kartu `--radius-lg`, progress track `--color-muted-strong` / bar `--color-foreground`, tombol bulat 44px outline dengan focus ring.
+
+## Penyelarasan dengan Paper (Tentang Kami, Artikel, detail artikel)
+
+- **Artikel** (`components/Articles.js`): mengikut Paper terkini — baris kartu utama + senarai sisi dibuang; semua hasil dalam grid kartu 4 kolom. Chip kategori hanya `Semua` + empat keputusan (Palsu, Penjelasan, Waspada, Makluman). Tajuk kartu kini `box-sizing: border-box` supaya padding kanan 12 dihormati.
+- **Detail artikel**: kolum bacaan `.post-body` 514px (Paper › Body), 18/28.
+- **Tentang Kami › About** (`.about-intro`, data `aboutIntro`): pill label 14 Medium berbingkai `--color-border`; lead 24/32 lebar 700. Tiga kartu tinggi 340, gap 12, `--radius-card`: (1) `--color-primary` dengan teks 24 Medium + bahagian `--color-muted-foreground` dan penunjuk status (suis hiasan, `--color-link`); (2) `--color-muted-strong` dengan pill 16/24 Medium; (3) `--color-muted` dengan angka 40 Light + bar putus-putus keputusan (dikira daripada `articles`). Baris fakta: judul 20 Medium tengah, angka 40 Light, label 14 `--color-muted-foreground`. ≤1100 kartu menindan, fakta 2×2.
+- Bahagian "Bagaimana kami menyemak fakta" dibuang daripada halaman kerana tiada dalam canvas (data `howItWorks` dikekalkan).

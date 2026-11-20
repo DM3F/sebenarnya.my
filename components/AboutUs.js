@@ -4,18 +4,18 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 import LogoKit from '@/components/LogoKit';
-import { aboutHero as hero, aboutNews, howItWorks, socialLinks, whatWeDo } from '@/data/content';
+import { aboutHero as hero, aboutIntro as intro, aboutNews, articleStatus, articles, socialLinks, whatWeDo } from '@/data/content';
 
 const pad = (n) => String(n).padStart(2, '0');
 
-// Tentang Kami (Paper › Artwork › Tentang Kami): Hero, Empat fungsi, How it works,
+// Tentang Kami (Paper › Artwork › Tentang Kami): Hero, About, Empat fungsi,
 // Berita dan Galeri, Logo
 export default function AboutUs() {
   return (
     <>
       <Hero />
+      <Intro />
       <Functions />
-      <HowItWorks />
       <NewsGallery />
       <LogoKit headingLevel={2} />
     </>
@@ -50,6 +50,71 @@ function Hero() {
           <h1 id="about-hero-title">{hero.title}</h1>
           <p>{hero.lead}</p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+// About: label + lead, three cards (story, partners, verdict mix), facts in numbers
+const VERDICT_BARS = ['palsu', 'benar', 'waspada'];
+
+function Intro() {
+  const counts = VERDICT_BARS.map((id) => ({ id, n: articles.filter((a) => a.status === id).length }));
+  const max = Math.max(1, ...counts.map((c) => c.n));
+
+  return (
+    <section className="about-intro" aria-labelledby="about-intro-title">
+      <div className="about-intro__head">
+        <h2 className="about-intro__label" id="about-intro-title">{intro.label}</h2>
+        <p className="about-intro__lead">{intro.lead}</p>
+      </div>
+
+      <div className="about-intro__cards">
+        <div className="about-intro__card about-intro__card--story">
+          <span className="about-intro__mark" aria-hidden="true" />
+          <div className="about-intro__story">
+            <p className="about-intro__story-text">
+              {intro.card.strong} <span>{intro.card.muted}</span> {intro.card.end}
+            </p>
+            <p className="about-intro__status">
+              <span className="about-intro__switch" aria-hidden="true"><span /></span>
+              {intro.card.status}
+            </p>
+          </div>
+        </div>
+
+        <div className="about-intro__card about-intro__card--pill">
+          <span className="about-intro__pill">{intro.pill}</span>
+        </div>
+
+        <div className="about-intro__card about-intro__card--stats">
+          <div className="about-intro__stat">
+            <p className="about-intro__stat-value">{intro.verdicts.value}</p>
+            <p className="about-intro__stat-title">{intro.verdicts.title}</p>
+            <p className="about-intro__stat-text">{intro.verdicts.text}</p>
+          </div>
+          <ul className="about-intro__bars" aria-label="Artikel mengikut keputusan">
+            {counts.map((c) => (
+              <li key={c.id}>
+                <span className="about-intro__bar-label">{articleStatus[c.id]?.label ?? c.id}</span>
+                <span className="about-intro__bar" style={{ '--w': `${Math.round((c.n / max) * 100)}%` }} aria-hidden="true" />
+                <span className="about-intro__bar-n">{c.n}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="about-intro__facts">
+        <h3 className="about-intro__facts-title">{intro.factsTitle}</h3>
+        <dl className="about-intro__facts-row">
+          {intro.facts.map((f) => (
+            <div key={f.label}>
+              <dt>{f.value}</dt>
+              <dd>{f.label}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );
@@ -123,29 +188,6 @@ function Functions() {
   );
 }
 
-// How It Works: fact-checking steps on a timeline
-function HowItWorks() {
-  const { steps } = howItWorks;
-
-  return (
-    <section className="hiw container" aria-labelledby="hiw-title">
-      <h2 className="about-title" id="hiw-title">
-        {howItWorks.title}
-      </h2>
-      <p className="hiw-intro">{howItWorks.intro}</p>
-
-      <ol className="hiw-steps">
-        {steps.map((step) => (
-          <li className="hiw-step" key={step.title}>
-            <span className="hiw-dot" aria-hidden="true" />
-            <h3>{step.title}</h3>
-            <p>{step.text}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
 
 // Berita dan Galeri: three news cards, then a photo grid
 function NewsGallery() {

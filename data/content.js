@@ -211,6 +211,32 @@ export const aboutHero = {
   image: aboutImg('hero.jpg'),
 };
 
+// Intro under the hero (Paper › Tentang Kami › About): label + lead, three cards, facts row.
+// The verdict bars are counted from `articles` in components/AboutUs.js.
+export const aboutIntro = {
+  label: 'Tentang kami',
+  lead: 'Di Sebenarnya.my, kami bukan sekadar menyemak berita — kami melindungi kepercayaan. Sejak 2017, kami menjadi rujukan rakyat untuk maklumat sahih, daripada khabar angin harian hingga isu nasional.',
+  card: {
+    strong: 'Semakan berasaskan sumber rasmi',
+    muted: 'setiap dakwaan dirujuk kepada agensi yang berkaitan sebelum',
+    end: 'jawapan diterbitkan.',
+    status: 'Semakan aktif',
+  },
+  pill: 'Bersama lebih 20 agensi',
+  verdicts: {
+    value: '20+',
+    title: 'Agensi rakan',
+    text: 'Kementerian dan agensi persekutuan yang mengesahkan dakwaan bersama kami.',
+  },
+  factsTitle: 'Beberapa fakta tentang kami dalam angka',
+  facts: [
+    { value: '275 juta+', label: 'Lawatan ke portal' },
+    { value: '1,016', label: 'Artikel semakan' },
+    { value: '200 ribu', label: 'Mesej diproses Aifa' },
+    { value: '20+', label: 'Agensi rakan' },
+  ],
+};
+
 // Four functions: the selected one is shown large, the other three as small cards.
 export const whatWeDo = {
   title: 'Empat fungsi utama kami',
