@@ -7,7 +7,7 @@ Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** se
 - Branch: `endahbyu`.
 
 **Peraturan tetap**
-- Komponen hanya guna **token semantik** (`--surface-*`, `--text-*`, `--border-*`, `--action-*`, `--focus-*`, `--verdict-*`, `--brand-*`, `--control-*`). Design system ini akan dipakai juga di **CMS dashboard** dan **browser extension**.
+- Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`. Nama token sama di Paper dan kod. Design system ini akan dipakai juga di **CMS dashboard** dan **browser extension**.
 - Font: **Manrope** untuk kandungan/tajuk, **Inter** untuk UI. Semua tajuk besar **Medium 500**.
 - Merah Kebenaran bukan warna aksi (button, link, nav).
 
@@ -21,7 +21,7 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 - [x] `app/tokens.css`: primitive, semantic, type scale, weight, spacing, radius, shadow, container, skala mobile
 - [x] Petakan variable lama `:root` dalam `global.css` ke token
 - [x] Peraturan "tajuk besar = Medium 500" dalam dokumen
-- [ ] **Selaraskan nama token Paper ↔ kod.** Paper guna `--color-background`, `--color-muted`, `--color-primary`, `--text-18`, `--spacing-*`, `--radius-full`…; kod guna `--surface-canvas`, `--surface-subtle`, `--action-fill`, `--text-label-18`, `--space-*`, `--radius-pill`. Pilih satu set nama dan guna di kedua-dua tempat (penting untuk CMS/extension).
+- [x] **Satu set nama token Paper ↔ kod** — ikut nama Paper (Tailwind v4 + shadcn). Kod di-rename; token yang tiada dalam Paper (card, primary-hover, destructive, brand-spark, hairline, verdict dot, saiz/leading/spacing tambahan, container, breakpoint) ditambah ke Paper. Shadow kekal dalam kod sahaja.
 - [ ] Token untuk overlay media (gradient hero carousel, teks putih atas imej)
 - [ ] Token motion (`--duration-*`, `--ease-*`) — sekarang `--ease`/`--slide` lama dalam `global.css`
 - [ ] Pakej token boleh-guna-semula: `tokens.css` + `ui.css` dalam folder tersendiri (cth. `design-system/`) supaya CMS/extension boleh import tanpa salin manual
@@ -92,4 +92,3 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 - [?] Warna Tanya AIFA
 - [?] Mode dark: bila
 - [?] Struktur nav: dropdown "Tentang Kami" (Tentang kami, Logo, Hubungi kami)
-- [?] Nama token akhir (Paper vs kod) — lihat Fasa 1

@@ -18,7 +18,7 @@ Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork"
 - Tokens: `app/tokens.css` (diimport sebelum `global.css`). Variable lama dalam `:root` `global.css` sudah dipetakan ke token (bahagian 3). ✅ Siap.
 - Komponen sedia ada: `Header, Footer, Hero, Carousel, Latest, FlipCard, Bento, Stories, Viewership, Collaborators, Articles, ArticleDetail, AboutUs, Logo, LogoKit, ShareButton, Chatbot, ClaimForm, ScrollMotion`.
 
-**Peraturan token (wajib):** design system ini akan dipakai juga di **CMS dashboard** dan **browser extension**. Komponen HANYA boleh guna **token semantik** (`--surface-*`, `--text-*`, `--border-*`, `--action-*`, `--focus-*`, `--verdict-*`, `--brand-*`, `--control-*`) — jangan guna primitive (`--color-*`) atau hex terus. Primitive hanya dirujuk oleh alias semantik dalam `tokens.css`. Nilai komponen dalam px supaya tak bergantung pada root font-size projek lain.
+**Peraturan token (wajib):** design system ini akan dipakai juga di **CMS dashboard** dan **browser extension**. Komponen HANYA boleh guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`, `--color-brand*` …) serta skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*` — jangan guna palette (`--color-grey-*`, `--color-red`, `--color-blue` …) atau hex terus. Nilai komponen dalam px supaya tak bergantung pada root font-size projek lain.
 
 **Prinsip:** jangan tulis semula dari kosong. Tambah tokens → petakan variable lama ke tokens → kemas komponen satu per satu. Kekalkan routes, data (`data/content.js`, `lib/*`) dan behaviour (carousel, flip card, chatbot).
 
@@ -32,84 +32,42 @@ Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork"
 
 ## 2. Design tokens
 
-Dilaksanakan dalam `app/tokens.css`, diimport di atas `global.css` (dalam `layout.js`). Juga ada token type scale (`--text-*`, `--leading-*`, `--tracking-*`), `--font-weight-*`, `--space-*`, radius, shadow dan container; skala mobile (<600px) ditukar automatik. Nilai dalam px — dalam CSS repo boleh tukar ke rem (÷10) ikut konvensyen sedia ada.
+✅ **Satu set nama token** dipakai di Paper, situs, CMS dashboard dan browser extension — nama ikut Paper (namespace Tailwind v4 + warna semantik gaya shadcn). Sumber: `app/tokens.css` (sama dengan Paper › Design tokens; boleh ditampal terus ke `@theme` Tailwind). Shadow hanya dalam kod (Paper belum ada jenis token shadow).
 
-### 2.1 Primitive colors
-```css
-:root {
-  /* Neutrals */
-  --color-white: #ffffff;
-  --color-eggshell: #fdfcfc;   /* canvas, cards */
-  --color-warm-taupe: #f5f3f1; /* bands, stages, card fill */
-  --color-stone: #ebe8e4;      /* dividers, plates, thumbnails */
-  --color-pill-edge: #d7d2cc;  /* 0.5px pill edge */
-  --color-ash: #a59f97;        /* decorative only, NEVER text */
-  --color-field-edge: #878179; /* 1px input border (3:1) */
-  --color-smoke: #6f6a63;      /* muted body, eyebrows */
-  --color-graphite: #44403b;   /* strong body text, hover */
-  --color-ink: #000000;        /* text, primary pill */
+### 2.1 Palette (primitive — JANGAN guna dalam komponen)
+`--color-white #FFFFFF` · `--color-grey-99 #FDFCFC` (eggshell) · `--color-grey-95 #F5F3F1` (warm taupe) · `--color-grey-91 #EBE8E4` (stone) · `--color-grey-82 #D7D2CC` (pill edge) · `--color-grey-62 #A59F97` (ash, hiasan sahaja) · `--color-grey-50 #878179` (field edge) · `--color-grey-43 #6F6A63` (smoke) · `--color-grey-41 #6B6A68` · `--color-grey-25 #44403B` (graphite) · `--color-black #000` · `--color-red #E8302A` · `--color-red-dark #C8211C` · `--color-blue #3A46F5` · `--color-azure #2F5FD0` · `--color-orange #E08A00` · `--color-orange-dark #A35A00` · `--color-green #1FA463` · `--color-green-dark #137A49`
 
-  /* Brand sparks (visual only) */
-  --color-kebenaran-red: #e8302a;
-  --color-red-ink: #c8211c;    /* small red text 5.6:1, error */
-  --color-violet-spark: #3a46f5;
+### 2.2 Semantic colours (guna INI)
+| Token | Nilai | Guna |
+|---|---|---|
+| `--color-background` | grey-99 | kanvas page, kawalan (button outline, chip, tab, search) |
+| `--color-foreground` | black | teks utama |
+| `--color-card` | white | permukaan terangkat |
+| `--color-muted` | grey-95 | band, hover, nav aktif |
+| `--color-muted-strong` | grey-91 | inset, divider, isi disabled |
+| `--color-text-secondary` | grey-25 | teks body kuat |
+| `--color-muted-foreground` | grey-43 | teks redup, eyebrow, ikon, placeholder, tagline hero |
+| `--color-border` | grey-82 | tepi pill, kad, dropdown |
+| `--color-border-strong` | grey-50 | border field, button outline |
+| `--color-primary` / `-hover` / `-foreground` | black / grey-25 / white | aksi utama |
+| `--color-foreground-inverse` | white | teks atas gelap/media |
+| `--color-selected` | grey-41 | |
+| `--color-ring` | blue | fokus |
+| `--color-link` | blue | pautan |
+| `--color-destructive` | red-dark | teks ralat, field tidak sah |
+| `--color-brand` / `-strong` | red / red-dark | logo, sphere — BUKAN aksi |
+| `--color-brand-spark` | blue | hiasan |
+| `--color-hairline` | rgba(0,0,0,.05) | garis halus |
+| `--color-verdict-{palsu,waspada,makluman,benar}` | red-dark / orange-dark / azure / green-dark | perkataan verdict (tone single) |
+| `--color-verdict-*-dot` | red / orange / blue / green | titik verdict |
 
-  /* Verdict: dot / text */
-  --color-palsu-dot: #e8302a;    --color-palsu-text: #c8211c;
-  --color-waspada-dot: #e08a00;  --color-waspada-text: #a35a00;
-  --color-makluman-dot: #3a46f5; --color-makluman-text: #2f5fd0;
-  --color-benar-dot: #1fa463;    --color-benar-text: #137a49;
-
-  --color-focus: #2b7fff;
-  --color-hairline: rgba(0,0,0,.05);
-}
-```
-
-### 2.2 Semantic aliases (guna INI dalam komponen)
-```css
-:root {
-  --surface-canvas: var(--color-eggshell);
-  --surface-subtle: var(--color-warm-taupe);
-  --surface-inset: var(--color-stone);
-  --surface-raised: var(--color-white);
-  --text-primary: var(--color-ink);
-  --text-body: var(--color-graphite);
-  --text-secondary: var(--color-smoke);
-  --border-subtle: var(--color-stone);
-  --border-field: var(--color-field-edge);
-  --border-hairline: var(--color-hairline);
-  --action-fill: var(--color-ink);
-  --action-hover: var(--color-graphite);
-  --action-foreground: var(--color-white);
-  --focus-ring: var(--color-violet-spark); /* border fokus button */
-  --focus-halo: var(--color-focus);
-
-  /* Borders & states */
-  --border-strong: var(--color-smoke);
-  --border-pill: var(--color-pill-edge);
-  --surface-hover: var(--surface-subtle);
-  --surface-selected: var(--surface-raised);
-  --surface-disabled: var(--surface-inset);
-  --text-disabled / --text-placeholder: var(--text-secondary);
-  --text-link: var(--color-violet-spark);
-  --text-error: var(--color-red-ink);
-  --icon-default: var(--text-secondary);
-
-  /* Verdict: --verdict-{palsu|waspada|makluman|benar}-{indicator|text} */
-  /* Brand (visual sahaja): --brand-accent (red), --brand-spark (violet) */
-
-  /* Controls */
-  --control-height: 44px; --control-height-lg: 56px;
-  --control-padding-x: 20px; --control-gap: 8px;
-  --control-radius: var(--radius-pill); --control-border-width: .5px;
-}
-```
-(Mode dark ada dalam Figma frame "11 · Forms & themes" — belum wajib.)
+Saiz kawalan guna spacing: tinggi `--spacing-44` (min sasaran sentuh), search `--spacing-56`, padding sisi `--spacing-20`, radius `--radius-full`.
+(Mode dark ada dalam Paper "11 · Forms & themes" — belum wajib.)
 
 ### 2.3 Typography
 Font: **Manrope** 300/400/500/600 untuk kandungan & tajuk (`--font-sans`); **Inter** untuk UI — button, input, label (`--font-ui`).
 
-| Token / style | Weight | Size / line | Tracking | Guna |
+| Gaya | Weight | Size / line (token) | Tracking | Guna |
 |---|---|---|---|---|
 | Display/56 Medium | 500 | 56 / 60 | -0.02em | cover, hero headline, section display |
 | Display/48 Medium | 500 | 48 / 52 | -0.02em | hero |
@@ -132,14 +90,16 @@ Font: **Manrope** 300/400/500/600 untuk kandungan & tajuk (`--font-sans`); **Int
 
 **Peraturan: semua tajuk besar (Display & Heading) guna Medium 500** — contoh "Warm cream editorial, clear headlines." pada cover. Regular 400 hanya untuk body; Light 300 hanya untuk statistik.
 
-Mobile (<600px): Display 38/42, Heading/36 → 30/36, Heading/32 → 28/34. Body kekal 400, max 68ch.
+Token: saiz `--text-{12,13,14,16,18,20,24,28,30,32,36,38,40,48,56}`, line-height `--leading-{16,18,20,21,24,26,28,32,34,36,42,44,52,60}` (+ `--leading-display/heading/body` %), tracking `--tracking-{display,tight,body,label}`, weight `--font-weight-{light,regular,medium,semibold}`. Contoh Display/56 = `--text-56` / `--leading-60` / `--tracking-display` / `--font-weight-medium`.
 
-### 2.4 Spacing (4px base)
-`4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 64, 72, 96, 120`
+Mobile (<600px, `--breakpoint-type`): Display → `--text-38`/`--leading-42`, Heading/36 → `--text-30`/`--leading-36`, Heading/32 → `--text-28`/`--leading-34` (tukar dalam media query komponen). Body kekal 400, max 68ch.
+
+### 2.4 Spacing (4px base) — `--spacing-*`
+`2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 72, 96, 120`
 - 8: gap pill berpasangan/chip · 12: gutter grid · 16: inset, margin mobile · 20: padding sisi pill · 24: title→body panel · 32: padding kad, margin desktop · 40: bawah header section · 64: padding stage · 96–120: jarak section, hero top.
 
 ### 2.5 Radius
-`--radius-input: 8px` · `--radius-small: 12px` (thumbnail, media) · `--radius-card: 20px` (kad, stage, panel) · `--radius-card-lg: 24px` (feature card, hero stage) · `--radius-pill: 9999px` (SEMUA button, tab, chip, search).
+`--radius-sm: 4px` · `--radius-input: 8px` · `--radius-md: 12px` (thumbnail, media, dropdown) · `--radius-card: 20px` (kad, stage, panel) · `--radius-lg: 24px` (feature card, hero stage) · `--radius-full: 9999px` (SEMUA button, tab, chip, search).
 
 ### 2.6 Effects
 ```css
@@ -151,7 +111,7 @@ Mobile (<600px): Display 38/42, Heading/36 → 30/36, Heading/32 → 28/34. Body
 Elevation datang dari tona (Eggshell → Warm Taupe → Stone), bukan shadow.
 
 ### 2.7 Layout
-Page max 1280 (artwork frame 1624 = 81px side padding), rails 1180, side 32 / 16. Editorial grid 12 kolum, gap 12 (heading span 7, copy col 9–12). Breakpoints: 1100 nav · 900 stack · 600 type.
+Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1624 = 81px side padding), rails 1180, side 32 / 16. Editorial grid 12 kolum, gap 12 (heading span 7, copy col 9–12). Breakpoints: `--breakpoint-nav` 1100 · `--breakpoint-stack` 900 · `--breakpoint-type` 600 (rujukan; media query tak boleh baca variable).
 
 ---
 
@@ -160,21 +120,21 @@ Page max 1280 (artwork frame 1624 = 81px side padding), rails 1180, side 32 / 16
 | Lama | Nilai lama | Baru |
 |---|---|---|
 | `--font` | Montserrat | `var(--font-sans)` (Manrope) |
-| `--text`, `--dark` | #151618 | `var(--text-primary)` |
-| `--bg` | #fff | `var(--surface-canvas)` |
-| `--white` | #fff | `var(--surface-raised)` |
-| `--dark-card` | #0c0d11 | `var(--color-ink)` |
-| `--tag-bg` | #efeef0 | `var(--surface-subtle)` |
-| `--tag-hover` | #e6e6ea | `var(--surface-inset)` |
-| `--input-bg` | #f2f0f2 | `var(--surface-subtle)` (atau field putih + border, lihat Field/Search) |
-| `--line` | #ceced0 | `var(--border-subtle)` |
-| `--accent` | #314bff | `var(--color-violet-spark)` (visual sahaja) |
-| `--orange` | #ff6b35 | `var(--color-waspada-dot)` |
-| `--red` | #e51c23 | `var(--color-kebenaran-red)` |
-| `--radius` | 26px | `var(--radius-card)` (20px); pill → `var(--radius-pill)` |
+| `--text`, `--dark` | #151618 | `var(--color-foreground)` |
+| `--bg` | #fff | `var(--color-background)` |
+| `--white` | #fff | `var(--color-card)` |
+| `--dark-card` | #0c0d11 | `var(--color-primary)` |
+| `--tag-bg` | #efeef0 | `var(--color-muted)` |
+| `--tag-hover` | #e6e6ea | `var(--color-muted-strong)` |
+| `--input-bg` | #f2f0f2 | `var(--color-muted)` (atau field putih + border, lihat Field/Search) |
+| `--line` | #ceced0 | `var(--color-border)` |
+| `--accent` | #314bff | `var(--color-link)` |
+| `--orange` | #ff6b35 | `var(--color-verdict-waspada-dot)` |
+| `--red` | #e51c23 | `var(--color-brand)` |
+| `--radius` | 26px | `var(--radius-card)` (20px); pill → `var(--radius-full)` |
 | `--gap` | 16px | kekal / `12px` untuk grid editorial |
 
-Lepas tu cari hex keras dalam `global.css` (contoh `#6d6d72`, `#e2e2e5`, `#8a8a8f`, `#4a4a4f`, `#f5f5f7`, `#111215`, `#0d0e12`) dan gantikan dengan token semantik paling hampir (`--text-secondary`, `--border-subtle`, `--surface-subtle`, `--color-ink`).
+Lepas tu cari hex keras dalam `global.css` (contoh `#6d6d72`, `#e2e2e5`, `#8a8a8f`, `#4a4a4f`, `#f5f5f7`, `#111215`, `#0d0e12`) dan gantikan dengan token semantik paling hampir (`--color-muted-foreground`, `--color-border`, `--color-muted`, `--color-primary`).
 
 Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3`) → guna token verdict di 2.1.
 
@@ -189,62 +149,62 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 - `Verdict` (`type`: palsu | waspada | makluman | benar | penjelasan→benar, `tone`: default | single, `agency`)
 - `SearchField` (`label`, `hideLabel`, `placeholder`, `buttonLabel`, `value`+`onChange(text)` atau `defaultValue`, `error`, `action` atau `onSubmit(query)`)
 - `Tabs` `mode="toggle"` → `role=group` + `aria-pressed` (untuk language switcher; tiada tab panel)
-- `NavLink` (`href`, `current`) — link nav tanpa border; halaman aktif bg `--surface-subtle`
+- `NavLink` (`href`, `current`) — link nav tanpa border; halaman aktif bg `--color-muted`
 - `Button`/`Chip`/`NavLink` dengan `href` render `<a>` biasa (tiada kebergantungan Next.js) supaya boleh guna di CMS/extension.
 
 Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Sudah dipasang: **Header** dan **Hero** (lihat di bawah). Komponen lain belum.
 
 ### Button
 - Asas: `height 44px; min-height 44px; padding 10px 20px; radius pill; Label/18; gap 8px` (ikon 16px).
-- `filled`: bg `--action-fill`, text `--action-foreground`; hover bg `--action-hover`.
-- `outline`: bg `--surface-canvas`, border `.5px solid --color-smoke`; hover bg `--surface-subtle`.
-- `ghost`: bg `--surface-canvas`, text underline; hover bg `--surface-subtle`.
-- `focus` (semua): `border: 2px solid --focus-ring`.
-- `disabled`: bg `--surface-inset`, border `.5px --color-smoke`, text `--text-secondary`.
+- `filled`: bg `--color-primary`, text `--color-primary-foreground`; hover bg `--color-primary-hover`.
+- `outline`: bg `--color-background`, border `.5px solid --color-border-strong`; hover bg `--color-muted`.
+- `ghost`: bg `--color-background`, text underline; hover bg `--color-muted`.
+- `focus` (semua): `border: 2px solid --color-ring`.
+- `disabled`: bg `--color-muted-strong`, border `.5px --color-border-strong`, text `--color-muted-foreground`.
 - Pasangan button: gap 8px. Props: `variant`, `size?`, `icon?`, `href?`.
 
 ### Chip
-`height 44; padding 10px 12px; radius pill; bg --surface-canvas; border .5px --border-subtle; Label/18`. Hover `--surface-subtle`. Didahului label "Popular:" Body/14 Smoke.
+`height 44; padding 10px 12px; radius pill; bg --color-background; border .5px --color-border; Label/18`. Hover `--color-muted`. Didahului label "Popular:" Body/14 Smoke.
 
 ### Tabs/Segmented (dan Language switcher)
-Container `padding 3px; gap 2px; radius pill; bg --surface-canvas; border .5px --border-subtle`. Item = Chip; item terpilih bg `--surface-raised` + border `.5px --border-subtle`. Language switcher sama (item BM/EN, gap 8).
+Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px --color-border`. Item = Chip; item terpilih bg `--color-card` + border `.5px --color-border`. Language switcher sama (item BM/EN, gap 8).
 
 ### Field/Search
-`height 56; padding 0 6px 0 20px; radius pill; bg --surface-raised; border 1px --border-field; gap 12`. Ikon carian 18px Smoke, placeholder Body/16 Smoke, Button filled "Semak" di kanan. Focus: `border 2px --focus-ring` + `box-shadow 0 0 0 1.5px --color-focus`. Label atas: 14 Medium Ink.
+`height 56; padding 0 6px 0 20px; radius pill; bg --color-background; border 1px --color-border-strong; gap 12`. Ikon carian 18px Smoke, placeholder Body/16 Smoke, Button filled "Semak" di kanan. Focus: `border 2px --color-ring` + `box-shadow 0 0 0 1.5px --color-ring`. Label atas: 14 Medium Ink.
 
 ### Verdict
-`min-height 44; padding 8px; gap 8; radius pill; bg --surface-canvas`. Dot 8px (warna dot) + halo `0 0 0 3px <dot> @18%` + perkataan Verdict/13 + agensi Body/13 Smoke (`· KPDN`).
+`min-height 44; padding 8px; gap 8; radius pill; bg --color-background`. Dot 8px (warna dot) + halo `0 0 0 3px <dot> @18%` + perkataan Verdict/13 + agensi Body/13 Smoke (`· KPDN`).
 - `tone="default"`: perkataan Ink.
 - `tone="single"`: perkataan guna warna text verdict.
 - Selalu dot + perkataan + agensi (WCAG 1.4.1). Varian: `palsu | waspada | makluman | benar` (page Artikel ada juga "Penjelasan" — petakan ke `benar`).
 
 ### Nav/Header ✅ (ikut Paper Artwork › Home › Nav/Header)
-Dilaksanakan dalam `components/Header.js`: logo kiri · `NavLink` (Utama, Semak Fakta, Tentang Kami, Logo; aktif ikut `usePathname`) · kanan `Tabs mode="toggle"` BM/EN + `Button` filled "Salur Kepada Kami". Border bawah 1px `--border-subtle`, padding 16.
+Dilaksanakan dalam `components/Header.js`: logo kiri · `NavLink` (Utama, Semak Fakta, Tentang Kami, Logo; aktif ikut `usePathname`) · kanan `Tabs mode="toggle"` BM/EN + `Button` filled "Salur Kepada Kami". Border bawah 1px `--color-border`, padding 16.
 - ≤1100px: nav jadi dropdown (bg canvas, border, radius 12, `--shadow-float`) dibuka butang menu 44×44.
 - ≤600px: Button "Salur Kepada Kami" disembunyi dan muncul sebagai item terakhir dalam dropdown; logo mengecil (max 140).
 - Belum: dropdown "Tentang Kami ▾" (Paper) — data `navLinks` masih rata.
 
 Baseline asal dari Figma:
-- Wide: `padding 16; flex space-between; bg --surface-canvas`. Logo 133×40 dalam slot 160×56. Nav items: Chip tanpa border (active bg `--surface-subtle`), gap 4: Utama, Artikel, Tentang Kami ▾ (dropdown), Berita dan Galeri, Salur Kepada Kami. Kanan: Language switcher + Button filled "Tanya AIFA".
+- Wide: `padding 16; flex space-between; bg --color-background`. Logo 133×40 dalam slot 160×56. Nav items: Chip tanpa border (active bg `--color-muted`), gap 4: Utama, Artikel, Tentang Kami ▾ (dropdown), Berita dan Galeri, Salur Kepada Kami. Kanan: Language switcher + Button filled "Tanya AIFA".
 - Compact (<1100): baris 1 logo + utilities, baris 2 nav.
-- Dropdown menu: `padding 8; radius 12; bg canvas; border 1px --border-subtle`; item 44px, padding 10px 16px, Label/18. Item: Tentang kami, Logo, Hubungi kami.
-- Header dalam artwork Paper sekarang: tinggi 120, padding sisi 81, nav gap 45, language switcher bg `#efeef0` dengan BM aktif bg Ink — **selaraskan ke token** (bg `--surface-subtle`, aktif `--action-fill`).
+- Dropdown menu: `padding 8; radius 12; bg canvas; border 1px --color-border`; item 44px, padding 10px 16px, Label/18. Item: Tentang kami, Logo, Hubungi kami.
+- Header dalam artwork Paper sekarang: tinggi 120, padding sisi 81, nav gap 45, language switcher bg `#efeef0` dengan BM aktif bg Ink — **selaraskan ke token** (bg `--color-muted`, aktif `--color-primary`).
 
 ### Hero ✅ (ikut Paper Artwork › Home › Hero)
-`components/Hero.js`: tajuk tengah Display/56 Medium (baris 2 `--text-secondary`), `SearchField` lebar max 800 dengan placeholder "Contoh: bantuan tunai WhatsApp" dan mesej ralat bawah field. Copy tajuk lama dikekalkan. Teks kecil bawah tajuk dalam Paper masih placeholder — belum dimasukkan.
+`components/Hero.js`: tajuk tengah Display/56 Medium (baris 2 `--color-muted-foreground`), `SearchField` lebar max 800 dengan placeholder "Contoh: bantuan tunai WhatsApp" dan mesej ralat bawah field. Copy tajuk lama dikekalkan. Teks kecil bawah tajuk dalam Paper masih placeholder — belum dimasukkan.
 
 ### Footer
-Border-top 1px `--border-subtle`, padding atas 78. Kiri: logo 180×60 + teks 20/28 Medium (lebar 400). Kanan 3 kolum (Sosial · Semak & Lapor · Sebenarnya.my), tajuk 18/22 Medium, link Label/18 gap 12. Copyright Body/14. Gantikan Montserrat → Manrope.
+Border-top 1px `--color-border`, padding atas 78. Kiri: logo 180×60 + teks 20/28 Medium (lebar 400). Kanan 3 kolum (Sosial · Semak & Lapor · Sebenarnya.my), tajuk 18/22 Medium, link Label/18 gap 12. Copyright Body/14. Gantikan Montserrat → Manrope.
 
 ### Tanya AIFA (floating)
 Pill `padding 10px 22px 10px 18px; min-height 44`, ikon chat 24px + "Tanya AIFA" Label/18. Dalam artwork merah `#e51c23` + shadow merah — **bercanggah dengan rule "Red bukan warna aksi"**. Cadangan: Button filled Ink + `--shadow-float` (sahkan dengan user).
 
 ### Kad
 - **Article card (page Artikel):** lebar 230; imej 276 tinggi radius 26→`--radius-card`; pill verdict kiri atas (bg white 90% + blur 10, padding 6px 10px, dot 7px, 13 SemiBold); avatar agensi 30px bulat kiri bawah; tajuk Heading/20; tarikh Body/14 @60%.
-- **Flip card (Home "Semakan fakta terkini"):** 230×392, radius 20, bg `--surface-subtle`, imej 230×230, tajuk Heading/18 padding 14 16 18; avatar agensi 40px border 5px Ink di y=177. Belakang: bg Ink, agensi 12 @65%, ringkasan 14/21 @85%, Button "Baca lagi" canvas.
-- **Feature card / WSIS:** bg `--surface-subtle`, radius 20, padding 46 44; stats Stat/32 Light + caption 12 Smoke.
+- **Flip card (Home "Semakan fakta terkini"):** 230×392, radius 20, bg `--color-muted`, imej 230×230, tajuk Heading/18 padding 14 16 18; avatar agensi 40px border 5px Ink di y=177. Belakang: bg Ink, agensi 12 @65%, ringkasan 14/21 @85%, Button "Baca lagi" canvas.
+- **Feature card / WSIS:** bg `--color-muted`, radius 20, padding 46 44; stats Stat/32 Light + caption 12 Smoke.
 - **Fungsi card (Tentang Kami):** tinggi 280, padding 24, radius 20, bg subtle; tajuk Heading/24 + nombor "/01" Body/16; teks Body/16 Smoke.
-- **Logo download card:** border 1px `--border-subtle`, radius 20; area pratonton bg subtle; bawah: Heading/36 + Body/16 @80% + meta 14 @60% + Button filled "Muat turun" (ikon muat turun).
+- **Logo download card:** border 1px `--color-border`, radius 20; area pratonton bg subtle; bawah: Heading/36 + Body/16 @80% + meta 14 @60% + Button filled "Muat turun" (ikon muat turun).
 
 ### Carousel "Semakan fakta popular" (Hero carousel)
 Slide 960×480 radius 20, gap 20, slide aktif di tengah. Overlay `linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.05) 85%)`. Eyebrow Verdict/13 Smoke ("Palsu · KPDN"), tajuk Heading/48 Medium putih, teks Body/16 putih, Button canvas + ikon panah. Butang prev/next 48 bulat Ink + border Stone. Counter "04 / 05" pill Ink. Bawah: pill dots bg subtle (dot 8, aktif 48 lebar) + butang Jeda 56.

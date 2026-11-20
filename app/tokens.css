@@ -1,153 +1,163 @@
 /* ==========================================================================
    Sebenarnya.my — design tokens
-   Source: Paper file "sebenarnya.my" (Design system page) and
-   docs/design-system-handoff.md. Values in px; global.css keeps its
-   62.5% root, so 1rem = 10px if you prefer rem.
-   Components should use the semantic aliases, not the primitives.
+   ONE naming set shared by Paper, this site, the CMS dashboard and the
+   browser extension. Names follow the Paper file (Tailwind v4 namespaces +
+   shadcn-style semantic colours), so this block can also be pasted into a
+   Tailwind `@theme`. Values in px.
+
+   Use the SEMANTIC tokens in components (--color-background, --color-primary,
+   --color-muted-foreground, --color-verdict-*…), never the palette ones
+   (--color-grey-*, --color-red…) or raw hex.
    ========================================================================== */
 
 :root {
-  /* Fonts — loaded in app/layout.js via next/font */
+  /* ── Fonts (loaded in app/layout.js via next/font) ───────────────────── */
   --font-sans: var(--font-manrope), 'Manrope', system-ui, sans-serif; /* content, headings */
   --font-ui: var(--font-inter), 'Inter', system-ui, sans-serif;       /* buttons, inputs, labels */
 
-  /* Primitive colors: neutrals */
+  /* ── Palette (primitives — do not use in components) ──────────────────── */
   --color-white: #ffffff;
-  --color-eggshell: #fdfcfc;   /* canvas, cards */
-  --color-warm-taupe: #f5f3f1; /* bands, stages, card fill */
-  --color-stone: #ebe8e4;      /* dividers, plates, thumbnails */
-  --color-pill-edge: #d7d2cc;  /* 0.5px pill edge */
-  --color-ash: #a59f97;        /* decorative only, never text */
-  --color-field-edge: #878179; /* 1px input border (3:1) */
-  --color-smoke: #6f6a63;      /* muted body, eyebrows */
-  --color-graphite: #44403b;   /* strong body text, hover */
-  --color-ink: #000000;        /* text, primary pill */
+  --color-grey-99: #fdfcfc;   /* eggshell */
+  --color-grey-95: #f5f3f1;   /* warm taupe */
+  --color-grey-91: #ebe8e4;   /* stone */
+  --color-grey-82: #d7d2cc;   /* pill edge */
+  --color-grey-62: #a59f97;   /* ash — decorative only, never text */
+  --color-grey-50: #878179;   /* field edge (3:1) */
+  --color-grey-43: #6f6a63;   /* smoke */
+  --color-grey-41: #6b6a68;
+  --color-grey-25: #44403b;   /* graphite */
+  --color-black: #000000;     /* ink */
+  --color-red: #e8302a;       /* Kebenaran red */
+  --color-red-dark: #c8211c;
+  --color-blue: #3a46f5;      /* violet spark */
+  --color-azure: #2f5fd0;
+  --color-orange: #e08a00;
+  --color-orange-dark: #a35a00;
+  --color-green: #1fa463;
+  --color-green-dark: #137a49;
 
-  /* Primitive colors: brand sparks (visual only, never actions) */
-  --color-kebenaran-red: #e8302a;
-  --color-red-ink: #c8211c;    /* small red text 5.6:1, error */
-  --color-violet-spark: #3a46f5;
-
-  /* Verdict: dot / text */
-  --color-palsu-dot: #e8302a;    --color-palsu-text: #c8211c;
-  --color-waspada-dot: #e08a00;  --color-waspada-text: #a35a00;
-  --color-makluman-dot: #3a46f5; --color-makluman-text: #2f5fd0;
-  --color-benar-dot: #1fa463;    --color-benar-text: #137a49;
-
-  --color-focus: #2b7fff;
+  /* ── Semantic colours (use these) ─────────────────────────────────────── */
+  --color-background: var(--color-grey-99);        /* page canvas, controls */
+  --color-foreground: var(--color-black);          /* primary text */
+  --color-card: var(--color-white);                /* raised surface */
+  --color-muted: var(--color-grey-95);             /* bands, hover, active nav */
+  --color-muted-strong: var(--color-grey-91);      /* inset, dividers, disabled fill */
+  --color-text-secondary: var(--color-grey-25);    /* strong body text */
+  --color-muted-foreground: var(--color-grey-43);  /* muted text, eyebrows, icons, placeholders */
+  --color-border: var(--color-grey-82);            /* pill & card edges */
+  --color-border-strong: var(--color-grey-50);     /* field border, outline button */
+  --color-primary: var(--color-black);             /* primary action fill */
+  --color-primary-hover: var(--color-grey-25);
+  --color-primary-foreground: var(--color-white);
+  --color-foreground-inverse: var(--color-white);  /* text on dark/media */
+  --color-selected: var(--color-grey-41);
+  --color-ring: var(--color-blue);                 /* focus */
+  --color-link: var(--color-blue);
+  --color-destructive: var(--color-red-dark);      /* error text */
+  --color-brand: var(--color-red);                 /* logo, sphere — never actions */
+  --color-brand-strong: var(--color-red-dark);
+  --color-brand-spark: var(--color-blue);          /* decorative spark */
   --color-hairline: rgba(0, 0, 0, .05);
 
-  /* Semantic aliases — use these in components */
-  --surface-canvas: var(--color-eggshell);
-  --surface-subtle: var(--color-warm-taupe);
-  --surface-inset: var(--color-stone);
-  --surface-raised: var(--color-white);
-  --text-primary: var(--color-ink);
-  --text-body: var(--color-graphite);
-  --text-secondary: var(--color-smoke);
-  --border-subtle: var(--color-stone);
-  --border-field: var(--color-field-edge);
-  --border-hairline: var(--color-hairline);
-  --action-fill: var(--color-ink);
-  --action-hover: var(--color-graphite);
-  --action-foreground: var(--color-white);
-  --focus-ring: var(--color-violet-spark);
-  --focus-halo: var(--color-focus);
+  /* Verdict: word colour (tone="single") + dot colour */
+  --color-verdict-palsu: var(--color-red-dark);
+  --color-verdict-palsu-dot: var(--color-red);
+  --color-verdict-waspada: var(--color-orange-dark);
+  --color-verdict-waspada-dot: var(--color-orange);
+  --color-verdict-makluman: var(--color-azure);
+  --color-verdict-makluman-dot: var(--color-blue);
+  --color-verdict-benar: var(--color-green-dark);
+  --color-verdict-benar-dot: var(--color-green);
 
-  /* Semantic: borders & states */
-  --border-strong: var(--color-smoke);     /* outline button edge */
-  --border-pill: var(--color-pill-edge);
-  --surface-hover: var(--surface-subtle);
-  --surface-selected: var(--surface-raised);
-  --surface-disabled: var(--surface-inset);
-  --text-disabled: var(--text-secondary);
-  --text-placeholder: var(--text-secondary);
-  --text-link: var(--color-violet-spark);
-  --text-error: var(--color-red-ink);
-  --icon-default: var(--text-secondary);
-
-  /* Semantic: verdicts (indicator = dot, text = word in "single" tone) */
-  --verdict-palsu-indicator: var(--color-palsu-dot);
-  --verdict-palsu-text: var(--color-palsu-text);
-  --verdict-waspada-indicator: var(--color-waspada-dot);
-  --verdict-waspada-text: var(--color-waspada-text);
-  --verdict-makluman-indicator: var(--color-makluman-dot);
-  --verdict-makluman-text: var(--color-makluman-text);
-  --verdict-benar-indicator: var(--color-benar-dot);
-  --verdict-benar-text: var(--color-benar-text);
-
-  /* Semantic: brand (visual only — never actions) */
-  --brand-accent: var(--color-kebenaran-red);
-  --brand-spark: var(--color-violet-spark);
-
-  /* Semantic: controls */
-  --control-height: 44px;
-  --control-height-lg: 56px;
-  --control-padding-x: 20px;
-  --control-gap: 8px;
-  --control-radius: var(--radius-pill);
-  --control-border-width: .5px;
-
-  /* Font weights — all headlines (Display & Heading) are Medium 500 */
+  /* ── Font weight — every headline (Display & Heading) is medium ───────── */
   --font-weight-light: 300;    /* statistics only */
   --font-weight-regular: 400;  /* body only */
   --font-weight-medium: 500;   /* display, headings, labels */
   --font-weight-semibold: 600; /* verdict */
 
-  /* Type scale: size / line-height / tracking */
-  --text-display-56: 56px;  --leading-display-56: 60px;
-  --text-display-48: 48px;  --leading-display-48: 52px;
-  --text-heading-36: 36px;  --leading-heading-36: 42px;
-  --text-heading-32: 32px;  --leading-heading-32: 36px;
-  --text-heading-24: 24px;  --leading-heading-24: 32px;
-  --text-heading-20: 20px;  --leading-heading-20: 26px;
-  --text-heading-18: 18px;  --leading-heading-18: 28px;
-  --text-body-24: 24px;     --leading-body-24: 32px;
-  --text-body-18: 18px;     --leading-body-18: 28px;
-  --text-body-16: 16px;     --leading-body-16: 24px;
-  --text-body-14: 14px;     --leading-body-14: 21px;
-  --text-label-18: 18px;    --leading-label-18: 24px;
-  --text-eyebrow-14: 14px;  --leading-eyebrow-14: 20px;
-  --text-verdict-13: 13px;  --leading-verdict-13: 18px;
-  --text-caption-12: 12px;  --leading-caption-12: 16px;
-  --text-stat-40: 40px;     --leading-stat-40: 44px;
-  --text-stat-32: 32px;     --leading-stat-32: 36px;
+  /* ── Font size ─────────────────────────────────────────────────────────── */
+  --text-12: 12px;
+  --text-13: 13px;
+  --text-14: 14px;
+  --text-16: 16px;
+  --text-18: 18px;
+  --text-20: 20px;
+  --text-24: 24px;
+  --text-28: 28px;
+  --text-30: 30px;
+  --text-32: 32px;
+  --text-36: 36px;
+  --text-38: 38px;
+  --text-40: 40px;
+  --text-48: 48px;
+  --text-56: 56px;
+
+  /* ── Line height ───────────────────────────────────────────────────────── */
+  --leading-16: 16px;
+  --leading-18: 18px;
+  --leading-20: 20px;
+  --leading-21: 21px;
+  --leading-24: 24px;
+  --leading-26: 26px;
+  --leading-28: 28px;
+  --leading-32: 32px;
+  --leading-34: 34px;
+  --leading-36: 36px;
+  --leading-42: 42px;
+  --leading-44: 44px;
+  --leading-52: 52px;
+  --leading-60: 60px;
+  --leading-display: 110%;
+  --leading-heading: 125%;
+  --leading-body: 155%;
+
+  /* ── Letter spacing ────────────────────────────────────────────────────── */
   --tracking-display: -.02em;
   --tracking-tight: -.01em;
   --tracking-body: .01em;
   --tracking-label: .04em;
 
-  /* Spacing (4px base) */
-  --space-4: 4px;   --space-8: 8px;   --space-12: 12px; --space-16: 16px;
-  --space-20: 20px; --space-24: 24px; --space-28: 28px; --space-32: 32px;
-  --space-40: 40px; --space-48: 48px; --space-64: 64px; --space-72: 72px;
-  --space-96: 96px; --space-120: 120px;
+  /* ── Spacing (4px base, plus control sizes 44 / 56) ───────────────────── */
+  --spacing-2: 2px;
+  --spacing-4: 4px;
+  --spacing-6: 6px;
+  --spacing-8: 8px;
+  --spacing-10: 10px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-44: 44px;  /* control height, min touch target */
+  --spacing-48: 48px;
+  --spacing-56: 56px;  /* large control height (search) */
+  --spacing-64: 64px;
+  --spacing-72: 72px;
+  --spacing-96: 96px;
+  --spacing-120: 120px;
 
-  /* Radius */
+  /* ── Radius ────────────────────────────────────────────────────────────── */
+  --radius-sm: 4px;
   --radius-input: 8px;
-  --radius-small: 12px;   /* thumbnails, media */
-  --radius-card: 20px;    /* cards, stages, panels */
-  --radius-card-lg: 24px; /* feature card, hero stage */
-  --radius-pill: 9999px;  /* every button, tab, chip, search */
+  --radius-md: 12px;    /* thumbnails, media, dropdown */
+  --radius-card: 20px;  /* cards, stages, panels */
+  --radius-lg: 24px;    /* feature card, hero stage */
+  --radius-full: 9999px; /* every button, tab, chip, search */
 
-  /* Effects — elevation comes from tone, not shadow */
+  /* ── Shadow — elevation comes from tone, not shadow ───────────────────── */
   --shadow-subtle: 0 0 0 .5px rgba(0, 0, 0, .125), 0 1px 1px rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .04);
   --shadow-subtle-2: inset 0 0 0 .5px rgba(0, 0, 0, .075);
   --shadow-subtle-3: inset 0 0 0 .5px rgba(0, 0, 0, .10);
-  --shadow-float: 0 0 0 .5px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12); /* Tanya AIFA only */
+  --shadow-float: 0 0 0 .5px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12); /* floating only */
 
-  /* Layout */
+  /* ── Container ─────────────────────────────────────────────────────────── */
   --container-page: 1280px;
   --container-rail: 1180px;
-}
 
-/* Mobile type scale (<600px) */
-@media (max-width: 599px) {
-  :root {
-    --text-display-56: 38px; --leading-display-56: 42px;
-    --text-display-48: 38px; --leading-display-48: 42px;
-    --text-heading-36: 30px; --leading-heading-36: 36px;
-    --text-heading-32: 28px; --leading-heading-32: 34px;
-  }
+  /* ── Breakpoint (reference; media queries cannot read variables) ───────── */
+  --breakpoint-type: 600px;   /* mobile type scale below this */
+  --breakpoint-stack: 900px;
+  --breakpoint-nav: 1100px;   /* compact header below this */
 }
-
