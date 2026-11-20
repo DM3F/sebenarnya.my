@@ -167,6 +167,7 @@
   --gradient-scrim-media-wide: linear-gradient(90deg, var(--color-black) 0%, var(--color-black) 26%, rgb(0 0 0 / .7) 42%, rgb(0 0 0 / .1) 62%, transparent 75%);
   --gradient-scrim-bottom: linear-gradient(0deg, rgb(0 0 0 / .8) 0%, rgb(0 0 0 / .55) 45%, transparent 100%);
   --gradient-scrim-bottom-short: linear-gradient(0deg, rgb(0 0 0 / .85) 0%, rgb(0 0 0 / .55) 45%, transparent 75%); /* mobile hero slides */
+  --gradient-scrim-card: linear-gradient(0deg, rgb(0 0 0 / .92) 0%, rgb(0 0 0 / .8) 40%, rgb(0 0 0 / .35) 70%, transparent 90%); /* social cards: text over busy photos */
   --gradient-scrim-top: linear-gradient(180deg, rgb(0 0 0 / .35), transparent);
 
   /* ── Container ─────────────────────────────────────────────────────────── */

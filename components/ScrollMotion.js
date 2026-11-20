@@ -20,10 +20,9 @@ const blocks = [
   ['.logo-kit-intro', 0.08],
   ['.logo-card:nth-child(1)', 0.14],
   ['.logo-card:nth-child(2)', 0.22],
-  // Stories
+  // Aktiviti media sosial
   ['.activity__title', 0],
-  ['.stories-viewport', 0.08],
-  ['.stories-footer', 0.16],
+  ['.social-gallery', 0.08],
   // Home: WSIS banner, Tentang ringkas
   ['.wsis-banner', 0.08],
   ['.viewership-inner', 0],

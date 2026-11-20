@@ -20,7 +20,11 @@ export default function PageTransition() {
   // New page rendered → let the browser take the "new" snapshot
   useEffect(() => {
     if (!finish.current) return;
-    window.scrollTo(0, 0);
+    // Land on the #section when the link has one (e.g. Tentang Kami › Logo), else at the top.
+    // Instant on purpose: the view transition already animates the page change.
+    const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target) target.scrollIntoView({ behavior: 'instant', block: 'start' });
+    else window.scrollTo({ top: 0, behavior: 'instant' });
     finish.current();
     finish.current = null;
   }, [pathname]);

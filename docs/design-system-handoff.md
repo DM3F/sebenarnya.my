@@ -377,3 +377,18 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - Paper ↔ `design.md` bercanggah → **ikut `design.md`**: kad media sosial kini hitam polos (gradient platform dibuang); teks meta (tarikh kad, `.fc-meta`, `.story-meta`, `.post-meta`, meta kad logo) = Medium 500.
 - Tanya AIFA = `--color-brand-strong` (kekal).
 - Skop: laman web sahaja — CMS & extension dibuang dari plan.
+
+## Kemas kini 21 Nov 2026 (petang)
+
+- **Semakan fakta terkini:** butang "Lihat lagi" dibuang (kod + Paper).
+- **Logo:** halaman `/logo` dibuang. Seksyen Logo dalam Tentang Kami ada `id="logo"`; menu Tentang Kami › Logo → `/about-us/#logo`. `PageTransition` kini mendarat pada `#hash` selepas transisi (dulu sentiasa ke atas).
+- **Kad artikel:** border kini `--color-muted-strong` (hairline lembut, kod + Paper); **tiada hover pada border** — hover hanya zoom foto 1.03.
+- **Tentang Kami, seksyen 2:** diganti satu pernyataan dua baris, gaya sama dengan tajuk "Semakan fakta terkini" (36/42 Medium; mobile 28/34): "Setiap dakwaan disemak bersama agensi rasmi, / sebelum jawapannya sampai kepada anda." Kad & baris fakta lama dibuang. Paper belum dikemas kini.
+- **Empat fungsi:** autoplay setiap 5s (`AUTOPLAY_MS`); berhenti bila hover atau fokus, bila tab tersembunyi, dan tiada autoplay dengan `prefers-reduced-motion`. Pilihan manual mula semula pemasa. `aria-live` hanya `polite` bila pengguna yang mengawal.
+- **Galeri media sosial** (`components/Stories.js`, `.social-gallery`), menggantikan slider:
+  - 5 kad sebaris (Instagram, Threads, X, TikTok, Facebook), tinggi 560, gap 8, `--radius-lg`. Kad terbuka `flex-grow: 4`, kad lipat `1`. Hover / fokus / ketik membuka kad.
+  - Gerakan: lebar 600ms `--ease-out`; foto 1.1 → 1 dalam 800ms; kad lipat malap `brightness(.5)` (hover .7); teks naik 12px + pudar masuk selepas 180ms, keluar 150ms tanpa jeda; ikon platform kembali selepas 300ms.
+  - Scrim baharu `--gradient-scrim-card` supaya teks putih terbaca atas foto/infografik yang sibuk.
+  - Kad lipat: ikon platform sahaja. Kad terbuka: lencana platform + tarikh, tajuk 28/34, ringkasan 2 baris, CTA pill putih "Buka di {platform}" (44px, tekan `scale(.97)`).
+  - Mobile (≤700): lajur menegak tinggi 720; ringkasan disembunyikan. `prefers-reduced-motion`: tiada transisi.
+  - Data `stories` kini ada `image` + `alt` untuk setiap kad; Facebook ditambah (pautan ke halaman Facebook). Pemain video/embed dibuang — CTA membuka hantaran asal.

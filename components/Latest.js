@@ -3,11 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import FlipCard from './FlipCard';
-import { Button } from '@/components/ui';
 import Icon from '@/components/ui/Icon';
 import { articles } from '@/data/content';
 import { agencyInitials, articleHref } from '@/lib/articles';
-import { withBase } from '@/lib/basePath';
 
 const COUNT = 12; // newest fact-checks in the loop; every one has its own photo
 const SPEED = 36; // px per second while gliding
@@ -239,9 +237,6 @@ export default function Latest() {
         </div>
       </div>
 
-      <Button variant="outline" href={withBase('/article/')} className="latest-checks__more">
-        Lihat lagi
-      </Button>
     </section>
   );
 }

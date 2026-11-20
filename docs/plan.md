@@ -55,13 +55,13 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] Tanya AIFA floating button — merah gelap `--color-brand-strong` (5.56:1, lulus AA), diputuskan 21 Nov 2026
 - [x] Article card (grid Artikel), gaya baharu ala elevenlabs.io: kad putih + border, foto full-bleed, pill verdict putih. Kod + Paper
 - [x] FactCheckCard / Flip card: satu kad terbuka pada satu masa, hover intent 90/140ms, buka 0.7s ease-out, tutup 0.45s
-- [x] Seksyen "Semakan fakta terkini": gelangsar automatik tanpa hujung, berhenti bila hover, butang ‹ ›, Lihat lagi
+- [x] Seksyen "Semakan fakta terkini": gelangsar automatik tanpa hujung, berhenti bila hover, butang ‹ › (butang "Lihat lagi" dibuang)
 - [x] 20 artikel baharu (Oktober 2026) dengan gambar unik; monogram agensi bila tiada logo
 - [ ] Logo agensi baharu: MOF, JAIS, Kesultanan Pahang, PMO, JPM, Caltex, KTMB (kini monogram)
 - [x] HeroCarousel: infinite loop, teks pada slaid tengah sahaja (ikut Paper), pembilang slaid, autoplay + dots + jeda
 - [x] Page transition antara route (`components/PageTransition.js`, View Transitions API)
 - [x] PromoBanner / Award (WSIS)
-- [x] SocialCarousel (Aktiviti media sosial)
+- [x] Galeri media sosial (Aktiviti media sosial): 5 kad elastik tanpa slider — kod; **Paper belum dikemas kini**
 - [x] AgencyLogoStrip (Sumber kenyataan rasmi)
 - [ ] Band: Closing, Announcement
 - [ ] Timeline (Tentang Kami)
@@ -75,7 +75,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 | `/article` | Artikel | [x] Paper + kod: penapis (5 chip keputusan), grid kad 4 kolum, footer (`components/Articles.js`, `components/Footer.js`) |
 | `/article/[slug]` | detail artikel page | [x] Paper + kod: Verdict + pil kategori, tajuk 48/52, meta + Kongsi, imej 1100×550, lajur bacaan 514 (`components/ArticleDetail.js`) |
 | `/about-us` | Tentang Kami | [x] Kod: Hero (foto + Ikuti kami), About (susun atur Paper, kandungan Sebenarnya.my), Empat fungsi, Berita dan Galeri, Logo (`components/AboutUs.js`, `LogoKit.js`). "Bagaimana kami menyemak" dibuang (tiada dalam Paper). Teks templat tenis dalam Paper masih perlu diganti di Paper |
-| `/logo` | (Logo) | [ ] |
+| ~~`/logo`~~ | — | Dibuang (21 Nov 2026). Logo kini seksyen `#logo` dalam Tentang Kami; menu Tentang Kami › Logo menuju `/about-us/#logo` |
 
 - [x] Hero: tajuk baru "Tidak pasti? Jangan kongsi / Semak dakwaan, Temukan kebenaran"
 - [ ] Hero: kemas kini tajuk yang sama di Paper

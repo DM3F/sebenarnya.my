@@ -35,7 +35,7 @@ export const navLinks = [
     label: 'Tentang Kami',
     children: [
       { label: 'Tentang kami', href: '/about-us/' },
-      { label: 'Logo', href: '/logo/' },
+      { label: 'Logo', href: '/about-us/#logo' }, // Logo section on Tentang Kami (no page of its own)
     ],
   },
 ];
@@ -44,9 +44,9 @@ export const navLinks = [
 export const claimLink = { label: 'Salur Kepada Kami', href: '/submit-claim/' };
 
 /* Stories carousel (latest social media posts) */
-// `platform` = id in `socialLinks` (sets the icon, label and card colour)
-// `href` = the post. The card shows one of: `video` (+ `poster`) = a local copy of the clip,
-// `embed` = the platform's official player, `image` = for photo posts
+// Five cards, one per platform (components/Stories.js, elastic gallery).
+// `platform` = id in `socialLinks` (icon + label); `href` = the post or profile;
+// `image` + `alt` = the cover; `date` is optional (omit for a profile link).
 export const stories = [
   {
     platform: 'instagram',
@@ -54,8 +54,8 @@ export const stories = [
     summary: 'WhatsApp AIFA di 03-8688 7997 atau layari Sebenarnya.my. AIFA akan semak dan jawab guna sumber yang sahih.',
     date: '7 Ogo 2025',
     href: 'https://www.instagram.com/reel/DNCUauizeUu/',
-    video: withBase('/images/stories/instagram-aifa.mp4'),
-    poster: withBase('/images/stories/instagram-aifa.jpg'),
+    image: withBase('/images/stories/instagram-aifa.jpg'),
+    alt: 'Video Instagram: tanya AIFA sebelum berkongsi',
   },
   {
     platform: 'threads',
@@ -63,7 +63,8 @@ export const stories = [
     summary: 'Bersama kita raikan perpaduan, pelihara kepercayaan dan utamakan kebenaran. Semak dahulu di portal Sebenarnya.my sebelum kongsi.',
     date: '15 Sep 2026',
     href: 'https://www.threads.com/@sebenarnya.myofficial/post/DdTV7PQlCdu',
-    embed: 'https://www.threads.com/@sebenarnya.myofficial/post/DdTV7PQlCdu/embed',
+    image: withBase('/images/about/galeri-1.jpg'),
+    alt: 'Dua orang menyemak mesej di telefon bersama-sama',
   },
   {
     platform: 'x',
@@ -80,7 +81,16 @@ export const stories = [
     summary: 'Video terkini daripada @sebenarnyamy. Tidak pasti, jangan kongsi.',
     date: '14 Sep 2025',
     href: 'https://www.tiktok.com/@sebenarnyamy/video/7549728480137596167',
-    embed: 'https://www.tiktok.com/player/v1/7549728480137596167?description=0&music_info=0&rel=0&loop=1',
+    image: withBase('/images/about/galeri-4.jpg'),
+    alt: 'Lelaki tersenyum sambil memegang telefon',
+  },
+  {
+    platform: 'facebook',
+    title: 'Ikuti Sebenarnya.my di Facebook',
+    summary: 'Semakan fakta, makluman rasmi dan kempen kesedaran setiap hari. Semak dahulu sebelum kongsi.',
+    href: 'https://www.facebook.com/share/1HB1gmU1o8/?mibextid=wwXIfr',
+    image: withBase('/images/about/berita-warga-emas.jpg'),
+    alt: 'Warga emas belajar menyemak maklumat di tablet bersama anak muda',
   },
 ];
 
@@ -212,30 +222,9 @@ export const aboutHero = {
   image: aboutImg('hero.jpg'),
 };
 
-// Intro under the hero (Paper › Tentang Kami › About): label + lead, three cards, facts row.
-// The verdict bars are counted from `articles` in components/AboutUs.js.
+// Statement under the hero (Tentang Kami, section 2): two short lines, one idea.
 export const aboutIntro = {
-  label: 'Tentang kami',
-  lead: 'Di Sebenarnya.my, kami bukan sekadar menyemak berita — kami melindungi kepercayaan. Sejak 2017, kami menjadi rujukan rakyat untuk maklumat sahih, daripada khabar angin harian hingga isu nasional.',
-  card: {
-    strong: 'Semakan berasaskan sumber rasmi',
-    muted: 'setiap dakwaan dirujuk kepada agensi yang berkaitan sebelum',
-    end: 'jawapan diterbitkan.',
-    status: 'Semakan aktif',
-  },
-  pill: 'Bersama lebih 20 agensi',
-  verdicts: {
-    value: '20+',
-    title: 'Agensi rakan',
-    text: 'Kementerian dan agensi persekutuan yang mengesahkan dakwaan bersama kami.',
-  },
-  factsTitle: 'Beberapa fakta tentang kami dalam angka',
-  facts: [
-    { value: '275 juta+', label: 'Lawatan ke portal' },
-    { value: '1,016', label: 'Artikel semakan' },
-    { value: '200 ribu', label: 'Mesej diproses Aifa' },
-    { value: '20+', label: 'Agensi rakan' },
-  ],
+  lines: ['Setiap dakwaan disemak bersama agensi rasmi,', 'sebelum jawapannya sampai kepada anda.'],
 };
 
 // Four functions: the selected one is shown large, the other three as small cards.
