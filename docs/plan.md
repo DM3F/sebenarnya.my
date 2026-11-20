@@ -84,9 +84,9 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 
 ## Keputusan arah visual (docs/design.md, 21 Nov 2026)
 
-- [~] Satu keluarga font: Manrope sahaja — kod & handoff siap; **Paper belum**
-- [~] Display (tajuk besar) weight 400 — kod & handoff siap (`--font-weight-display`); **Paper belum**
-- [~] Angka statistik weight 400 — kod (Home, Tentang Kami) & handoff siap; **Paper belum**
+- [x] Satu keluarga font: Manrope sahaja — kod, handoff, Paper
+- [x] Display (tajuk besar) weight 400 — kod, handoff, Paper (`--font-weight-display`)
+- [x] Angka statistik weight 400 — kod, handoff, Paper
 - [~] Tanya AIFA kekal merah buat masa ini (belum ada keputusan warna)
 
 ## Fasa 5 — Pembersihan

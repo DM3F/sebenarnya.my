@@ -104,3 +104,52 @@ Legend: ✅ selesai / sepadan · ⏸️ dibiarkan atas keputusan · ❓ perlu ke
 ## Nota
 - Halaman `/logo/` tidak dibandingkan (tiada artboard Logo berasingan dalam Paper › Artwork).
 - Butiran nilai token untuk setiap perubahan ada dalam `docs/design-system-handoff.md`.
+
+---
+
+# Laporan kerja malam — 21 November 2026
+
+Ditulis untuk dibaca pagi ini. Semua commit di branch `endahbyu`, sudah di-push. `npm run build` lulus setiap kali.
+
+## 1. Keputusan `design.md` diterapkan (kod + Paper + dokumen)
+
+| Keputusan | Kod | Paper | Commit |
+|---|---|---|---|
+| Manrope sahaja | Inter & `--font-ui` dibuang dari `layout.js`, `tokens.css`, `ui.css`, `global.css` | Token `--font-ui` kini alias `--font-sans` (Manrope) | `f0884b3` |
+| Display 48+ weight 400 | Token baharu `--font-weight-display`; dipakai 7 tajuk display | Token sama dicipta; 13 tajuk display (Artwork + Design system) | `f0884b3` |
+| Angka statistik 400 | Home (275 juta+ …) dan Tentang Kami | 12 nod angka (kapsyen kekal Light) | `f0884b3` |
+
+Juga dalam Paper: "Folow us" → "Ikuti kami" pada artboard Tentang Kami.
+
+**Kesan yang anda akan nampak:** tajuk besar lebih ringan (editorial); semua butang/input kini Manrope.
+
+## 2. Fasa 5 — Pembersihan CSS (`829cd5f`)
+
+Setiap langkah disahkan dengan **perbandingan tangkapan skrin piksel demi piksel** (Home, Artikel, detail, Tentang Kami × desktop 1624 + mobile 390) sebelum vs selepas.
+
+- **~700 baris CSS mati dibuang** (kad/posts lama, pill-form, bento, layout Artikel lama, seksyen 6 langkah, `.btn`). Hasil: 0 piksel berubah.
+- **Hex keras → token semantik.** Yang tinggal hanya warna jenama platform pada kad story (Instagram/X/TikTok…) dan `#000` dalam `mask-image` (alpha sahaja).
+- **Alias lama `:root`** (`--text`, `--white`, `--red`, `--dark`…) dibuang; semua guna token semantik.
+- **Token overlay media baharu:** `--gradient-scrim-media`, `-media-wide`, `-bottom`, `-bottom-short`, `-top`.
+- **Berat font:** semua melalui token; **tiada 700 lagi**. Asas `h1–h6` = 500.
+- **Radius:** semua melalui `--radius-*`.
+- **Tiada `rem` lagi.** Saiz luar skala dipetakan ke skala (15→16, 11→12, 27→28 …). Pengecualian: monogram agensi 9px.
+- **ClaimForm** kini guna komponen `Button` (dulu `.btn` yang bertukar **merah** bila hover — melanggar peraturan).
+- Ralat borang = `--color-destructive`; fokus input AIFA = cincin violet (dulu merah); hover pautan AIFA = `--color-link`.
+
+**Satu-satunya perubahan visual yang disengajakan:** judul & ringkasan kad media sosial (judul 700→500, saiz 27→28 / 15→16, `text-wrap: balance` supaya tiada perkataan yatim).
+
+## 3. Penyelarasan butiran dengan `design.md` (`381c6f1`)
+
+Audit automatik (skrip Playwright) memeriksa setiap elemen di 4 halaman × 2 saiz: butang pill 44 + label 16/500, tiada 700, tiada teks < 12px, tiada merah pada aksi, tiada bayang kad, tiada glyph ↗ →, tiada tajuk UPPERCASE, font Manrope. **Semua lulus.** Pembetulan:
+- Ikon dalam butang 16px (butang bulat ‹ ›, Kongsi, Empat fungsi, "Semua artikel") — dulu 20px.
+- Trek meter "Empat fungsi" 4px (dulu 3px; `design.md`: 4–8px).
+- Teks footer = body: graphite, Regular, line-height 1.55 (dulu hitam Medium 1.33).
+- Ticker logo "Kenyataan rasmi" berhenti bila `prefers-reduced-motion`.
+
+## 4. Perlu keputusan anda (konflik Paper ↔ `design.md`)
+
+1. **Kad media sosial bergradient warna platform.** `design.md`: "tiada gradient pada kad". Paper: ada (cahaya Instagram ungu, TikTok hijau…). **Dibiarkan ikut Paper** — pilih: kekal, atau tukar ke hitam polos.
+2. **Tanya AIFA merah** (togol, avatar, bubble pengguna, butang hantar). `design.md` §8 #4: biarkan buat masa ini.
+3. **Tarikh/meta** dalam kad artikel Regular 400; `design.md` meta = 500. Dibiarkan ikut Paper.
+4. Paper masih ada **template lain** (tenis "Horizon", Spintip, Krea…) dengan Inter di halaman lain — bukan reka bentuk Sebenarnya, tidak disentuh. Blok tenis di Tentang Kami dalam Paper juga masih perlu diganti teks sebenar.
