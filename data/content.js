@@ -197,21 +197,25 @@ export const viewershipStats = [
   { value: 200, unit: 'ribu', text: 'Mesej diproses Aifa, pembantu AI, sejak Januari 2025.' },
 ];
 
-/* About us page (app/about-us) */
-// Hero (components/AboutUs.js). `title` is bold, `subtitle` is light, `accent` is the serif italic ending.
+/* About us page (app/about-us; Paper › Artwork › Tentang Kami) */
+const aboutImg = (name) => withBase(`/images/about/${name}`);
+
+// Hero: photo card with "Ikuti kami" + social icons on top, title and lead at the bottom.
+// `social` = ids from `socialLinks`, in display order.
 export const aboutHero = {
-  title: 'Tentang Sebenarnya.my.',
-  subtitle: 'Portal semakan fakta rasmi Malaysia,',
-  accent: 'sejak 2017.',
+  follow: 'Ikuti kami',
+  social: ['instagram', 'threads', 'x', 'facebook'],
+  title: 'Portal semakan fakta rasmi Malaysia, sejak 2017.',
   lead:
     'Dilancarkan oleh MCMC pada 14 Mac 2017, Sebenarnya.my menyemak berita tular, dakwaan dan khabar angin dengan merujuk sumber serta kenyataan rasmi agensi kerajaan. Matlamat kami mudah: membantu rakyat Malaysia semak dahulu, sebelum berkongsi.',
+  image: aboutImg('hero.jpg'),
 };
 
-// What we do (components/AboutUs.js). Title reads: `titleStart` + serif italic `accent`, then `titleEnd` on a new line.
-// The four cards fill the grid in order; the logo sits between the first and second card.
+// Four functions: the selected one is shown large, the other three as small cards.
 export const whatWeDo = {
   title: 'Empat fungsi utama kami',
-
+  intro:
+    'Semua yang anda perlukan untuk menyemak kesahihan maklumat — daripada kenyataan rasmi agensi hingga saluran untuk melaporkan dakwaan yang meragukan.',
   items: [
     {
       title: 'Maklumat sahih',
@@ -229,6 +233,48 @@ export const whatWeDo = {
       title: 'Salurkan maklumat',
       text: 'Salurkan maklumat yang anda ragui kepada kami, dan pasukan Sebenarnya.my akan menyemaknya.',
     },
+  ],
+};
+
+// News and gallery. News `ratio` = image aspect ratio; gallery `wide` tiles span two columns.
+export const aboutNews = {
+  title: 'Berita dan Galeri',
+  intro: 'Ikuti perkembangan terkini, pengiktirafan dan aktiviti Sebenarnya.my bersama masyarakat.',
+  newsTitle: 'Berita',
+  news: [
+    {
+      tag: 'Anugerah',
+      title: 'Sebenarnya.my diiktiraf di Anugerah WSIS PBB, Geneva',
+      text: 'Pengiktirafan antarabangsa tertinggi dalam kepercayaan digital dan semakan fakta awam, bersama lebih 20 agensi persekutuan.',
+      image: aboutImg('berita-wsis.webp'),
+      alt: 'Poster Anugerah WSIS 2026 di Geneva',
+      ratio: '1 / 1',
+    },
+    {
+      tag: 'Inisiatif',
+      title: 'AIFA bantu orang ramai menyemak fakta dengan lebih pantas',
+      text: 'Pembantu AIFA menjawab soalan tentang dakwaan tular dan memandu pengguna kepada semakan rasmi.',
+      image: aboutImg('berita-aifa.jpg'),
+      alt: 'Wanita memegang telefon pintar',
+      ratio: '43 / 24',
+    },
+    {
+      tag: 'Program',
+      title: 'Program celik maklumat bersama warga emas',
+      text: 'Sesi bersemuka membimbing warga emas mengenal pasti mesej palsu sebelum dikongsi dalam kumpulan keluarga.',
+      image: aboutImg('berita-warga-emas.jpg'),
+      alt: 'Warga emas belajar menggunakan tablet bersama seorang wanita',
+      ratio: '43 / 24',
+    },
+  ],
+  galleryTitle: 'Galeri',
+  gallery: [
+    { image: aboutImg('galeri-1.jpg'), caption: 'Semak dahulu, sebelum berkongsi', wide: true },
+    { image: aboutImg('galeri-2.jpg'), caption: 'Sesi dialog komuniti' },
+    { image: aboutImg('galeri-3.jpg'), caption: 'Perkongsian bersama warga emas' },
+    { image: aboutImg('galeri-4.jpg'), caption: 'Kempen kesedaran penipuan dalam talian', wide: true },
+    { image: aboutImg('galeri-5.jpg'), caption: 'Bual santai di kopitiam' },
+    { image: aboutImg('galeri-6.jpg'), caption: 'Celik digital setiap hari' },
   ],
 };
 

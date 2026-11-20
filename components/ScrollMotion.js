@@ -11,14 +11,14 @@ const blocks = [
   ['.latest-checks__title', 0],
   ['.latest-checks__carousel', 0.08],
   // About us hero
-  ['.about-hero-eyebrow', 0],
-  ['.about-hero-title', 0.04],
-  ['.about-hero-row', 0.14],
-  ['.about-hero-media', 0.24],
+  ['.about-hero-card', 0.04],
+  ['.about-fn-title', 0],
   ['.about-title', 0],
+  ['.about-news-intro', 0.08],
   ['.hiw-intro', 0.08],
   ['.hiw-cta', 0],
   // Logo page
+  ['.logo-kit-title', 0],
   ['.logo-kit-intro', 0.08],
   ['.logo-card:nth-child(1)', 0.14],
   ['.logo-card:nth-child(2)', 0.22],

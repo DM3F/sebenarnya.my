@@ -76,7 +76,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 | `/` | Home | [~] Header, Hero (+ carian popular), HeroCarousel, Semakan fakta terkini siap; section lain belum |
 | `/article` | Artikel | [x] Paper + kod: penapis, kad utama, senarai sisi, grid 4 kolum, footer (`components/Articles.js`, `components/Footer.js`) |
 | `/article/[slug]` | detail artikel page | [x] Paper + kod: Verdict + pil kategori, tajuk 48/52, meta + Kongsi, imej 1100×550, lajur bacaan 680 (`components/ArticleDetail.js`) |
-| `/about-us` | Tentang Kami | [~] Paper: token diterapkan; **masih ada kandungan templat bukan Sebenarnya.my** (blok tenis "Horizon", fakta 12 000+/89%, baris fakta pendua bawah footer, "Folow us", ayat berulang di Empat fungsi); kod belum |
+| `/about-us` | Tentang Kami | [x] Kod: Hero (foto + Ikuti kami), Empat fungsi (kad pilihan + 3 kad kecil, ‹ › dan bar kemajuan), Bagaimana kami menyemak (sedia ada), Berita dan Galeri, Logo (`components/AboutUs.js`, `LogoKit.js`). **Tidak dipasang:** blok templat "Horizon" (tenis) dan angka 12 000+/89%/1,200+/125+ — bukan kandungan Sebenarnya.my; padam di Paper |
 | `/logo` | (Logo) | [ ] |
 
 - [x] Hero: tajuk baru "Tidak pasti? Jangan kongsi / Semak dakwaan, Temukan kebenaran"
