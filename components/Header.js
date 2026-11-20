@@ -3,19 +3,14 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
-import { Button, NavLink, Tabs } from '@/components/ui';
-import { CLAIM_HREF } from './ClaimForm';
-import { navLinks } from '@/data/content';
+import { Button, DropdownMenu, NavLink, Tabs } from '@/components/ui';
+import { claimLink, navLinks } from '@/data/content';
 import { withBase } from '@/lib/basePath';
 
 const languages = [
   { value: 'BM', label: 'BM', lang: 'ms', title: 'Bahasa Melayu' },
   { value: 'EN', label: 'EN', lang: 'en', title: 'English' },
 ];
-
-// "Salur Kepada Kami" is the header's action button, not a nav link
-const pageLinks = navLinks.filter((link) => link.href !== CLAIM_HREF);
-const claimLink = navLinks.find((link) => link.href === CLAIM_HREF);
 
 const trim = (path) => (path.length > 1 ? path.replace(/\/$/, '') : path);
 const isCurrent = (pathname, href) =>
@@ -34,38 +29,47 @@ export default function Header() {
     return () => desktop.removeEventListener('change', close);
   }, []);
 
+  // Close the compact menu after navigating
+  useEffect(() => setOpen(false), [pathname]);
+
   return (
     <header className="header">
-      <div className="header-inner container">
+      <div className="header-inner">
         <div className="brand">
           <Logo />
         </div>
 
-        <nav id="site-menu" className={open ? 'menu open' : 'menu'} aria-label="Utama">
+        {/* Desktop nav (>1100px): links + "Tentang Kami" dropdown */}
+        <nav className="nav-desktop" aria-label="Utama">
           <ul>
-            {pageLinks.map((link) => (
-              <li key={link.href}>
-                <NavLink href={withBase(link.href)} current={isCurrent(pathname, link.href)}>
-                  {link.label}
-                </NavLink>
+            {navLinks.map((link) => (
+              <li key={link.label}>
+                {link.children ? (
+                  <DropdownMenu
+                    label={link.label}
+                    current={link.children.some((c) => isCurrent(pathname, c.href))}
+                    items={link.children.map((c) => ({
+                      label: c.label,
+                      href: withBase(c.href),
+                      current: isCurrent(pathname, c.href),
+                    }))}
+                  />
+                ) : (
+                  <NavLink href={withBase(link.href)} current={isCurrent(pathname, link.href)}>
+                    {link.label}
+                  </NavLink>
+                )}
               </li>
             ))}
-            {claimLink && (
-              <li className="menu-claim">
-                <NavLink href={withBase(claimLink.href)}>{claimLink.label}</NavLink>
-              </li>
-            )}
           </ul>
         </nav>
 
         <div className="header-actions">
           {/* Language selector: visual only for now, no translation wired up */}
           <Tabs mode="toggle" label="Bahasa" items={languages} value={lang} onChange={setLang} />
-          {claimLink && (
-            <Button href={withBase(claimLink.href)} className="header-claim">
-              {claimLink.label}
-            </Button>
-          )}
+          <Button href={withBase(claimLink.href)} className="header-claim">
+            {claimLink.label}
+          </Button>
           <button
             type="button"
             className={open ? 'menu-toggle open' : 'menu-toggle'}
@@ -81,6 +85,37 @@ export default function Header() {
             </span>
           </button>
         </div>
+
+        {/* Compact menu (<=1100px): dropdown children are listed flat under their group */}
+        <nav id="site-menu" className={open ? 'menu-panel open' : 'menu-panel'} aria-label="Utama">
+          <ul>
+            {navLinks.map((link) =>
+              link.children ? (
+                <li key={link.label} className="menu-group">
+                  <span className="menu-group-label">{link.label}</span>
+                  <ul>
+                    {link.children.map((c) => (
+                      <li key={c.href}>
+                        <NavLink href={withBase(c.href)} current={isCurrent(pathname, c.href)}>
+                          {c.label}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li key={link.href}>
+                  <NavLink href={withBase(link.href)} current={isCurrent(pathname, link.href)}>
+                    {link.label}
+                  </NavLink>
+                </li>
+              ),
+            )}
+            <li className="menu-claim">
+              <NavLink href={withBase(claimLink.href)}>{claimLink.label}</NavLink>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );

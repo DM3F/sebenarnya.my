@@ -16,14 +16,22 @@ const agency = {
   jpa: 'JPA (Jabatan Perkhidmatan Awam)',
 };
 
-/* Header */
+/* Header — follows Paper › Home › Nav/Header.
+   An item with `children` renders as a dropdown (the parent has no page of its own). */
 export const navLinks = [
   { label: 'Utama', href: '/' },
-  { label: 'Semak Fakta', href: '/article/' },
-  { label: 'Tentang Kami', href: '/about-us/' },
-  { label: 'Logo', href: '/logo/' },
-  { label: 'Salur Kepada Kami', href: '/submit-claim/' },
+  { label: 'Artikel', href: '/article/' },
+  {
+    label: 'Tentang Kami',
+    children: [
+      { label: 'Tentang kami', href: '/about-us/' },
+      { label: 'Logo', href: '/logo/' },
+    ],
+  },
 ];
+
+/* The header's single filled action (also listed in the compact menu on phones) */
+export const claimLink = { label: 'Salur Kepada Kami', href: '/submit-claim/' };
 
 /* Stories carousel (latest social media posts) */
 // `platform` = id in `socialLinks` (sets the icon, label and card colour)

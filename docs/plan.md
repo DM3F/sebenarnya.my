@@ -37,7 +37,7 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 - [x] NavLink
 - [ ] Button: saiz kecil + varian "on media" (butang putih atas imej, cth. "Baca semakan")
 - [ ] Icon button bulat (prev/next carousel 48px, jeda 56px)
-- [ ] Dropdown menu (item 44px, radius 12) — untuk "Tentang Kami ▾"
+- [x] Dropdown menu (`DropdownMenu`) — untuk "Tentang Kami ▾"
 - [ ] Field teks biasa / textarea / select (Paper 12 › Inputs) — guna dalam ClaimForm
 - [ ] Badge/Counter ("04 / 05") dan Pagination dots
 - [ ] Avatar agensi (30 / 40px)
@@ -46,7 +46,9 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 ## Fasa 3 — Komponen jenama & corak (Paper 06, 12 › Card / Home patterns)
 
 - [x] Nav/Header (ikut Paper Home)
-- [ ] Nav/Header: dropdown "Tentang Kami ▾" (perlu ubah `navLinks`)
+- [x] Nav/Header: dropdown "Tentang Kami ▾", nav Utama/Artikel, segmented BM/EN ikut Paper; master Design system dikemas kini
+- [ ] Nav/Header: item "Hubungi kami" (perlu page `/contact/`)
+- [?] Font label nav/butang: Inter (kod) vs Manrope (Paper)
 - [ ] Footer (Paper 12 › Footer)
 - [?] Tanya AIFA floating button — merah (artwork) vs Ink + `--shadow-float` (peraturan)
 - [ ] Article card (Paper 12 › Card)
@@ -91,4 +93,3 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 
 - [?] Warna Tanya AIFA
 - [?] Mode dark: bila
-- [?] Struktur nav: dropdown "Tentang Kami" (Tentang kami, Logo, Hubungi kami)

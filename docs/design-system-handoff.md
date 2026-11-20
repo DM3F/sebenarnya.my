@@ -150,6 +150,7 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 - `SearchField` (`label`, `hideLabel`, `placeholder`, `buttonLabel`, `value`+`onChange(text)` atau `defaultValue`, `error`, `action` atau `onSubmit(query)`)
 - `Tabs` `mode="toggle"` → `role=group` + `aria-pressed` (untuk language switcher; tiada tab panel)
 - `NavLink` (`href`, `current`) — link nav tanpa border; halaman aktif bg `--color-muted`
+- `DropdownMenu` (`label`, `items` [{label, href, current}], `current`, `align`) — trigger NavLink + chevron, panel pautan
 - `Button`/`Chip`/`NavLink` dengan `href` render `<a>` biasa (tiada kebergantungan Next.js) supaya boleh guna di CMS/extension.
 
 Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Sudah dipasang: **Header** dan **Hero** (lihat di bawah). Komponen lain belum.
@@ -178,11 +179,16 @@ Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px
 - `tone="single"`: perkataan guna warna text verdict.
 - Selalu dot + perkataan + agensi (WCAG 1.4.1). Varian: `palsu | waspada | makluman | benar` (page Artikel ada juga "Penjelasan" — petakan ke `benar`).
 
-### Nav/Header ✅ (ikut Paper Artwork › Home › Nav/Header)
-Dilaksanakan dalam `components/Header.js`: logo kiri · `NavLink` (Utama, Semak Fakta, Tentang Kami, Logo; aktif ikut `usePathname`) · kanan `Tabs mode="toggle"` BM/EN + `Button` filled "Salur Kepada Kami". Border bawah 1px `--color-border`, padding 16.
-- ≤1100px: nav jadi dropdown (bg canvas, border, radius 12, `--shadow-float`) dibuka butang menu 44×44.
-- ≤600px: Button "Salur Kepada Kami" disembunyi dan muncul sebagai item terakhir dalam dropdown; logo mengecil (max 140).
-- Belum: dropdown "Tentang Kami ▾" (Paper) — data `navLinks` masih rata.
+### Nav/Header ✅ (ikut Paper Artwork › Home › Nav/Header; master di Design system › 12 — Components › Nav/Header)
+Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLinks`, `claimLink`):
+- Kiri logo 133×40 · tengah `NavLink` **Utama**, **Artikel** + `DropdownMenu` **Tentang Kami ▾** (Tentang kami, Logo) · kanan `Tabs mode="toggle"` BM/EN + `Button` filled **Salur Kepada Kami**.
+- Bar: bg `--color-background`, border bawah 1px `--color-border`, padding 16 / 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 24.
+- Item aktif: pill `--color-muted` (dropdown trigger aktif bila salah satu anaknya halaman semasa).
+- Segmented BM/EN: border 1px `--color-muted-strong`, padding 2, gap 2; item 44×44 min, padding 0 12, Body 16; aktif bg `--color-background` + border 1px `--color-border`, semibold, `--color-foreground`; tidak aktif `--color-muted-foreground`.
+- Dropdown: panel bg `--color-background`, border 1px `--color-border`, radius `--radius-md`, padding 8, `--shadow-float`; item 44px, padding 10 16, radius 8, hover/aktif `--color-muted`. Tutup dengan Escape (fokus balik ke trigger), klik luar, atau blur.
+- ≤1100px: nav jadi panel (butang menu 44×44); anak dropdown disenarai di bawah label kumpulan. ≤600px: butang "Salur Kepada Kami" pindah ke dalam panel, logo max 140.
+- Nota: label nav/butang guna **Inter** dalam kod (peraturan UI = Inter); Paper masih Manrope pada label ini.
+- "Hubungi kami" belum dalam dropdown — tiada page `/contact/` lagi.
 
 Baseline asal dari Figma:
 - Wide: `padding 16; flex space-between; bg --color-background`. Logo 133×40 dalam slot 160×56. Nav items: Chip tanpa border (active bg `--color-muted`), gap 4: Utama, Artikel, Tentang Kami ▾ (dropdown), Berita dan Galeri, Salur Kepada Kami. Kanan: Language switcher + Button filled "Tanya AIFA".
@@ -250,7 +256,6 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 10. Buka PR ke `endahbyu`.
 
 ## 7. Perkara terbuka (sahkan dengan user)
-- Dropdown "Tentang Kami ▾" dalam header (Paper) — perlu ubah `navLinks`.
 - Teks kecil bawah tajuk hero (Paper masih placeholder).
 - Warna butang Tanya AIFA (merah vs Ink).
 - Page Artikel masih guna Montserrat dan radius 26 — tukar ke Manrope / 20 (cadangan: ya).
