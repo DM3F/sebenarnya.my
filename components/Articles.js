@@ -281,10 +281,12 @@ function GridCard({ article }) {
         <VerdictTag status={article.status} />
         <AgencyAvatar agency={article.agency} />
       </div>
-      <h3 className="articles-card__title">
-        <Link href={articleHref(article)} className="card-link">{article.title}</Link>
-      </h3>
-      <time className="articles-card__date" dateTime={article.date}>{formatDate(article.date)}</time>
+      <div className="articles-card__body">
+        <h3 className="articles-card__title">
+          <Link href={articleHref(article)} className="card-link">{article.title}</Link>
+        </h3>
+        <time className="articles-card__date" dateTime={article.date}>{formatDate(article.date)}</time>
+      </div>
     </article>
   );
 }

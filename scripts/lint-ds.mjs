@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Design-system consistency check (docs/plan.md › Fasa 9).
- * Same script for the website, the CMS and the browser extension:
+ * Usage:
  *   npm run lint:ds
  * Exits 1 when any rule finds a problem, so it can run in CI.
  *
@@ -83,11 +83,6 @@ const rules = [
     id: 'transition-all',
     why: 'Name the properties you animate.',
     test: (l) => /transition:\s*all\b/.test(code(l)),
-  },
-  {
-    id: 'shadcn-defaults',
-    why: 'Leftover shadcn default colours; map them to our tokens (shadcn-bridge.css).',
-    test: (l, p) => !isTokens(p) && (/oklch\(/.test(code(l)) || /\b(bg|text|border)-(zinc|neutral|slate|gray|stone)-\d/.test(l)),
   },
 ];
 

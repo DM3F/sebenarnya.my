@@ -360,3 +360,20 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - **`npm run lint:ds`** (`scripts/lint-ds.mjs`): hex, primitif palet, pustaka ikon lain, ikon Lucide tanpa `<Icon>`, `rem`, berat font luar skala, font selain Manrope, `transition: all`, warna lalai shadcn. Pengecualian: komen `ds-allow: <sebab>` pada baris yang sama. Exit 1 bila ada masalah (sedia untuk CI).
 - **Kontras:** semua teks pada 4 halaman lulus WCAG AA (diimbas pada runtime terhadap latar sebenar). Tanya AIFA kini `--color-brand-strong` (#C8211C, 5.56:1 dengan putih) — masih merah, tetapi dulu 4.30:1 gagal AA. Nombor "/01" Empat fungsi = `--color-text-secondary`.
 - **Fokus:** carousel media sosial (`.stories-viewport`) kini ada cincin fokus.
+
+## Kad artikel gaya baharu (21 Nov 2026, rujukan elevenlabs.io)
+
+`components/Articles.js › GridCard`, `.articles-card` dalam `global.css`; Paper › Artwork › Artikel dikemas kini sama.
+
+- Kad: latar `--color-card`, border 1px `--color-border`, radius `--radius-card` (20), `overflow: hidden`, tiada bayang.
+- Foto: full-bleed di atas (dipotong oleh radius kad), `aspect-ratio: 16 / 10` (Paper: 340×212), latar `--color-muted-strong` sementara imej dimuat.
+- Pill verdict atas foto: putih solid `--color-card`, 16px dari tepi, padding 8/12; teks kekal 13 Semibold UPPERCASE warna verdict.
+- Avatar agensi: kiri bawah foto, 16px dari tepi.
+- Badan (`.articles-card__body`): padding 20/24/24 (mobile 16/20/20), jarak 8; tajuk 20/26 Medium (mobile 18/24); tarikh 14 **Medium** `--color-muted-foreground`.
+- Hover (pointer halus sahaja): foto zoom 1.03 (`--ease-out`), border → `--color-border-strong` (`--duration-fast`). Fokus papan kekunci: cincin pada kad (`:focus-within`).
+
+## Keputusan 21 Nov 2026
+
+- Paper ↔ `design.md` bercanggah → **ikut `design.md`**: kad media sosial kini hitam polos (gradient platform dibuang); teks meta (tarikh kad, `.fc-meta`, `.story-meta`, `.post-meta`, meta kad logo) = Medium 500.
+- Tanya AIFA = `--color-brand-strong` (kekal).
+- Skop: laman web sahaja — CMS & extension dibuang dari plan.
