@@ -193,7 +193,7 @@ input::placeholder { color: var(--text); }
   box-sizing: border-box;
   padding: 15px 30px;
   font-family: var(--font);
-  font-size: 1.8rem;
+  font-size: 1.6rem; /* labels: 16px everywhere */
   font-weight: 500;
   line-height: 1.3;
   text-align: center;
@@ -214,8 +214,7 @@ input::placeholder { color: var(--text); }
 
 @media (max-width: 1480px) { .btn { padding: 14px 28px; } }
 @media (max-width: 1024px) { .btn { padding: 13px 26px; } }
-@media (max-width: 768px)  { .btn { font-size: 1.7rem; } }
-@media (max-width: 480px)  { .btn { padding: 11px 22px; font-size: 1.6rem; } }
+@media (max-width: 480px)  { .btn { padding: 11px 22px; } }
 
 /* Shared: tags */
 .tags {
@@ -1850,7 +1849,7 @@ input::placeholder { color: var(--text); }
   margin: 0;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 4;
   font-family: var(--font-sans);
   font-size: var(--text-16);
   line-height: var(--leading-24);
@@ -2016,7 +2015,7 @@ input::placeholder { color: var(--text); }
 
 .footer-col li {
   margin-bottom: 1.2vh;
-  font-size: 1.7rem;
+  font-size: 1.6rem; /* links: 16px, same as nav and buttons */
   font-weight: 500;
   list-style: none;
 }
@@ -2071,7 +2070,6 @@ input::placeholder { color: var(--text); }
   .footer-logo .logo { font-size: 2.8rem; }
   .footer-text { max-width: 500px; }
   .footer-col { width: 135px; }
-  .footer-col li { font-size: 1.5rem; }
 
   .footer-col svg {
     width: 16px;
@@ -2255,7 +2253,7 @@ input::placeholder { color: var(--text); }
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
-  font-size: var(--text-18);
+  font-size: var(--text-16);
   line-height: var(--leading-24);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
@@ -3511,7 +3509,7 @@ input::placeholder { color: var(--text); }
   padding: 16px 22px 20px;
 }
 
-.claim-modal .btn { padding: 11px 22px; font-size: 1.5rem; }
+.claim-modal .btn { padding: 11px 22px; }
 .claim-submit:disabled { opacity: .6; cursor: progress; }
 .claim-submit:disabled:hover { background-color: var(--dark); }
 
@@ -3629,7 +3627,7 @@ input::placeholder { color: var(--text); }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.3;
   transition: color .2s ease;
@@ -3679,7 +3677,7 @@ input::placeholder { color: var(--text); }
 @media (max-width: 1480px) {
   .about-hero { padding-top: 2vh; }
   .about-hero-title { margin-bottom: 4vh; }
-  .about-hero-link { font-size: 1.7rem; }
+  .about-hero-link { font-size: 1.6rem; }
 }
 
 @media (max-width: 1024px) {
@@ -3923,7 +3921,7 @@ input::placeholder { color: var(--text); }
   align-items: center;
   gap: 28px;
   padding: 7px 7px 7px 30px;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.3;
   color: var(--white);

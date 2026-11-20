@@ -17,7 +17,7 @@
   border: .5px solid transparent;
   border-radius: var(--radius-full);
   font-family: var(--font-ui);
-  font-size: var(--text-18);
+  font-size: var(--text-16);
   line-height: var(--leading-24);
   font-weight: var(--font-weight-medium);
   letter-spacing: 0;
@@ -249,7 +249,7 @@
   padding: 10px var(--spacing-12);
   border-radius: var(--radius-full);
   font-family: var(--font-sans); /* nav labels use Manrope (Paper) */
-  font-size: var(--text-18);
+  font-size: var(--text-16);
   line-height: var(--leading-24);
   font-weight: var(--font-weight-medium);
   color: var(--color-foreground);
@@ -301,7 +301,7 @@
   padding: 10px var(--spacing-16);
   border-radius: var(--radius-input);
   font-family: var(--font-sans); /* nav labels use Manrope (Paper) */
-  font-size: var(--text-18);
+  font-size: var(--text-16);
   line-height: var(--leading-24);
   font-weight: var(--font-weight-medium);
   color: var(--color-foreground);

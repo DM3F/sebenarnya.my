@@ -81,14 +81,14 @@ Font: **Manrope** 300/400/500/600 untuk kandungan, tajuk dan navigasi (`--font-s
 | Body/18 | 400 | 18 / 28 | 0 | intro, artikel body |
 | Body/16 | 400 | 16 / 24 | +0.01em | default |
 | Body/14 | 400 | 14 / 21 | +0.01em | meta, support |
-| Label/18 (Button/Nav/Tab) | 500 | 18 / 24 | 0 | semua button, tab, nav |
+| Label/16 (Button/Nav/Tab/Link) | 500 | 16 / 24 | 0 | semua button, tab, chip, nav, dropdown, link footer, CTA |
 | Eyebrow/14 | 500 | 14 / 20 | +0.01em | Smoke, sentence case |
 | Verdict/13 | 600 | 13 / 18 | +0.04em | UPPERCASE |
 | Caption/12 | 500 | 12 / 16 | +0.01em | tarikh, kredit |
 | Stat/40 Light | 300 | 40 / 44 | -0.02em | angka statistik |
 | Stat/32 Light | 300 | 32 / 36 | 0 | angka kecil (WSIS) |
 
-**Peraturan: semua tajuk besar (Display & Heading) guna Medium 500** — contoh "Warm cream editorial, clear headlines." pada cover. Regular 400 hanya untuk body; Light 300 hanya untuk statistik.
+**Peraturan: semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = 16 / 24 Medium** — tiada label 18px. **Semua tajuk besar (Display & Heading) guna Medium 500** — contoh "Warm cream editorial, clear headlines." pada cover. Regular 400 hanya untuk body; Light 300 hanya untuk statistik.
 
 Token: saiz `--text-{12,13,14,16,18,20,24,28,30,32,36,38,40,48,56}`, line-height `--leading-{16,18,20,21,24,26,28,32,34,36,42,44,52,60}` (+ `--leading-display/heading/body` %), tracking `--tracking-{display,tight,body,label}`, weight `--font-weight-{light,regular,medium,semibold}`. Contoh Display/56 = `--text-56` / `--leading-60` / `--tracking-display` / `--font-weight-medium`.
 
@@ -128,6 +128,12 @@ Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1
 - Tepi kiri/kanan melengkung macam skrin cekung: container lebih tinggi sebanyak `--lift` di atas/bawah, gambar `cover` diam; hanya mask `clip-path: path()` yang melengkung, flare maksimum 4.5% tinggi slide. Mati di ≤700px.
 - Teks dipaparkan pada semua kad (tengah, kiri, kanan); tiada badge kiraan (infinite loop). Mobile: kad potret, teks di bahagian bawah dalam kad.
 - `prefers-reduced-motion`: tiada autoplay, perpindahan terus tanpa glide.
+
+### 2.z Motion — FlipCard (Semakan fakta terkini)
+- Satu kad terbuka pada satu masa (state di `Latest.js`).
+- Hover: tunggu 90ms sebelum flip (sapuan pointer tidak flip semua kad); keluar: tunggu 140ms supaya pindah ke kad sebelah bertukar dalam satu gerakan.
+- Buka 0.7s `cubic-bezier(.23,1,.32,1)` + naik 4px (mouse sahaja); tutup 0.45s `cubic-bezier(.65,0,.35,1)`. Transition CSS, jadi boleh diterbalikkan di tengah jalan.
+- `prefers-reduced-motion`: tukar terus tanpa putaran.
 
 ## 3. Pemetaan variable lama → token baru (`app/global.css`)
 
@@ -170,7 +176,7 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Sudah dipasang: **Header** dan **Hero** (lihat di bawah). Komponen lain belum.
 
 ### Button
-- Asas: `height 44px; min-height 44px; padding 10px 20px; radius pill; Label/18; gap 8px` (ikon 16px).
+- Asas: `height 44px; min-height 44px; padding 10px 20px; radius pill; Label/16; gap 8px` (ikon 16px).
 - `filled`: bg `--color-primary`, text `--color-primary-foreground`; hover bg `--color-primary-hover`.
 - `outline`: bg `--color-background`, border `.5px solid --color-border-strong`; hover bg `--color-muted`.
 - `ghost`: bg `--color-background`, text underline; hover bg `--color-muted`.
@@ -179,7 +185,7 @@ Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` j
 - Pasangan button: gap 8px. Props: `variant`, `size?`, `icon?`, `href?`.
 
 ### Chip
-`height 44; padding 10px 12px; radius pill; bg --color-background; border .5px --color-border; Label/18`. Hover `--color-muted`. Didahului label "Popular:" Body/14 Smoke.
+`height 44; padding 10px 12px; radius pill; bg --color-background; border .5px --color-border; Label/16`. Hover `--color-muted`. Didahului label "Popular:" Body/14 Smoke.
 
 ### Tabs/Segmented (dan Language switcher)
 Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px --color-border`. Item = Chip; item terpilih bg `--color-card` + border `.5px --color-border`. Language switcher sama (item BM/EN, gap 8).
@@ -207,7 +213,7 @@ Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLin
 Baseline asal dari Figma:
 - Wide: `padding 16; flex space-between; bg --color-background`. Logo 133×40 dalam slot 160×56. Nav items: Chip tanpa border (active bg `--color-muted`), gap 4: Utama, Artikel, Tentang Kami ▾ (dropdown), Berita dan Galeri, Salur Kepada Kami. Kanan: Language switcher + Button filled "Tanya AIFA".
 - Compact (<1100): baris 1 logo + utilities, baris 2 nav.
-- Dropdown menu: `padding 8; radius 12; bg canvas; border 1px --color-border`; item 44px, padding 10px 16px, Label/18. Item: Tentang kami, Logo, Hubungi kami.
+- Dropdown menu: `padding 8; radius 12; bg canvas; border 1px --color-border`; item 44px, padding 10px 16px, Label/16. Item: Tentang kami, Logo, Hubungi kami.
 - Header dalam artwork Paper sekarang: tinggi 120, padding sisi 81, nav gap 45, language switcher bg `#efeef0` dengan BM aktif bg Ink — **selaraskan ke token** (bg `--color-muted`, aktif `--color-primary`).
 
 ### Hero ✅ (ikut Paper Artwork › Home › Hero)
@@ -228,10 +234,10 @@ Baseline asal dari Figma:
 - Tajuk seksyen lama "Semakan Fakta Popular" dibuang (Paper tiada).
 
 ### Footer
-Border-top 1px `--color-border`, padding atas 78. Kiri: logo 180×60 + teks 20/28 Medium (lebar 400). Kanan 3 kolum (Sosial · Semak & Lapor · Sebenarnya.my), tajuk 18/22 Medium, link Label/18 gap 12. Copyright Body/14. Gantikan Montserrat → Manrope.
+Border-top 1px `--color-border`, padding atas 78. Kiri: logo 180×60 + teks 20/28 Medium (lebar 400). Kanan 3 kolum (Sosial · Semak & Lapor · Sebenarnya.my), tajuk 18/22 Medium, link Label/16 gap 12. Copyright Body/14. Gantikan Montserrat → Manrope.
 
 ### Tanya AIFA (floating)
-Pill `padding 10px 22px 10px 18px; min-height 44`, ikon chat 24px + "Tanya AIFA" Label/18. Dalam artwork merah `#e51c23` + shadow merah — **bercanggah dengan rule "Red bukan warna aksi"**. Cadangan: Button filled Ink + `--shadow-float` (sahkan dengan user).
+Pill `padding 10px 22px 10px 18px; min-height 44`, ikon chat 24px + "Tanya AIFA" Label/16. Dalam artwork merah `#e51c23` + shadow merah — **bercanggah dengan rule "Red bukan warna aksi"**. Cadangan: Button filled Ink + `--shadow-float` (sahkan dengan user).
 
 ### Kad
 - **Article card (page Artikel):** lebar 230; imej 276 tinggi radius 26→`--radius-card`; pill verdict kiri atas (bg white 90% + blur 10, padding 6px 10px, dot 7px, 13 SemiBold); avatar agensi 30px bulat kiri bawah; tajuk Heading/20; tarikh Body/14 @60%.

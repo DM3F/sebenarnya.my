@@ -10,6 +10,7 @@ Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** se
 - Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`. Nama token sama di Paper dan kod. Design system ini akan dipakai juga di **CMS dashboard** dan **browser extension**.
 - Font: **Manrope** untuk kandungan, tajuk dan navigasi; **Inter** untuk kawalan UI (button, input). Semua tajuk besar **Medium 500**.
 - Merah Kebenaran bukan warna aksi (button, link, nav).
+- Semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = **16 / 24 Medium**.
 
 Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 
