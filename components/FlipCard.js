@@ -3,14 +3,31 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
-// Card that flips to show the article summary and a "Read More" link.
-// Mouse: flips on hover. Touch, click or keyboard: tap/click/Enter toggles it.
-// `post` = { title, summary, image, alt, author: { name, image }, href }
+const VERDICT_LABEL = { palsu: 'Palsu', waspada: 'Waspada', makluman: 'Makluman', benar: 'Benar' };
+
+function ArrowUpRight() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+      <path d="M4 10 10 4M5 4h5v5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/**
+ * FactCheckCard (Paper › 06 Brand components › FactCheckCard – States).
+ * Front: photo, verdict pill, title, agency avatar, arrow cue.
+ * Back (rotateY 180°): verdict · agency, title, summary, checked date + source, "Baca semakan".
+ * Mouse: flips on hover. Touch, click or keyboard: tap/click/Enter toggles it,
+ * and keyboard focus moves to the side that is showing.
+ *
+ * `post` = { title, summary, image, alt, status, agency: { name, short, image }, date, dateLabel, href }
+ */
 export default function FlipCard({ post }) {
   const [flipped, setFlipped] = useState(false);
   const frontBtnRef = useRef(null);
   const readRef = useRef(null);
   const byKeyboard = useRef(false);
+  const verdict = VERDICT_LABEL[post.status] ?? post.status;
 
   // Hover only for a real mouse, so a tap on a phone doesn't flip twice
   const hover = (on) => (e) => {
@@ -18,7 +35,7 @@ export default function FlipCard({ post }) {
   };
 
   const toggle = (e) => {
-    if (e.target.closest('a')) return; // "Read More" just opens the article
+    if (e.target.closest('a')) return; // "Baca semakan" just opens the article
     byKeyboard.current = e.detail === 0; // keyboard "clicks" have no click count
     setFlipped((f) => !f);
   };
@@ -32,44 +49,63 @@ export default function FlipCard({ post }) {
 
   return (
     <article
-      className={`flip-card card-popular${flipped ? ' flipped' : ''}`}
+      className={`flip-card fc fc--${post.status}${flipped ? ' flipped' : ''}`}
       onPointerEnter={hover(true)}
       onPointerLeave={hover(false)}
       onClick={toggle}
     >
       <div className="flip-inner">
-        {/* Front: image + title */}
-        <div className="flip-face flip-front" inert={flipped}>
-          <div className="flip-thumb">
-            <img src={post.image} alt={post.alt} loading="lazy" />
-            <div className="card-avatar" title={post.author.name}>
-              <img src={post.author.image} alt={post.author.name} loading="lazy" />
-            </div>
+        {/* Front */}
+        <div className="flip-face fc-front" inert={flipped}>
+          <img className="fc-photo" src={post.image} alt={post.alt} loading="lazy" draggable={false} />
+          <div className="fc-front-top">
+            <span className="fc-pill">
+              <span className="fc-dot" aria-hidden="true" />
+              {verdict}
+            </span>
+            <h3 className="fc-title">{post.title}</h3>
           </div>
-          <h3 className="flip-title">{post.title}</h3>
+          <span className="fc-avatar" title={post.agency.name}>
+            <img src={post.agency.image} alt={post.agency.short} loading="lazy" />
+          </span>
+          <span className="fc-cue" aria-hidden="true">
+            <ArrowUpRight />
+          </span>
           <button
             ref={frontBtnRef}
             type="button"
             className="flip-toggle"
-            aria-label={`Show summary: ${post.title}`}
+            aria-label={`Lihat ringkasan: ${post.title}`}
           />
         </div>
 
-        {/* Back: summary + link */}
-        <div className="flip-face flip-back" inert={!flipped}>
-          <button type="button" className="flip-close" aria-label="Show front of card">
-            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-              <path d="M1 1l12 12M13 1L1 13" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-            </svg>
-          </button>
-          <small className="flip-source">{post.author.name}</small>
-          {/* <h3 className="flip-back-title">{post.title}</h3> */}
-          <p className="flip-summary">{post.summary}</p>
-          <Link ref={readRef} className="flip-read" href={post.href}>
-            Baca lagi
-            <svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true">
-              <path d="M1 6h11M8 2l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+        {/* Back */}
+        <div className="flip-face fc-back" inert={!flipped}>
+          <div className="fc-back-body">
+            <div className="fc-back-head">
+              <span className="fc-verdict">
+                <span className="fc-dot" aria-hidden="true" />
+                <span className="fc-verdict-word">{verdict}</span>
+                <span className="fc-agency">· {post.agency.short}</span>
+              </span>
+              <span className="fc-avatar fc-avatar--sm">
+                <img src={post.agency.image} alt="" loading="lazy" />
+              </span>
+            </div>
+            <h3 className="fc-back-title">{post.title}</h3>
+            <p className="fc-summary">{post.summary}</p>
+            <div className="fc-meta">
+              <span>
+                Disemak <time dateTime={post.date}>{post.dateLabel}</time>
+              </span>
+              <span>Sumber: kenyataan rasmi {post.agency.short}</span>
+            </div>
+          </div>
+          <Link ref={readRef} className="fc-read" href={post.href}>
+            Baca semakan
+            <span className="fc-read-icon" aria-hidden="true">
+              <ArrowUpRight />
+            </span>
           </Link>
         </div>
       </div>

@@ -52,7 +52,8 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 - [ ] Footer (Paper 12 › Footer)
 - [?] Tanya AIFA floating button — merah (artwork) vs Ink + `--shadow-float` (peraturan)
 - [ ] Article card (Paper 12 › Card)
-- [ ] FactCheckCard / Flip card + states (Paper 06 › FactCheckCard – States)
+- [x] FactCheckCard / Flip card + states (Paper 06 › FactCheckCard – States); flip dikekalkan
+- [x] Seksyen "Semakan fakta terkini" (scroll-snap, butang ‹ ›, Lihat lagi)
 - [x] HeroCarousel (Paper Home): autoplay, teks hanya slide tengah, kawalan dots + jeda
 - [ ] PromoBanner / Award (WSIS)
 - [ ] SocialCarousel (Aktiviti media sosial)
@@ -65,7 +66,7 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 
 | Route | Artboard | Status |
 |---|---|---|
-| `/` | Home | [~] Header, Hero + HeroCarousel siap; section lain belum |
+| `/` | Home | [~] Header, Hero, HeroCarousel, Semakan fakta terkini siap; section lain belum |
 | `/article` | Artikel | [ ] |
 | `/article/[slug]` | Mesej pautan pendaftaran… | [ ] |
 | `/about-us` | Tentang Kami | [ ] |
