@@ -153,3 +153,30 @@ Audit automatik (skrip Playwright) memeriksa setiap elemen di 4 halaman × 2 sai
 2. **Tanya AIFA merah** (togol, avatar, bubble pengguna, butang hantar). `design.md` §8 #4: biarkan buat masa ini.
 3. **Tarikh/meta** dalam kad artikel Regular 400; `design.md` meta = 500. Dibiarkan ikut Paper.
 4. Paper masih ada **template lain** (tenis "Horizon", Spintip, Krea…) dengan Inter di halaman lain — bukan reka bentuk Sebenarnya, tidak disentuh. Blok tenis di Tentang Kami dalam Paper juga masih perlu diganti teks sebenar.
+
+## 5. Lanjutan `plan.md` (selepas `design.md`)
+
+| Item plan | Hasil | Commit |
+|---|---|---|
+| Fasa 1 · Token motion | `--duration-fast/base/slow/page`, `--ease-out`, `--ease-in-out`, `--ease-emphasized`, `--ease-page` dalam `tokens.css`; semua `cubic-bezier` keras & `--ease`/`--slide` lama diganti | `576d3c9` |
+| Fasa 1 · Token overlay media | `--gradient-scrim-*` (5 token) | `829cd5f` |
+| Fasa 9 · `npm run lint:ds` | Skrip Node tanpa dependency, 9 peraturan. Diuji dengan fail "pelanggar" sementara — semua peraturan menangkapnya. Kini **bersih** | `576d3c9` |
+| Fasa 6 · Kontras | Imbasan runtime semua teks × 4 halaman: **semua lulus WCAG AA** | `576d3c9` |
+| Fasa 6 · Fokus keyboard | Tab melalui setiap halaman; satu kawalan tiada cincin (carousel media sosial) — dibetulkan | `576d3c9` |
+| Fasa 6 · Reduced motion | Autoplay hero & semakan fakta, ticker logo, transisi halaman — semua berhenti | `381c6f1` |
+
+**Pembetulan aksesibiliti yang anda akan nampak:**
+- **Tanya AIFA** sedikit lebih gelap (`#C8211C`). Masih merah (ikut keputusan), tetapi teks putih kini 5.56:1 — dulu 4.30:1, gagal AA.
+- Nombor "/01" kad Empat fungsi sedikit lebih gelap.
+
+## 6. Nota teknikal
+
+- Dev server anda di port 3000 berhenti sekitar 01:30 (terminal ditutup / laptop tidur). Untuk semakan, saya jalankan server sementara di **port 3100** dan sudah dihentikan. Jalankan `npm run dev` seperti biasa.
+- Semua semakan visual guna Playwright + Chrome sistem (tiada pemasangan baharu dalam projek).
+
+## 7. Belum dibuat (perlu reka bentuk Paper atau keputusan anda)
+
+- Fasa 2: Button kecil / "on media", icon button bulat, field/textarea/select, pagination dots & avatar sebagai komponen kongsi, katalog `/design-system`.
+- Fasa 3: Band (Closing/Announcement), Timeline, logo 7 agensi baharu (perlu fail logo), item "Hubungi kami" (perlu page `/contact/`).
+- Fasa 7–8 (CMS, extension, shadcn): menunggu keputusan stack & cara kongsi pakej.
+- PR `endahbyu` → `main`: menunggu arahan anda.
