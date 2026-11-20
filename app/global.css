@@ -1767,16 +1767,18 @@ input::placeholder { color: var(--text); }
   object-fit: cover;
   transition: transform .6s cubic-bezier(.23, 1, .32, 1);
 }
-/* Scrims: top for the title, bottom for the avatar and cue (Paper) */
+/* Scrims: a strong one at the bottom under the verdict + title (white text stays
+   readable on any photo, 1.4.3), a light one at the top behind the agency logo */
 .fc-front::before,
 .fc-front::after { content: ""; position: absolute; left: 0; right: 0; pointer-events: none; }
-.fc-front::before { top: 0; height: 280px; background: linear-gradient(180deg, rgba(0, 0, 0, .66), transparent); }
-.fc-front::after { bottom: 0; height: 120px; background: linear-gradient(0deg, rgba(0, 0, 0, .35), transparent); }
+.fc-front::before { top: 0; height: 120px; background: linear-gradient(180deg, rgba(0, 0, 0, .35), transparent); }
+.fc-front::after { bottom: 0; height: 300px; background: linear-gradient(0deg, rgba(0, 0, 0, .8) 0%, rgba(0, 0, 0, .55) 45%, transparent 100%); }
 
-.fc-front-top {
+/* Verdict pill + title sit at the bottom of the card */
+.fc-front-body {
   position: absolute;
   z-index: 1;
-  top: var(--spacing-24);
+  bottom: var(--spacing-24);
   left: var(--spacing-24);
   right: var(--spacing-24);
   display: flex;
@@ -1822,7 +1824,8 @@ input::placeholder { color: var(--text); }
   background: var(--color-card);
 }
 .fc-avatar img { width: 30px; height: 30px; border-radius: var(--radius-full); object-fit: cover; }
-.fc-front .fc-avatar { position: absolute; z-index: 1; left: var(--spacing-24); bottom: var(--spacing-24); }
+/* Agency logo: top right */
+.fc-front .fc-avatar { position: absolute; z-index: 1; top: var(--spacing-24); right: var(--spacing-24); }
 .fc-initials {
   font-family: var(--font-sans);
   font-size: var(--text-12);

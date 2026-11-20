@@ -52,7 +52,7 @@ export default function FlipCard({ post, flipped, onHover, onToggle }) {
         {/* Front */}
         <div className="flip-face fc-front" inert={flipped}>
           <img className="fc-photo" src={post.image} alt={post.alt} loading="lazy" draggable={false} />
-          <div className="fc-front-top">
+          <div className="fc-front-body">
             <span className="fc-pill">
               <span className="fc-dot" aria-hidden="true" />
               {verdict}
