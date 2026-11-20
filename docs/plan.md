@@ -8,7 +8,7 @@ Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** se
 
 **Peraturan tetap**
 - Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`. Nama token sama di Paper dan kod. Design system ini akan dipakai juga di **CMS dashboard** dan **browser extension**.
-- Font: **Manrope** untuk kandungan/tajuk, **Inter** untuk UI. Semua tajuk besar **Medium 500**.
+- Font: **Manrope** untuk kandungan, tajuk dan navigasi; **Inter** untuk kawalan UI (button, input). Semua tajuk besar **Medium 500**.
 - Merah Kebenaran bukan warna aksi (button, link, nav).
 
 Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
@@ -48,7 +48,7 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 - [x] Nav/Header (ikut Paper Home)
 - [x] Nav/Header: dropdown "Tentang Kami ▾", nav Utama/Artikel, segmented BM/EN ikut Paper; master Design system dikemas kini
 - [ ] Nav/Header: item "Hubungi kami" (perlu page `/contact/`)
-- [?] Font label nav/butang: Inter (kod) vs Manrope (Paper)
+- [x] Font label nav/header: Manrope (ikut Paper)
 - [ ] Footer (Paper 12 › Footer)
 - [?] Tanya AIFA floating button — merah (artwork) vs Ink + `--shadow-float` (peraturan)
 - [ ] Article card (Paper 12 › Card)

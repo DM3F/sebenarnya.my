@@ -463,6 +463,8 @@ input::placeholder { color: var(--text); }
   list-style: none;
 }
 
+.header .ui-btn { font-family: var(--font-sans); } /* header action matches nav labels */
+
 .header-actions {
   display: flex;
   flex: none;
@@ -551,7 +553,7 @@ input::placeholder { color: var(--text); }
   .menu-panel .menu-group-label {
     display: block;
     padding: var(--spacing-12) var(--spacing-16) var(--spacing-4);
-    font-family: var(--font-ui);
+    font-family: var(--font-sans);
     font-size: var(--text-14);
     line-height: var(--leading-20);
     font-weight: var(--font-weight-medium);

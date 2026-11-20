@@ -65,7 +65,7 @@ Saiz kawalan guna spacing: tinggi `--spacing-44` (min sasaran sentuh), search `-
 (Mode dark ada dalam Paper "11 · Forms & themes" — belum wajib.)
 
 ### 2.3 Typography
-Font: **Manrope** 300/400/500/600 untuk kandungan & tajuk (`--font-sans`); **Inter** untuk UI — button, input, label (`--font-ui`).
+Font: **Manrope** 300/400/500/600 untuk kandungan, tajuk dan navigasi (`--font-sans`); **Inter** untuk kawalan UI — button, input, label borang (`--font-ui`).
 
 | Gaya | Weight | Size / line (token) | Tracking | Guna |
 |---|---|---|---|---|
@@ -187,7 +187,7 @@ Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLin
 - Segmented BM/EN: border 1px `--color-muted-strong`, padding 2, gap 2; item 44×44 min, padding 0 12, Body 16; aktif bg `--color-background` + border 1px `--color-border`, semibold, `--color-foreground`; tidak aktif `--color-muted-foreground`.
 - Dropdown: panel bg `--color-background`, border 1px `--color-border`, radius `--radius-md`, padding 8, `--shadow-float`; item 44px, padding 10 16, radius 8, hover/aktif `--color-muted`. Tutup dengan Escape (fokus balik ke trigger), klik luar, atau blur.
 - ≤1100px: nav jadi panel (butang menu 44×44); anak dropdown disenarai di bawah label kumpulan. ≤600px: butang "Salur Kepada Kami" pindah ke dalam panel, logo max 140.
-- Nota: label nav/butang guna **Inter** dalam kod (peraturan UI = Inter); Paper masih Manrope pada label ini.
+- Font: semua label header (NavLink, dropdown, BM/EN, butang "Salur Kepada Kami") guna **Manrope** (`--font-sans`), sama dengan Paper. Kawalan UI lain (button, input, chip di luar header) kekal **Inter**.
 - "Hubungi kami" belum dalam dropdown — tiada page `/contact/` lagi.
 
 Baseline asal dari Figma:
