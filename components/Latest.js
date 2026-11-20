@@ -211,7 +211,9 @@ export default function Latest() {
 
   return (
     <section className="latest-checks" aria-labelledby="latest-checks-title">
-      <h2 id="latest-checks-title" className="latest-checks__title">Semakan fakta terkini</h2>
+      <h2 id="latest-checks-title" className="latest-checks__title">
+        <span>Semakan fakta terkini,</span> <span>disahkan agensi rasmi.</span>
+      </h2>
 
       <div className="latest-checks__carousel">
         <div

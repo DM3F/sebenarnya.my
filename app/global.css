@@ -1618,6 +1618,12 @@ input::placeholder { color: var(--text); }
   letter-spacing: var(--tracking-display);
   color: var(--color-foreground);
 }
+/* Two balanced lines (22 + 22 characters); on narrow screens they flow and balance */
+.latest-checks__title > span { display: block; }
+@media (max-width: 600px) {
+  .latest-checks__title { text-wrap: balance; }
+  .latest-checks__title > span { display: inline; }
+}
 
 .latest-checks__carousel {
   display: flex;
