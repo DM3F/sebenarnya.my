@@ -17,6 +17,11 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+
+  // A stray package-lock.json in the home folder made Next guess the wrong root
+  turbopack: {
+    root: __dirname,
+  },
 };
 
 module.exports = nextConfig;
