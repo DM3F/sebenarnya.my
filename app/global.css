@@ -1720,6 +1720,8 @@ input::placeholder { color: var(--text); }
 .fc--makluman { --dot: var(--color-verdict-makluman-dot); --verdict: var(--color-verdict-makluman); }
 .fc--benar    { --dot: var(--color-verdict-benar-dot);    --verdict: var(--color-verdict-benar); }
 
+.fc, .fc *, .fc *::before, .fc *::after { box-sizing: border-box; }
+/* Both faces are exactly 480 tall, so the card never changes height when it flips */
 .fc .flip-face { height: 480px; }
 
 .fc-dot {
@@ -1883,35 +1885,40 @@ input::placeholder { color: var(--text); }
 
 .fc-read {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  min-height: 52px;
-  padding: var(--spacing-10) var(--spacing-10) var(--spacing-10) var(--spacing-20);
+  gap: var(--spacing-12);
+  height: var(--spacing-48);
+  padding: var(--spacing-6) var(--spacing-6) var(--spacing-6) var(--spacing-20);
   border-radius: var(--radius-full);
   background: var(--color-primary);
   color: var(--color-primary-foreground);
-  font-family: var(--font-sans);
+  font-family: var(--font-ui);
   font-size: var(--text-16);
   line-height: var(--leading-24);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium);
   text-decoration: none;
-  transition: background-color .15s ease, transform .16s cubic-bezier(.23, 1, .32, 1);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .15s ease-out, scale .15s ease-out;
 }
-.fc-read:active { transform: scale(.98); }
+.fc-read:active { scale: .96; }
 .fc-read:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 2px; }
+/* Concentric: 36px circle + 6px inset = the 48px pill's 24px radius */
 .fc-read-icon {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
   border-radius: var(--radius-full);
   background: var(--color-card);
   color: var(--color-foreground);
-  transition: transform .2s cubic-bezier(.23, 1, .32, 1);
+  transition: translate .2s cubic-bezier(.2, 0, 0, 1);
 }
 @media (hover: hover) and (pointer: fine) {
   .fc-read:hover { background: var(--color-primary-hover); }
-  .fc-read:hover .fc-read-icon { transform: translate(2px, -2px); }
+  .fc-read:hover .fc-read-icon { translate: 2px -2px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
