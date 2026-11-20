@@ -52,6 +52,41 @@
   --action-hover: var(--color-graphite);
   --action-foreground: var(--color-white);
   --focus-ring: var(--color-violet-spark);
+  --focus-halo: var(--color-focus);
+
+  /* Semantic: borders & states */
+  --border-strong: var(--color-smoke);     /* outline button edge */
+  --border-pill: var(--color-pill-edge);
+  --surface-hover: var(--surface-subtle);
+  --surface-selected: var(--surface-raised);
+  --surface-disabled: var(--surface-inset);
+  --text-disabled: var(--text-secondary);
+  --text-placeholder: var(--text-secondary);
+  --text-link: var(--color-violet-spark);
+  --text-error: var(--color-red-ink);
+  --icon-default: var(--text-secondary);
+
+  /* Semantic: verdicts (indicator = dot, text = word in "single" tone) */
+  --verdict-palsu-indicator: var(--color-palsu-dot);
+  --verdict-palsu-text: var(--color-palsu-text);
+  --verdict-waspada-indicator: var(--color-waspada-dot);
+  --verdict-waspada-text: var(--color-waspada-text);
+  --verdict-makluman-indicator: var(--color-makluman-dot);
+  --verdict-makluman-text: var(--color-makluman-text);
+  --verdict-benar-indicator: var(--color-benar-dot);
+  --verdict-benar-text: var(--color-benar-text);
+
+  /* Semantic: brand (visual only — never actions) */
+  --brand-accent: var(--color-kebenaran-red);
+  --brand-spark: var(--color-violet-spark);
+
+  /* Semantic: controls */
+  --control-height: 44px;
+  --control-height-lg: 56px;
+  --control-padding-x: 20px;
+  --control-gap: 8px;
+  --control-radius: var(--radius-pill);
+  --control-border-width: .5px;
 
   /* Font weights — all headlines (Display & Heading) are Medium 500 */
   --font-weight-light: 300;    /* statistics only */

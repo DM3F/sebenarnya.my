@@ -1,5 +1,6 @@
 import './tokens.css';
 import './global.css';
+import './ui.css';
 import { Inter, Manrope } from 'next/font/google';
 import Chatbot from '@/components/Chatbot';
 import ClaimForm from '@/components/ClaimForm';

@@ -16,6 +16,8 @@ Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork"
 - Tokens: `app/tokens.css` (diimport sebelum `global.css`). Variable lama dalam `:root` `global.css` sudah dipetakan ke token (bahagian 3). ✅ Siap.
 - Komponen sedia ada: `Header, Footer, Hero, Carousel, Latest, FlipCard, Bento, Stories, Viewership, Collaborators, Articles, ArticleDetail, AboutUs, Logo, LogoKit, ShareButton, Chatbot, ClaimForm, ScrollMotion`.
 
+**Peraturan token (wajib):** design system ini akan dipakai juga di **CMS dashboard** dan **browser extension**. Komponen HANYA boleh guna **token semantik** (`--surface-*`, `--text-*`, `--border-*`, `--action-*`, `--focus-*`, `--verdict-*`, `--brand-*`, `--control-*`) — jangan guna primitive (`--color-*`) atau hex terus. Primitive hanya dirujuk oleh alias semantik dalam `tokens.css`. Nilai komponen dalam px supaya tak bergantung pada root font-size projek lain.
+
 **Prinsip:** jangan tulis semula dari kosong. Tambah tokens → petakan variable lama ke tokens → kemas komponen satu per satu. Kekalkan routes, data (`data/content.js`, `lib/*`) dan behaviour (carousel, flip card, chatbot).
 
 ---
@@ -78,6 +80,26 @@ Dilaksanakan dalam `app/tokens.css`, diimport di atas `global.css` (dalam `layou
   --action-hover: var(--color-graphite);
   --action-foreground: var(--color-white);
   --focus-ring: var(--color-violet-spark); /* border fokus button */
+  --focus-halo: var(--color-focus);
+
+  /* Borders & states */
+  --border-strong: var(--color-smoke);
+  --border-pill: var(--color-pill-edge);
+  --surface-hover: var(--surface-subtle);
+  --surface-selected: var(--surface-raised);
+  --surface-disabled: var(--surface-inset);
+  --text-disabled / --text-placeholder: var(--text-secondary);
+  --text-link: var(--color-violet-spark);
+  --text-error: var(--color-red-ink);
+  --icon-default: var(--text-secondary);
+
+  /* Verdict: --verdict-{palsu|waspada|makluman|benar}-{indicator|text} */
+  /* Brand (visual sahaja): --brand-accent (red), --brand-spark (violet) */
+
+  /* Controls */
+  --control-height: 44px; --control-height-lg: 56px;
+  --control-padding-x: 20px; --control-gap: 8px;
+  --control-radius: var(--radius-pill); --control-border-width: .5px;
 }
 ```
 (Mode dark ada dalam Figma frame "11 · Forms & themes" — belum wajib.)
@@ -158,7 +180,14 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 
 ## 4. Komponen (spec)
 
-Cadangan: setiap komponen kongsi dalam `components/ui/` (Button, Chip, Tabs, Verdict, FieldSearch) + CSS dalam blok berasingan `global.css` atau CSS Modules. Semua guna token semantik.
+✅ **Komponen asas siap** dalam `components/ui/` (import dari `@/components/ui`) dengan CSS dalam `app/ui.css` (kelas `ui-*`, token semantik sahaja, font UI Inter):
+- `Button` (`variant`: filled | outline | ghost, `icon`, `href`, `disabled`) + `ButtonGroup`
+- `Chip` (`href?`) + `ChipRow` (`label` cth. "Popular:")
+- `Tabs` (`items`, `value`, `onChange`, `label`) — juga language switcher; ikut corak ARIA tabs (anak panah, Home/End)
+- `Verdict` (`type`: palsu | waspada | makluman | benar | penjelasan→benar, `tone`: default | single, `agency`)
+- `SearchField` (`label`, `hideLabel`, `placeholder`, `buttonLabel`, `action` atau `onSubmit(query)`)
+
+Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Komponen belum dipasang ke komponen halaman sedia ada (langkah 5–6).
 
 ### Button
 - Asas: `height 44px; min-height 44px; padding 10px 20px; radius pill; Label/18; gap 8px` (ikon 16px).
@@ -240,7 +269,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 2. ✅ Tukar font ke Manrope + Inter (UI) dalam `layout.js`.
 3. ✅ Tambah `app/tokens.css` (bahagian 2) dan import.
 4. ✅ Petakan variable lama dalam `:root` `global.css` (bahagian 3). Semak visual setiap page masih perlu.
-5. Bina `components/ui/` (Button, Chip, Tabs, Verdict, FieldSearch) dan guna dalam komponen sedia ada.
+5. ✅ Bina `components/ui/` (Button, Chip, Tabs, Verdict, SearchField). Belum: guna dalam komponen sedia ada.
 6. Kemas Header (ikut versi Paper terbaru), Footer, Tanya AIFA.
 7. Kemas section ikut page (bahagian 4 & 5), satu commit setiap section.
 8. Ganti hex keras yang tinggal dengan token.
