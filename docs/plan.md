@@ -82,6 +82,13 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] Hero: tajuk baru "Tidak pasti? Jangan kongsi / Semak dakwaan, Temukan kebenaran"
 - [ ] Hero: kemas kini tajuk yang sama di Paper
 
+## Keputusan arah visual (docs/design.md, 21 Nov 2026)
+
+- [ ] Satu keluarga font: Manrope sahaja — buang Inter (`--font-ui`) dari kod, Paper dan handoff
+- [ ] Display (tajuk besar) weight 400 — kod, Paper, handoff §2.3
+- [ ] Angka statistik weight 400 — kod (Home), Paper (Stat), handoff
+- [~] Tanya AIFA kekal merah buat masa ini (belum ada keputusan warna)
+
 ## Fasa 5 — Pembersihan
 
 - [ ] Ganti **65** hex keras dalam `global.css` dengan token semantik
