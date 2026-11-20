@@ -5,15 +5,18 @@ Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** se
 - Sumber design: Paper `sebenarnya.my` (`01M7VAW17RGCJXGYKR590PX12M`) — page *Design system* (artboard 01–12) dan *Artwork* (Home, Artikel, Tentang Kami, Mesej… ).
 - Spec penuh: [`design-system-handoff.md`](design-system-handoff.md).
 - Branch: `endahbyu`.
+- Pengguna design system: **(1) laman web** (Next.js 16, CSS biasa) · **(2) CMS dashboard** · **(3) browser extension**.
 
 **Peraturan tetap**
-- Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`. Nama token sama di Paper dan kod. Design system ini akan dipakai juga di **CMS dashboard** dan **browser extension**.
+- Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`. Nama token sama di Paper dan kod.
 - Font: **Manrope** untuk kandungan, tajuk dan navigasi; **Inter** untuk kawalan UI (button, input). Semua tajuk besar **Medium 500**.
 - Merah Kebenaran bukan warna aksi (button, link, nav).
-- Ikon: **Lucide** sahaja, melalui `components/ui/Icon.js` (garis 1.75px, currentColor).
+- Ikon: **Lucide** sahaja, melalui `components/ui/Icon.js` (garis 1.75px `absoluteStrokeWidth`, currentColor, `aria-hidden`). Logo jenama (Facebook, TikTok…) kekal SVG jenama.
 - Semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = **16 / 24 Medium**.
+- Komponen yang **tiada** dalam design system → ambil dari **shadcn/ui**, kemudian sesuaikan ikut [Fasa 8](#fasa-8--shadcnui-untuk-komponen-yang-tiada). Komponen sendiri sentiasa menang jika kedua-duanya wujud.
+- Unit **px** sahaja dalam token dan komponen kongsi (tiada `rem`): laman web set `html { font-size: 62.5% }`, dan extension hidup di dalam page orang lain — `rem` akan pecah di kedua-duanya.
 
-Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
+Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputusan user
 
 ---
 
@@ -23,11 +26,11 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 - [x] `app/tokens.css`: primitive, semantic, type scale, weight, spacing, radius, shadow, container, skala mobile
 - [x] Petakan variable lama `:root` dalam `global.css` ke token
 - [x] Peraturan "tajuk besar = Medium 500" dalam dokumen
-- [x] **Satu set nama token Paper ↔ kod** — ikut nama Paper (Tailwind v4 + shadcn). Kod di-rename; token yang tiada dalam Paper (card, primary-hover, destructive, brand-spark, hairline, verdict dot, saiz/leading/spacing tambahan, container, breakpoint) ditambah ke Paper. Shadow kekal dalam kod sahaja.
-- [ ] Token untuk overlay media (gradient hero carousel, teks putih atas imej)
-- [ ] Token motion (`--duration-*`, `--ease-*`) — sekarang `--ease`/`--slide` lama dalam `global.css`
-- [ ] Pakej token boleh-guna-semula: `tokens.css` + `ui.css` dalam folder tersendiri (cth. `design-system/`) supaya CMS/extension boleh import tanpa salin manual
-- [?] Mode dark (Paper artboard 11 · Forms & themes) — sekarang atau kemudian
+- [x] **Satu set nama token Paper ↔ kod** — ikut nama Paper (Tailwind v4 + shadcn). Shadow kekal dalam kod sahaja.
+- [ ] Token untuk overlay media (gradient hero carousel & FlipCard, teks putih atas imej)
+- [~] Token motion — `--ease-in-out`, `--duration-page` sudah ada dalam `global.css`; belum: pindah ke `tokens.css` sebagai set lengkap (`--duration-fast 150ms`, `--duration-base 250ms`, `--duration-slow 450ms`, `--ease-out`, `--ease-in-out`, `--ease-drawer`) dan ganti `--ease`/`--slide` lama
+- [ ] Pakej token boleh-guna-semula (lihat [Fasa 7.1](#71-pakej-kongsi))
+- [?] Mode dark (Paper artboard 11 · Forms & themes) — sekarang atau kemudian. **CMS sangat mungkin perlukan ini**; shadcn guna class `.dark`.
 
 ## Fasa 2 — Komponen asas (`components/ui/`, `app/ui.css`)
 
@@ -37,27 +40,26 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 - [x] Verdict (palsu, waspada, makluman, benar; tone default/single)
 - [x] SearchField (controlled, error)
 - [x] NavLink
+- [x] Dropdown menu (`DropdownMenu`) — untuk "Tentang Kami ▾"
+- [x] Ikon: Lucide (`lucide-react` ^0.577) melalui `Icon`; semua SVG tulis tangan diganti (kecuali logo jenama)
 - [ ] Button: saiz kecil + varian "on media" (butang putih atas imej, cth. "Baca semakan")
 - [ ] Icon button bulat (prev/next carousel 48px, jeda 56px)
-- [x] Dropdown menu (`DropdownMenu`) — untuk "Tentang Kami ▾"
 - [ ] Field teks biasa / textarea / select (Paper 12 › Inputs) — guna dalam ClaimForm
-- [ ] Badge/Counter ("04 / 05") dan Pagination dots
+- [ ] Pagination dots (badge kiraan "04 / 05" **dibuang** — carousel kini infinite)
 - [ ] Avatar agensi (30 / 40px)
-- [x] Ikon: Lucide (`lucide-react`) melalui `Icon`; semua SVG tulis tangan diganti (kecuali logo jenama)
 - [ ] Semak semula ketepatan dengan Paper 12 › Button, Inputs, Verdict (nilai tepat via `get_computed_styles`)
 
 ## Fasa 3 — Komponen jenama & corak (Paper 06, 12 › Card / Home patterns)
 
-- [x] Nav/Header (ikut Paper Home)
-- [x] Nav/Header: dropdown "Tentang Kami ▾", nav Utama/Artikel, segmented BM/EN ikut Paper; master Design system dikemas kini
+- [x] Nav/Header (ikut Paper Home): dropdown "Tentang Kami ▾", nav Utama/Artikel, segmented BM/EN; font label Manrope
 - [ ] Nav/Header: item "Hubungi kami" (perlu page `/contact/`)
-- [x] Font label nav/header: Manrope (ikut Paper)
 - [ ] Footer (Paper 12 › Footer)
 - [?] Tanya AIFA floating button — merah (artwork) vs Ink + `--shadow-float` (peraturan)
 - [ ] Article card (Paper 12 › Card)
-- [x] FactCheckCard / Flip card + states (Paper 06 › FactCheckCard – States); flip dikekalkan
+- [x] FactCheckCard / Flip card: satu kad terbuka pada satu masa, hover intent 90/140ms, buka 0.7s ease-out, tutup 0.45s
 - [x] Seksyen "Semakan fakta terkini" (scroll-snap, butang ‹ ›, Lihat lagi)
-- [x] HeroCarousel (Paper Home): autoplay, teks hanya slide tengah, kawalan dots + jeda
+- [x] HeroCarousel: infinite loop, tepi melengkung (mask `clip-path`, imej diam), teks pada semua kad, mobile teks di dalam kad, autoplay + dots + jeda
+- [x] Page transition antara route (`components/PageTransition.js`, View Transitions API)
 - [ ] PromoBanner / Award (WSIS)
 - [ ] SocialCarousel (Aktiviti media sosial)
 - [ ] AgencyLogoStrip (Sumber kenyataan rasmi)
@@ -69,31 +71,201 @@ Legend: `[x]` siap & dipush · `[ ]` belum · `[?]` perlu keputusan user
 
 | Route | Artboard | Status |
 |---|---|---|
-| `/` | Home | [~] Header, Hero, HeroCarousel, Semakan fakta terkini siap; section lain belum |
+| `/` | Home | [~] Header, Hero (+ carian popular), HeroCarousel, Semakan fakta terkini siap; section lain belum |
 | `/article` | Artikel | [ ] |
 | `/article/[slug]` | Mesej pautan pendaftaran… | [ ] |
 | `/about-us` | Tentang Kami | [ ] |
 | `/logo` | (Logo) | [ ] |
 
-- [x] Hero: copy baru (tajuk + lede 2 baris), dikemas kini di Paper juga
+- [x] Hero: tajuk baru "Tidak pasti? Jangan kongsi / Semak dakwaan, Temukan kebenaran"
+- [ ] Hero: kemas kini tajuk yang sama di Paper
 
 ## Fasa 5 — Pembersihan
 
 - [ ] Ganti **65** hex keras dalam `global.css` dengan token semantik
 - [ ] Ganti **16** `font-weight: 700` (tiada dalam skala; guna 500/600)
-- [ ] Ganti radius 26/28px dengan `--radius-card` / `--radius-card-lg`
+- [ ] Ganti radius 26/28px dengan `--radius-card` / `--radius-lg`
 - [ ] Ganti `rem` dalam komponen yang dipindah ke `ui.css` → px token
+- [ ] Ganti `transition: all` (2 tempat dalam `global.css`) dengan property tepat
 - [ ] Buang CSS lama yang tidak dipakai lagi (`.btn`, `.pill-form`, `.lang-switch`…) bila semua pengguna sudah pindah
 
-## Fasa 6 — Kualiti & serahan
+## Fasa 6 — Kualiti & serahan (laman web)
 
 - [ ] Semakan visual setiap page desktop + mobile (375) berbanding Paper
 - [ ] Aksesibiliti: kontras, fokus, keyboard, `prefers-reduced-motion`
-- [ ] `npm run build` (export statik) lulus
-- [ ] Halaman katalog komponen (dev sahaja) atau Storybook ringan untuk CMS/extension
+- [x] `npm run build` (export statik) lulus
+- [ ] Halaman katalog komponen `/design-system` (dev sahaja) — rujukan visual untuk CMS/extension
 - [ ] PR `endahbyu` → `main`
+
+---
+
+## Fasa 7 — Guna semula: CMS dashboard & browser extension
+
+### 7.1 Pakej kongsi
+
+Satu sumber, tiga pengguna. Jangan salin token secara manual ke repo lain.
+
+```
+design-system/
+  tokens.css          ← dipindah dari app/tokens.css (sumber tunggal)
+  ui.css              ← dipindah dari app/ui.css (komponen asas, CSS biasa)
+  shadcn-bridge.css   ← peta token kita → nama variable shadcn (7.3)
+  fonts/              ← Manrope & Inter woff2 (untuk extension; web guna next/font)
+  components/         ← Button, Chip, Tabs, Verdict, SearchField, NavLink, DropdownMenu, Icon
+  README.md           ← cara import untuk setiap pengguna
+```
+
+- [ ] Pindah `tokens.css` + `ui.css` + `components/ui/*` ke `design-system/`; laman web import dari situ (tiada perubahan visual)
+- [?] Cara kongsi ke repo CMS/extension: **monorepo** (pnpm workspace, paling mudah dijaga) · pakej npm privat · git submodule
+- [ ] Versi pakej (semver) + CHANGELOG ringkas: token baru = minor, nama token berubah/dibuang = major
+- [ ] Fail `fonts.css` dengan `@font-face` Manrope + Inter untuk persekitaran tanpa `next/font` (extension). `--font-manrope` / `--font-inter` diisi oleh fail ini.
+
+### 7.2 CMS dashboard
+
+Mod **Operate**: kebolehbacaan, kepadatan dan konsistensi lebih penting daripada ekspresi. Jenama hadir dalam butiran (verdict, font, radius), bukan hiasan.
+
+- [?] Stack CMS: Next.js 16 App Router (sama dengan laman web) — sahkan
+- [?] Tailwind v4 dalam CMS (diperlukan oleh shadcn). Laman web **kekal CSS biasa**; token kita sudah ikut namespace Tailwind v4, jadi `tokens.css` boleh terus jadi `@theme`
+- [ ] Ketumpatan: skala kawalan CMS (tinggi button/input 36–40px vs 48px laman web) — tambah token `--control-h-sm` / `--control-h-md` dan bukan nilai keras
+- [ ] Label kawalan CMS: kekal **16/24 Medium**, atau benarkan **14/20 Medium** untuk jadual & toolbar padat [?] — putuskan sekali, catat dalam handoff
+- [ ] Komponen CMS yang guna design system sedia ada: Button, Chip (filter), Tabs, Verdict (status artikel), SearchField, DropdownMenu, Icon
+- [ ] Senarai komponen shadcn yang perlu (lihat 7.4) dipasang & disesuaikan
+- [ ] Verdict pada jadual/senarai: guna `Verdict tone="single"` yang sama — jangan buat badge status baru
+- [ ] Mode dark (jika diputuskan di Fasa 1)
+
+### 7.3 Browser extension
+
+- [ ] Popup / side panel: import `tokens.css` + `fonts.css` + `ui.css` terus (tiada Tailwind diperlukan)
+- [ ] UI yang disuntik ke page lain (content script): render dalam **Shadow DOM**; token di-scope ke `:host` (bukan `:root`) supaya tidak bocor ke/dari page hos
+- [ ] Tiada reset global (`*`, `html`, `body`) dalam CSS extension — scope bawah `:host` atau satu class akar
+- [ ] Font di-bundle dalam extension (`fonts/`), bukan Google Fonts (CSP & privasi)
+- [ ] Ikon: `lucide-react` (React) atau `lucide` (vanilla) — tetap 1.75px, currentColor
+- [ ] `z-index` & `position: fixed` untuk lapisan yang disuntik: satu token `--z-overlay` sahaja
+- [ ] Komponen utama: Verdict, Button, Tooltip, Toast (Sonner), Popover
+
+### 7.4 Inventori komponen ikut pengguna
+
+| Komponen | Sumber | Web | CMS | Extension |
+|---|---|:-:|:-:|:-:|
+| Button, Chip, Tabs, Verdict, SearchField, NavLink, DropdownMenu, Icon | **Design system** | ✓ | ✓ | ✓ (sebahagian) |
+| Input, Textarea, Select, Checkbox, Radio, Switch, Label | shadcn → sesuaikan (Paper 12 › Inputs dulu) | ClaimForm | ✓ | — |
+| Dialog, AlertDialog, Sheet | shadcn | ClaimForm | ✓ | — |
+| Table / Data table (TanStack) | shadcn | — | ✓ | — |
+| Form (react-hook-form + zod) | shadcn | ClaimForm | ✓ | — |
+| Popover, Tooltip, Command / Combobox | shadcn | — | ✓ | ✓ |
+| Calendar / Date picker | shadcn | — | ✓ | — |
+| Toast (Sonner) | shadcn | — | ✓ | ✓ |
+| Sidebar, Breadcrumb, Pagination | shadcn | — | ✓ | — |
+| Avatar, Badge, Skeleton, Separator, Card, Alert | shadcn → semak dulu dengan Paper (Avatar agensi, Article card) | ✓ | ✓ | ✓ |
+
+Peraturan: jika Paper ada spec untuk komponen itu, **Paper menang** — shadcn hanya jadi asas kod (struktur, a11y, keyboard).
+
+---
+
+## Fasa 8 — shadcn/ui untuk komponen yang tiada
+
+### 8.1 Pemasangan (sekali, setiap projek)
+
+- [ ] `npx shadcn@latest init` — gaya `new-york`, `tsx: false` (projek guna JS), `iconLibrary: "lucide"`, `cssVariables: true`
+- [ ] **Alias berasingan** dalam `components.json` supaya shadcn tidak menimpa `components/ui/` kita:
+  `"ui": "@/components/shadcn"` — komponen kita kekal di `@/components/ui`
+- [ ] Baca `node_modules/next/dist/docs/` untuk perubahan Next 16 sebelum pasang (AGENTS.md); semak shadcn serasi React 19.3
+
+### 8.2 Jambatan token (`shadcn-bridge.css`)
+
+shadcn baca variable tanpa awalan (`--background`, `--primary`…). Petakan ke token semantik kita — **jangan** tulis nilai baru:
+
+| shadcn | Token kita | Nota |
+|---|---|---|
+| `--background` / `--foreground` | `--color-background` / `--color-foreground` | |
+| `--card` / `--card-foreground` | `--color-card` / `--color-foreground` | |
+| `--popover` / `--popover-foreground` | `--color-card` / `--color-foreground` | dropdown kita guna card + `--color-border` |
+| `--primary` / `--primary-foreground` | `--color-primary` / `--color-primary-foreground` | Ink, **bukan** merah |
+| `--secondary` / `--secondary-foreground` | `--color-muted` / `--color-foreground` | |
+| `--muted` / `--muted-foreground` | `--color-muted` / `--color-muted-foreground` | |
+| `--accent` / `--accent-foreground` | `--color-muted` / `--color-foreground` | hover baris menu = muted, sama dengan nav aktif |
+| `--destructive` | `--color-destructive` | |
+| `--border` / `--input` | `--color-border` / `--color-border-strong` | field edge 3:1 |
+| `--ring` | `--color-ring` | |
+| `--radius` | `--radius-input` (8px) | shadcn kira `sm/md/lg` dari sini; button & chip override ke `--radius-full` |
+| `--chart-1…5` | [?] belum ada token carta | tambah di Fasa 1 jika CMS ada carta |
+| `--sidebar-*` | `--color-muted`, `--color-foreground`, `--color-border`, `--color-ring` | |
+
+- [ ] Tulis `shadcn-bridge.css` (light + `.dark` bila dark mode diputuskan)
+- [ ] Tiada `oklch(...)` lalai shadcn tertinggal dalam `globals.css` CMS — padam blok warna lalai selepas `init`
+
+### 8.3 Senarai semak penyesuaian (setiap komponen shadcn yang ditambah)
+
+Salin blok ini ke PR untuk setiap komponen:
+
+- [ ] Warna hanya melalui variable jambatan / token semantik — tiada `bg-zinc-*`, `text-neutral-*`, hex atau `oklch` dalam fail komponen
+- [ ] Label kawalan: `font-ui` (Inter) **16/24 Medium** (shadcn lalai `text-sm` 14px — tukar), atau saiz CMS yang diputuskan di 7.2
+- [ ] Radius: button / chip / tab / search = `--radius-full`; input = `--radius-input`; dropdown / popover = `--radius-md`; card / dialog = `--radius-card`
+- [ ] Tinggi kawalan ikut token (`--control-h-*`), bukan `h-9` / `h-10` keras
+- [ ] Fokus: `outline: 2px solid var(--color-ring); outline-offset: 3px` (sama dengan `ui.css`) — ganti `ring-[3px] ring-ring/50` lalai shadcn
+- [ ] Ikon: melalui `Icon` (1.75px, `absoluteStrokeWidth`) — shadcn lalai `size-4` stroke 2; tukar
+- [ ] Motion: guna token motion; popover/dropdown `transform-origin` ikut trigger, masuk ≤ 200ms ease-out, keluar lebih cepat; dialog kekal di tengah; `prefers-reduced-motion` dihormati
+- [ ] Bayang: hanya `--shadow-subtle*` / `--shadow-float` (lapisan terapung sahaja)
+- [ ] Merah Kebenaran tidak dipakai untuk aksi; `destructive` guna `--color-destructive`
+- [ ] Teks UI dalam Bahasa Melayu (label, aria-label, placeholder, mesej kosong & ralat)
+- [ ] Ditambah ke katalog `/design-system` + satu baris dalam `design-system-handoff.md` § Komponen
+
+---
+
+## Fasa 9 — Semakan konsistensi (boleh dijalankan)
+
+Jalankan sebelum setiap PR, di setiap projek (web, CMS, extension). Semua mesti kosong kecuali yang dinyatakan.
+
+```bash
+# 1. Hex / rgb keras dalam komponen (token sahaja; tokens.css dikecualikan)
+grep -rnE '#[0-9a-fA-F]{3,8}\b|rgba?\(' components design-system/components --include=*.js --include=*.css | grep -v tokens.css
+
+# 2. Palette primitif dipakai terus dalam komponen
+grep -rnE 'var\(--color-(grey-[0-9]+|red|red-dark|blue|azure|orange|green)[^-a-z]' components design-system/components app/ui.css
+
+# 3. Pustaka ikon lain selain Lucide
+grep -rnE "from ['\"](react-icons|@heroicons|@radix-ui/react-icons|@tabler|phosphor)" components app
+
+# 4. Ikon Lucide dipakai tanpa <Icon> (mesti melalui wrapper)
+grep -rn "from 'lucide-react'" components app | grep -v 'components/ui/Icon.js'   # semak: setiap fail mesti render <Icon icon={...}>
+
+# 5. rem dalam komponen kongsi
+grep -rnE '[0-9.]+rem\b' design-system app/ui.css
+
+# 6. Berat font di luar skala (400/500/600)
+grep -rnE 'font-weight:\s*(700|800|900|bold)' app design-system
+
+# 7. transition: all
+grep -rn 'transition: all' app design-system
+
+# 8. Warna lalai shadcn tertinggal (CMS)
+grep -rnE 'oklch\(|(bg|text|border)-(zinc|neutral|slate|gray|stone)-[0-9]' components/shadcn app
+```
+
+- [ ] Jadikan senarai di atas skrip `npm run lint:ds` (sekali tulis, guna di tiga projek)
+- [ ] Jalankan dalam CI pada PR (Fasa 6)
+
+### Semakan visual manual (setiap pengguna)
+
+| Semak | Web | CMS | Extension |
+|---|:-:|:-:|:-:|
+| Font: Manrope kandungan, Inter kawalan | [ ] | [ ] | [ ] |
+| Label interaktif 16/24 Medium (atau saiz CMS yang diputuskan) | [ ] | [ ] | [ ] |
+| Verdict: 4 warna + dot sama di semua tempat | [ ] | [ ] | [ ] |
+| Button / chip / tab bulat penuh; input 8px; card 20px | [ ] | [ ] | [ ] |
+| Fokus 2px `--color-ring` kelihatan pada semua kawalan | [ ] | [ ] | [ ] |
+| Ikon Lucide 1.75px, warna ikut teks | [ ] | [ ] | [ ] |
+| Merah hanya untuk jenama / ralat, bukan aksi | [ ] | [ ] | [ ] |
+| `prefers-reduced-motion` mematikan gerakan | [ ] | [ ] | [ ] |
+| Mobile 375 / popup extension 360 tidak terpotong | [ ] | — | [ ] |
+
+---
 
 ## Keputusan terbuka
 
 - [?] Warna Tanya AIFA
-- [?] Mode dark: bila
+- [?] Mode dark: bila (CMS mungkin perlukan dahulu)
+- [?] Cara kongsi pakej: monorepo · npm privat · submodule (7.1)
+- [?] Stack CMS: Next.js 16 + Tailwind v4 + shadcn (7.2)
+- [?] Saiz label kawalan CMS: 16/24 atau 14/20 untuk jadual padat (7.2)
+- [?] Token carta (`--chart-1…5`) jika CMS ada graf (8.2)
