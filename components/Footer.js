@@ -2,56 +2,51 @@ import Logo from './Logo';
 import { footerColumns, socialLinks } from '@/data/content';
 import { withBase } from '@/lib/basePath';
 
+/**
+ * Footer (Paper › 12 — Components › Footer; Home › Footer).
+ * Brand block on the leading side, three link columns on the trailing side,
+ * copyright underneath. Column headings are labels, not page headings.
+ */
 export default function Footer() {
+  const columns = [
+    { title: 'Sosial', links: socialLinks.map((l) => ({ label: l.label, href: l.href, external: true })) },
+    ...footerColumns.map((c) => ({ title: c.title, links: c.links.map((l) => ({ ...l, href: withBase(l.href) })) })),
+  ];
+
   return (
-    <footer className="footer">
-      <div className="footer-inner container">
+    <footer className="site-footer">
+      <div className="site-footer__top">
+        <div className="site-footer__brand">
+          <Logo />
+          <p className="site-footer__text">
+            Sebenarnya.my membantu orang ramai mendapatkan maklumat sahih dan maklum balas rasmi, menyemak dakwaan yang tular serta mengikuti berita dan perkembangan terkini.
+          </p>
+        </div>
 
-        {/* Logo, link columns and copyright */}
-        <div className="footer-main">
-          <div className="footer-about">
-            <div className="footer-logo">
-              <Logo />
-            </div>
-            <p className="footer-text">
-              Sebenarnya.my membantu orang ramai mendapatkan maklumat sahih dan maklum balas rasmi, menyemak dakwaan yang tular serta mengikuti berita dan perkembangan terkini.
-            </p>
-          </div>
-
-          <div className="footer-links">
-            <div className="footer-col">
-              <small>Sosial</small>
+        <nav className="site-footer__links" aria-label="Pautan kaki">
+          {columns.map((column) => (
+            <div className="site-footer__col" key={column.title}>
+              <p className="site-footer__heading">{column.title}</p>
               <ul>
-                {socialLinks.map((link) => (
+                {column.links.map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} aria-label={`Pautan ${link.label}`}>
-                      <svg role="img" viewBox="0 0 24 24"><path d={link.icon} /></svg>
+                    <a
+                      href={link.href}
+                      {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
                       {link.label}
                     </a>
                   </li>
                 ))}
               </ul>
             </div>
-
-            {footerColumns.map((column) => (
-              <div className="footer-col" key={column.title}>
-                <small>{column.title}</small>
-                <ul>
-                  {column.links.map((link) => (
-                    <li key={link.label}>
-                      <a href={withBase(link.href)}>{link.label}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="footer-copy">
-            &copy; 2023 <a href={withBase('/')}> Suruhanjaya Komunikasi dan Multimedia Malaysia</a>.
-          </div>
-        </div>
+          ))}
+        </nav>
       </div>
+
+      <p className="site-footer__copy">
+        &copy; 2023 Suruhanjaya Komunikasi dan Multimedia Malaysia.
+      </p>
     </footer>
   );
 }

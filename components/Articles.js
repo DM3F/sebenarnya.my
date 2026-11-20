@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { ChevronDown, ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { Button } from '@/components/ui';
+import Icon from '@/components/ui/Icon';
 import { articles, articleCategories, articleStatus } from '@/data/content';
 import { matchesQuery } from '@/lib/searchArticles';
 import { agencyInitials, articleHref, formatDate } from '@/lib/articles';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
 
 const DATE_OPTIONS = [
   { id: 'all', label: 'Semua tarikh' },
@@ -24,6 +25,9 @@ const SORT_OPTIONS = [
   { id: 'az', label: 'Tajuk A–Z', compare: (a, b) => a.title.localeCompare(b.title, 'ms', { sensitivity: 'base' }) },
   { id: 'za', label: 'Tajuk Z–A', compare: (a, b) => b.title.localeCompare(a.title, 'ms', { sensitivity: 'base' }) },
 ];
+
+// Featured card + 4-item side list when there are enough results (Paper › Artikel › Top row)
+const SIDE_COUNT = 4;
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -51,6 +55,11 @@ function filterArticles(query, category, range, from, to, sort) {
     .sort(compare);
 }
 
+/**
+ * Artikel page (Paper › Artwork › Artikel).
+ * Filters: search, date range, sort, result count, category chips.
+ * Results: a featured card + four-item side list, then a 4-column grid.
+ */
 export default function Articles() {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('all');
@@ -59,7 +68,7 @@ export default function Articles() {
   const [to, setTo] = useState('');
   const [sort, setSort] = useState('newest');
 
-  // Filter bar scrolling: which arrows can be used
+  // Category row scrolling: which arrows can be used
   const barRef = useRef(null);
   const [scroll, setScroll] = useState({ overflow: false, prev: false, next: false });
 
@@ -98,6 +107,10 @@ export default function Articles() {
   };
 
   const list = filterArticles(query, category, range, from, to, sort);
+  const hasTop = list.length > SIDE_COUNT;
+  const featured = hasTop ? list[0] : null;
+  const side = hasTop ? list.slice(1, 1 + SIDE_COUNT) : [];
+  const grid = hasTop ? list.slice(1 + SIDE_COUNT) : list;
 
   const reset = () => {
     changeQuery('');
@@ -109,43 +122,51 @@ export default function Articles() {
   };
 
   return (
-    <section className="articles container">
+    <section className="articles">
       {/* Page heading for screen readers only */}
       <h1 className="sr-only">Artikel semakan fakta</h1>
 
-      {/* Keyword search + date filter + sort order */}
-      <div className="date-filter">
-        <form className="article-search" role="search" onSubmit={(e) => e.preventDefault()}>
-          <label htmlFor="article-q" className="sr-only">Cari artikel</label>
-          <input
-            id="article-q"
-            type="search"
-            placeholder="Cari artikel…"
-            value={query}
-            onChange={(e) => changeQuery(e.target.value)}
-          />
-        </form>
+      <div className="articles-filters">
+        {/* Search + date range + sort + count */}
+        <div className="articles-toolbar">
+          <form className="articles-search" role="search" onSubmit={(e) => e.preventDefault()}>
+            <label htmlFor="article-q" className="sr-only">Cari artikel</label>
+            <Icon icon={Search} size={18} className="articles-search__icon" />
+            <input
+              id="article-q"
+              type="search"
+              placeholder="Cari artikel…"
+              value={query}
+              onChange={(e) => changeQuery(e.target.value)}
+              autoComplete="off"
+            />
+          </form>
 
-        <label className="date-select">
-          <span className="sr-only">Tapis mengikut tarikh</span>
-          <select value={range} onChange={(e) => setRange(e.target.value)}>
-            {DATE_OPTIONS.map((o) => (
-              <option key={o.id} value={o.id}>{o.label}</option>
-            ))}
-          </select>
-        </label>
+          <label className="articles-select">
+            <span className="sr-only">Tapis mengikut tarikh</span>
+            <select value={range} onChange={(e) => setRange(e.target.value)}>
+              {DATE_OPTIONS.map((o) => (
+                <option key={o.id} value={o.id}>{o.label}</option>
+              ))}
+            </select>
+            <Icon icon={ChevronDown} className="articles-select__chevron" />
+          </label>
 
-        <label className="date-select">
-          <span className="sr-only">Susun mengikut</span>
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
-            {SORT_OPTIONS.map((o) => (
-              <option key={o.id} value={o.id}>{o.label}</option>
-            ))}
-          </select>
-        </label>
+          <label className="articles-select">
+            <span className="sr-only">Susun mengikut</span>
+            <select value={sort} onChange={(e) => setSort(e.target.value)}>
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.id} value={o.id}>{o.label}</option>
+              ))}
+            </select>
+            <Icon icon={ChevronDown} className="articles-select__chevron" />
+          </label>
+
+          <p className="articles-count" aria-live="polite">{list.length} artikel</p>
+        </div>
 
         {range === 'custom' && (
-          <div className="date-range">
+          <div className="articles-range">
             <label>
               Dari
               <input type="date" value={from} max={to || undefined} onChange={(e) => setFrom(e.target.value)} />
@@ -157,106 +178,166 @@ export default function Articles() {
           </div>
         )}
 
-        <p className="article-count" aria-live="polite">{list.length} artikel</p>
-      </div>
+        {/* Category chips: one line, scrolls sideways with the arrows when it overflows */}
+        <div className={`articles-chips${scroll.overflow ? ' has-overflow' : ''}`}>
+          <button
+            type="button"
+            className="articles-chips__arrow"
+            aria-label="Kategori sebelumnya"
+            disabled={!scroll.prev}
+            onClick={() => scrollBar(-1)}
+          >
+            <Icon icon={ChevronLeft} />
+          </button>
 
-      {/* Category filter: one line, scrolls sideways with the arrows */}
-      <div className={`filter-row${scroll.overflow ? ' has-overflow' : ''}`}>
-        <button
-          type="button"
-          className="filter-arrow"
-          aria-label="Kategori sebelumnya"
-          disabled={!scroll.prev}
-          onClick={() => scrollBar(-1)}
-        >
-          <Icon icon={ChevronLeft} />
-        </button>
+          <div
+            className={`articles-chips__bar${scroll.prev ? ' fade-start' : ''}${scroll.next ? ' fade-end' : ''}`}
+            ref={barRef}
+            role="toolbar"
+            aria-label="Tapis mengikut kategori"
+            onScroll={updateScroll}
+          >
+            {[{ id: 'all', label: 'Semua' }, ...articleCategories].map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                className={`articles-chip${articleStatus[c.id] ? ` articles-chip--${c.id}` : ''}`}
+                aria-pressed={category === c.id}
+                onClick={(e) => {
+                  setCategory(c.id);
+                  e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+                }}
+              >
+                {articleStatus[c.id] && <span className="articles-chip__dot" aria-hidden="true" />}
+                {c.label}
+              </button>
+            ))}
+          </div>
 
-        <div
-          className={`filter-bar${scroll.prev ? ' fade-start' : ''}${scroll.next ? ' fade-end' : ''}`}
-          ref={barRef}
-          role="toolbar"
-          aria-label="Tapis mengikut kategori"
-          onScroll={updateScroll}
-        >
-          {[{ id: 'all', label: 'Semua' }, ...articleCategories].map((c) => (
-            <button
-              key={c.id}
-              type="button"
-              className={category === c.id ? 'filter-chip active' : 'filter-chip'}
-              aria-pressed={category === c.id}
-              onClick={(e) => {
-                setCategory(c.id);
-                e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
-              }}
-            >
-              {c.dot && <i style={{ background: c.dot }} />}
-              {c.label}
-            </button>
-          ))}
+          <button
+            type="button"
+            className="articles-chips__arrow"
+            aria-label="Kategori seterusnya"
+            disabled={!scroll.next}
+            onClick={() => scrollBar(1)}
+          >
+            <Icon icon={ChevronRight} />
+          </button>
         </div>
-
-        <button
-          type="button"
-          className="filter-arrow"
-          aria-label="Kategori seterusnya"
-          disabled={!scroll.next}
-          onClick={() => scrollBar(1)}
-        >
-          <Icon icon={ChevronRight} />
-        </button>
       </div>
 
       {/* Results */}
       {list.length > 0 ? (
-        <div className="article-grid">
-          {list.map((a) => (
-            <ArticleCard key={a.title} article={a} />
-          ))}
+        <div className="articles-results">
+          {hasTop && (
+            <div className="articles-top">
+              <FeaturedCard article={featured} />
+              <ul className="articles-side">
+                {side.map((a) => (
+                  <li key={a.slug}>
+                    <SideItem article={a} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {grid.length > 0 && (
+            <ul className="articles-grid">
+              {grid.map((a) => (
+                <li key={a.slug}>
+                  <GridCard article={a} />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       ) : (
-        <div className="article-empty" role="alert">
+        <div className="articles-empty" role="status">
           <p>
             {query.trim()
               ? `Tiada artikel dijumpai untuk “${query.trim()}”. Cuba kata kunci lain atau ubah tapisan.`
               : 'Tiada artikel untuk tapisan ini.'}
           </p>
-          <button type="button" className="filter-chip" onClick={reset}>Set semula tapisan</button>
+          <Button variant="outline" onClick={reset}>Set semula tapisan</Button>
         </div>
       )}
     </section>
   );
 }
 
-function ArticleCard({ article }) {
-  const status = articleStatus[article.status];
-  const href = articleHref(article);
+/* ── Pieces ─────────────────────────────────────────────────────────────── */
 
+// Verdict pill over a photo: dot + uppercase word, colour from the verdict tokens
+function VerdictTag({ status }) {
   return (
-    <article className="card article-card">
-      <div className="thumb">
-        <Link href={href} aria-label={article.title}>
-          <img src={article.image} alt={article.alt} loading="lazy" />
-        </Link>
-        <span className="article-status">
-          <i style={{ background: status.color }} />
-          {status.label}
-        </span>
-        <div className="card-avatar" title={article.agency.name}>
-          {article.agency.image ? (
-            <img src={article.agency.image} alt={article.agency.name} loading="lazy" />
-          ) : (
-            <span className="card-avatar-initials" aria-label={article.agency.name}>{agencyInitials(article.agency.name)}</span>
-          )}
-        </div>
-      </div>
+    <span className={`verdict-tag verdict-tag--${status}`}>
+      <span className="verdict-tag__dot" aria-hidden="true" />
+      {articleStatus[status]?.label ?? status}
+    </span>
+  );
+}
 
-      <div className="card-body">
-        <h2 className="card-title">
-          <Link href={href}>{article.title}</Link>
+function AgencyAvatar({ agency }) {
+  return (
+    <span className="agency-avatar" title={agency.name}>
+      {agency.image ? (
+        <img src={agency.image} alt={agency.name} loading="lazy" />
+      ) : (
+        <span className="agency-avatar__initials" role="img" aria-label={agency.name}>
+          {agencyInitials(agency.name)}
+        </span>
+      )}
+    </span>
+  );
+}
+
+// The title link stretches over the whole card, so the card is one click target
+function FeaturedCard({ article }) {
+  return (
+    <article className="articles-featured">
+      <img className="articles-featured__photo" src={article.image} alt={article.alt} />
+      <VerdictTag status={article.status} />
+      <div className="articles-featured__body">
+        <AgencyAvatar agency={article.agency} />
+        <h2 className="articles-featured__title">
+          <Link href={articleHref(article)} className="card-link">{article.title}</Link>
         </h2>
-        <time className="article-date" dateTime={article.date}>{formatDate(article.date)}</time>
+        <time className="articles-featured__date" dateTime={article.date}>{formatDate(article.date)}</time>
       </div>
+    </article>
+  );
+}
+
+function SideItem({ article }) {
+  return (
+    <article className="articles-side__item">
+      <div className="articles-side__media">
+        <img src={article.image} alt={article.alt} loading="lazy" />
+        <VerdictTag status={article.status} />
+        <AgencyAvatar agency={article.agency} />
+      </div>
+      <div className="articles-side__text">
+        <h3 className="articles-card__title">
+          <Link href={articleHref(article)} className="card-link">{article.title}</Link>
+        </h3>
+        <time className="articles-card__date" dateTime={article.date}>{formatDate(article.date)}</time>
+      </div>
+    </article>
+  );
+}
+
+function GridCard({ article }) {
+  return (
+    <article className="articles-card">
+      <div className="articles-card__media">
+        <img src={article.image} alt={article.alt} loading="lazy" />
+        <VerdictTag status={article.status} />
+        <AgencyAvatar agency={article.agency} />
+      </div>
+      <h3 className="articles-card__title">
+        <Link href={articleHref(article)} className="card-link">{article.title}</Link>
+      </h3>
+      <time className="articles-card__date" dateTime={article.date}>{formatDate(article.date)}</time>
     </article>
   );
 }

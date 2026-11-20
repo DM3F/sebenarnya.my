@@ -122,7 +122,7 @@ export const socialLinks = [
 /* Footer */
 export const footerColumns = [
   {
-    title: 'Teroka',
+    title: 'Semak & Lapor',
     links: [
       { label: 'Semak Fakta', href: '/article/' },
       { label: 'AIFA', href: '/aifa/' },
@@ -134,7 +134,7 @@ export const footerColumns = [
     title: 'Sebenarnya.my',
     links: [
       { label: 'Tentang Kami', href: '/about-us/' },
-      { label: 'Hubungi Kami', href: '/contact/' },
+      { label: 'Berita dan Galeri', href: '/about-us/#berita-galeri' },
     ],
   },
 ];
@@ -298,7 +298,7 @@ export const partners = [
 // Filter bar, in display order. `dot` = coloured dot shown in the chip.
 export const articleCategories = [
   { id: 'palsu', label: 'Palsu', dot: '#e51c23' },
-  { id: 'benar', label: 'Benar', dot: '#1d8a4e' },
+  { id: 'benar', label: 'Penjelasan', dot: '#1d8a4e' },
   { id: 'makluman', label: 'Makluman', dot: '#0071e3' },
   { id: 'waspada', label: 'Waspada', dot: '#f56300' },
   { id: 'bencana', label: 'Bencana' },
@@ -319,7 +319,7 @@ export const articleStatus = {
   palsu: { label: 'Palsu', color: '#e51c23' },
   makluman: { label: 'Makluman', color: '#0071e3' },
   waspada: { label: 'Waspada', color: '#f56300' },
-  benar: { label: 'Benar', color: '#1d8a4e' },
+  benar: { label: 'Penjelasan', color: '#1d8a4e' },
 };
 
 const agencyLogo = (name) => withBase(`/images/authors/agency-${name}.webp`);

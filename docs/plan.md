@@ -53,9 +53,9 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 
 - [x] Nav/Header (ikut Paper Home): dropdown "Tentang Kami ▾", nav Utama/Artikel, segmented BM/EN; font label Manrope
 - [ ] Nav/Header: item "Hubungi kami" (perlu page `/contact/`)
-- [ ] Footer (Paper 12 › Footer)
+- [x] Footer (Paper 12 › Footer) — semua halaman
 - [?] Tanya AIFA floating button — merah (artwork) vs Ink + `--shadow-float` (peraturan)
-- [ ] Article card (Paper 12 › Card)
+- [x] Article card (grid Artikel) + kad utama + senarai sisi
 - [x] FactCheckCard / Flip card: satu kad terbuka pada satu masa, hover intent 90/140ms, buka 0.7s ease-out, tutup 0.45s
 - [x] Seksyen "Semakan fakta terkini": gelangsar automatik tanpa hujung, berhenti bila hover, butang ‹ ›, Lihat lagi
 - [x] 20 artikel baharu (Oktober 2026) dengan gambar unik; monogram agensi bila tiada logo
@@ -74,7 +74,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 | Route | Artboard | Status |
 |---|---|---|
 | `/` | Home | [~] Header, Hero (+ carian popular), HeroCarousel, Semakan fakta terkini siap; section lain belum |
-| `/article` | Artikel | [~] Paper: design system diterapkan (header/footer/AIFA Home, token, chip, verdict, Lucide); grid 4 kolom kini 3 baris (12 kad; baris baharu = 4 artikel Oktober dengan foto unik); kod belum |
+| `/article` | Artikel | [x] Paper + kod: penapis, kad utama, senarai sisi, grid 4 kolum, footer (`components/Articles.js`, `components/Footer.js`) |
 | `/article/[slug]` | Mesej pautan pendaftaran… | [~] Paper: design system diterapkan (Verdict, Chip, Display/48, Lucide); kod belum |
 | `/about-us` | Tentang Kami | [~] Paper: token diterapkan; **masih ada kandungan templat bukan Sebenarnya.my** (blok tenis "Horizon", fakta 12 000+/89%, baris fakta pendua bawah footer, "Folow us", ayat berulang di Empat fungsi); kod belum |
 | `/logo` | (Logo) | [ ] |

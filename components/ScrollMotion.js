@@ -32,7 +32,7 @@ const blocks = [
   ['.bento-divider', 0],
   // Footer
   ['.newsletter', 0],
-  ['.footer-main', 0.12],
+  ['.site-footer__top', 0.12],
 ];
 
 // Fades and slides sections in as they scroll into view (styles under "Scroll motion" in global.css)
