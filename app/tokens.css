@@ -152,6 +152,13 @@
   --shadow-subtle-3: inset 0 0 0 .5px rgba(0, 0, 0, .10);
   --shadow-float: 0 0 0 .5px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12); /* floating only */
 
+  /* ── Media scrims (text on photos: hero carousel, FlipCard) ───────────── */
+  --gradient-scrim-media: linear-gradient(90deg, rgb(0 0 0 / .78) 0%, rgb(0 0 0 / .45) 45%, rgb(0 0 0 / .05) 85%);
+  --gradient-scrim-media-wide: linear-gradient(90deg, var(--color-black) 0%, var(--color-black) 26%, rgb(0 0 0 / .7) 42%, rgb(0 0 0 / .1) 62%, transparent 75%);
+  --gradient-scrim-bottom: linear-gradient(0deg, rgb(0 0 0 / .8) 0%, rgb(0 0 0 / .55) 45%, transparent 100%);
+  --gradient-scrim-bottom-short: linear-gradient(0deg, rgb(0 0 0 / .85) 0%, rgb(0 0 0 / .55) 45%, transparent 75%); /* mobile hero slides */
+  --gradient-scrim-top: linear-gradient(180deg, rgb(0 0 0 / .35), transparent);
+
   /* ── Container ─────────────────────────────────────────────────────────── */
   --container-page: 1280px;
   --container-rail: 1180px;

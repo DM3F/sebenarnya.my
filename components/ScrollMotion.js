@@ -15,8 +15,6 @@ const blocks = [
   ['.about-fn-title', 0],
   ['.about-title', 0],
   ['.about-news-intro', 0.08],
-  ['.hiw-intro', 0.08],
-  ['.hiw-cta', 0],
   // Logo page
   ['.logo-kit-title', 0],
   ['.logo-kit-intro', 0.08],
@@ -26,14 +24,11 @@ const blocks = [
   ['.activity__title', 0],
   ['.stories-viewport', 0.08],
   ['.stories-footer', 0.16],
-  // Posts
-  ['.posts-head', 0],
-  // Bento
+  // Home: WSIS banner, Tentang ringkas
   ['.wsis-banner', 0.08],
   ['.viewership-inner', 0],
   ['.partners-inner', 0.08],
   // Footer
-  ['.newsletter', 0],
   ['.site-footer__top', 0.12],
 ];
 
@@ -76,32 +71,6 @@ export default function ScrollMotion() {
       document.querySelectorAll(selector).forEach((el) => register(el, delay));
     });
 
-    // Bento cards: second card in each row starts a little later
-    document.querySelectorAll('.bento-row').forEach((row) => {
-      row.querySelectorAll('.bento-card').forEach((card, i) => register(card, i * 0.12));
-    });
-
-    // About us "What we do" cards + logo: staggered left to right
-    document.querySelectorAll('.wwd-grid > *').forEach((el, i) => register(el, i * 0.08));
-
-    // About us "How it works" steps: each one a beat after the last as they scroll in
-    document.querySelectorAll('.hiw-step').forEach((el) => register(el, 0.06));
-
-    // Post cards: staggered across the 3 columns, plus cards added by "Load more"
-    const grid = document.querySelector('.posts-grid');
-    let gridWatcher;
-    if (grid) {
-      grid.querySelectorAll('.card').forEach((card, i) => register(card, (i % 3) * 0.08));
-      gridWatcher = new MutationObserver((changes) => {
-        changes.forEach((change) => {
-          change.addedNodes.forEach((node) => {
-            if (node.nodeType === 1 && node.matches('.card')) register(node, 0.08);
-          });
-        });
-      });
-      gridWatcher.observe(grid, { childList: true });
-    }
-
     // Show anything already on screen straight away
     const frame = requestAnimationFrame(() => {
       const screenHeight = window.innerHeight;
@@ -117,7 +86,6 @@ export default function ScrollMotion() {
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
-      gridWatcher?.disconnect();
     };
   }, []);
 

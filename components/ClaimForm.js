@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { withBase } from '@/lib/basePath';
 import { Check, CloudUpload, Flag, Link, X } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
+import { Button } from '@/components/ui';
 
 // "Lapor berita tular" form, shown as a pop-up on every page.
 // Any link pointing to CLAIM_HREF (header nav, footer, AIFA chatbot) opens it instead of navigating.
@@ -202,9 +203,7 @@ export default function ClaimForm() {
             <button type="button" className="claim-ghost" onClick={reset}>
               Hantar laporan lain
             </button>
-            <button type="button" className="btn" onClick={close}>
-              Tutup
-            </button>
+            <Button onClick={close}>Tutup</Button>
           </div>
         </div>
       ) : (
@@ -344,9 +343,9 @@ export default function ClaimForm() {
           </div>
 
           <div className="claim-foot">
-            <button type="submit" className="btn claim-submit" disabled={status === 'sending'}>
+            <Button type="submit" className="claim-submit" disabled={status === 'sending'}>
               {status === 'sending' ? 'Menghantar…' : 'Hantar laporan'}
-            </button>
+            </Button>
           </div>
         </form>
       )}

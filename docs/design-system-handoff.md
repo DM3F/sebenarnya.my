@@ -343,3 +343,13 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - Bahagian "Bagaimana kami menyemak fakta" dibuang daripada halaman kerana tiada dalam canvas (data `howItWorks` dikekalkan).
 - **Mobile fixes**: `.about-intro__lead` `flex: none` ≤1100 (flex-basis 700 jadi tinggi dalam kolum); `.about-fn-card` `flex: none` ≤700 (kad kecil Empat fungsi runtuh ke 48px); `.articles-card` `box-sizing: border-box` (kad melimpah 28px daripada slot grid).
 - **Hero carousel**: teks hanya pada slaid tengah (slaid sisi: gambar sahaja, fade .2s keluar / .3s masuk); pembilang `03 / 05` 14px tnum dalam pill hitam 60% di kanan bawah slaid aktif (disembunyikan ≤600). Slaid RON95 guna foto pam minyak seperti Paper.
+
+## Fasa 5 — Pembersihan (21 Nov 2026)
+
+- `global.css`: ~700 baris CSS mati dibuang (disahkan dengan perbandingan tangkapan skrin piksel demi piksel, desktop 1624 + mobile 390, semua halaman).
+- Tiada hex keras lagi kecuali warna jenama platform (`.story-instagram` …) dan `#000` dalam `mask-image`. Alias lama `:root` dibuang; `:root` dalam `global.css` kini hanya pembantu layout & motion (`--side`, `--max-width`, `--ease`, `--slide`, `--ease-in-out`, `--duration-page`, `--fade`).
+- Overlay media: `--gradient-scrim-media` (hero, kiri→kanan), `--gradient-scrim-media-wide`, `--gradient-scrim-bottom` (FlipCard), `--gradient-scrim-bottom-short` (hero mobile), `--gradient-scrim-top`.
+- Berat font: semua melalui `--font-weight-*`; tiada 700. Asas `h1–h6` = Medium 500.
+- Radius: semua melalui `--radius-*` kecuali bulatan `50%`.
+- Saiz: tiada `rem`; saiz font luar skala dipetakan (15→16, 11→12, 27→28, 22→24, 19→20, 12.5→13, 18.5→18). Pengecualian: monogram agensi 9px.
+- Ralat borang (ClaimForm) = `--color-destructive`; fokus input AIFA = `--color-ring`; hover pautan AIFA = `--color-link`. Merah AIFA yang tinggal (togol, avatar, bubble pengguna, butang hantar) menunggu keputusan warna Tanya AIFA.

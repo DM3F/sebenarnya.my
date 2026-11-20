@@ -27,7 +27,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] Petakan variable lama `:root` dalam `global.css` ke token
 - [x] Peraturan berat tajuk dalam dokumen (display 400, heading 500 — ikut `design.md`)
 - [x] **Satu set nama token Paper ↔ kod** — ikut nama Paper (Tailwind v4 + shadcn). Shadow kekal dalam kod sahaja.
-- [ ] Token untuk overlay media (gradient hero carousel & FlipCard, teks putih atas imej)
+- [x] Token untuk overlay media: `--gradient-scrim-media`, `-media-wide`, `-bottom`, `-bottom-short`, `-top`
 - [~] Token motion — `--ease-in-out`, `--duration-page` sudah ada dalam `global.css`; belum: pindah ke `tokens.css` sebagai set lengkap (`--duration-fast 150ms`, `--duration-base 250ms`, `--duration-slow 450ms`, `--ease-out`, `--ease-in-out`, `--ease-drawer`) dan ganti `--ease`/`--slide` lama
 - [ ] Pakej token boleh-guna-semula (lihat [Fasa 7.1](#71-pakej-kongsi))
 - [?] Mode dark (Paper artboard 11 · Forms & themes) — sekarang atau kemudian. **CMS sangat mungkin perlukan ini**; shadcn guna class `.dark`.
@@ -91,12 +91,12 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 
 ## Fasa 5 — Pembersihan
 
-- [ ] Ganti **65** hex keras dalam `global.css` dengan token semantik
-- [ ] Ganti **16** `font-weight: 700` (tiada dalam skala; guna 500/600)
-- [ ] Ganti radius 26/28px dengan `--radius-card` / `--radius-lg`
-- [ ] Ganti `rem` dalam komponen yang dipindah ke `ui.css` → px token
-- [ ] Ganti `transition: all` (2 tempat dalam `global.css`) dengan property tepat
-- [ ] Buang CSS lama yang tidak dipakai lagi (`.btn`, `.pill-form`, `.lang-switch`…) bila semua pengguna sudah pindah
+- [x] Ganti hex keras dalam `global.css` dengan token semantik (kecuali warna jenama platform pada kad story dan `#000` dalam `mask-image`, yang hanya alpha). Alias lama `:root` (`--text`, `--white`, `--red`…) dibuang
+- [x] Ganti `font-weight: 700` (tiada dalam skala; guna 500/600). Semua berat kini token `--font-weight-*`
+- [x] Ganti radius keras dengan token `--radius-*` (bulatan `50%` kekal)
+- [x] Tiada `rem` lagi dalam `ui.css` dan `global.css`; saiz font luar skala dipetakan ke `--text-*` (kecuali monogram agensi 9px)
+- [x] Tiada `transition: all` lagi
+- [x] Buang CSS lama yang tidak dipakai lagi: ~700 baris (posts/kad lama, pill-form, bento, layout Artikel lama, `hiw`, `.btn`). ClaimForm kini guna `Button`
 
 ## Fasa 6 — Kualiti & serahan (laman web)
 
