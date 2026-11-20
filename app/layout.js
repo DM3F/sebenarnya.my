@@ -1,25 +1,20 @@
 import './tokens.css';
 import './global.css';
 import './ui.css';
-import { Inter, Manrope } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import Chatbot from '@/components/Chatbot';
 import PageTransition from '@/components/PageTransition';
 import ClaimForm from '@/components/ClaimForm';
 import { withBase } from '@/lib/basePath';
 
-// Manrope (variable font, 200–800) for every page; tokens.css reads it through var(--font-manrope)
+// Manrope (variable font, 200–800) is the only family: content, headings and UI controls.
+// tokens.css reads it through var(--font-manrope).
 const manrope = Manrope({
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
   variable: '--font-manrope',
 });
 
-// Inter for UI controls (buttons, inputs, labels); tokens.css reads it through var(--font-inter)
-const inter = Inter({
-  subsets: ['latin', 'latin-ext'],
-  display: 'swap',
-  variable: '--font-inter',
-});
 
 const description =
   'Sebenarnya.my membantu orang ramai mendapatkan maklumat sahih dan maklum balas rasmi, mengikuti berita dan perkembangan terkini, menyemak dakwaan serta menyalurkan maklumat yang diragui.';
@@ -45,7 +40,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ms" className={`${manrope.variable} ${inter.variable}`}>
+    <html lang="ms" className={`${manrope.variable}`}>
       <body>
         {children}
         {/* Page transition between routes (animation in global.css) */}

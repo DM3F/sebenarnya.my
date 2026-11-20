@@ -9,7 +9,7 @@ Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** se
 
 **Peraturan tetap**
 - Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`. Nama token sama di Paper dan kod.
-- Font: **Manrope** untuk kandungan, tajuk dan navigasi; **Inter** untuk kawalan UI (button, input). Semua tajuk besar **Medium 500**.
+- Font: **Manrope sahaja** (kandungan, tajuk, navigasi dan kawalan UI). Display 48+ dan angka statistik **400** (`--font-weight-display`); heading 24–36 dan label **Medium 500**. Tiada 700+. Rujuk [`design.md`](design.md).
 - Merah Kebenaran bukan warna aksi (button, link, nav).
 - Ikon: **Lucide** sahaja, melalui `components/ui/Icon.js` (garis 1.75px `absoluteStrokeWidth`, currentColor, `aria-hidden`). Logo jenama (Facebook, TikTok…) kekal SVG jenama.
 - Semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = **16 / 24 Medium**.
@@ -22,10 +22,10 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 
 ## Fasa 1 — Fondasi (tokens & font)
 
-- [x] Font Manrope + Inter via `next/font` (`app/layout.js`)
+- [x] Font Manrope via `next/font` (`app/layout.js`); Inter dibuang
 - [x] `app/tokens.css`: primitive, semantic, type scale, weight, spacing, radius, shadow, container, skala mobile
 - [x] Petakan variable lama `:root` dalam `global.css` ke token
-- [x] Peraturan "tajuk besar = Medium 500" dalam dokumen
+- [x] Peraturan berat tajuk dalam dokumen (display 400, heading 500 — ikut `design.md`)
 - [x] **Satu set nama token Paper ↔ kod** — ikut nama Paper (Tailwind v4 + shadcn). Shadow kekal dalam kod sahaja.
 - [ ] Token untuk overlay media (gradient hero carousel & FlipCard, teks putih atas imej)
 - [~] Token motion — `--ease-in-out`, `--duration-page` sudah ada dalam `global.css`; belum: pindah ke `tokens.css` sebagai set lengkap (`--duration-fast 150ms`, `--duration-base 250ms`, `--duration-slow 450ms`, `--ease-out`, `--ease-in-out`, `--ease-drawer`) dan ganti `--ease`/`--slide` lama
@@ -84,9 +84,9 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 
 ## Keputusan arah visual (docs/design.md, 21 Nov 2026)
 
-- [ ] Satu keluarga font: Manrope sahaja — buang Inter (`--font-ui`) dari kod, Paper dan handoff
-- [ ] Display (tajuk besar) weight 400 — kod, Paper, handoff §2.3
-- [ ] Angka statistik weight 400 — kod (Home), Paper (Stat), handoff
+- [~] Satu keluarga font: Manrope sahaja — kod & handoff siap; **Paper belum**
+- [~] Display (tajuk besar) weight 400 — kod & handoff siap (`--font-weight-display`); **Paper belum**
+- [~] Angka statistik weight 400 — kod (Home, Tentang Kami) & handoff siap; **Paper belum**
 - [~] Tanya AIFA kekal merah buat masa ini (belum ada keputusan warna)
 
 ## Fasa 5 — Pembersihan
@@ -119,7 +119,7 @@ design-system/
   tokens.css          ← dipindah dari app/tokens.css (sumber tunggal)
   ui.css              ← dipindah dari app/ui.css (komponen asas, CSS biasa)
   shadcn-bridge.css   ← peta token kita → nama variable shadcn (7.3)
-  fonts/              ← Manrope & Inter woff2 (untuk extension; web guna next/font)
+  fonts/              ← Manrope woff2 (untuk extension; web guna next/font)
   components/         ← Button, Chip, Tabs, Verdict, SearchField, NavLink, DropdownMenu, Icon
   README.md           ← cara import untuk setiap pengguna
 ```
@@ -127,7 +127,7 @@ design-system/
 - [ ] Pindah `tokens.css` + `ui.css` + `components/ui/*` ke `design-system/`; laman web import dari situ (tiada perubahan visual)
 - [?] Cara kongsi ke repo CMS/extension: **monorepo** (pnpm workspace, paling mudah dijaga) · pakej npm privat · git submodule
 - [ ] Versi pakej (semver) + CHANGELOG ringkas: token baru = minor, nama token berubah/dibuang = major
-- [ ] Fail `fonts.css` dengan `@font-face` Manrope + Inter untuk persekitaran tanpa `next/font` (extension). `--font-manrope` / `--font-inter` diisi oleh fail ini.
+- [ ] Fail `fonts.css` dengan `@font-face` Manrope untuk persekitaran tanpa `next/font` (extension). `--font-manrope` diisi oleh fail ini.
 
 ### 7.2 CMS dashboard
 
@@ -208,7 +208,7 @@ shadcn baca variable tanpa awalan (`--background`, `--primary`…). Petakan ke t
 Salin blok ini ke PR untuk setiap komponen:
 
 - [ ] Warna hanya melalui variable jambatan / token semantik — tiada `bg-zinc-*`, `text-neutral-*`, hex atau `oklch` dalam fail komponen
-- [ ] Label kawalan: `font-ui` (Inter) **16/24 Medium** (shadcn lalai `text-sm` 14px — tukar), atau saiz CMS yang diputuskan di 7.2
+- [ ] Label kawalan: `font-sans` (Manrope) **16/24 Medium** (shadcn lalai `text-sm` 14px — tukar), atau saiz CMS yang diputuskan di 7.2
 - [ ] Radius: button / chip / tab / search = `--radius-full`; input = `--radius-input`; dropdown / popover = `--radius-md`; card / dialog = `--radius-card`
 - [ ] Tinggi kawalan ikut token (`--control-h-*`), bukan `h-9` / `h-10` keras
 - [ ] Fokus: `outline: 2px solid var(--color-ring); outline-offset: 3px` (sama dengan `ui.css`) — ganti `ring-[3px] ring-ring/50` lalai shadcn
@@ -258,7 +258,7 @@ grep -rnE 'oklch\(|(bg|text|border)-(zinc|neutral|slate|gray|stone)-[0-9]' compo
 
 | Semak | Web | CMS | Extension |
 |---|:-:|:-:|:-:|
-| Font: Manrope kandungan, Inter kawalan | [ ] | [ ] | [ ] |
+| Font: Manrope sahaja; display 400 | [ ] | [ ] | [ ] |
 | Label interaktif 16/24 Medium (atau saiz CMS yang diputuskan) | [ ] | [ ] | [ ] |
 | Verdict: 4 warna + dot sama di semua tempat | [ ] | [ ] | [ ] |
 | Button / chip / tab bulat penuh; input 8px; card 20px | [ ] | [ ] | [ ] |

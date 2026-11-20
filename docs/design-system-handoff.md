@@ -14,7 +14,7 @@ Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork"
 - Next.js 16 + React 19, **JavaScript** (bukan TS), App Router, `output: "export"`, `basePath` `/sebenarnya-design` untuk production (GitHub Pages). Guna `withBase()` dari `lib/basePath.js` untuk path aset.
 - Routes: `/` (Home), `/about-us`, `/logo`, `/article`, `/article/[slug]`.
 - Styling: satu fail `app/global.css` (~3,900 baris), **tiada Tailwind**. Root font-size 62.5% → `1rem = 10px`.
-- Font: **Manrope** (kandungan & tajuk, `--font-manrope` → `--font-sans`) dan **Inter** (UI: button, input, select, textarea, `--font-inter` → `--font-ui`) via `next/font/google` dalam `app/layout.js`. ✅ Siap.
+- Font: **Manrope sahaja** (`--font-manrope` → `--font-sans`) via `next/font/google` dalam `app/layout.js`, untuk kandungan, tajuk dan semua kawalan UI. Inter dan `--font-ui` dibuang (21 Nov 2026, `design.md` §8). ✅ Siap.
 - Tokens: `app/tokens.css` (diimport sebelum `global.css`). Variable lama dalam `:root` `global.css` sudah dipetakan ke token (bahagian 3). ✅ Siap.
 - Komponen sedia ada: `Header, Footer, Hero, Carousel, Latest, FlipCard, Bento, Stories, Viewership, Collaborators, Articles, ArticleDetail, AboutUs, Logo, LogoKit, ShareButton, Chatbot, ClaimForm, ScrollMotion`.
 
@@ -65,7 +65,7 @@ Saiz kawalan guna spacing: tinggi `--spacing-44` (min sasaran sentuh), search `-
 (Mode dark ada dalam Paper "11 · Forms & themes" — belum wajib.)
 
 ### 2.3 Typography
-Font: **Manrope** 300/400/500/600 untuk kandungan, tajuk dan navigasi (`--font-sans`); **Inter** untuk kawalan UI — button, input, label borang (`--font-ui`).
+Font: **Manrope** 300/400/500/600 untuk semuanya (`--font-sans`) — kandungan, tajuk, navigasi dan kawalan UI.
 
 | Gaya | Weight | Size / line (token) | Tracking | Guna |
 |---|---|---|---|---|
@@ -88,7 +88,7 @@ Font: **Manrope** 300/400/500/600 untuk kandungan, tajuk dan navigasi (`--font-s
 | Stat/40 Light | 300 | 40 / 44 | -0.02em | angka statistik |
 | Stat/32 Light | 300 | 32 / 36 | 0 | angka kecil (WSIS) |
 
-**Peraturan: semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = 16 / 24 Medium** — tiada label 18px. **Semua tajuk besar (Display & Heading) guna Medium 500** — contoh "Warm cream editorial, clear headlines." pada cover. Regular 400 hanya untuk body; Light 300 hanya untuk statistik.
+**Peraturan: semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = 16 / 24 Medium** — tiada label 18px. **Display (48–56) dan angka statistik guna 400** melalui `--font-weight-display` — besar tetapi ringan (`design.md` §3). **Heading (24–36) guna Medium 500.** Regular 400 untuk body; Light 300 hanya untuk kapsyen statistik. Tiada 700+. Pengguna `--font-weight-display`: `.hero-title`, `.hero-carousel h3`, `.wsis-banner__title`, `.post-title`, `.about-hero-text h1`, `.about-title`, `.about-fn-title`, `.viewership-stats dt`, `.about-intro__stat-value`, `.about-intro__facts-row dt`.
 
 Token: saiz `--text-{12,13,14,16,18,20,24,28,30,32,36,38,40,48,56}`, line-height `--leading-{16,18,20,21,24,26,28,32,34,36,42,44,52,60}` (+ `--leading-display/heading/body` %), tracking `--tracking-{display,tight,body,label}`, weight `--font-weight-{light,regular,medium,semibold}`. Contoh Display/56 = `--text-56` / `--leading-60` / `--tracking-display` / `--font-weight-medium`.
 
@@ -176,7 +176,7 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 
 ## 4. Komponen (spec)
 
-✅ **Komponen asas siap** dalam `components/ui/` (import dari `@/components/ui`) dengan CSS dalam `app/ui.css` (kelas `ui-*`, token semantik sahaja, font UI Inter):
+✅ **Komponen asas siap** dalam `components/ui/` (import dari `@/components/ui`) dengan CSS dalam `app/ui.css` (kelas `ui-*`, token semantik sahaja, font Manrope):
 - `Button` (`variant`: filled | outline | ghost, `icon`, `href`, `disabled`) + `ButtonGroup`
 - `Chip` (`href?`) + `ChipRow` (`label` cth. "Popular:")
 - `Tabs` (`items`, `value`, `onChange`, `label`) — juga language switcher; ikut corak ARIA tabs (anak panah, Home/End)
@@ -221,7 +221,7 @@ Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLin
 - Segmented BM/EN: border 1px `--color-muted-strong`, padding 2, gap 2; item 44×44 min, padding 0 12, Body 16; aktif bg `--color-background` + border 1px `--color-border`, semibold, `--color-foreground`; tidak aktif `--color-muted-foreground`.
 - Dropdown: panel bg `--color-background`, border 1px `--color-border`, radius `--radius-md`, padding 8, `--shadow-float`; item 44px, padding 10 16, radius 8, hover/aktif `--color-muted`. Tutup dengan Escape (fokus balik ke trigger), klik luar, atau blur.
 - ≤1100px: nav jadi panel (butang menu 44×44); anak dropdown disenarai di bawah label kumpulan. ≤600px: butang "Salur Kepada Kami" pindah ke dalam panel, logo max 140.
-- Font: semua label header (NavLink, dropdown, BM/EN, butang "Salur Kepada Kami") guna **Manrope** (`--font-sans`), sama dengan Paper. Kawalan UI lain (button, input, chip di luar header) kekal **Inter**.
+- Font: semua label header (NavLink, dropdown, BM/EN, butang "Salur Kepada Kami") guna **Manrope** (`--font-sans`), sama dengan Paper. Kawalan UI lain juga Manrope (Inter dibuang).
 - "Hubungi kami" belum dalam dropdown — tiada page `/contact/` lagi.
 
 Baseline asal dari Figma:
@@ -262,7 +262,7 @@ Padding 32 atas / 96 bawah, sisi 81 (48 ≤1280, 24 ≤900, 16 ≤600). "Semua a
 
 ### Halaman Artikel ✅ (Paper › Artwork › Artikel; `components/Articles.js`)
 - Sisi `--articles-side` 96 / 48 / 24 / 16, padding atas 40, bawah 96.
-- **Penapis:** carian pill 44 (border 1px `--color-border-strong`, ikon Search 18, input Inter 16) + 2 `<select>` asli bergaya pill 44 (border `--color-border`, label 16 Medium, ChevronDown Lucide) + kiraan 14 `--color-muted-foreground`. Chip kategori pill 44 bg `--color-muted`, label 16 Medium, dot verdict 7px; terpilih = `--color-primary` + `--color-primary-foreground`; baris boleh skrol dengan butang ‹ › 44 bila melimpah.
+- **Penapis:** carian pill 44 (border 1px `--color-border-strong`, ikon Search 18, input Manrope 16) + 2 `<select>` asli bergaya pill 44 (border `--color-border`, label 16 Medium, ChevronDown Lucide) + kiraan 14 `--color-muted-foreground`. Chip kategori pill 44 bg `--color-muted`, label 16 Medium, dot verdict 7px; terpilih = `--color-primary` + `--color-primary-foreground`; baris boleh skrol dengan butang ‹ › 44 bila melimpah.
 - **Hasil:** jika >4 hasil — kad utama (960:440, tinggi 560, radius 20, scrim bawah, tajuk 28/36 Medium putih, tarikh 14) + senarai sisi 4 item (thumb 160×122 radius 12, tajuk 20/26 Medium, tarikh 14); kemudian grid 4 kolum (3 ≤1280, 2 ≤900, 1 ≤600), gap 32/24. Kad grid: bg `--color-muted`, radius 20, padding 8/8/20, foto 220 radius 12, tajuk 20/26, tarikh 14.
 - Pill verdict atas foto: bg `--color-background` 90%, dot `--color-verdict-*-dot`, perkataan 13 semibold UPPERCASE `--color-verdict-*`. Status `benar` dilabel **"Penjelasan"**.
 - Seluruh kad boleh diklik (pautan tajuk `::after`), cincin fokus pada kad.
@@ -274,7 +274,7 @@ Pill `padding 10px 22px 10px 18px; min-height 44`, ikon chat 24px + "Tanya AIFA"
 - **Article card (page Artikel):** lebar 230; imej 276 tinggi radius 26→`--radius-card`; pill verdict kiri atas (bg white 90% + blur 10, padding 6px 10px, dot 7px, 13 SemiBold); avatar agensi 30px bulat kiri bawah; tajuk Heading/20; tarikh Body/14 @60%.
 - **FactCheckCard ✅ (Home "Semakan fakta terkini"; Paper › 06 › FactCheckCard – States):** `components/FlipCard.js`, 340×480, radius `--radius-card`. Flip dikekalkan: hover tetikus, klik/tap, Enter/Space (fokus pindah ke sisi yang kelihatan), `rotateY(180deg)` .6s `cubic-bezier(.77,0,.175,1)`, tiada animasi jika reduced motion.
   - Depan: foto penuh; scrim atas tipis (0.35→0, 120px) di belakang logo dan scrim bawah pekat (0.8→0.55→0, 300px) di bawah teks supaya teks putih kekal ≥4.5:1 atas sebarang foto; **logo agensi 44 putih (logo 30, atau monogram) di kanan atas**; **pill verdict (dot + PERKATAAN 13 semibold) + tajuk 24/125% Medium putih di bawah** (inset 24); tiada ikon panah.
-  - Belakang: bg `--color-muted`, border 1px `--color-border`, padding 24; `● PALSU · MCMC` (perkataan warna `--color-verdict-*`) + avatar 36; tajuk 20/130% Medium; ringkasan 16/24 `--color-text-secondary`; meta 13 `--color-muted-foreground` "Disemak {tarikh}" + "Sumber: kenyataan rasmi {agensi}" atas garisan; CTA penuh lebar tinggi 48, padding 6/6/6/20, `--color-primary`, label Inter 16 Medium "Baca semakan" + bulatan ↗ putih 36 (konsentrik dengan radius pill); hover `--color-primary-hover` + ikon geser 2px ↗; tekan `scale .96`. Kedua-dua sisi tepat 480px (`box-sizing: border-box`) supaya tinggi kad tidak berubah semasa flip; ringkasan max 4 baris.
+  - Belakang: bg `--color-muted`, border 1px `--color-border`, padding 24; `● PALSU · MCMC` (perkataan warna `--color-verdict-*`) + avatar 36; tajuk 20/130% Medium; ringkasan 16/24 `--color-text-secondary`; meta 13 `--color-muted-foreground` "Disemak {tarikh}" + "Sumber: kenyataan rasmi {agensi}" atas garisan; CTA penuh lebar tinggi 48, padding 6/6/6/20, `--color-primary`, label 16 Medium "Baca semakan" + bulatan ↗ putih 36 (konsentrik dengan radius pill); hover `--color-primary-hover` + ikon geser 2px ↗; tekan `scale .96`. Kedua-dua sisi tepat 480px (`box-sizing: border-box`) supaya tinggi kad tidak berubah semasa flip; ringkasan max 4 baris.
 - **Seksyen "Semakan fakta terkini" ✅:** `components/Latest.js`. Padding atas/bawah 96 (64 ≤1280, 48 ≤600), sisi `--latest-side` 96 / 48 ≤1280 / 24 ≤900 / 16 ≤600 untuk tajuk dan butang sahaja — **baris kad full-bleed hingga tepi skrin** (seperti hero carousel), kad pertama sejajar dengan tajuk; gap 48; tajuk Heading/36 Medium **2 baris seimbang (22 + 22 aksara): "Semakan fakta terkini, / disahkan agensi rasmi."** (≤600px baris mengalir dengan `text-wrap: balance`, kekal 2 baris). Baris kartu = **gelangsar automatik tanpa hujung** (12 semakan terbaru, setiap satu gambar unik): kad duduk atas "cincin" — kad yang keluar di kiri masuk semula di kanan, tiada salinan pendua. Kelajuan 36px/s; **hover tetikus = perlahan hingga berhenti, mouse leave = laju semula** (ease ~0.2s). Juga berhenti semasa kad diflip, fokus papan kekunci di dalam (kad yang difokus dibawa ke pandangan), diseret (sentuh/pen), dan sentiasa di bawah `prefers-reduced-motion`. Butang ‹ › 44 bulat (border `--color-border`) gelongsor tepat satu kad; "Lihat lagi" `Button` outline dengan border `--color-foreground`, di tengah.
 - **Feature card / WSIS:** bg `--color-muted`, radius 20, padding 46 44; stats Stat/32 Light + caption 12 Smoke.
 - **Fungsi card (Tentang Kami):** tinggi 280, padding 24, radius 20, bg subtle; tajuk Heading/24 + nombor "/01" Body/16; teks Body/16 Smoke.
@@ -313,7 +313,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 ## 6. Urutan kerja dicadangkan
 
 1. Branch baru dari `endahbyu` (contoh `design-system`).
-2. ✅ Tukar font ke Manrope + Inter (UI) dalam `layout.js`.
+2. ✅ Tukar font ke Manrope dalam `layout.js` (Inter dibuang 21 Nov 2026).
 3. ✅ Tambah `app/tokens.css` (bahagian 2) dan import.
 4. ✅ Petakan variable lama dalam `:root` `global.css` (bahagian 3). Semak visual setiap page masih perlu.
 5. ✅ Bina `components/ui/` (Button, Chip, Tabs, Verdict, SearchField). Belum: guna dalam komponen sedia ada.

@@ -12,8 +12,7 @@
 
 :root {
   /* ── Fonts (loaded in app/layout.js via next/font) ───────────────────── */
-  --font-sans: var(--font-manrope), 'Manrope', system-ui, sans-serif; /* content, headings */
-  --font-ui: var(--font-inter), 'Inter', system-ui, sans-serif;       /* buttons, inputs, labels */
+  --font-sans: var(--font-manrope), 'Manrope', system-ui, sans-serif; /* the only family: content, headings, UI */
 
   /* ── Palette (primitives — do not use in components) ──────────────────── */
   --color-white: #ffffff;
@@ -70,9 +69,10 @@
   --color-verdict-benar-dot: var(--color-green);
 
   /* ── Font weight — every headline (Display & Heading) is medium ───────── */
-  --font-weight-light: 300;    /* statistics only */
-  --font-weight-regular: 400;  /* body only */
-  --font-weight-medium: 500;   /* display, headings, labels */
+  --font-weight-light: 300;    /* stat captions only */
+  --font-weight-regular: 400;  /* body; display via --font-weight-display */
+  --font-weight-medium: 500;   /* headings (24–36), labels */
+  --font-weight-display: var(--font-weight-regular); /* display titles (48+) and stat numbers — light, editorial (docs/design.md §8) */
   --font-weight-semibold: 600; /* verdict */
 
   /* ── Font size ─────────────────────────────────────────────────────────── */

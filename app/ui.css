@@ -16,7 +16,7 @@
   min-height: var(--spacing-44);
   border: .5px solid transparent;
   border-radius: var(--radius-full);
-  font-family: var(--font-ui);
+  font-family: var(--font-sans);
   font-size: var(--text-16);
   line-height: var(--leading-24);
   font-weight: var(--font-weight-medium);
@@ -85,7 +85,7 @@
 
 .ui-chip-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-8); }
 .ui-chip-row__label {
-  font-family: var(--font-ui);
+  font-family: var(--font-sans);
   font-size: var(--text-14);
   line-height: var(--leading-21);
   color: var(--color-muted-foreground);
@@ -141,7 +141,7 @@
   padding: var(--spacing-8) var(--spacing-12) var(--spacing-8) var(--spacing-8);
   background: var(--color-background);
   border-radius: var(--radius-full);
-  font-family: var(--font-ui);
+  font-family: var(--font-sans);
 }
 .ui-verdict--palsu    { --verdict-indicator: var(--color-verdict-palsu-dot);    --verdict-text: var(--color-verdict-palsu); }
 .ui-verdict--waspada  { --verdict-indicator: var(--color-verdict-waspada-dot);  --verdict-text: var(--color-verdict-waspada); }
@@ -175,7 +175,7 @@
 /* Field / Search --------------------------------------------------------- */
 .ui-field { display: flex; flex-direction: column; gap: var(--spacing-8); }
 .ui-field__label {
-  font-family: var(--font-ui);
+  font-family: var(--font-sans);
   font-size: var(--text-14);
   line-height: var(--leading-21);
   font-weight: var(--font-weight-medium);
@@ -209,7 +209,7 @@
   border: 0;
   outline: 0;
   background: transparent;
-  font-family: var(--font-ui);
+  font-family: var(--font-sans);
   font-size: var(--text-16);
   line-height: var(--leading-24);
   color: var(--color-foreground);
@@ -234,7 +234,7 @@
 .ui-search[data-invalid] { border-color: var(--color-destructive); }
 .ui-field__error {
   margin: 0;
-  font-family: var(--font-ui);
+  font-family: var(--font-sans);
   font-size: var(--text-14);
   line-height: var(--leading-21);
   font-weight: var(--font-weight-medium);

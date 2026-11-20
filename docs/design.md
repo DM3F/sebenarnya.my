@@ -64,7 +64,7 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 
 **Satu keluarga font: Manrope.** Satu suara dari tajuk hero hingga label butang dan angka. Kontras dicipta melalui **saiz dan warna**, bukan dengan menukar font atau menebalkan huruf.
 
-> Nota: sistem sekarang masih memakai Inter untuk kawalan UI (`--font-ui`). Arah rasa ini mahu satu keluarga — lihat §8.
+> Nota: Inter dan `--font-ui` sudah dibuang dari kod (21 Nov 2026). Manrope satu-satunya keluarga.
 
 | Peranan | Saiz / line-height | Weight | Nota |
 |---|---|---|---|
@@ -167,9 +167,9 @@ Keputusan (21 Nov 2026):
 
 | # | Perkara | Keputusan | Status implementasi |
 |---|---|---|---|
-| 1 | Keluarga font | **Manrope sahaja.** Buang Inter / `--font-ui`. | Belum — kod, Paper dan handoff masih ada Inter untuk butang/input. |
-| 2 | Display weight | **400** untuk tajuk display (hero, tajuk besar). Heading kekal 500. | Belum — kod & Paper kini display 500. |
-| 3 | Angka besar | **400** untuk semua angka statistik. | Belum — Home 500, Paper "Stat Light" 300. |
+| 1 | Keluarga font | **Manrope sahaja.** Buang Inter / `--font-ui`. | Kod & handoff siap. Paper belum. |
+| 2 | Display weight | **400** untuk tajuk display (hero, tajuk besar). Heading kekal 500. | Kod & handoff siap (`--font-weight-display`). Paper belum. |
+| 3 | Angka besar | **400** untuk semua angka statistik. | Kod & handoff siap. Paper belum ("Stat Light" 300). |
 | 4 | Tanya AIFA | **Biarkan merah buat masa ini** (belum ada idea). | Kekal terbuka di `plan.md`. |
 | 5 | Chart & meter | Garis panduan §4 jadi titik mula bila diperlukan (cth. dashboard CMS). | Belum ada dalam sistem. |
 
