@@ -51,7 +51,7 @@ export default function ArticleDetail({ article }) {
 
         <section>
           <h2>Penjelasan Rasmi</h2>
-          <p>{article.explanation}</p>
+          {article.explanation && <p>{article.explanation}</p>}
           <p>Sentiasa rujuk saluran rasmi {short} untuk perkembangan terkini.</p>
         </section>
 

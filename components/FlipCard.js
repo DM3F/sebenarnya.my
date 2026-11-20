@@ -60,7 +60,11 @@ export default function FlipCard({ post, flipped, onHover, onToggle }) {
             <h3 className="fc-title">{post.title}</h3>
           </div>
           <span className="fc-avatar" title={post.agency.name}>
-            <img src={post.agency.image} alt={post.agency.short} loading="lazy" />
+            {post.agency.image ? (
+              <img src={post.agency.image} alt={post.agency.short} loading="lazy" />
+            ) : (
+              <span className="fc-initials" aria-label={post.agency.short}>{post.agency.initials}</span>
+            )}
           </span>
           <button
             ref={frontBtnRef}
@@ -80,7 +84,11 @@ export default function FlipCard({ post, flipped, onHover, onToggle }) {
                 <span className="fc-agency">· {post.agency.short}</span>
               </span>
               <span className="fc-avatar fc-avatar--sm">
-                <img src={post.agency.image} alt="" loading="lazy" />
+                {post.agency.image ? (
+                  <img src={post.agency.image} alt="" loading="lazy" />
+                ) : (
+                  <span className="fc-initials" aria-hidden="true">{post.agency.initials}</span>
+                )}
               </span>
             </div>
             <h3 className="fc-back-title">{post.title}</h3>

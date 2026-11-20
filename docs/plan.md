@@ -57,7 +57,9 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [?] Tanya AIFA floating button — merah (artwork) vs Ink + `--shadow-float` (peraturan)
 - [ ] Article card (Paper 12 › Card)
 - [x] FactCheckCard / Flip card: satu kad terbuka pada satu masa, hover intent 90/140ms, buka 0.7s ease-out, tutup 0.45s
-- [x] Seksyen "Semakan fakta terkini" (scroll-snap, butang ‹ ›, Lihat lagi)
+- [x] Seksyen "Semakan fakta terkini": gelangsar automatik tanpa hujung, berhenti bila hover, butang ‹ ›, Lihat lagi
+- [x] 20 artikel baharu (Oktober 2026) dengan gambar unik; monogram agensi bila tiada logo
+- [ ] Logo agensi baharu: MOF, JAIS, Kesultanan Pahang, PMO, JPM, Caltex, KTMB (kini monogram)
 - [x] HeroCarousel: infinite loop, tepi melengkung (mask `clip-path`, imej diam), teks pada semua kad, mobile teks di dalam kad, autoplay + dots + jeda
 - [x] Page transition antara route (`components/PageTransition.js`, View Transitions API)
 - [ ] PromoBanner / Award (WSIS)

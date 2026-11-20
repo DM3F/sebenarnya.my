@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { articles, articleCategories, articleStatus } from '@/data/content';
 import { matchesQuery } from '@/lib/searchArticles';
-import { articleHref, formatDate } from '@/lib/articles';
+import { agencyInitials, articleHref, formatDate } from '@/lib/articles';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 
@@ -243,7 +243,11 @@ function ArticleCard({ article }) {
           {status.label}
         </span>
         <div className="card-avatar" title={article.agency.name}>
-          <img src={article.agency.image} alt={article.agency.name} loading="lazy" />
+          {article.agency.image ? (
+            <img src={article.agency.image} alt={article.agency.name} loading="lazy" />
+          ) : (
+            <span className="card-avatar-initials" aria-label={article.agency.name}>{agencyInitials(article.agency.name)}</span>
+          )}
         </div>
       </div>
 

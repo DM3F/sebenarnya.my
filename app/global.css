@@ -347,6 +347,21 @@ input::placeholder { color: var(--text); }
   will-change: transform;
 }
 
+/* Agencies without a logo file show a monogram (lib/articles.js agencyInitials) */
+.card-avatar-initials {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--color-card);
+  font-family: var(--font-sans);
+  font-size: 9px;
+  line-height: 1;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-foreground);
+}
+
 .card-avatar:hover {
   transform: scale(.9);
   background-color: var(--white);
@@ -1609,21 +1624,16 @@ input::placeholder { color: var(--text); }
   gap: var(--spacing-24);
 }
 
-/* Native horizontal scroll with snap: swipe, trackpad and keyboard work for free.
-   Vertical padding leaves room for focus rings; negative margin keeps alignment. */
+/* Endless glide (components/Latest.js): cards move by transform on a ring, so the
+   track clips instead of scrolling. Padding leaves room for focus rings and the flip. */
 .latest-checks__track {
-  display: flex;
-  gap: var(--spacing-24);
   margin: calc(-1 * var(--spacing-8));
   padding: var(--spacing-8);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--spacing-8);
-  scrollbar-width: none;
+  overflow: hidden;
+  touch-action: pan-y;
 }
-.latest-checks__track::-webkit-scrollbar { display: none; }
-.latest-checks__track > .fc { flex: 0 0 340px; scroll-snap-align: start; }
+.latest-checks__rail { display: flex; gap: var(--spacing-24); }
+.latest-checks__rail > .fc { flex: 0 0 340px; will-change: transform; }
 
 .latest-checks__controls {
   display: flex;
@@ -1645,10 +1655,9 @@ input::placeholder { color: var(--text); }
   transition: background-color .15s ease, opacity .15s ease, transform .16s cubic-bezier(.23, 1, .32, 1);
 }
 .latest-checks__nav:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 2px; }
-.latest-checks__nav:active:not(:disabled) { transform: scale(.96); }
-.latest-checks__nav:disabled { opacity: .4; cursor: default; }
+.latest-checks__nav:active { transform: scale(.96); }
 @media (hover: hover) and (pointer: fine) {
-  .latest-checks__nav:hover:not(:disabled) { background: var(--color-muted); }
+  .latest-checks__nav:hover { background: var(--color-muted); }
 }
 
 /* "Lihat lagi": outline pill with a foreground edge (Paper) */
@@ -1663,7 +1672,7 @@ input::placeholder { color: var(--text); }
 @media (max-width: 600px) {
   .latest-checks { padding: var(--spacing-48) var(--spacing-16); }
   .latest-checks__title { font-size: var(--text-28); line-height: var(--leading-34); }
-  .latest-checks__track > .fc { flex-basis: min(300px, 82vw); }
+  .latest-checks__rail > .fc { flex-basis: min(300px, 82vw); }
 }
 
 /* ── Flip mechanics (unchanged behaviour): both faces share one grid cell ── */
@@ -1811,6 +1820,14 @@ input::placeholder { color: var(--text); }
 }
 .fc-avatar img { width: 30px; height: 30px; border-radius: var(--radius-full); object-fit: cover; }
 .fc-front .fc-avatar { position: absolute; z-index: 1; left: var(--spacing-24); bottom: var(--spacing-24); }
+.fc-initials {
+  font-family: var(--font-sans);
+  font-size: var(--text-12);
+  line-height: var(--leading-16);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-body);
+  color: var(--color-foreground);
+}
 .fc-avatar--sm { width: 36px; height: 36px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); }
 .fc-avatar--sm img { width: 24px; height: 24px; }
 
