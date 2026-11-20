@@ -200,7 +200,7 @@ Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` j
 - Pasangan button: gap 8px. Props: `variant`, `size?`, `icon?`, `href?`.
 
 ### Chip
-`height 44; padding 10px 12px; radius pill; bg --color-background; border .5px --color-border; Label/16`. Hover `--color-muted`. Didahului label "Popular:" Body/14 Smoke.
+`height 44 (padding 9.5px 12px + border .5px); radius pill; bg --color-background; border .5px --color-border; Label/16`. Hover `--color-muted`. Didahului label "Popular:" Body/14 Smoke.
 
 ### Tabs/Segmented (dan Language switcher)
 Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px --color-border`. Item = Chip; item terpilih bg `--color-card` + border `.5px --color-border`. Language switcher sama (item BM/EN, gap 8).
@@ -236,6 +236,7 @@ Baseline asal dari Figma:
 - Tajuk Display/56 Medium, **2 baris**: "Tidak pasti? / Semak sebelum kongsi." (≤600px: `--text-38`, baris mengalir dengan `text-wrap: balance`, tetap 2 baris).
 - Lede 18/32 Medium `--color-text-secondary`, **2 baris** (69 + 69 aksara): "Portal rujukan rasmi yang disahkan terus oleh kementerian dan agensi. / Tampal tajuk mesej tular di sini, atau tanya AIFA 24 jam di WhatsApp." (≤760px mengalir bebas).
 - `SearchField` max 800, placeholder "Contoh: bantuan tunai WhatsApp", ralat bawah field.
+- Bawah search (gap 16): `ChipRow` "Carian popular:" (Body/14 `--color-muted-foreground`) + 4 `Chip`: Bantuan tunai · RON95 · Hujan lebat · Lesen memandu. Setiap kata kunci mesti pulangkan sekurang-kurangnya satu semakan; klik = cari terus (`/article?q=`).
 
 ### HeroCarousel ✅ (Paper › Home › HeroCarousel)
 - Slide 960×480 (lebar `min(960, 100vw − 128)`), radius `--radius-card`, gap 20; slide tengah di tengah, jiran kiri/kanan mengintai.

@@ -2,8 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { SearchField } from '@/components/ui';
+import { Chip, ChipRow, SearchField } from '@/components/ui';
 import { keywords, searchArticles } from '@/lib/searchArticles';
+
+// Popular searches under the search bar; each one returns at least one fact-check
+const POPULAR = ['Bantuan tunai', 'RON95', 'Hujan lebat', 'Lesen memandu'];
 
 export default function Hero() {
   const router = useRouter();
@@ -37,19 +40,35 @@ export default function Hero() {
             </p>
           </div>
 
-          <SearchField
-            className="hero-search"
-            label="Cari dakwaan, topik atau kata kunci"
-            hideLabel
-            placeholder="Contoh: bantuan tunai WhatsApp"
-            value={query}
-            onChange={(text) => {
-              setQuery(text);
-              setError('');
-            }}
-            error={error}
-            onSubmit={handleSearch}
-          />
+          <div className="hero-search-group">
+            <SearchField
+              className="hero-search"
+              label="Cari dakwaan, topik atau kata kunci"
+              hideLabel
+              placeholder="Contoh: bantuan tunai WhatsApp"
+              value={query}
+              onChange={(text) => {
+                setQuery(text);
+                setError('');
+              }}
+              error={error}
+              onSubmit={handleSearch}
+            />
+            <ChipRow label="Carian popular:" className="hero-popular">
+              {POPULAR.map((term) => (
+                <Chip
+                  key={term}
+                  onClick={() => {
+                    setQuery(term);
+                    setError('');
+                    handleSearch(term);
+                  }}
+                >
+                  {term}
+                </Chip>
+              ))}
+            </ChipRow>
+          </div>
         </div>
       </div>
     </section>

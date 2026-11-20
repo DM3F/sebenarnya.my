@@ -7,7 +7,7 @@ const blocks = [
   // Hero
   ['.hero-title', 0.04],
   ['.hero-lede', 0.1],
-  ['.hero-search', 0.14],
+  ['.hero-search-group', 0.14],
   ['.latest-checks__title', 0],
   ['.latest-checks__carousel', 0.08],
   // About us hero

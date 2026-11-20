@@ -41,7 +41,7 @@
 .ui-chip svg { width: 16px; height: 16px; flex-shrink: 0; }
 
 /* Button ---------------------------------------------------------------- */
-.ui-btn { padding: 10px var(--spacing-20); }
+.ui-btn { padding: 9.5px var(--spacing-20); } /* 9.5 + 24 + 9.5 + 2×.5 border = 44 */
 
 .ui-btn--filled {
   background: var(--color-primary);
@@ -76,7 +76,7 @@
 
 /* Chip ------------------------------------------------------------------ */
 .ui-chip {
-  padding: 10px var(--spacing-12);
+  padding: 9.5px var(--spacing-12);
   background: var(--color-background);
   border-color: var(--color-border);
   color: var(--color-foreground);
