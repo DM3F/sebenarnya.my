@@ -35,7 +35,7 @@ const wrap = (n) => ((n % COUNT) + COUNT) % COUNT;
 /**
  * Hero carousel (Paper › Home › HeroCarousel).
  * Infinite loop: slides are placed around a continuous position, so there is no first or last.
- * Auto-advances every 6s; every slide shows its text.
+ * Auto-advances every 6s; only the centre slide shows its text.
  * Pause button, dots, drag/swipe with momentum, trackpad and arrow keys.
  * Reduced motion: no autoplay and moves jump instead of gliding.
  */
@@ -291,6 +291,10 @@ export default function Carousel() {
                       <Icon icon={ArrowRight} />
                     </a>
                   </div>
+                  {/* Slide counter, centre slide only (Paper › HeroSlide / Active › Counter) */}
+                  <span className="hc-count" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')} / {String(COUNT).padStart(2, '0')}
+                  </span>
                 </div>
               </div>
             );

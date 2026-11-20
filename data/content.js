@@ -177,6 +177,7 @@ export const heroSlides = [
     title: 'RON95 tidak naik',
     titleEm: '20 sen esok.',
     text: 'Mesej yang tular itu palsu. Harga bahan api diumumkan secara rasmi setiap minggu.',
+    image: post('budimadani.jpg'), // Paper: petrol pump photo (the article keeps its own)
     cta: 'Baca semakan',
   },
   {
