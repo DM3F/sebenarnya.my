@@ -25,110 +25,213 @@ const slides = heroSlides.map((s) => {
 });
 
 const COUNT = slides.length;
+const HALF = Math.floor(COUNT / 2);
 const DELAY = 6000; // autoplay interval, matches the dot fill animation in global.css
-const GAP = 20; // .gtrack gap
 const START = Math.min(2, COUNT - 1); // open on the 3rd slide
+const TAU = 0.11; // seconds; exponential ease toward the target (interruptible, no fixed duration)
+const BEND = 0.045; // how far the edge slides flare, as a fraction of slide height
+const RADIUS = 20; // --radius-card, used by the curved clip path
 
-const pad = (n) => String(n).padStart(2, '0');
+const wrap = (n) => ((n % COUNT) + COUNT) % COUNT;
 
 /**
  * Hero carousel (Paper › Home › HeroCarousel).
- * Auto-advances every 6s; only the centre slide shows its text, the neighbours
- * peek in as images. Pause button, dots, drag/swipe, trackpad and arrow keys.
- * Starts paused when the user prefers reduced motion.
+ * Infinite loop: slides are placed around a continuous position, so there is no first or last.
+ * Edge slides flare taller toward the screen sides, like a curved display — only the mask
+ * bends; the image stays still (adapted from the
+ * Krea 3 "use cases" slider). Auto-advances every 6s; every slide shows its text.
+ * Pause button, dots, drag/swipe with momentum, trackpad and arrow keys.
+ * Reduced motion: no autoplay and moves jump instead of gliding.
  */
 export default function Carousel() {
   const galRef = useRef(null);
-  const trackRef = useRef(null);
-  const indexRef = useRef(START);
+  const slideRefs = useRef([]);
+  const curveRefs = useRef([]);
+  const st = useRef({ pos: START, target: START, raf: 0, last: 0, drag: null, w: 0, h: 0, vw: 0, lift: 0, gap: 20, bend: BEND, idx: START, reduce: false });
   const [index, setIndex] = useState(START);
   const [tick, setTick] = useState(0); // bumps on every move so the timer and dot fill restart
   const [playing, setPlaying] = useState(true);
 
-  const slideW = () => {
-    const first = trackRef.current?.firstElementChild;
-    return first ? first.getBoundingClientRect().width + GAP : 0;
-  };
+  // Lay every slide out around the current position and bend the ones near the edges
+  const layout = useCallback(() => {
+    const s = st.current;
+    const { w, h, vw, gap, bend } = s;
+    if (!w || !h || !vw) return;
+    const step = w + gap;
+    const base = Math.floor(s.pos);
+    const frac = s.pos - base;
+    const centre = w / 2 + gap / 2; // flat zone around the middle
+    const flare = (x) => {
+      const room = vw / 2 - centre;
+      if (room <= 0) return 0;
+      const r = Math.max(0, Math.abs(x) - centre) / room;
+      return bend * h * r * r;
+    };
 
-  const go = useCallback((i) => {
-    const next = (i + COUNT) % COUNT;
-    indexRef.current = next;
-    setIndex(next);
+    for (let i = 0; i < COUNT; i++) {
+      const el = slideRefs.current[i];
+      const curve = curveRefs.current[i];
+      if (!el || !curve) continue;
+      const slot = wrap(i - base + HALF) - HALF; // -HALF … HALF around the centre
+      const x = slot * step - frac * step; // slide centre relative to the stage centre
+      el.style.transform = `translate3d(${(x - w / 2).toFixed(2)}px,0,0)`;
+      const hidden = Math.abs(x) - w / 2 > vw / 2 + 40;
+      el.style.visibility = hidden ? 'hidden' : '';
+      if (hidden) continue;
+
+      const f = (px) => flare(x - w / 2 + px);
+      const xs = Array.from({ length: 33 }, (_, k) => (w * k) / 32);
+      if (Math.max(...xs.map(f)) < 0.5) {
+        curve.style.clipPath = ''; // flat: CSS inset() with rounded corners
+        continue;
+      }
+      // The container is permanently taller than the slide (by --lift top and bottom) and the
+      // image covers it without moving. Only the mask changes: its top and bottom edges curve
+      // outward, taller on the side facing the screen edge.
+      const lift = s.lift;
+      const top = (px) => lift - f(px);
+      const bot = (px) => lift + h + f(px);
+      const R = RADIUS;
+      const mid = xs.filter((px) => px > R && px < w - R);
+      let d = `M0 ${top(0) + R} Q0 ${top(0)} ${R} ${top(R)}`;
+      for (const px of mid) d += ` L${px.toFixed(1)} ${top(px).toFixed(2)}`;
+      d += ` L${w - R} ${top(w - R)} Q${w} ${top(w)} ${w} ${top(w) + R}`;
+      d += ` L${w} ${bot(w) - R} Q${w} ${bot(w)} ${w - R} ${bot(w - R)}`;
+      for (const px of [...mid].reverse()) d += ` L${px.toFixed(1)} ${bot(px).toFixed(2)}`;
+      d += ` L${R} ${bot(R)} Q0 ${bot(0)} 0 ${bot(0) - R} Z`;
+      curve.style.clipPath = `path('${d}')`;
+    }
+
+    const idx = wrap(Math.round(s.pos));
+    if (idx !== s.idx) {
+      s.idx = idx;
+      setIndex(idx);
+    }
+  }, []);
+
+  // Glide pos toward target each frame until it settles
+  const animate = useCallback(() => {
+    const s = st.current;
+    if (s.raf) return;
+    s.last = performance.now();
+    const frame = (now) => {
+      const dt = Math.min(0.05, Math.max(0, (now - s.last) / 1000));
+      s.last = now;
+      if (!s.drag) s.pos += (s.target - s.pos) * (s.reduce ? 1 : 1 - Math.exp(-dt / TAU));
+      if (!s.drag && Math.abs(s.target - s.pos) < 5e-4) s.pos = s.target;
+      layout();
+      s.raf = !s.drag && s.pos === s.target ? 0 : requestAnimationFrame(frame);
+    };
+    s.raf = requestAnimationFrame(frame);
+  }, [layout]);
+
+  // Move by a number of slides (wraps forever)
+  const step = useCallback((n) => {
+    const s = st.current;
+    s.target = Math.round(s.target) + n;
     setTick((t) => t + 1);
-  }, []);
+    animate();
+  }, [animate]);
 
-  // Respect reduced motion: no autoplay
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPlaying(false);
-  }, []);
+  // Go to slide i the short way round
+  const go = useCallback((i) => {
+    const s = st.current;
+    const from = Math.round(s.target);
+    const diff = wrap(i - from + HALF) - HALF;
+    step(diff);
+  }, [step]);
 
-  // Move the track
+  // Measure, and re-measure on resize
   useEffect(() => {
-    trackRef.current.style.transform = `translateX(${-index * slideW()}px)`;
-  }, [index, tick]);
+    const s = st.current;
+    const gal = galRef.current;
+    s.reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (s.reduce) setPlaying(false);
+    const measure = () => {
+      const phone = window.matchMedia('(max-width: 700px)').matches;
+      s.bend = phone ? 0 : BEND;
+      s.gap = phone ? 12 : 20;
+      const first = slideRefs.current[0];
+      s.w = first?.offsetWidth ?? 0;
+      s.h = Math.max(...slideRefs.current.map((el) => el?.offsetHeight ?? 0));
+      s.vw = gal.clientWidth;
+      s.lift = Math.ceil(s.bend * s.h);
+      gal.style.setProperty('--lift', `${s.lift}px`);
+      gal.style.setProperty('--h', `${s.h}px`);
+      layout();
+    };
+    const ro = new ResizeObserver(measure);
+    ro.observe(gal);
+    measure();
+    gal.classList.add('ready');
+    return () => {
+      ro.disconnect();
+      cancelAnimationFrame(s.raf);
+      s.raf = 0;
+    };
+  }, [layout]);
 
   // Autoplay
   useEffect(() => {
     if (!playing) return;
-    const t = setTimeout(() => go(indexRef.current + 1), DELAY);
+    const t = setTimeout(() => step(1), DELAY);
     return () => clearTimeout(t);
-  }, [playing, index, tick, go]);
+  }, [playing, index, tick, step]);
 
-  // Re-align on resize
-  useEffect(() => {
-    const onResize = () => go(indexRef.current);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, [go]);
-
-  // Drag / swipe with mouse, pen or finger; trackpad two-finger swipe; arrow keys
+  // Drag / swipe with momentum, trackpad two-finger swipe, arrow keys
   useEffect(() => {
     const gal = galRef.current;
-    const track = trackRef.current;
-    let start = null;
-    let moved = false;
-    let wheelLock = false;
+    const s = st.current;
+    let swallow = false;
+    let wheelTimer;
 
     const down = (e) => {
-      if (e.button !== 0) return;
-      start = { x: e.clientX, y: e.clientY, base: -indexRef.current * slideW(), id: e.pointerId };
-      moved = false;
+      if (!e.isPrimary || e.button !== 0) return;
+      swallow = false;
+      s.drag = { x: e.clientX, y: e.clientY, pos: s.pos, t: e.timeStamp, v: 0, moved: false, id: e.pointerId };
     };
 
     const move = (e) => {
-      if (!start) return;
-      const dx = e.clientX - start.x;
-      const dy = e.clientY - start.y;
-      if (!moved) {
+      const d = s.drag;
+      if (!d || !e.isPrimary) return;
+      const dx = e.clientX - d.x;
+      if (!d.moved) {
         if (Math.abs(dx) < 6) return;
-        if (Math.abs(dy) > Math.abs(dx)) { start = null; return; }
-        moved = true;
+        if (Math.abs(e.clientY - d.y) > Math.abs(dx)) { s.drag = null; return; }
+        d.moved = true;
         gal.classList.add('drag');
-        try { gal.setPointerCapture(start.id); } catch {}
+        try { gal.setPointerCapture(d.id); } catch {}
+        animate();
       }
-      const i = indexRef.current;
-      const edge = (i === 0 && dx > 0) || (i === COUNT - 1 && dx < 0) ? 0.35 : 1;
-      track.style.transform = `translateX(${start.base + dx * edge}px)`;
+      const next = d.pos - dx / (s.w + s.gap);
+      const dt = Math.max(8, e.timeStamp - d.t) / 1000;
+      d.v = d.v * 0.3 + ((next - s.pos) / dt) * 0.7;
+      d.t = e.timeStamp;
+      s.pos = s.target = next;
     };
 
-    const end = (e) => {
-      if (!start) return;
-      const dx = e.clientX - start.x;
-      start = null;
+    const end = () => {
+      const d = s.drag;
+      if (!d) return;
+      s.drag = null;
       gal.classList.remove('drag');
-      if (!moved) return;
-      const w = slideW();
-      const i = indexRef.current;
-      if (dx < -w * 0.12) go(Math.min(i + 1, COUNT - 1));
-      else if (dx > w * 0.12) go(Math.max(i - 1, 0));
-      else go(i);
+      if (d.moved) {
+        // A quick flick is enough; otherwise it needs 12% of a slide
+        const delta = s.pos - d.pos;
+        const flick = Math.abs(d.v) > 0.6 ? Math.sign(d.v) : 0;
+        const dir = Math.abs(delta) > 0.12 ? Math.sign(delta) : flick;
+        s.target = Math.round(d.pos) + dir;
+        swallow = true;
+        setTick((t) => t + 1);
+      }
+      animate();
     };
 
     // Swallow the click that follows a drag. A click on a side slide brings it to
     // the centre; a click on the centre slide opens its article.
     const click = (e) => {
-      if (moved) {
-        moved = false;
+      if (swallow) {
+        swallow = false;
         e.preventDefault();
         e.stopPropagation();
         return;
@@ -137,22 +240,28 @@ export default function Carousel() {
       const slide = e.target.closest('.slide');
       if (!slide) return;
       const i = +slide.dataset.i;
-      if (i === indexRef.current) window.location.href = slides[i].href;
+      if (i === s.idx) window.location.href = slides[i].href;
       else go(i);
     };
 
     const key = (e) => {
-      if (e.key === 'ArrowRight') go(indexRef.current + 1);
-      if (e.key === 'ArrowLeft') go(indexRef.current - 1);
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      step(e.key === 'ArrowRight' ? 1 : -1);
     };
 
+    // Trackpad: follow the fingers, then snap to the nearest slide
     const wheel = (e) => {
-      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || Math.abs(e.deltaX) < 12) return;
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
-      if (wheelLock) return;
-      wheelLock = true;
-      go(indexRef.current + (e.deltaX > 0 ? 1 : -1));
-      setTimeout(() => { wheelLock = false; }, 800);
+      s.pos = s.target = s.pos + e.deltaX / (s.w + s.gap);
+      animate();
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(() => {
+        s.target = Math.round(s.pos);
+        setTick((t) => t + 1);
+        animate();
+      }, 140);
     };
 
     gal.addEventListener('pointerdown', down);
@@ -163,6 +272,7 @@ export default function Carousel() {
     gal.addEventListener('keydown', key);
     gal.addEventListener('wheel', wheel, { passive: false });
     return () => {
+      clearTimeout(wheelTimer);
       gal.removeEventListener('pointerdown', down);
       gal.removeEventListener('pointermove', move);
       gal.removeEventListener('pointerup', end);
@@ -171,18 +281,17 @@ export default function Carousel() {
       gal.removeEventListener('keydown', key);
       gal.removeEventListener('wheel', wheel);
     };
-  }, [go]);
+  }, [animate, go, step]);
 
   const togglePlay = () => {
-    if (!playing) go(indexRef.current + 1);
+    if (!playing) step(1);
     setPlaying(!playing);
   };
 
   return (
     <section className="hero-carousel" aria-roledescription="carousel" aria-label="Semakan fakta pilihan">
       <div className="gal" ref={galRef} tabIndex={0} aria-live={playing ? 'off' : 'polite'}>
-        {/* Initial offset in CSS so the page loads already on START, with no slide-in from the first card */}
-        <div className="gtrack" ref={trackRef} style={{ transform: `translateX(calc(${-START} * (var(--w) + ${GAP}px)))` }}>
+        <div className="gtrack">
           {slides.map((s, i) => {
             const cur = i === index;
             return (
@@ -194,36 +303,33 @@ export default function Carousel() {
                 aria-label={`${i + 1} daripada ${COUNT}`}
                 aria-hidden={!cur}
                 data-i={i}
+                ref={(el) => (slideRefs.current[i] = el)}
               >
-                <img
-                  src={s.image}
-                  alt=""
-                  draggable={false}
-                  style={s.position ? { objectPosition: s.position } : undefined}
-                />
-                {/* Text shows on the centre slide only */}
-                <div className="ct">
-                  <span className={`ey ey--${s.type}`}>
-                    <span className="ey-dot" aria-hidden="true" />
-                    {s.verdict}
-                    {s.agency && <> · {s.agency}</>}
-                  </span>
-                  <h3>
-                    {s.title}
-                    <br />
-                    {s.titleEm}
-                  </h3>
-                  <p>{s.text}</p>
-                  <a className="hcta" href={s.href} draggable={false} tabIndex={cur ? 0 : -1}>
-                    {s.cta}
-                    <Icon icon={ArrowRight} />
-                  </a>
+                <div className="curve" ref={(el) => (curveRefs.current[i] = el)}>
+                  <img
+                    src={s.image}
+                    alt=""
+                    draggable={false}
+                    style={s.position ? { objectPosition: s.position } : undefined}
+                  />
+                  <div className="ct">
+                    <span className={`ey ey--${s.type}`}>
+                      <span className="ey-dot" aria-hidden="true" />
+                      {s.verdict}
+                      {s.agency && <> · {s.agency}</>}
+                    </span>
+                    <h3>
+                      {s.title}
+                      <br />
+                      {s.titleEm}
+                    </h3>
+                    <p>{s.text}</p>
+                    <a className="hcta" href={s.href} draggable={false} tabIndex={cur ? 0 : -1}>
+                      {s.cta}
+                      <Icon icon={ArrowRight} />
+                    </a>
+                  </div>
                 </div>
-                {cur && (
-                  <span className="hcnt">
-                    {pad(index + 1)} / {pad(COUNT)}
-                  </span>
-                )}
               </div>
             );
           })}

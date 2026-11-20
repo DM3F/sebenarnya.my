@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
@@ -11,13 +11,13 @@ const VERDICT_LABEL = { palsu: 'Palsu', waspada: 'Waspada', makluman: 'Makluman'
  * FactCheckCard (Paper › 06 Brand components › FactCheckCard – States).
  * Front: photo, verdict pill, title, agency avatar.
  * Back (rotateY 180°): verdict · agency, title, summary, checked date + source, "Baca semakan".
- * Mouse: flips on hover. Touch, click or keyboard: tap/click/Enter toggles it,
- * and keyboard focus moves to the side that is showing.
+ * Controlled by the parent so only one card is open at a time (see Latest.js).
+ * Mouse: flips on hover (with a short intent delay). Touch, click or keyboard: tap/click/Enter
+ * toggles it, and keyboard focus moves to the side that is showing.
  *
  * `post` = { title, summary, image, alt, status, agency: { name, short, image }, date, dateLabel, href }
  */
-export default function FlipCard({ post }) {
-  const [flipped, setFlipped] = useState(false);
+export default function FlipCard({ post, flipped, onHover, onToggle }) {
   const frontBtnRef = useRef(null);
   const readRef = useRef(null);
   const byKeyboard = useRef(false);
@@ -25,13 +25,13 @@ export default function FlipCard({ post }) {
 
   // Hover only for a real mouse, so a tap on a phone doesn't flip twice
   const hover = (on) => (e) => {
-    if (e.pointerType === 'mouse') setFlipped(on);
+    if (e.pointerType === 'mouse') onHover(on);
   };
 
   const toggle = (e) => {
     if (e.target.closest('a')) return; // "Baca semakan" just opens the article
     byKeyboard.current = e.detail === 0; // keyboard "clicks" have no click count
-    setFlipped((f) => !f);
+    onToggle();
   };
 
   // Keyboard users: move focus to the side that is now showing

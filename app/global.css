@@ -1673,14 +1673,28 @@ input::placeholder { color: var(--text); }
   cursor: pointer;
 }
 
+/* Close: faster, ease-in-out (the card is handing over to another one).
+   Open: a little longer with a strong ease-out, so it answers the pointer straight away
+   and settles softly. With a mouse, the open card also lifts 4px. */
 .flip-inner {
   position: relative;
   display: grid;
   transform-style: preserve-3d;
-  transition: transform .6s cubic-bezier(.77, 0, .175, 1);
+  will-change: transform;
+  transition: transform .45s var(--ease-in-out-flip);
 }
 
-.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-card.flipped .flip-inner {
+  transform: rotateY(180deg);
+  transition-duration: .7s;
+  transition-timing-function: var(--ease-out-flip);
+}
+
+.flip-card { --ease-out-flip: cubic-bezier(.23, 1, .32, 1); --ease-in-out-flip: cubic-bezier(.65, 0, .35, 1); }
+@media (hover: hover) and (pointer: fine) {
+  .flip-card { transition: transform .45s var(--ease-out-flip); }
+  .flip-card.flipped { transform: translateY(-4px); }
+}
 
 .flip-face {
   position: relative;
@@ -1707,7 +1721,8 @@ input::placeholder { color: var(--text); }
 .flip-toggle:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .flip-inner { transition: none; }
+  .flip-inner, .flip-card.flipped .flip-inner, .flip-card { transition: none; }
+  .flip-card.flipped { transform: none; }
 }
 
 /* ── FactCheckCard: 340 × 480 ── */
@@ -2150,7 +2165,6 @@ input::placeholder { color: var(--text); }
    shows its text; the neighbours peek in as images only. */
 .hero-carousel {
   --w: min(960px, calc(100vw - 2 * var(--spacing-64)));
-  --pad: calc((100vw - var(--w)) / 2);
   padding-bottom: var(--spacing-64);
   color: var(--color-foreground);
 }
@@ -2162,31 +2176,53 @@ input::placeholder { color: var(--text); }
 .hero-carousel .gal:focus-visible { outline-offset: -2px; }
 
 /* Gallery + track */
-.hero-carousel .gal { position: relative; overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+/* Infinite curved slider: Carousel.js positions every slide with translate3d and bends the
+   edge ones (scaleY + clip-path). --h and --lift are measured in JS; --lift is the room the
+   flared edges need above and below. */
+.hero-carousel .gal {
+  position: relative;
+  height: calc(var(--h, min(480px, calc(var(--w) / 2))) + 2 * var(--lift, 0px));
+  margin-block: calc(-1 * var(--lift, 0px));
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
 .hero-carousel .gal.drag { cursor: grabbing; }
-.hero-carousel .gtrack { display: flex; gap: 20px; padding-left: var(--pad); transition: transform .9s cubic-bezier(.65, 0, .35, 1); }
-.hero-carousel .gal.drag .gtrack { transition: none; }
+.hero-carousel .gtrack { position: relative; height: 100%; }
 
 /* Slides */
 .hero-carousel .slide {
-  position: relative;
-  flex: 0 0 var(--w);
+  position: absolute;
+  top: var(--lift, 0px);
+  left: 50%;
+  width: var(--w);
   height: min(480px, calc(var(--w) / 2));
-  overflow: hidden;
-  border-radius: var(--radius-card);
-  background: var(--color-black);
   color: var(--color-foreground-inverse);
   text-align: left;
   cursor: pointer;
+  will-change: transform;
+}
+/* Before JS measures: only the centre slide, centred */
+.hero-carousel .gal:not(.ready) .slide { transform: translateX(-50%); }
+.hero-carousel .gal:not(.ready) .slide:not(.cur) { visibility: hidden; }
+/* Taller than the slide by --lift on each side; the mask (clip-path) shows the slide's
+   box when flat and curves outward near the screen edges. The image never moves. */
+.hero-carousel .curve {
+  position: absolute;
+  inset: calc(-1 * var(--lift, 0px)) 0;
+  overflow: hidden;
+  background: var(--color-black);
+  clip-path: inset(var(--lift, 0px) 0 round var(--radius-card));
 }
 .hero-carousel .slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transform: scale(1.04); transition: transform 6s linear; }
 .hero-carousel .slide.cur img { transform: scale(1); }
 /* Media overlay (Paper): left-to-right scrim so white text stays readable */
-.hero-carousel .slide::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .45) 45%, rgba(0, 0, 0, .05) 85%); transition: opacity .6s ease; }
+.hero-carousel .curve::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .45) 45%, rgba(0, 0, 0, .05) 85%); transition: opacity .6s ease; }
 .hero-carousel .slide.hs.wd img { left: auto; right: 0; width: 74%; }
-.hero-carousel .slide.hs.wd::after { background: linear-gradient(90deg, #000 0%, #000 26%, rgba(0, 0, 0, .7) 42%, rgba(0, 0, 0, .1) 62%, transparent 75%); }
+.hero-carousel .slide.hs.wd .curve::after { background: linear-gradient(90deg, #000 0%, #000 26%, rgba(0, 0, 0, .7) 42%, rgba(0, 0, 0, .1) 62%, transparent 75%); }
 /* Side slides: image only, slightly dimmed */
-.hero-carousel .slide:not(.cur)::after { background: rgba(0, 0, 0, .25); }
 
 /* Slide content — visible on the centre slide only */
 .hero-carousel .ct {
@@ -2200,11 +2236,7 @@ input::placeholder { color: var(--text); }
   gap: var(--spacing-16);
   width: min(484px, calc(100% - 2 * var(--spacing-64)));
   transform: translateY(-50%);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .4s ease, visibility 0s linear .4s;
 }
-.hero-carousel .slide.cur .ct { opacity: 1; visibility: visible; transition: opacity .5s ease .6s, visibility 0s; }
 
 .hero-carousel .ey {
   display: inline-flex;
@@ -2259,23 +2291,6 @@ input::placeholder { color: var(--text); }
 }
 .hero-carousel .hcta:hover { background: var(--color-muted); }
 
-/* Counter pill on the centre slide */
-.hero-carousel .hcnt {
-  position: absolute;
-  z-index: 3;
-  right: var(--spacing-24);
-  bottom: var(--spacing-24);
-  padding: var(--spacing-6) var(--spacing-12);
-  border-radius: var(--radius-full);
-  background: rgba(0, 0, 0, .6);
-  font-family: var(--font-sans);
-  font-size: var(--text-14);
-  line-height: var(--leading-21);
-  font-variant-numeric: tabular-nums;
-  color: var(--color-foreground-inverse);
-  pointer-events: none;
-}
-
 /* Dots + pause */
 .hero-carousel .gctl { display: flex; justify-content: center; align-items: center; gap: var(--spacing-12); margin-top: var(--spacing-20); }
 .hero-carousel .dots { display: flex; align-items: center; gap: var(--spacing-12); height: 48px; padding: 0 var(--spacing-20); border-radius: var(--radius-full); background: var(--color-muted); }
@@ -2297,18 +2312,15 @@ input::placeholder { color: var(--text); }
   .hero-carousel h3 { font-size: var(--text-36); line-height: var(--leading-42); }
 }
 
-/* Phones: image on top, text below */
+/* Phones: portrait card, text on the image at the bottom, inside the card */
 @media (max-width: 700px) {
   .hero-carousel { --w: calc(100vw - 2 * var(--spacing-16)); }
-  .hero-carousel .gtrack { align-items: stretch; }
-  .hero-carousel .slide { height: auto; display: flex; flex-direction: column; }
-  .hero-carousel .slide img,
-  .hero-carousel .slide.hs.wd img { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 16 / 10; flex: none; }
-  .hero-carousel .slide::after { display: none; }
-  .hero-carousel .slide:not(.cur) { opacity: .5; }
-  .hero-carousel .ct { position: relative; left: auto; top: auto; width: auto; transform: none; padding: var(--spacing-20) var(--spacing-20) var(--spacing-64); gap: var(--spacing-12); }
+  .hero-carousel .slide { height: min(520px, calc(var(--w) * 1.25)); }
+  .hero-carousel .slide.hs.wd img { left: 0; width: 100%; }
+  .hero-carousel .curve::after,
+  .hero-carousel .slide.hs.wd .curve::after { background: linear-gradient(0deg, rgba(0, 0, 0, .85) 0%, rgba(0, 0, 0, .55) 45%, rgba(0, 0, 0, 0) 75%); }
+  .hero-carousel .ct { left: var(--spacing-20); right: var(--spacing-20); top: auto; bottom: var(--spacing-20); width: auto; transform: none; gap: var(--spacing-12); }
   .hero-carousel h3 { font-size: var(--text-28); line-height: var(--leading-34); }
-  .hero-carousel .hcnt { right: auto; left: var(--spacing-20); bottom: var(--spacing-20); }
 }
 
 @media (prefers-reduced-motion: reduce) {

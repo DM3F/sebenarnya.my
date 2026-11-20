@@ -9,6 +9,9 @@ import { withBase } from '@/lib/basePath';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 
+const HOVER_OPEN_DELAY = 90; // ms the pointer must rest on a card before it flips
+const HOVER_CLOSE_DELAY = 140; // ms grace after leaving, so moving to the next card swaps cleanly
+
 const dateFmt = new Intl.DateTimeFormat('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' });
 
 // The 6 newest articles, shaped for the fact-check card
@@ -48,6 +51,20 @@ export default function Latest() {
     return () => window.removeEventListener('resize', update);
   }, [update]);
 
+  // One card open at a time. Hover waits a beat before flipping so sweeping the
+  // pointer across the row doesn't set off every card; leaving waits a beat too,
+  // so moving straight to the next card hands over in one motion.
+  const [open, setOpen] = useState(null);
+  const hoverTimer = useRef(0);
+  const hover = (href, on) => {
+    clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(
+      () => setOpen((cur) => (on ? href : cur === href ? null : cur)),
+      on ? HOVER_OPEN_DELAY : HOVER_CLOSE_DELAY
+    );
+  };
+  useEffect(() => () => clearTimeout(hoverTimer.current), []);
+
   const scroll = (dir) => {
     // Scroll to the next/previous card's snap point (not a raw pixel step, which
     // mandatory snapping can round past a card)
@@ -67,7 +84,13 @@ export default function Latest() {
       <div className="latest-checks__carousel">
         <div className="latest-checks__track" ref={trackRef} onScroll={update}>
           {latest.map((post) => (
-            <FlipCard key={post.href} post={post} />
+            <FlipCard
+              key={post.href}
+              post={post}
+              flipped={open === post.href}
+              onHover={(on) => hover(post.href, on)}
+              onToggle={() => setOpen((cur) => (cur === post.href ? null : post.href))}
+            />
           ))}
         </div>
 
