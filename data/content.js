@@ -252,7 +252,7 @@ export const whatWeDo = {
   ],
 };
 
-// News and gallery. News `ratio` = image aspect ratio; gallery `wide` tiles span two columns.
+// News and gallery. News `ratio` = image aspect ratio; gallery = elastic accordion, `caption` is the photo's accessible name.
 export const aboutNews = {
   title: 'Berita dan Galeri',
   intro: 'Ikuti perkembangan terkini, pengiktirafan dan aktiviti Sebenarnya.my bersama masyarakat.',
@@ -285,10 +285,10 @@ export const aboutNews = {
   ],
   galleryTitle: 'Galeri',
   gallery: [
-    { image: aboutImg('galeri-1.jpg'), caption: 'Semak dahulu, sebelum berkongsi', wide: true },
+    { image: aboutImg('galeri-1.jpg'), caption: 'Semak dahulu, sebelum berkongsi' },
     { image: aboutImg('galeri-2.jpg'), caption: 'Sesi dialog komuniti' },
     { image: aboutImg('galeri-3.jpg'), caption: 'Perkongsian bersama warga emas' },
-    { image: aboutImg('galeri-4.jpg'), caption: 'Kempen kesedaran penipuan dalam talian', wide: true },
+    { image: aboutImg('galeri-4.jpg'), caption: 'Kempen kesedaran penipuan dalam talian' },
     { image: aboutImg('galeri-5.jpg'), caption: 'Bual santai di kopitiam' },
     { image: aboutImg('galeri-6.jpg'), caption: 'Celik digital setiap hari' },
   ],

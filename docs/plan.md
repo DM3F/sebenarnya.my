@@ -62,6 +62,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] Page transition antara route (`components/PageTransition.js`, View Transitions API)
 - [x] PromoBanner / Award (WSIS)
 - [x] Galeri media sosial (Aktiviti media sosial): 5 kad elastik tanpa slider — kod; **Paper belum dikemas kini**
+- [x] Galeri Tentang Kami: akordion elastik 6 foto, foto sahaja tanpa teks — kod; **Paper belum dikemas kini**
 - [x] AgencyLogoStrip (Sumber kenyataan rasmi)
 - [ ] Band: Closing, Announcement
 - [ ] Timeline (Tentang Kami)

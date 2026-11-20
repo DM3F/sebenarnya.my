@@ -254,7 +254,7 @@ Border-top 1px `--color-border`, padding 96 atas / 32 bawah, sisi 96 (48 ≤1280
 ### Halaman Tentang Kami ✅ (Paper › Artwork › Tentang Kami; `components/AboutUs.js`)
 - **Hero:** kad foto `--radius-lg`, padding 56/40/64, tinggi min(755px, 85svh). Atas: "Ikuti kami" 36/42 + 4 butang sosial 48 bulat (`--color-card`, ikon jenama 24). Bawah: tajuk 48/52 + lead 24/32, putih.
 - **Empat fungsi:** tajuk 56 rata kanan. Kiri: kad pilihan 560×440 `--color-muted-strong` (36/42, nombor `/01` tnum, teks 18/28) + butang ‹ › 44 + bar kemajuan 3px (ibu jari 25%, gelongsor .45s `--ease-in-out`). Kanan: 3 kad kecil `--color-muted` (24/32, 16/24) — klik untuk pilih. Kandungan masuk .32s `--ease` (opacity + 6px + blur 2px), kad kecil berperingkat 40ms. Reduced motion: pudar sahaja.
-- **Berita dan Galeri:** tajuk 56/60, intro 24/32. Berita 3 kad (border 1px, tag pil muted 14/20, tajuk 24/32). Galeri grid 4 kolum, baris 434px, jubin lebar span 2, kapsyen 14/20 atas gradient hitam 60%. Hover (mouse sahaja): imej skala 1.03.
+- **Berita dan Galeri:** tajuk 56/60, intro 24/32. Berita 3 kad (border 1px, tag pil muted 14/20, tajuk 24/32). Galeri = akordion elastik foto sahaja (lihat Kemas kini 21 Nov, malam). Hover kad berita (mouse sahaja): imej skala 1.03.
 - **Logo:** `LogoKit headingLevel={2}` — gaya sama dengan page `/logo` (tajuk 36/42, pratonton 475 muted, butang `Button` filled).
 
 ### Halaman detail artikel ✅ (Paper › Artwork › detail artikel page; `components/ArticleDetail.js`)
@@ -392,3 +392,11 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
   - Kad lipat: ikon platform sahaja. Kad terbuka: lencana platform + tarikh, tajuk 28/34, ringkasan 2 baris, CTA pill putih "Buka di {platform}" (44px, tekan `scale(.97)`).
   - Mobile (≤700): lajur menegak tinggi 720; ringkasan disembunyikan. `prefers-reduced-motion`: tiada transisi.
   - Data `stories` kini ada `image` + `alt` untuk setiap kad; Facebook ditambah (pautan ke halaman Facebook). Pemain video/embed dibuang — CTA membuka hantaran asal.
+
+## Kemas kini 21 Nov 2026 (malam)
+
+- **Galeri Tentang Kami** (`components/AboutUs.js › Gallery`, `.about-gallery`): grid 4 kolum diganti akordion elastik, gerakan sama dengan `.social-gallery`. Foto sahaja: tiada kapsyen, tajuk atau CTA di atas atau di bawah foto. Kapsyen kini nama aksesibel butang (`aria-label`, `aria-pressed`).
+  - Baris flex tinggi 560 (440 ≤900), gap 8, `--radius-lg`. Jubin terbuka `flex-grow: 4`, 600ms `--ease-out`. Foto terlipat skala 1.1 + brightness .5, terbuka 1 + 1; hover mouse pada jubin terlipat brightness .7.
+  - Hover, fokus atau ketuk membuka jubin. Fokus: outline 2px `--color-ring` offset −4.
+  - ≤600: kolum menegak, tinggi 640. Reduced motion: tiada transisi.
+  - Medan `wide` dalam `aboutNews.gallery` dibuang. **Paper belum dikemas kini.**
