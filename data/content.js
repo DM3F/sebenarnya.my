@@ -174,9 +174,9 @@ export const heroSlides = [
 // Viewership stats (components/Viewership.js)
 // `sep` = show a thousands separator (1,016)
 export const viewershipStats = [
-  { value: 275, unit: 'juta+', text: 'Lawatan ke portal sejak dilancarkan pada 14 Mac 2017 (sehingga September 2021).' },
-  { value: 1016, sep: true, text: 'Artikel semakan diterbitkan dari Januari 2022 hingga Mei 2026.' },
-  { value: 200, unit: 'ribu', text: 'Hampir 200,000 mesej diproses oleh Aifa, pembantu semakan fakta AI, sejak Januari 2025.' },
+  { value: 275, unit: 'juta+', text: 'Lawatan ke portal dari Mac 2017 hingga September 2021.' },
+  { value: 1016, sep: true, text: 'Artikel semakan dari Januari 2022 hingga Mei 2026.' },
+  { value: 200, unit: 'ribu', text: 'Mesej diproses Aifa, pembantu AI, sejak Januari 2025.' },
 ];
 
 /* About us page (app/about-us) */
