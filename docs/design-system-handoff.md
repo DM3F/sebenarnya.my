@@ -353,3 +353,10 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - Radius: semua melalui `--radius-*` kecuali bulatan `50%`.
 - Saiz: tiada `rem`; saiz font luar skala dipetakan (15→16, 11→12, 27→28, 22→24, 19→20, 12.5→13, 18.5→18). Pengecualian: monogram agensi 9px.
 - Ralat borang (ClaimForm) = `--color-destructive`; fokus input AIFA = `--color-ring`; hover pautan AIFA = `--color-link`. Merah AIFA yang tinggal (togol, avatar, bubble pengguna, butang hantar) menunggu keputusan warna Tanya AIFA.
+
+## Motion, lint dan aksesibiliti (21 Nov 2026)
+
+- **Token motion** (`app/tokens.css`): `--duration-fast` 150ms (hover, warna, tekan) · `--duration-base` 250ms · `--duration-slow` 450ms · `--duration-page` 1.2s (transisi route sahaja). `--ease-out` cubic-bezier(.23,1,.32,1) = lalai untuk masuk/gerak/reveal · `--ease-in-out` (morf atas skrin, cth. ikon menu) · `--ease-emphasized` (anjakan kecil anak panah CTA) · `--ease-page` (transisi route sahaja).
+- **`npm run lint:ds`** (`scripts/lint-ds.mjs`): hex, primitif palet, pustaka ikon lain, ikon Lucide tanpa `<Icon>`, `rem`, berat font luar skala, font selain Manrope, `transition: all`, warna lalai shadcn. Pengecualian: komen `ds-allow: <sebab>` pada baris yang sama. Exit 1 bila ada masalah (sedia untuk CI).
+- **Kontras:** semua teks pada 4 halaman lulus WCAG AA (diimbas pada runtime terhadap latar sebenar). Tanya AIFA kini `--color-brand-strong` (#C8211C, 5.56:1 dengan putih) — masih merah, tetapi dulu 4.30:1 gagal AA. Nombor "/01" Empat fungsi = `--color-text-secondary`.
+- **Fokus:** carousel media sosial (`.stories-viewport`) kini ada cincin fokus.

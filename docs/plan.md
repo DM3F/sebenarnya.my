@@ -28,7 +28,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] Peraturan berat tajuk dalam dokumen (display 400, heading 500 — ikut `design.md`)
 - [x] **Satu set nama token Paper ↔ kod** — ikut nama Paper (Tailwind v4 + shadcn). Shadow kekal dalam kod sahaja.
 - [x] Token untuk overlay media: `--gradient-scrim-media`, `-media-wide`, `-bottom`, `-bottom-short`, `-top`
-- [~] Token motion — `--ease-in-out`, `--duration-page` sudah ada dalam `global.css`; belum: pindah ke `tokens.css` sebagai set lengkap (`--duration-fast 150ms`, `--duration-base 250ms`, `--duration-slow 450ms`, `--ease-out`, `--ease-in-out`, `--ease-drawer`) dan ganti `--ease`/`--slide` lama
+- [x] Token motion dalam `tokens.css`: `--duration-fast/base/slow/page`, `--ease-out` (lalai), `--ease-in-out`, `--ease-emphasized`, `--ease-page`. `--ease`/`--slide` lama dibuang; tiada `cubic-bezier` keras lagi kecuali lengkung flip FlipCard
 - [ ] Pakej token boleh-guna-semula (lihat [Fasa 7.1](#71-pakej-kongsi))
 - [?] Mode dark (Paper artboard 11 · Forms & themes) — sekarang atau kemudian. **CMS sangat mungkin perlukan ini**; shadcn guna class `.dark`.
 
@@ -101,7 +101,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 ## Fasa 6 — Kualiti & serahan (laman web)
 
 - [x] Semakan visual setiap page desktop (1624) + mobile (390) berbanding Paper — lihat [`audit-localhost-vs-paper.md`](audit-localhost-vs-paper.md)
-- [ ] Aksesibiliti: kontras, fokus, keyboard, `prefers-reduced-motion`
+- [x] Aksesibiliti: kontras (semua teks lulus AA — diimbas pada runtime), fokus keyboard (Tab melalui setiap halaman), `prefers-reduced-motion` (autoplay & ticker berhenti)
 - [x] `npm run build` (export statik) lulus
 - [ ] Halaman katalog komponen `/design-system` (dev sahaja) — rujukan visual untuk CMS/extension
 - [ ] PR `endahbyu` → `main`
@@ -251,22 +251,22 @@ grep -rn 'transition: all' app design-system
 grep -rnE 'oklch\(|(bg|text|border)-(zinc|neutral|slate|gray|stone)-[0-9]' components/shadcn app
 ```
 
-- [ ] Jadikan senarai di atas skrip `npm run lint:ds` (sekali tulis, guna di tiga projek)
+- [x] Jadikan senarai di atas skrip `npm run lint:ds` (`scripts/lint-ds.mjs`, Node tanpa dependency; pengecualian ditanda `ds-allow:` pada baris yang sama). Kini: bersih
 - [ ] Jalankan dalam CI pada PR (Fasa 6)
 
 ### Semakan visual manual (setiap pengguna)
 
 | Semak | Web | CMS | Extension |
 |---|:-:|:-:|:-:|
-| Font: Manrope sahaja; display 400 | [ ] | [ ] | [ ] |
+| Font: Manrope sahaja; display 400 | [x] | [ ] | [ ] |
 | Label interaktif 16/24 Medium (atau saiz CMS yang diputuskan) | [ ] | [ ] | [ ] |
 | Verdict: 4 warna + dot sama di semua tempat | [ ] | [ ] | [ ] |
 | Button / chip / tab bulat penuh; input 8px; card 20px | [ ] | [ ] | [ ] |
-| Fokus 2px `--color-ring` kelihatan pada semua kawalan | [ ] | [ ] | [ ] |
+| Fokus 2px `--color-ring` kelihatan pada semua kawalan | [x] | [ ] | [ ] |
 | Ikon Lucide 1.75px, warna ikut teks | [ ] | [ ] | [ ] |
-| Merah hanya untuk jenama / ralat, bukan aksi | [ ] | [ ] | [ ] |
-| `prefers-reduced-motion` mematikan gerakan | [ ] | [ ] | [ ] |
-| Mobile 375 / popup extension 360 tidak terpotong | [ ] | — | [ ] |
+| Merah hanya untuk jenama / ralat, bukan aksi | [~] AIFA (keputusan terbuka) | [ ] | [ ] |
+| `prefers-reduced-motion` mematikan gerakan | [x] | [ ] | [ ] |
+| Mobile 375 / popup extension 360 tidak terpotong | [x] 390 | — | [ ] |
 
 ---
 

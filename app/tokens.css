@@ -152,6 +152,16 @@
   --shadow-subtle-3: inset 0 0 0 .5px rgba(0, 0, 0, .10);
   --shadow-float: 0 0 0 .5px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12); /* floating only */
 
+  /* ── Motion (docs/design.md §6: purposeful, ease-out, 150–600ms) ────────── */
+  --duration-fast: 150ms;   /* hover, colour, press */
+  --duration-base: 250ms;   /* small moves, fades, icon nudge */
+  --duration-slow: 450ms;   /* reveals, panel/drawer */
+  --duration-page: 1.2s;    /* route transition only */
+  --ease-out: cubic-bezier(.23, 1, .32, 1);         /* default: enter, move, reveal */
+  --ease-in-out: cubic-bezier(.645, .045, .355, 1); /* on-screen morphs (menu icon) */
+  --ease-emphasized: cubic-bezier(.2, 0, 0, 1);     /* tiny nudges (CTA arrow) */
+  --ease-page: cubic-bezier(.87, 0, .13, 1);        /* route transition only */
+
   /* ── Media scrims (text on photos: hero carousel, FlipCard) ───────────── */
   --gradient-scrim-media: linear-gradient(90deg, rgb(0 0 0 / .78) 0%, rgb(0 0 0 / .45) 45%, rgb(0 0 0 / .05) 85%);
   --gradient-scrim-media-wide: linear-gradient(90deg, var(--color-black) 0%, var(--color-black) 26%, rgb(0 0 0 / .7) 42%, rgb(0 0 0 / .1) 62%, transparent 75%);
