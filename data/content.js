@@ -233,9 +233,9 @@ export const aboutIntro = {
     strong: 'Semakan berasaskan sumber rasmi',
     muted: 'setiap dakwaan dirujuk kepada agensi yang berkaitan sebelum',
     end: 'jawapan diterbitkan.',
-    status: 'Semakan aktif',
   },
   pill: 'Bersama lebih 20 agensi',
+  pillImage: '/images/about/agencies-bg.jpg',
   verdicts: {
     value: '20+',
     title: 'Agensi rakan',

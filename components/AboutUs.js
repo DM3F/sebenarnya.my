@@ -6,6 +6,7 @@ import { PauseFilled, PlayFilled } from '@/components/ui/filledIcons';
 import { Badge, IconButton } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
 import SphereGallery from '@/components/SphereGallery';
+import { withBase } from '@/lib/basePath';
 import { aboutHero as hero, aboutIntro as intro, aboutNews, articleStatus, articles, socialLinks, whatWeDo } from '@/data/content';
 
 const pad = (n) => String(n).padStart(2, '0');
@@ -61,6 +62,18 @@ function Hero() {
 // About: label + lead, three cards (story, partners, verdict mix), facts in numbers
 const VERDICT_BARS = ['palsu', 'benar', 'makluman'];
 
+// Atom: three orbits and a nucleus (line icon, currentColor)
+function AtomMark() {
+  return (
+    <svg className="about-intro__mark" viewBox="0 0 96 96" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <ellipse cx="48" cy="48" rx="32" ry="12" />
+      <ellipse cx="48" cy="48" rx="32" ry="12" transform="rotate(60 48 48)" />
+      <ellipse cx="48" cy="48" rx="32" ry="12" transform="rotate(120 48 48)" />
+      <circle cx="48" cy="48" r="6" fill="currentColor" />
+    </svg>
+  );
+}
+
 function Intro() {
   const counts = VERDICT_BARS.map((id) => ({ id, n: articles.filter((a) => a.status === id).length }));
   const max = Math.max(1, ...counts.map((c) => c.n));
@@ -74,19 +87,15 @@ function Intro() {
 
       <div className="about-intro__cards">
         <div className="about-intro__card about-intro__card--story">
-          <span className="about-intro__mark" aria-hidden="true" />
+          <AtomMark />
           <div className="about-intro__story">
             <p className="about-intro__story-text">
               {intro.card.strong} <span>{intro.card.muted}</span> {intro.card.end}
             </p>
-            <p className="about-intro__status">
-              <span className="about-intro__switch" aria-hidden="true"><span /></span>
-              {intro.card.status}
-            </p>
           </div>
         </div>
 
-        <div className="about-intro__card about-intro__card--pill">
+        <div className="about-intro__card about-intro__card--pill" style={{ backgroundImage: `url(${withBase(intro.pillImage)})` }}>
           <span className="about-intro__pill">{intro.pill}</span>
         </div>
 
