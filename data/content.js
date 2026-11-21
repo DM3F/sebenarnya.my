@@ -285,7 +285,7 @@ export const whatWeDo = {
 export const aboutNews = {
   title: 'Berita dan Galeri',
   intro: 'Ikuti perkembangan terkini, pengiktirafan dan aktiviti Sebenarnya.my bersama masyarakat.',
-  newsTitle: 'Berita',
+  lead: 'Semua yang anda perlukan untuk menyemak kesahihan maklumat — daripada kenyataan rasmi agensi hingga saluran untuk melaporkan dakwaan yang meragukan.',
   news: [
     {
       tag: 'Anugerah',
@@ -294,6 +294,7 @@ export const aboutNews = {
       image: aboutImg('berita-wsis.webp'),
       alt: 'Poster Anugerah WSIS 2026 di Geneva',
       ratio: '1 / 1',
+      focus: '0% 34%', // crop of the large card: keeps the trophy in view
     },
     {
       tag: 'Inisiatif',

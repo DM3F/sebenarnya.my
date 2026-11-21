@@ -2447,7 +2447,7 @@ input::placeholder { color: var(--color-foreground); }
 .about-fn-track { flex: 1; height: 4px; overflow: hidden; border-radius: var(--radius-full); background: var(--color-muted-strong); }
 .about-fn-track span {
   display: block;
-  width: 25%;
+  width: calc(100% / var(--n, 4));
   height: 100%;
   border-radius: inherit;
   background: var(--color-foreground);
@@ -2499,35 +2499,72 @@ input::placeholder { color: var(--color-foreground); }
   .about-fn-card:hover { background: var(--color-muted-strong); }
 }
 
-/* Berita dan Galeri */
-.about-news { padding: 0 var(--side); }
+/* Berita dan Galeri: carousel like Empat fungsi (feature + small cards), then the photo sphere */
+.about-news { display: flex; flex-direction: column; gap: var(--spacing-32); padding: 0 var(--side); }
+.about-news__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-8); text-align: center; }
+.about-news__head .about-title { margin: 0; }
 .about-news-intro {
-  margin: 0 0 var(--spacing-64);
+  margin: 0;
   letter-spacing: var(--tracking-tight);
   color: var(--color-text-secondary);
-  text-wrap: pretty;
+  text-wrap: balance;
 }
-.about-news-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-12); margin-bottom: var(--spacing-96); }
-.about-news-card {
+.news-body { display: flex; align-items: flex-start; gap: var(--spacing-24); }
+.news-main { display: flex; flex: 0 0 480px; flex-direction: column; gap: var(--spacing-28); }
+.news-feature,
+.news-card {
   display: flex;
-  flex-direction: column;
   min-width: 0;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   background: var(--color-card);
 }
-.about-news-media { overflow: hidden; background: var(--color-muted); }
-.about-news-media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease-out); }
-.about-news-body { padding: var(--spacing-24) 26px; }
-.about-news-tag { margin-bottom: var(--spacing-16); }
-.about-news-body h4 {
-  margin: 0 0 var(--spacing-8);
+.news-feature { height: 488px; }
+.news-media { display: block; flex: 1; min-height: 0; overflow: hidden; background: var(--color-muted); }
+.news-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* WSIS poster is a lettered graphic: whole, on white paper, in the small cards */
+.news-card .news-media img[src*="wsis"] { object-fit: contain; }
+.news-card .news-media:has(img[src*="wsis"]) { background: var(--color-card); }
+.news-feature__body { padding: var(--spacing-20); }
+.news-tag { margin-bottom: var(--spacing-16); }
+.news-feature__body h3 {
+  margin: 0;
+  font-size: var(--type-heading);
+  line-height: var(--type-heading-lh);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-tight);
   text-wrap: balance;
 }
-.about-news-body p { margin: 0; font-size: var(--text-16); line-height: var(--leading-24); letter-spacing: var(--tracking-body); color: var(--color-text-secondary); }
+
+.news-side { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: var(--spacing-40); }
+.news-cards { display: flex; align-items: flex-start; gap: var(--spacing-12); }
+.news-card {
+  flex: 1 1 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .16s var(--ease-out), border-color .2s ease;
+}
+.news-card:active { transform: scale(.98); }
+.news-card:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
+.news-card .news-media { flex: none; }
+.news-card__body { display: flex; flex-direction: column; align-items: flex-start; padding: var(--spacing-10); }
+.news-card__title { font-size: var(--text-14); line-height: var(--leading-21); font-weight: var(--font-weight-medium); letter-spacing: var(--tracking-tight); text-wrap: balance; }
+.news-lead { max-width: 848px; margin: 0; font-size: var(--text-18); line-height: var(--leading-28); color: var(--color-text-secondary); text-wrap: pretty; }
+
+/* Content eases in on every change, like Empat fungsi */
+.news-media,
+.news-feature__body,
+.news-card > span { animation: about-fn-in .32s var(--ease-out) both; }
+.news-feature__body { animation-delay: .04s; }
+.news-card > span { animation-delay: calc(.06s + var(--i, 0) * .04s); }
+@media (hover: hover) and (pointer: fine) {
+  .news-card:hover { border-color: var(--color-border-strong); }
+}
 
 /* Galeri — photos on a 3D sphere (components/SphereGallery.js). Node positions come from JS. */
 .sphere-gallery { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-16); }
@@ -2607,7 +2644,6 @@ input::placeholder { color: var(--color-foreground); }
 @keyframes sphere-fade { from { opacity: 0; } }
 
 @media (hover: hover) and (pointer: fine) {
-  .about-news-card:hover .about-news-media img { transform: scale(1.03); }
   .sphere-node:hover .sphere-node__disc { transform: scale(1.2); }
   
 }
@@ -2617,35 +2653,42 @@ input::placeholder { color: var(--color-foreground); }
   .about-fn-main { flex-basis: auto; width: 100%; }
   .about-fn-feature { height: 360px; }
   .about-fn-side { width: 100%; }
+  .news-body { flex-direction: column; }
+  .news-main { flex-basis: auto; width: 100%; }
+  .news-feature { height: 440px; }
+  .news-side { width: 100%; }
 }
 
 @media (max-width: 900px) {
   .about-hero-card { min-height: 560px; padding: var(--spacing-32) var(--spacing-24) var(--spacing-40); }
-  .about-news-intro { margin-bottom: var(--spacing-40); }
-  .about-news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: var(--spacing-64); }
 }
 
 @media (max-width: 700px) {
   .about-fn-cards { flex-direction: column; gap: var(--spacing-12); }
   .about-fn-card { flex: none; min-height: 0; }
+  .news-cards { flex-direction: column; }
+  .news-card { flex: none; }
 }
 
 @media (max-width: 600px) {
   .about-hero { padding: var(--spacing-8) var(--spacing-12); }
   .about-hero-card { min-height: 520px; }
   .about-fn-feature { height: 300px; padding: var(--spacing-24); }
-  .about-news-grid { grid-template-columns: 1fr; }
+  .news-feature { height: 380px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .about-fn-feature-top,
   .about-fn-feature p,
-  .about-fn-card > span { animation: about-fn-fade .2s ease both; }
+  .about-fn-card > span,
+  .news-media,
+  .news-feature__body,
+  .news-card > span { animation: about-fn-fade .2s ease both; }
   .sphere-dialog[open] { animation: sphere-fade 200ms ease; }
   .about-fn-track span,
-  .about-news-media img,
   .sphere-node__disc,
   .about-fn-card,
+  .news-card,
   .about-hero-follow a { transition: none; }
 }
 @keyframes about-fn-fade { from { opacity: 0; } }
@@ -2912,9 +2955,6 @@ div:has(> .split-line) {
 .hero-carousel + .partners { margin-top: calc(-1 * var(--space-section) / 2); }
 
 
-/* WSIS poster is a lettered graphic, not a photo: show it whole on its own white paper */
-.about-news-media img[src*="wsis"] { object-fit: contain; }
-.about-news-media:has(img[src*="wsis"]) { background: var(--color-card); }
 
 /* ── Cara Sebenarnya.my membantu (components/HowItWorks.js) ─────────────────
    3-column bento: tall photo in the middle, stat card spanning two rows on the right.
@@ -3116,7 +3156,6 @@ div:has(> .split-line) {
 .claim-done h3,
 .about-intro__facts-title,
 .about-fn-card-title,
-.about-news-body h4,
 .folder__title,
 .how__card-title,
 .logo-terms__title {

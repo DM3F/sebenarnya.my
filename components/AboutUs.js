@@ -132,18 +132,15 @@ function Intro() {
   );
 }
 
-// Empat fungsi: the selected function is shown large; the other three follow as small cards.
-// Prev/next wrap around; a small card can be picked directly.
-function Functions() {
-  const { items } = whatWeDo;
-  const count = items.length;
+// Shared by Empat fungsi and Berita: one item is featured, the rest follow as small cards.
+// Autoplay holds while hovered or focused, while the tab is hidden, never runs with reduced
+// motion, and has a visible pause control (WCAG 2.2.2). A manual pick restarts the timer.
+function useCarousel(count) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false); // hover / focus hold
-  const [stopped, setStopped] = useState(false); // visible pause control (WCAG 2.2.2)
+  const [stopped, setStopped] = useState(false); // visible pause control
   const move = (n) => setActive((a) => (a + n + count) % count);
 
-  // Autoplay: next function every 5s. Holds while hovered or focused, while the tab is
-  // hidden, and never runs with reduced motion. A manual pick restarts the timer.
   useEffect(() => {
     if (paused || stopped || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const id = setTimeout(() => {
@@ -151,17 +148,30 @@ function Functions() {
     }, AUTOPLAY_MS);
     return () => clearTimeout(id);
   }, [active, paused, stopped, count]);
+
   const rest = Array.from({ length: count - 1 }, (_, k) => (active + k + 1) % count);
+  const holdProps = {
+    onMouseEnter: () => setPaused(true),
+    onMouseLeave: () => setPaused(false),
+    onFocus: () => setPaused(true),
+    onBlur: (e) => !e.currentTarget.contains(e.relatedTarget) && setPaused(false),
+  };
+  return { active, setActive, move, paused, stopped, setStopped, rest, holdProps };
+}
+
+// Empat fungsi: the selected function is shown large; the other three follow as small cards.
+// Prev/next wrap around; a small card can be picked directly.
+function Functions() {
+  const { items } = whatWeDo;
+  const count = items.length;
+  const { active, setActive, move, paused, stopped, setStopped, rest, holdProps } = useCarousel(count);
   const feature = items[active];
 
   return (
     <section
       className={`about-fn${paused ? ' is-paused' : ''}`}
       aria-labelledby="about-fn-title"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setPaused(false)}
+      {...holdProps}
     >
       <h2 className="about-fn-title" id="about-fn-title">
         {whatWeDo.title}
@@ -221,36 +231,77 @@ function Functions() {
 }
 
 
-// Berita dan Galeri: three news cards, then a photo grid
+// Berita dan Galeri: the selected news item is shown large, the others follow as small cards
+// (same carousel as Empat fungsi); the photo sphere sits below.
 function NewsGallery() {
   const { news, gallery } = aboutNews;
+  const { active, setActive, move, paused, stopped, setStopped, rest, holdProps } = useCarousel(news.length);
+  const feature = news[active];
 
   return (
-    <section className="about-news" id="berita-galeri" aria-labelledby="about-news-title">
-      <h2 className="about-title" id="about-news-title">
-        {aboutNews.title}
-      </h2>
-      <p className="about-news-intro">{aboutNews.intro}</p>
-
-      <h3 className="about-subtitle">{aboutNews.newsTitle}</h3>
-      <div className="about-news-grid">
-        {news.map((n) => (
-          <article className="about-news-card" key={n.title}>
-            <div className="about-news-media" style={{ aspectRatio: n.ratio }}>
-              <img src={n.image} alt={n.alt} loading="lazy" />
-            </div>
-            <div className="about-news-body">
-              <Badge className="about-news-tag">{n.tag}</Badge>
-              <h4>{n.title}</h4>
-              <p>{n.text}</p>
-            </div>
-          </article>
-        ))}
+    <section className={`about-news${paused ? ' is-paused' : ''}`} id="berita-galeri" aria-labelledby="about-news-title" {...holdProps}>
+      <div className="about-news__head">
+        <h2 className="about-title" id="about-news-title">
+          {aboutNews.title}
+        </h2>
+        <p className="about-news-intro">{aboutNews.intro}</p>
       </div>
 
-      <h3 className="about-subtitle">{aboutNews.galleryTitle}</h3>
+      <div className="news-body">
+        <div className="news-main">
+          <article className="news-feature" aria-live={paused || stopped ? 'polite' : 'off'}>
+            <div className="news-media" key={`m${active}`}>
+              <img src={feature.image} alt={feature.alt} style={feature.focus ? { objectPosition: feature.focus } : undefined} />
+            </div>
+            <div className="news-feature__body" key={`b${active}`}>
+              <Badge className="news-tag">{feature.tag}</Badge>
+              <h3>{feature.title}</h3>
+            </div>
+          </article>
+
+          <div className="about-fn-controls">
+            <div className="about-fn-arrows">
+              <IconButton icon={ChevronLeft} label="Berita sebelumnya" onClick={() => move(-1)} />
+              <IconButton icon={ChevronRight} label="Berita seterusnya" onClick={() => move(1)} />
+              <IconButton
+                icon={stopped ? PlayFilled : PauseFilled}
+                label={stopped ? 'Mainkan berita' : 'Jeda berita'}
+                onClick={() => setStopped((v) => !v)}
+              />
+            </div>
+            <div className="about-fn-track" style={{ '--n': news.length }} aria-hidden="true">
+              <span style={{ transform: `translateX(${active * 100}%)` }} />
+            </div>
+          </div>
+        </div>
+
+        <div className="news-side">
+          <div className="news-cards">
+            {rest.map((i, k) => (
+              <button
+                type="button"
+                className="news-card"
+                key={`${active}-${i}`} // remount so the content eases in after each change
+                style={{ '--i': k }}
+                onClick={() => setActive(i)}
+                aria-label={`Pilih berita: ${news[i].title}`}
+              >
+                <span className="news-media" style={{ aspectRatio: news[i].ratio }}>
+                  <img src={news[i].image} alt="" loading="lazy" />
+                </span>
+                <span className="news-card__body">
+                  <Badge className="news-tag">{news[i].tag}</Badge>
+                  <span className="news-card__title">{news[i].title}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+          <p className="news-lead">{aboutNews.lead}</p>
+        </div>
+      </div>
+
+      <h3 className="sr-only">{aboutNews.galleryTitle}</h3>
       <SphereGallery items={gallery} />
     </section>
   );
 }
-
