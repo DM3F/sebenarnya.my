@@ -1417,7 +1417,7 @@ input::placeholder { color: var(--color-foreground); }
   border-radius: var(--radius-card);
   background: var(--color-muted) center / cover no-repeat;
 }
-/* Photo card: white text. A 25% dark layer keeps it at 4.5:1 (WCAG 1.4.3) on the lightest parts of the photo. */
+/* Photo card: white text. The photo is light, so a 60% dark layer keeps white text above 4.5:1 (WCAG 1.4.3) everywhere on it. */
 .viewership-stat--image { position: relative; isolation: isolate; color: var(--color-primary-foreground); }
 .viewership-stat--image::before {
   content: '';
@@ -1425,7 +1425,7 @@ input::placeholder { color: var(--color-foreground); }
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: color-mix(in srgb, var(--color-foreground) 25%, transparent);
+  background: color-mix(in srgb, var(--color-foreground) 60%, transparent);
 }
 .viewership-stats .viewership-stat--image dt,
 .viewership-stats .viewership-stat--image dd { color: inherit; } /* must outrank .viewership-stats dt / dd below */
