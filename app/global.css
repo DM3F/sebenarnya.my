@@ -3006,8 +3006,7 @@ input::placeholder { color: var(--color-foreground); }
   background: var(--color-card);
 }
 .about-news-media { overflow: hidden; background: var(--color-muted); }
-.about-news-media img,
-.about-gallery img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease-out); }
+.about-news-media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease-out); }
 .about-news-body { padding: var(--spacing-24) 26px; }
 .about-news-tag {
   display: inline-block;
@@ -3030,35 +3029,91 @@ input::placeholder { color: var(--color-foreground); }
 }
 .about-news-body p { margin: 0; font-size: var(--text-16); line-height: var(--leading-24); letter-spacing: var(--tracking-body); color: var(--color-text-secondary); }
 
-/* Galeri — elastic accordion, photos only (same motion as .social-gallery) */
-.about-gallery { display: flex; gap: var(--spacing-8); height: 560px; margin: 0; padding: 0; list-style: none; }
-.about-gallery-tile {
-  flex: 1 1 0;
-  min-width: 0;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  background: var(--color-muted);
-  transition: flex-grow 600ms var(--ease-out);
+/* Galeri — photos on a 3D sphere (components/SphereGallery.js). Node positions come from JS. */
+.sphere-gallery { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-16); }
+.sphere-stage {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 1;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.about-gallery-tile.is-open { flex-grow: 4; }
-.about-gallery-tile button {
+.sphere-stage:active { cursor: grabbing; }
+.sphere-node {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  cursor: pointer;
+  opacity: 0; /* until the first frame places it */
+  will-change: transform;
+}
+.sphere-node__disc {
   display: block;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  border: 2px solid color-mix(in srgb, var(--color-foreground-inverse) 20%, transparent);
+  border-radius: var(--radius-full);
+  background: var(--color-muted);
+  box-shadow: var(--shadow-float);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.sphere-node__disc img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.sphere-node:active .sphere-node__disc { transform: scale(.97); }
+.sphere-node:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
+.sphere-hint { margin: 0; font-size: var(--text-14); line-height: var(--leading-20); letter-spacing: var(--tracking-body); color: var(--color-muted-foreground); }
+
+/* Photo dialog: image only, no text box */
+.sphere-dialog {
+  max-width: min(960px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
   padding: 0;
   border: 0;
-  border-radius: inherit;
-  background: none;
-  cursor: pointer;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  overflow: visible;
 }
-.about-gallery-tile.is-open button { cursor: default; }
-.about-gallery-tile button:focus-visible { outline: 2px solid var(--color-ring); outline-offset: -4px; }
-.about-gallery-tile img { transform: scale(1.1); filter: brightness(.5); transition: transform 800ms var(--ease-out), filter 400ms ease; }
-.about-gallery-tile.is-open img { transform: scale(1); filter: brightness(1); }
+.sphere-dialog[open] { animation: sphere-in 300ms var(--ease-out); }
+.sphere-dialog::backdrop { background: color-mix(in srgb, var(--color-foreground) 70%, transparent); animation: sphere-fade 200ms ease; }
+.sphere-dialog img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100dvh - 48px);
+  border-radius: var(--radius-lg);
+  object-fit: contain;
+}
+.sphere-dialog__close {
+  position: absolute;
+  top: var(--spacing-12);
+  right: var(--spacing-12);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-foreground) 60%, transparent);
+  color: var(--color-foreground-inverse);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, transform var(--duration-fast) var(--ease-out);
+}
+.sphere-dialog__close:active { transform: scale(.97); }
+.sphere-dialog__close:focus-visible { outline: 2px solid var(--color-foreground-inverse); outline-offset: 2px; }
+@keyframes sphere-in { from { opacity: 0; transform: scale(.96); } }
+@keyframes sphere-fade { from { opacity: 0; } }
 
 @media (hover: hover) and (pointer: fine) {
   .about-news-card:hover .about-news-media img { transform: scale(1.03); }
-  .about-gallery-tile:not(.is-open):hover img { filter: brightness(.7); }
+  .sphere-node:hover .sphere-node__disc { transform: scale(1.12); }
+  .sphere-dialog__close:hover { background: color-mix(in srgb, var(--color-foreground) 80%, transparent); }
 }
 
 @media (max-width: 1100px) {
@@ -3078,7 +3133,6 @@ input::placeholder { color: var(--color-foreground); }
   .about-fn-title, .about-title { font-size: var(--text-40); line-height: var(--leading-44); }
   .about-news-intro { margin-bottom: var(--spacing-40); font-size: var(--text-18); line-height: var(--leading-28); }
   .about-news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: var(--spacing-64); }
-  .about-gallery { height: 440px; }
 }
 
 @media (max-width: 700px) {
@@ -3096,17 +3150,16 @@ input::placeholder { color: var(--color-foreground); }
   .about-fn-feature { height: 300px; padding: var(--spacing-24); }
   .about-fn-feature h3 { font-size: var(--text-28); line-height: var(--leading-34); }
   .about-news-grid { grid-template-columns: 1fr; }
-  .about-gallery { flex-direction: column; height: 640px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .about-fn-feature-top,
   .about-fn-feature p,
   .about-fn-card > span { animation: about-fn-fade .2s ease both; }
+  .sphere-dialog[open] { animation: sphere-fade 200ms ease; }
   .about-fn-track span,
   .about-news-media img,
-  .about-gallery img,
-  .about-gallery-tile,
+  .sphere-node__disc,
   .about-fn-card,
   .about-fn-arrows button,
   .about-hero-follow a { transition: none; }

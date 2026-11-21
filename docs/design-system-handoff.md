@@ -395,8 +395,11 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 
 ## Kemas kini 21 Nov 2026 (malam)
 
-- **Galeri Tentang Kami** (`components/AboutUs.js › Gallery`, `.about-gallery`): grid 4 kolum diganti akordion elastik, gerakan sama dengan `.social-gallery`. Foto sahaja: tiada kapsyen, tajuk atau CTA di atas atau di bawah foto. Kapsyen kini nama aksesibel butang (`aria-label`, `aria-pressed`).
-  - Baris flex tinggi 560 (440 ≤900), gap 8, `--radius-lg`. Jubin terbuka `flex-grow: 4`, 600ms `--ease-out`. Foto terlipat skala 1.1 + brightness .5, terbuka 1 + 1; hover mouse pada jubin terlipat brightness .7.
-  - Hover, fokus atau ketuk membuka jubin. Fokus: outline 2px `--color-ring` offset −4.
-  - ≤600: kolum menegak, tinggi 640. Reduced motion: tiada transisi.
-  - Medan `wide` dalam `aboutNews.gallery` dibuang. **Paper belum dikemas kini.**
+- **Galeri Tentang Kami** (`components/SphereGallery.js`, `.sphere-*`): sfera 3D foto bulat (port SphereImageGrid), menggantikan grid/akordion.
+  - 36 nod (6 foto galeri berulang) atas sfera Fibonacci, jitter berbenih (tiada `Math.random`, selamat SSR). Pentas segi empat hingga 640px; jejari 0.4×, nod 0.2× saiz pentas, skala ikut kedalaman + jarak dari tengah, nod bertindih dikecilkan.
+  - Gerakan ditulis terus ke DOM dari satu gelung rAF (tiada render semula React setiap bingkai); berhenti bila di luar skrin.
+  - Auto-putar ~7°/s; berhenti semasa hover, fokus, seret, dialog terbuka atau `prefers-reduced-motion`. Seret (pointer capture selepas 4px) dengan momentum (decay .94); seretan tidak membuka foto. Sentuh: `touch-action: pan-y` — leret mendatar memutar, menegak menatal halaman.
+  - Nod: butang bulat, border 2px putih 20%, `--shadow-float`; hover (mouse) skala 1.12, tekan .97, fokus outline `--color-ring`.
+  - Klik/ketuk → `<dialog>` asli, **foto sahaja tanpa kotak teks** (alt = kapsyen), butang tutup 44px ikon X; Esc/backdrop menutup. Masuk: opacity + scale .96 → 1, 300ms `--ease-out`; backdrop 200ms. Reduced motion: fade sahaja.
+  - Petunjuk 14/20 `--color-muted-foreground`: "Seret untuk memutar, pilih foto untuk membesarkan."
+  - **Paper belum dikemas kini.**

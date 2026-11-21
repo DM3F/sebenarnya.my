@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 import LogoKit from '@/components/LogoKit';
+import SphereGallery from '@/components/SphereGallery';
 import { aboutHero as hero, aboutIntro as intro, aboutNews, socialLinks, whatWeDo } from '@/data/content';
 
 const pad = (n) => String(n).padStart(2, '0');
@@ -184,35 +185,8 @@ function NewsGallery() {
       </div>
 
       <h3 className="about-subtitle">{aboutNews.galleryTitle}</h3>
-      <Gallery items={gallery} />
+      <SphereGallery items={gallery} />
     </section>
   );
 }
 
-// Galeri: elastic accordion, photos only. The open photo takes four parts of the row,
-// the others one part each; hover, focus or tap opens one. Caption is the accessible name.
-function Gallery({ items }) {
-  const [active, setActive] = useState(Math.floor(items.length / 2));
-
-  return (
-    <ul className="about-gallery">
-      {items.map((g, i) => {
-        const open = i === active;
-        return (
-          <li className={`about-gallery-tile${open ? ' is-open' : ''}`} key={g.caption}>
-            <button
-              type="button"
-              aria-label={g.caption}
-              aria-pressed={open}
-              onMouseEnter={() => setActive(i)}
-              onFocus={() => setActive(i)}
-              onClick={() => setActive(i)}
-            >
-              <img src={g.image} alt="" loading="lazy" draggable={false} />
-            </button>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}

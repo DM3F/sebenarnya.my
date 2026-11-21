@@ -252,7 +252,7 @@ export const whatWeDo = {
   ],
 };
 
-// News and gallery. News `ratio` = image aspect ratio; gallery = elastic accordion, `caption` is the photo's accessible name.
+// News and gallery. News `ratio` = image aspect ratio; gallery = 3D sphere (SphereGallery.js), `caption` is the photo's accessible name.
 export const aboutNews = {
   title: 'Berita dan Galeri',
   intro: 'Ikuti perkembangan terkini, pengiktirafan dan aktiviti Sebenarnya.my bersama masyarakat.',
