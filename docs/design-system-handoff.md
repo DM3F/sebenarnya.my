@@ -384,7 +384,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - **Semakan fakta terkini:** butang "Lihat lagi" dibuang ().
 - **Logo:** halaman `/logo` dibuang. Seksyen Logo dalam Tentang Kami ada `id="logo"`; menu Tentang Kami › Logo → `/about-us/#logo`. `PageTransition` kini mendarat pada `#hash` selepas transisi (dulu sentiasa ke atas).
 - **Kad artikel:** border kini `--color-muted-strong` (hairline lembut); **tiada hover pada border** — hover hanya zoom foto 1.03.
-- **Tentang Kami, seksyen 2:** diganti satu pernyataan dua baris, gaya sama dengan tajuk "Semakan fakta terkini" (36/42 Medium; mobile 28/34): "Setiap dakwaan disemak bersama agensi rasmi, / sebelum jawapannya sampai kepada anda." Kad & baris fakta lama dibuang.
+- **Tentang Kami, seksyen 2 (About):** label + lead, tiga kad (cerita, pill agensi, statistik + bar keputusan Palsu/Penjelasan/Makluman) dan baris fakta dalam angka. Label kiri atas ialah **teks eyebrow biasa** (14 Medium, `--color-muted-foreground`), bukan pill.
 - **Empat fungsi:** autoplay setiap 5s (`AUTOPLAY_MS`); berhenti bila hover atau fokus, bila tab tersembunyi, dan tiada autoplay dengan `prefers-reduced-motion`. Pilihan manual mula semula pemasa. `aria-live` hanya `polite` bila pengguna yang mengawal.
 - **Galeri media sosial** (`components/Stories.js`, `.social-gallery`), menggantikan slider:
   - 5 kad sebaris (Instagram, Threads, X, TikTok, Facebook), tinggi 560, gap 8, `--radius-lg`. Kad terbuka `flex-grow: 4`, kad lipat `1`. Hover / fokus / ketik membuka kad.

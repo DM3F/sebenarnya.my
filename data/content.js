@@ -225,7 +225,27 @@ export const aboutHero = {
 
 // Statement under the hero (Tentang Kami, section 2): two short lines, one idea.
 export const aboutIntro = {
-  lines: ['Setiap dakwaan disemak bersama agensi rasmi,', 'sebelum jawapannya sampai kepada anda.'],
+  label: 'Tentang kami',
+  lead: 'Di Sebenarnya.my, kami bukan sekadar menyemak berita — kami melindungi kepercayaan. Sejak 2017, kami menjadi rujukan rakyat untuk maklumat sahih, daripada khabar angin harian hingga isu nasional.',
+  card: {
+    strong: 'Semakan berasaskan sumber rasmi',
+    muted: 'setiap dakwaan dirujuk kepada agensi yang berkaitan sebelum',
+    end: 'jawapan diterbitkan.',
+    status: 'Semakan aktif',
+  },
+  pill: 'Bersama lebih 20 agensi',
+  verdicts: {
+    value: '20+',
+    title: 'Agensi rakan',
+    text: 'Kementerian dan agensi persekutuan yang mengesahkan dakwaan bersama kami.',
+  },
+  factsTitle: 'Beberapa fakta tentang kami dalam angka',
+  facts: [
+    { value: '275 juta+', label: 'Lawatan ke portal' },
+    { value: '1,016', label: 'Artikel semakan' },
+    { value: '200 ribu', label: 'Mesej diproses Aifa' },
+    { value: '20+', label: 'Agensi rakan' },
+  ],
 };
 
 // Four functions: the selected one is shown large, the other three as small cards.

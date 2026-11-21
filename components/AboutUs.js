@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { Badge, IconButton } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
 import SphereGallery from '@/components/SphereGallery';
-import { aboutHero as hero, aboutIntro as intro, aboutNews, socialLinks, whatWeDo } from '@/data/content';
+import { aboutHero as hero, aboutIntro as intro, aboutNews, articleStatus, articles, socialLinks, whatWeDo } from '@/data/content';
 
 const pad = (n) => String(n).padStart(2, '0');
 const AUTOPLAY_MS = 5000; // Empat fungsi: time on each function
@@ -57,15 +57,67 @@ function Hero() {
   );
 }
 
-// Statement: two lines of plain text, styled like the "Semakan fakta terkini" heading
+// About: label + lead, three cards (story, partners, verdict mix), facts in numbers
+const VERDICT_BARS = ['palsu', 'benar', 'makluman'];
+
 function Intro() {
+  const counts = VERDICT_BARS.map((id) => ({ id, n: articles.filter((a) => a.status === id).length }));
+  const max = Math.max(1, ...counts.map((c) => c.n));
+
   return (
-    <section className="about-intro" aria-label="Tentang kami">
-      <h2 className="about-intro__statement">
-        {intro.lines.map((line) => (
-          <span key={line}>{line}</span>
-        ))}
-      </h2>
+    <section className="about-intro" aria-labelledby="about-intro-title">
+      <div className="about-intro__head">
+        <h2 className="about-intro__label" id="about-intro-title">{intro.label}</h2>
+        <p className="about-intro__lead">{intro.lead}</p>
+      </div>
+
+      <div className="about-intro__cards">
+        <div className="about-intro__card about-intro__card--story">
+          <span className="about-intro__mark" aria-hidden="true" />
+          <div className="about-intro__story">
+            <p className="about-intro__story-text">
+              {intro.card.strong} <span>{intro.card.muted}</span> {intro.card.end}
+            </p>
+            <p className="about-intro__status">
+              <span className="about-intro__switch" aria-hidden="true"><span /></span>
+              {intro.card.status}
+            </p>
+          </div>
+        </div>
+
+        <div className="about-intro__card about-intro__card--pill">
+          <span className="about-intro__pill">{intro.pill}</span>
+        </div>
+
+        <div className="about-intro__card about-intro__card--stats">
+          <div className="about-intro__stat">
+            <p className="about-intro__stat-value">{intro.verdicts.value}</p>
+            <p className="about-intro__stat-title">{intro.verdicts.title}</p>
+            <p className="about-intro__stat-text">{intro.verdicts.text}</p>
+          </div>
+          <ul className="about-intro__bars" aria-label="Artikel mengikut keputusan">
+            {counts.map((c) => (
+              <li key={c.id}>
+                <span className="about-intro__bar-label">{articleStatus[c.id]?.label ?? c.id}</span>
+                <span className="about-intro__bar" style={{ '--w': `${Math.round((c.n / max) * 100)}%` }} aria-hidden="true" />
+                <span className="about-intro__bar-n">{c.n}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="about-intro__facts">
+        <h3 className="about-intro__facts-title">{intro.factsTitle}</h3>
+        <dl className="about-intro__facts-row">
+          {intro.facts.map((f) => (
+            <div key={f.label}>
+              <dt>{f.value}</dt>
+              <dd>{f.label}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </section>
   );
 }
