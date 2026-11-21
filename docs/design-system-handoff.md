@@ -44,6 +44,7 @@ Rujukan awal: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork")
 |---|---|---|
 | `--color-background` | grey-99 | kanvas page, kawalan (button outline, chip, tab, search) |
 | `--color-foreground` | black | teks utama |
+| `--color-muted-foreground-inverse` | putih 60% | teks redup atas latar gelap/hitam (≈7:1 atas hitam); jangan guna `--color-muted-foreground` atas hitam (3.86:1) |
 | `--color-card` | white | permukaan terangkat |
 | `--color-muted` | grey-95 | band, hover, nav aktif |
 | `--color-muted-strong` | grey-91 | inset, divider, isi disabled |
@@ -98,7 +99,16 @@ Mobile (<600px, `--breakpoint-type`): Display → `--text-38`/`--leading-42`, He
 
 ### 2.4 Spacing (4px base) — `--spacing-*`
 `2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 72, 96, 120`
-- 8: gap pill berpasangan/chip · 12: gutter grid · 16: inset, margin mobile · 20: padding sisi pill · 24: title→body panel · 32: padding kad, margin desktop · 40: bawah header section · 64: padding stage · 96–120: jarak section, hero top.
+- 8: gap pill berpasangan/chip · 12: gutter grid · 16: inset, margin mobile · 20: padding sisi pill · 24: title→body panel · 32: padding kad · 40: bawah header section · 64: padding stage · 96: hero top.
+
+**Ritma halaman (token peranan, `app/tokens.css`) — semua halaman guna yang sama:**
+| Token | Desktop | ≤1280 | ≤1024 | ≤900 | ≤600 | Guna |
+|---|---|---|---|---|---|---|
+| `--space-page-x` | 96 | 48 | 48 | 24 | 16 | Gutter halaman: header, setiap seksyen, footer (`--side` ialah alias) |
+| `--space-section` | 96 | 96 | 64 | 64 | 48 | Jarak antara seksyen; `.main` ialah flex column dengan `row-gap` ini + `padding-bottom` sebelum footer; padding atas footer |
+| `--space-page-top` | 40 | 40 | 40 | 40 | 24 | Header → blok pertama pada halaman tanpa hero (Artikel, detail) |
+
+Seksyen **tidak** ada padding atas/bawah sendiri; jarak datang dari `.main`. Kumpulan rapat dapat separuh (`.hero + .hero-carousel`, `.hero-carousel + .partners`: −½ `--space-section`). Seksyen baharu: cukup `padding-inline: var(--space-page-x)`.
 
 ### 2.5 Radius
 `--radius-sm: 4px` · `--radius-input: 8px` · `--radius-md: 12px` (thumbnail, media, dropdown) · `--radius-card: 20px` (kad, stage, panel) · `--radius-lg: 24px` (feature card, hero stage) · `--radius-full: 9999px` (SEMUA button, tab, chip, search).
@@ -412,3 +422,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 
 ## Scroll motion — line reveal tajuk
 `components/ScrollMotion.js` (dipasang di Utama, Tentang Kami, detail artikel). Tajuk dalam senarai `lineBlocks` dipecah per baris (GSAP SplitText, `mask: 'lines'`) dan naik dari `yPercent 100` ke 0: 0.9s, `power4.out`, stagger 0.08, sekali sahaja apabila atas tajuk sampai 85% viewport. Mask setiap baris diberi padding .14em/.2em (margin negatif sama) supaya huruf tinggi dan descender tidak terpotong; selepas animasi, split di-revert jadi teks biasa. Teks badan, kad dan data tidak bergerak. `prefers-reduced-motion` mematikan semua. Pembaca skrin mendapat `aria-label` penuh dari SplitText.
+
+## Halaman baharu (21 Nov 2026)
+- `/submit-claim/` (`app/submit-claim/page.js`): lawatan terus (pautan dikongsi, tab baharu) dapat halaman "Lapor berita tular" dan borang pop-up `ClaimForm` terbuka sendiri. Klik dalam laman masih buka pop-up tanpa navigasi.
+- 404 (`app/not-found.js`): header + footer, eyebrow "Ralat 404", tajuk display, dua jalan keluar (Utama filled, Artikel outline). Gaya `.page-notice`.

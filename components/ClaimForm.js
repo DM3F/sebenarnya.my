@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { withBase } from '@/lib/basePath';
+import { stripBase, withBase } from '@/lib/basePath';
 import { Check, CloudUpload, Flag, Link, X } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 import { Button, IconButton } from '@/components/ui';
@@ -83,6 +83,11 @@ export default function ClaimForm() {
     document.addEventListener('click', onClick);
     return () => document.removeEventListener('click', onClick);
   }, [status]);
+
+  // Visiting /submit-claim/ directly (shared link, new tab) opens the form straight away
+  useEffect(() => {
+    if (stripBase(location.pathname) === CLAIM_HREF) open();
+  }, []);
 
   // Stop the page behind from scrolling while the form is open
   useEffect(() => {

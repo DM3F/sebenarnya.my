@@ -11,7 +11,7 @@
   --fade: .8;
 
   --max-width: 1600px;
-  --side: 5vw;
+  --side: var(--space-page-x); /* legacy alias: .container and About sections */
 }
 
 /* Page transition (components/PageTransition.js runs document.startViewTransition).
@@ -119,7 +119,15 @@ input::placeholder { color: var(--color-foreground); }
   flex: 1 0 auto;
   width: 100%;
   margin: 0 auto;
+  /* Page rhythm lives here, not on each section (design.md §5) */
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--space-section);
+  padding-bottom: var(--space-section);
 }
+/* Sections fill the column even with margin-inline: auto (.container), and never grow to their
+   content's width: wide tracks (carousels, logo ticker) scroll inside instead of widening the page */
+.main > * { box-sizing: border-box; width: 100%; min-width: 0; }
 
 .container {
   max-width: var(--max-width);
@@ -155,12 +163,9 @@ input::placeholder { color: var(--color-foreground); }
   justify-content: space-between;
   gap: var(--spacing-24);
   min-height: 72px;
-  padding: var(--spacing-16) var(--spacing-96);
+  padding: var(--spacing-16) var(--space-page-x);
 }
 
-@media (max-width: 1280px) { .header-inner { padding-inline: var(--spacing-48); } }
-@media (max-width: 900px)  { .header-inner { padding-inline: var(--spacing-24); } }
-@media (max-width: 600px)  { .header-inner { padding-inline: var(--spacing-16); } }
 
 .brand {
   flex: none;
@@ -525,11 +530,11 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Aktiviti media sosial terkini */
 .activity {
-  --activity-side: var(--spacing-96);
+  --activity-side: var(--space-page-x);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-32);
-  padding: var(--spacing-96) var(--activity-side);
+  padding: 0 var(--activity-side);
 }
 .activity__title {
   margin: 0;
@@ -776,15 +781,12 @@ input::placeholder { color: var(--color-foreground); }
 }
 .wsis-banner__media img { width: 100%; height: 100%; object-fit: cover; }
 
-@media (max-width: 1280px) { .activity { --activity-side: var(--spacing-48); } }
 @media (max-width: 1100px) {
   .wsis-banner { flex-direction: column; height: auto; }
   .wsis-banner__story { flex: none; gap: var(--spacing-40); }
   .wsis-banner__media { flex: none; aspect-ratio: 16 / 10; }
 }
-@media (max-width: 900px) { .activity { --activity-side: var(--spacing-24); padding-block: var(--spacing-64); } }
 @media (max-width: 600px) {
-  .activity { --activity-side: var(--spacing-16); }
   .activity__title { font-size: var(--text-28); line-height: var(--leading-34); }
   .wsis-banner__story { padding: var(--spacing-24); }
   .wsis-banner__title { font-size: var(--text-38); }
@@ -798,11 +800,11 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Semakan fakta terkini — components/Latest.js + FlipCard.js */
 .latest-checks {
-  --latest-side: var(--spacing-96); /* title and controls inset; the card row bleeds past it */
+  --latest-side: var(--space-page-x); /* title and controls inset; the card row bleeds past it */
   display: flex;
   flex-direction: column;
   gap: var(--spacing-48);
-  padding: var(--spacing-96) var(--latest-side);
+  padding: 0 var(--latest-side);
   background-color: var(--color-background);
 }
 
@@ -856,10 +858,8 @@ input::placeholder { color: var(--color-foreground); }
 
 /* "Lihat lagi": outline pill with a foreground edge */
 
-@media (max-width: 1280px) { .latest-checks { --latest-side: var(--spacing-48); padding: var(--spacing-64) var(--latest-side); } }
-@media (max-width: 900px)  { .latest-checks { --latest-side: var(--spacing-24); padding: var(--spacing-64) var(--latest-side); gap: var(--spacing-32); } }
+@media (max-width: 900px)  { .latest-checks { gap: var(--spacing-32); } }
 @media (max-width: 600px) {
-  .latest-checks { --latest-side: var(--spacing-16); padding: var(--spacing-48) var(--latest-side); }
   .latest-checks__title { font-size: var(--text-28); line-height: var(--leading-34); }
   .latest-checks__rail > .fc { flex-basis: min(300px, 82vw); }
 }
@@ -1111,11 +1111,11 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Footer (components/Footer.js) */
 .site-footer {
-  --footer-side: var(--spacing-96);
+  --footer-side: var(--space-page-x);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-64);
-  padding: var(--spacing-96) var(--footer-side) var(--spacing-32);
+  padding: var(--space-section) var(--footer-side) var(--spacing-32);
   border-top: 1px solid var(--color-border);
   background: var(--color-background);
   color: var(--color-foreground);
@@ -1190,14 +1190,12 @@ input::placeholder { color: var(--color-foreground); }
   color: var(--color-muted-foreground);
 }
 
-@media (max-width: 1280px) { .site-footer { --footer-side: var(--spacing-48); } }
 @media (max-width: 1100px) {
   .site-footer__top { flex-direction: column; }
   .site-footer__links { flex-wrap: wrap; }
 }
-@media (max-width: 900px) { .site-footer { --footer-side: var(--spacing-24); padding-top: var(--spacing-64); gap: var(--spacing-48); } }
+@media (max-width: 900px) { .site-footer { padding-top: var(--space-section); gap: var(--spacing-48); } }
 @media (max-width: 600px) {
-  .site-footer { --footer-side: var(--spacing-16); }
   .site-footer__links { gap: var(--spacing-32) var(--spacing-24); }
   .site-footer__col { width: calc(50% - var(--spacing-12)); }
   .site-footer__text { font-size: var(--text-16); line-height: var(--leading-24); }
@@ -1239,7 +1237,6 @@ input::placeholder { color: var(--color-foreground); }
    shows its text; the neighbours peek in as images only. */
 .hero-carousel {
   --w: min(960px, calc(100vw - 2 * var(--spacing-64)));
-  padding-bottom: var(--spacing-64);
   color: var(--color-foreground);
 }
 
@@ -1379,9 +1376,7 @@ input::placeholder { color: var(--color-foreground); }
    Viewership.js (statement + stats) and Collaborators.js (agency logos)
    ========================================================================== */
 .viewership,
-.partners { --brief-side: var(--spacing-96); padding-inline: var(--brief-side); max-width: none; }
-.viewership { padding-block: var(--spacing-120); }
-.partners { padding-top: 0; padding-bottom: var(--spacing-72); }
+.partners { --brief-side: var(--space-page-x); padding-inline: var(--brief-side); max-width: none; }
 
 .viewership-inner {
   display: grid;
@@ -1530,15 +1525,10 @@ input::placeholder { color: var(--color-foreground); }
   max-height: 48px;
 }
 
-@media (max-width: 1280px) { .viewership, .partners { --brief-side: var(--spacing-48); } }
 @media (max-width: 960px) {
-  .viewership, .partners { --brief-side: var(--spacing-24); }
-  .viewership { padding-block: var(--spacing-64); }
-  .partners { padding-top: var(--spacing-64); padding-bottom: var(--spacing-56); }
   .viewership-inner { grid-template-columns: 1fr; gap: var(--spacing-24); }
 }
 @media (max-width: 600px) {
-  .viewership, .partners { --brief-side: var(--spacing-16); }
   .viewership-stats { grid-template-columns: 1fr; gap: var(--spacing-16); }
   .viewership-stat { min-height: 220px; padding: var(--spacing-24); }
   .partners-inner { flex-direction: column; align-items: stretch; gap: var(--spacing-16); }
@@ -1563,11 +1553,11 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Layout: one side inset for the whole page, like the header and footer */
 .articles {
-  --articles-side: var(--spacing-96);
+  --articles-side: var(--space-page-x);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-40);
-  padding: var(--spacing-40) var(--articles-side) var(--spacing-96);
+  padding: var(--space-page-top) var(--articles-side) 0;
 }
 
 /* Filters ----------------------------------------------------------------- */
@@ -1764,17 +1754,15 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 @media (max-width: 1280px) {
-  .articles { --articles-side: var(--spacing-48); }
   .articles-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 900px) {
-  .articles { --articles-side: var(--spacing-24); }
   .articles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .articles-count { flex-basis: 100%; margin-left: 0; }
 }
 @media (max-width: 600px) {
-  .articles { --articles-side: var(--spacing-16); padding-top: var(--spacing-24); gap: var(--spacing-24); }
+  .articles { gap: var(--spacing-24); }
 
   .articles-grid { grid-template-columns: minmax(0, 1fr); }
   .articles-card__title { font-size: var(--text-18); line-height: var(--leading-24); }
@@ -1792,7 +1780,7 @@ input::placeholder { color: var(--color-foreground); }
    ========================================================================== */
 /* Article detail */
 .post-page {
-  padding: var(--spacing-32) 81px var(--spacing-96);
+  padding: var(--space-page-top) var(--space-page-x) 0;
   color: var(--color-foreground);
   font-family: var(--font-sans);
 }
@@ -1926,10 +1914,7 @@ input::placeholder { color: var(--color-foreground); }
   color: var(--color-foreground);
 }
 
-@media (max-width: 1280px) { .post-page { padding-inline: var(--spacing-48); } }
-@media (max-width: 900px)  { .post-page { padding-inline: var(--spacing-24); } }
 @media (max-width: 600px) {
-  .post-page { padding: var(--spacing-16) var(--spacing-16) var(--spacing-64); }
   .post-back { margin-bottom: var(--spacing-16); }
   .post-title { font-size: var(--text-32); line-height: var(--leading-36); }
   .post-subtitle, .post-body { font-size: var(--text-16); line-height: var(--leading-24); }
@@ -2472,7 +2457,7 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Empat fungsi: large selected card + controls on the left, three small cards on the right */
 /* About intro: label + lead, three cards, facts in numbers --------------- */
-.about-intro { display: flex; flex-direction: column; gap: var(--spacing-32); padding: var(--spacing-96) var(--side) 0; }
+.about-intro { display: flex; flex-direction: column; gap: var(--spacing-32); padding: 0 var(--side); }
 .about-intro__head { display: flex; justify-content: space-between; align-items: start; gap: var(--spacing-32); }
 .about-intro__label {
   /* plain eyebrow text (no pill) */
@@ -2512,7 +2497,7 @@ input::placeholder { color: var(--color-foreground); }
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-tight);
 }
-.about-intro__story-text span { color: var(--color-muted-foreground); }
+.about-intro__story-text span { color: var(--color-muted-foreground-inverse); } /* smoke on black was 3.86:1 */
 .about-intro__card--pill { display: flex; align-items: center; justify-content: center; background: var(--color-muted-strong) center / cover no-repeat; }
 .about-intro__pill {
   padding: var(--spacing-10) var(--spacing-20);
@@ -2558,12 +2543,11 @@ input::placeholder { color: var(--color-foreground); }
   .about-intro__facts-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-32) var(--spacing-16); }
 }
 @media (max-width: 600px) {
-  .about-intro { padding-top: var(--spacing-56); }
   .about-intro__lead, .about-intro__story-text { font-size: var(--text-20); line-height: var(--leading-28); }
   .about-intro__card--story, .about-intro__card--stats { padding: var(--spacing-24); }
 }
 
-.about-fn { display: flex; flex-direction: column; gap: var(--spacing-48); padding: var(--spacing-96) var(--side); }
+.about-fn { display: flex; flex-direction: column; gap: var(--spacing-48); padding: 0 var(--side); }
 .about-fn-title {
   align-self: flex-end;
   width: auto;
@@ -2671,7 +2655,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 /* Berita dan Galeri */
-.about-news { padding: var(--spacing-96) var(--side) var(--spacing-120); }
+.about-news { padding: 0 var(--side); }
 .about-news-intro {
   margin: 0 0 var(--spacing-64);
   font-size: var(--text-24);
@@ -2789,7 +2773,6 @@ input::placeholder { color: var(--color-foreground); }
   .about-hero-follow p { font-size: var(--text-28); line-height: var(--leading-34); }
   .about-hero-text h1 { font-size: var(--text-36); line-height: var(--leading-42); }
   .about-hero-text p { font-size: var(--text-18); line-height: var(--leading-28); }
-  .about-fn, .about-news { padding-block: var(--spacing-64); }
   .about-fn-title, .about-title { font-size: var(--text-40); line-height: var(--leading-44); }
   .about-news-intro { margin-bottom: var(--spacing-40); font-size: var(--text-18); line-height: var(--leading-28); }
   .about-news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: var(--spacing-64); }
@@ -2841,7 +2824,7 @@ input::placeholder { color: var(--color-foreground); }
 /* ==========================================================================
    Logo downloads (components/LogoKit.js): /logo page and the end of Tentang Kami
    ========================================================================== */
-.logo-kit { padding: var(--spacing-96) var(--side); }
+.logo-kit { padding: 0 var(--side); }
 .logo-kit-title {
   margin: 0;
   font-size: var(--text-36);
@@ -2915,7 +2898,6 @@ input::placeholder { color: var(--color-foreground); }
 
 @media (max-width: 1100px) { .logo-card-info { flex-direction: column; align-items: flex-start; } }
 @media (max-width: 900px) {
-  .logo-kit { padding-block: var(--spacing-64); }
   .logo-kit-grid { grid-template-columns: 1fr; }
   .logo-card-preview { height: 320px; }
 }
@@ -2933,3 +2915,31 @@ div:has(> .split-line) {
   padding-block: .14em .2em;
   margin-block: -.14em -.2em;
 }
+
+/* Single-message pages: /submit-claim/ landing and 404 (app/not-found.js) */
+.page-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-section) var(--space-page-x) 0;
+  text-align: center;
+}
+.page-notice__eyebrow {
+  margin: 0 0 var(--spacing-16);
+  font-size: var(--text-14);
+  line-height: var(--leading-20);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-muted-foreground);
+}
+.page-notice__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-inline);
+  margin-top: var(--spacing-8);
+}
+
+/* Page rhythm (design.md §5). .main puts var(--space-section) between every section.
+   Close groups get half: the hero carousel belongs to the hero, the agency logos to the carousel. */
+.hero + .hero-carousel { margin-top: calc(-1 * var(--space-section) / 2); }
+.hero-carousel + .partners { margin-top: calc(-1 * var(--space-section) / 2); }

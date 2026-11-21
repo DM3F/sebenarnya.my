@@ -55,6 +55,7 @@
   --color-primary-hover: var(--color-grey-25);
   --color-primary-foreground: var(--color-white);
   --color-foreground-inverse: var(--color-white);  /* text on dark/media */
+  --color-muted-foreground-inverse: color-mix(in srgb, var(--color-white) 60%, transparent); /* dimmed text on dark: ≈7:1 on black */
   --color-selected: var(--color-grey-41);
   --color-ring: var(--color-blue);                 /* focus */
   --color-link: var(--color-blue);
@@ -271,6 +272,9 @@
   --space-inline: var(--spacing-8);             /* icon↔label, paired controls */
   --space-inline-tight: var(--spacing-6);
   --space-stack: var(--spacing-8);              /* label↔field, field↔hint */
+  --space-page-x: var(--spacing-96);            /* page gutter (design.md §5: 96 desktop) */
+  --space-section: var(--spacing-96);           /* gap between page sections (96 · 64 tablet · 48 phone) */
+  --space-page-top: var(--spacing-40);          /* header → first block on pages without a hero */
   --space-nav-gap: var(--spacing-8);            /* between header nav items / header actions */
   --space-segment: var(--spacing-2);            /* inside segmented controls */
 
@@ -304,3 +308,9 @@
     --text-heading-lg--line-height: var(--leading-36);
   }
 }
+
+/* Page rhythm breakpoints: one gutter and one section gap for every page */
+@media (max-width: 1280px) { :root { --space-page-x: var(--spacing-48); } }
+@media (max-width: 1024px) { :root { --space-section: var(--spacing-64); } }
+@media (max-width: 900px)  { :root { --space-page-x: var(--spacing-24); } }
+@media (max-width: 600px)  { :root { --space-page-x: var(--spacing-16); --space-section: var(--spacing-48); --space-page-top: var(--spacing-24); } }
