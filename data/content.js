@@ -338,28 +338,37 @@ export const howItWorks = {
 export const logoPage = {
   title: 'Logo Sebenarnya.my',
   intro: 'Muat turun logo dan ikon Sebenarnya.my untuk digunakan dalam bahan media, pembentangan dan hebahan.',
+  // Each item: preview + three downloads (PNG is the original; JPEG has a white ground;
+  // the SVG wraps the PNG until the vector artwork is supplied).
   items: [
     {
       name: 'Logo',
       text: 'Logo penuh bersama slogan “Tidak Pasti Jangan Kongsi”.',
       src: withBase('/images/logo/logo.png'),
-      file: withBase('/images/logo/logo.png'),
-      filename: 'sebenarnya-logo.png',
       width: 356,
       height: 107,
       meta: 'PNG · 356 × 107 px · 37 KB',
+      formats: [
+        { label: 'PNG', file: withBase('/images/logo/logo.png'), filename: 'sebenarnya-logo.png' },
+        { label: 'SVG', file: withBase('/images/logo/logo.svg'), filename: 'sebenarnya-logo.svg' },
+        { label: 'JPEG', file: withBase('/images/logo/logo.jpg'), filename: 'sebenarnya-logo.jpg' },
+      ],
     },
     {
       name: 'Ikon',
       text: 'Ikon segi empat untuk ruang kecil seperti gambar profil dan ikon aplikasi.',
       src: withBase('/images/logo/icon-download.png'),
-      file: withBase('/images/logo/icon-download.png'),
-      filename: 'sebenarnya-ikon.png',
       width: 134,
       height: 134,
       meta: 'PNG · 134 × 134 px · 20 KB',
+      formats: [
+        { label: 'PNG', file: withBase('/images/logo/icon-download.png'), filename: 'sebenarnya-ikon.png' },
+        { label: 'SVG', file: withBase('/images/logo/icon-download.svg'), filename: 'sebenarnya-ikon.svg' },
+        { label: 'JPEG', file: withBase('/images/logo/icon-download.jpg'), filename: 'sebenarnya-ikon.jpg' },
+      ],
     },
   ],
+  formatTitle: 'Format',
   // DEMO copy — replace with MCMC's official terms before launch (docs/plan.md).
   terms: {
     title: 'Terma penggunaan logo',

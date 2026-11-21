@@ -2840,80 +2840,202 @@ input::placeholder { color: var(--color-foreground); }
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-display);
 }
-.logo-kit-intro { margin: var(--spacing-24) 0 0; font-size: var(--text-18); line-height: var(--leading-28); color: var(--color-text-secondary); }
-/* Logo terms of use (demo copy until MCMC provides the official text) */
-.logo-terms {
-  margin-top: var(--spacing-24);
-  padding: var(--spacing-32);
-  border-radius: var(--radius-card);
-  background: var(--color-muted);
-  font-size: var(--text-body-sm);
-  line-height: var(--text-body-sm--line-height);
-  color: var(--color-text-secondary);
-}
-.logo-terms p { max-width: 68ch; margin: 0; }
-.logo-terms__title {
-  margin: 0 0 var(--spacing-12);
-  font-size: var(--text-title);
-  line-height: var(--text-title--line-height);
-  font-weight: var(--text-title--font-weight);
-  color: var(--color-foreground);
-}
-.logo-terms__list {
-  display: grid;
-  gap: var(--spacing-8);
-  max-width: 68ch;
-  margin: var(--spacing-16) 0;
-  padding-left: var(--spacing-20);
-}
-.logo-terms__list li::marker { color: var(--color-muted-foreground); }
-.logo-terms__note { color: var(--color-muted-foreground); }
-@media (max-width: 600px) {
-  .logo-terms { padding: var(--spacing-20); }
-}
-.logo-kit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-12); padding-top: var(--spacing-40); }
+.logo-kit__head { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.logo-kit-intro { margin: var(--spacing-24) 0 0; font-size: var(--text-18); line-height: var(--leading-28); color: var(--color-text-secondary); text-wrap: pretty; }
+
+.logo-kit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-32); padding-top: var(--spacing-40); }
 .logo-card {
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-card);
-}
-.logo-card-preview { display: grid; place-items: center; height: 475px; padding: var(--spacing-32); background: var(--color-muted); }
-/* Shown at native size or smaller, so the previews stay sharp */
-.logo-card-preview img { display: block; max-width: 100%; height: auto; }
-.logo-card-info {
-  display: flex;
-  flex: 1;
-  align-items: flex-end;
-  justify-content: space-between;
   gap: var(--spacing-24);
-  padding: var(--spacing-24) var(--spacing-32) var(--spacing-32);
+  min-width: 0;
+  padding: var(--spacing-32);
+  border-radius: var(--radius-lg);
+  background: var(--color-muted);
 }
-.logo-card-info h2,
-.logo-card-info h3 {
+.logo-card__text p { max-width: 445px; margin: var(--spacing-6) 0 0; font-size: var(--text-16); line-height: var(--leading-24); letter-spacing: var(--tracking-body); color: var(--color-text-secondary); }
+.logo-card__name {
   margin: 0;
   font-size: var(--text-36);
   line-height: var(--leading-42);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-display);
 }
-.logo-card-info p { max-width: 445px; margin: var(--spacing-6) 0 0; font-size: var(--text-16); line-height: var(--leading-24); letter-spacing: var(--tracking-body); color: var(--color-text-secondary); }
-.logo-card-info .logo-card-meta { margin-top: var(--spacing-10); font-size: var(--text-14); line-height: var(--leading-21); font-variant-numeric: tabular-nums; color: var(--color-muted-foreground); font-weight: var(--font-weight-medium); }
-.logo-card-btn { flex-shrink: 0; }
+.logo-card__text .logo-card__meta { margin-top: var(--spacing-10); font-size: var(--text-14); line-height: var(--leading-21); font-variant-numeric: tabular-nums; color: var(--color-muted-foreground); font-weight: var(--font-weight-medium); }
+/* Shown at native size or smaller, so the previews stay sharp */
+.logo-card__preview { display: grid; flex: 1; place-items: center; min-height: 200px; }
+.logo-card__preview img { display: block; max-width: 100%; height: auto; }
 
-@media (max-width: 1100px) { .logo-card-info { flex-direction: column; align-items: flex-start; } }
+/* Logo terms of use (demo copy until MCMC provides the official text) */
+.logo-terms {
+  margin-top: var(--spacing-56);
+  padding: var(--spacing-32);
+  border-radius: var(--radius-card);
+  background: var(--color-border);
+  font-size: var(--text-16);
+  line-height: var(--leading-21);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-foreground);
+}
+.logo-terms p { margin: 0; }
+.logo-terms__title { margin: 0; font-size: inherit; line-height: inherit; font-weight: var(--font-weight-regular); color: inherit; }
+.logo-terms__list { margin: var(--spacing-20) 0; padding: 0; list-style-position: inside; }
+.logo-terms__note { color: inherit; }
+
+/* ── Format folder (components/FormatFolder.js) ────────────────────────────
+   Drawn on a 391 × 286 stage (the canvas card) and scaled to the card width by a unitless ratio
+   from the container width, so no JS resize is needed. Motion = the pasted IconFolder:
+   pop-in on scroll, spread on hover / tap / focus, per-tile lift. Transform and opacity only. */
+.folder-wrap { container-type: inline-size; width: 100%; }
+.folder {
+  --folder-ease: cubic-bezier(.2, .8, .2, 1);
+  --s: tan(atan2(100cqw, 391px));
+  position: relative;
+  height: calc(286px * var(--s));
+  color: var(--color-foreground-inverse);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+.folder[data-wide] { z-index: 2; }
+.folder__stage { position: absolute; top: 0; left: 0; width: 391px; height: 286px; transform: scale(var(--s)); transform-origin: 0 0; }
+.folder__card { position: absolute; inset: 0; transition: transform .9s var(--folder-ease), opacity .6s ease; }
+.folder[data-armed]:not([data-shown]) .folder__card { opacity: 0; transform: translateY(34px) scale(.92); }
+.folder[data-wide] .folder__card { transform: translateY(-6px) scale(1.02); }
+
+.folder__glow {
+  position: absolute;
+  top: 40px;
+  right: 8%;
+  left: 8%;
+  z-index: -1;
+  height: 200px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(closest-side, var(--color-folder-glow), transparent);
+  opacity: .8;
+  filter: blur(18px);
+}
+.folder__back { position: absolute; top: 14px; left: 0; width: 390px; height: 272px; fill: var(--color-folder-back); }
+
+/* Tiles: placed where the canvas puts them; a tile spreads along x by its distance from the middle one */
+.folder__tile {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 101px;
+  height: 101px;
+  border-radius: 26px;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0) rotate(var(--rot));
+  transition: transform .6s var(--folder-ease) calc(var(--i) * .04s), opacity .5s ease;
+}
+.folder[data-wide] .folder__tile { transform: translate3d(calc(var(--k) * 10.5px), -4px, 0) rotate(calc(var(--rot) * 1.2)); }
+.folder[data-armed]:not([data-shown]) .folder__tile { opacity: 0; transform: translate3d(calc(var(--k) * 42px), 80px, 0); }
+.folder[data-armed]:not([data-settled]) .folder__tile { transition-duration: .9s, .5s; transition-delay: calc(.35s + var(--i) * .08s); }
+.folder__tile[data-state='hi'] { z-index: 5; }
+
+.folder__lift { position: relative; width: 100%; height: 100%; transition: transform .45s var(--folder-ease); }
+.folder__tile[data-state='hi'] .folder__lift { transform: translateY(-26px) rotate(calc(var(--rot) * -1)) scale(1.1); }
+.folder__tile[data-state='dim'] .folder__lift { transform: scale(.96); filter: saturate(.75) brightness(.85); transition: transform .45s var(--folder-ease), filter .3s ease; }
+.folder__face {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 26px;
+  box-shadow: var(--shadow-tile);
+  pointer-events: auto;
+}
+.folder__face[data-format='JPEG'] { background: var(--gradient-tile-jpeg); }
+.folder__face[data-format='PNG'] { background: var(--color-tile-png); }
+.folder__face[data-format='SVG'] { background: var(--gradient-tile-svg); }
+.folder__icon { display: block; width: auto; pointer-events: none; }
+.folder__icon[data-format='JPEG'] { height: 77px; }
+.folder__icon[data-format='PNG'] { height: 77px; }
+.folder__icon[data-format='SVG'] { height: 79px; }
+
+.folder__label {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-bottom: 10px;
+  padding: var(--spacing-4) 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-folder-label);
+  -webkit-backdrop-filter: blur(var(--blur-overlay));
+  backdrop-filter: blur(var(--blur-overlay));
+  color: var(--color-foreground-inverse);
+  font-size: var(--text-12);
+  line-height: var(--leading-16);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-body);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-50%) translateY(6px);
+  transition: opacity .25s ease, transform .35s var(--folder-ease);
+}
+.folder__tile[data-state='hi'] .folder__label { opacity: 1; transform: translateX(-50%); }
+
+/* Glass pocket in front (box 381.64 wide; the drawn shape is 390 wide, as on the canvas) */
+.folder__pocket { position: absolute; bottom: 0; left: 0; width: 381.64px; height: 180px; transition: transform .6s var(--folder-ease); }
+.folder[data-wide] .folder__pocket { transform: translateY(6px); }
+.folder__pocket-shape { position: absolute; top: 0; left: 0; width: 390px; height: 180px; overflow: visible; fill: var(--color-folder-front); stroke: var(--color-folder-edge); stroke-width: 2; }
+.folder__title { position: absolute; top: 34px; left: 18px; margin: 0; font-size: var(--text-20); line-height: 1.3; font-weight: var(--font-weight-medium); letter-spacing: -.05em; }
+.folder__tags { position: absolute; top: 74px; right: 18px; left: 18px; display: flex; flex-wrap: wrap; gap: var(--spacing-6); }
+.folder__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4) 14px;
+  border: .5px solid var(--color-foreground-inverse);
+  border-radius: var(--radius-full);
+  color: var(--color-accent);
+  font-size: var(--text-12);
+  line-height: 20px;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out), scale var(--duration-fast) var(--ease-out);
+}
+.folder__chip:active { scale: var(--press-scale); }
+.folder__chip:focus-visible { outline: var(--focus-ring-width) solid var(--color-foreground-inverse); outline-offset: var(--focus-ring-offset); }
+.folder__chip[data-active] { background: var(--color-folder-edge); }
+@media (hover: hover) and (pointer: fine) {
+  .folder__chip:hover { background: var(--color-folder-edge); }
+}
+.folder__pill {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6);
+  height: 34px;
+  padding: 0 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-folder-pill);
+}
+.folder__mini { display: grid; place-items: center; width: 22px; height: 22px; overflow: hidden; border-radius: 7px; }
+.folder__mini[data-format='JPEG'] { background: var(--gradient-tile-jpeg); }
+.folder__mini[data-format='PNG'] { background: var(--color-tile-png); }
+.folder__mini[data-format='SVG'] { background: var(--color-tile-svg-mini); }
+.folder__mini img { display: block; height: 15px; width: auto; }
+.folder__mini[data-format='SVG'] img { height: 17px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .folder__card, .folder__tile, .folder__lift, .folder__pocket, .folder__label, .folder__chip { transition: none; }
+  .folder[data-wide] .folder__card,
+  .folder[data-wide] .folder__pocket,
+  .folder__tile[data-state='hi'] .folder__lift,
+  .folder__tile[data-state='dim'] .folder__lift { transform: none; }
+  .folder[data-wide] .folder__tile { transform: rotate(var(--rot)); }
+}
+
 @media (max-width: 900px) {
   .logo-kit-grid { grid-template-columns: 1fr; }
-  .logo-card-preview { height: 320px; }
 }
 @media (max-width: 600px) {
-  .logo-card-preview { height: 240px; padding: var(--spacing-20); }
-  .logo-card-info { padding: var(--spacing-20); }
-  .logo-card-info h2, .logo-card-info h3 { font-size: var(--text-28); line-height: var(--leading-34); }
-  .logo-card-btn { width: 100%; justify-content: center; }
+  .logo-card { padding: var(--spacing-20); }
+  .logo-card__name { font-size: var(--text-28); line-height: var(--leading-34); }
+  .logo-terms { padding: var(--spacing-20); }
 }
 
 /* Line reveal masks (ScrollMotion › SplitText): extend each mask past the line box so
