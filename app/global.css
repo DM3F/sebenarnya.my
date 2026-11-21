@@ -2255,7 +2255,9 @@ input::placeholder { color: var(--color-foreground); }
 .about-hero-text { position: relative; display: flex; flex-direction: column; gap: var(--spacing-12); }
 .about-hero-follow p {
   margin: 0;
-  font-weight: var(--font-weight-medium);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  font-weight: var(--text-label--font-weight);
 }
 .about-hero-follow ul { display: flex; gap: var(--spacing-8); margin: 0; padding: 0; list-style: none; }
 .about-hero-follow a {
@@ -3112,8 +3114,6 @@ div:has(> .split-line) {
 }
 /* Big intro paragraphs: same size as a heading, but they are text, not headings */
 .viewership-kicker,
-.about-hero-follow p,
-.about-subtitle,
 .about-intro__story-text {
   font-size: var(--text-intro);
   line-height: var(--text-intro--line-height);
