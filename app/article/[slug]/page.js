@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import ArticleDetail from '@/components/ArticleDetail';
 import Latest from '@/components/Latest';
 import Footer from '@/components/Footer';
+import ScrollMotion from '@/components/ScrollMotion';
 import { articles } from '@/data/content';
 import { getArticle } from '@/lib/articles';
 
@@ -38,6 +39,8 @@ export default async function ArticlePage({ params }) {
       </main>
 
       <Footer />
+
+      <ScrollMotion />
     </div>
   );
 }

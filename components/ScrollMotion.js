@@ -1,27 +1,41 @@
 'use client';
 
 import { useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
+
+gsap.registerPlugin(ScrollTrigger, SplitText);
+
+// Headings that rise line by line out of a mask as they scroll in (one-time, page-level only:
+// body copy, cards and data stay still). [selector, delay in seconds]
+const lineBlocks = [
+  ['.hero-title', 0.1],
+  ['.post-title', 0.1],
+  ['.latest-checks__title', 0],
+  ['.activity__title', 0],
+  ['.viewership-kicker', 0],
+  ['.viewership-lead', 0.1],
+  ['.about-title', 0],
+  ['.about-fn-title', 0],
+  ['.about-subtitle', 0],
+  ['.logo-kit-title', 0],
+];
 
 // [selector, delay in seconds]
 const blocks = [
   // Hero
-  ['.hero-title', 0.04],
   ['.hero-lede', 0.1],
   ['.hero-search-group', 0.14],
-  ['.latest-checks__title', 0],
   ['.latest-checks__carousel', 0.08],
   // About us hero
   ['.about-hero-card', 0.04],
-  ['.about-fn-title', 0],
-  ['.about-title', 0],
   ['.about-news-intro', 0.08],
   // Logo page
-  ['.logo-kit-title', 0],
   ['.logo-kit-intro', 0.08],
   ['.logo-card:nth-child(1)', 0.14],
   ['.logo-card:nth-child(2)', 0.22],
   // Aktiviti media sosial
-  ['.activity__title', 0],
   ['.social-gallery', 0.08],
   // Home: WSIS banner, Tentang ringkas
   ['.wsis-banner', 0.08],
@@ -82,9 +96,34 @@ export default function ScrollMotion() {
       });
     });
 
+    // Line reveal (same feel as the reference: 100% → 0 inside a per-line mask, power4.out)
+    const splits = [];
+    lineBlocks.forEach(([selector, delay]) => {
+      document.querySelectorAll(selector).forEach((el) => {
+        splits.push(
+          SplitText.create(el, {
+            type: 'lines',
+            mask: 'lines',
+            autoSplit: true, // re-split when fonts load or the width changes
+            onSplit: (self) =>
+              gsap.from(self.lines, {
+                yPercent: 100,
+                duration: 0.9,
+                stagger: 0.08,
+                ease: 'power4.out',
+                delay,
+                scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+              }),
+          }),
+        );
+      });
+    });
+
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
+      splits.forEach((s) => s.revert());
+      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 

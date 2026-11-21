@@ -221,7 +221,7 @@ Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLin
 - Bar: bg `--color-background`, border bawah 1px `--color-border`, padding 16 / 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 24.
 - Item aktif: pill `--color-muted` (dropdown trigger aktif bila salah satu anaknya halaman semasa).
 - Bahasa: `LanguageMenu` (pill bendera, padding sisi `--space-control-x`, panel di kanan).
-- Jarak antara item nav dan antara butang di kanan: token `--space-nav-gap` (20).
+- Jarak antara item nav dan antara butang di kanan: token `--space-nav-gap` (12).
 - Dropdown: panel bg `--color-background`, border 1px `--color-border`, radius `--radius-md`, padding 8, `--shadow-float`; item 44px, padding 10 16, radius 8, hover/aktif `--color-muted`. Tutup dengan Escape (fokus balik ke trigger), klik luar, atau blur.
 - ≤1100px: nav jadi panel (butang menu 44×44); anak dropdown disenarai di bawah label kumpulan. ≤600px: butang "Salur Kepada Kami" pindah ke dalam panel, logo max 140.
 - Font: semua label header (NavLink, dropdown, BM/EN, butang "Salur Kepada Kami") guna **Manrope** (`--font-sans`). Kawalan UI lain juga Manrope (Inter dibuang).
@@ -407,3 +407,6 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - **Galeri media sosial — kad terlipat** (`.social-card__tint`): kembali seperti sebelum galeri elastik — panel dakwat dengan gradient warna platform (Instagram, Threads, X, TikTok, Facebook; `ds-allow: platform brand colour`) dan ikon platform 48px di tengah (32px ≤700). Foto hanya kelihatan pada kad terbuka.
   - Buka: tint pudar 250ms `ease`, ikon pudar + skala .8 dalam 120ms. Tutup: tint dan ikon kembali selepas 250–300ms, bila baris sudah stabil. Hover (mouse) pada kad terlipat: tint brightness 1.35.
   - Ini menyimpang daripada keputusan design.md "tiada gradient pada kad" atas permintaan pengguna (21 Nov 2026).
+
+## Scroll motion — line reveal tajuk
+`components/ScrollMotion.js` (dipasang di Utama, Tentang Kami, detail artikel). Tajuk dalam senarai `lineBlocks` dipecah per baris (GSAP SplitText, `mask: 'lines'`) dan naik dari `yPercent 100` ke 0: 0.9s, `power4.out`, stagger 0.08, sekali sahaja apabila atas tajuk sampai 85% viewport. Teks badan, kad dan data tidak bergerak. `prefers-reduced-motion` mematikan semua. Pembaca skrin mendapat `aria-label` penuh dari SplitText.

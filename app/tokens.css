@@ -271,7 +271,7 @@
   --space-inline: var(--spacing-8);             /* icon↔label, paired controls */
   --space-inline-tight: var(--spacing-6);
   --space-stack: var(--spacing-8);              /* label↔field, field↔hint */
-  --space-nav-gap: var(--spacing-20);           /* between header nav items / header actions */
+  --space-nav-gap: var(--spacing-12);           /* between header nav items / header actions */
   --space-segment: var(--spacing-2);            /* inside segmented controls */
 
   /* ══ 2. SEMANTIC — shape, borders, focus, effects ═══════════════════════ */
