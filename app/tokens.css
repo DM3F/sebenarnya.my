@@ -173,7 +173,7 @@
   /* ── Format folder (components/FormatFolder.js, Logo section) ───────────
      Colours of the folder card and its file-type tiles; the tiles keep their own palette. */
   --color-folder-back: var(--color-border);
-  --color-folder-front: color-mix(in srgb, var(--color-border-strong) 95%, transparent);
+  --color-folder-front: rgb(71 67 64 / .95);
   --color-folder-edge: color-mix(in srgb, var(--color-foreground-inverse) 15%, transparent);
   --color-folder-glow: color-mix(in srgb, var(--color-foreground-inverse) 10%, transparent);
   --color-folder-pill: #766e69;
