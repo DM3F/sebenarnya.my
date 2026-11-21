@@ -1,6 +1,4 @@
 import Logo from './Logo';
-import { Button } from '@/components/ui';
-import { claimLink } from '@/data/content';
 import { footerColumns, socialLinks } from '@/data/content';
 import { withBase } from '@/lib/basePath';
 
@@ -17,17 +15,6 @@ export default function Footer() {
 
   return (
     <footer className="site-footer">
-      {/* Closing invitation: ruled band, one proposition, two actions */}
-      <div className="site-closing">
-        <p className="site-closing__text">Tidak pasti? Jangan kongsi.</p>
-        <div className="ui-btn-group">
-          <Button variant="outline" href={withBase(claimLink.href)}>
-            Salur kepada kami
-          </Button>
-          <Button href={withBase('/article/')}>Semak dakwaan</Button>
-        </div>
-      </div>
-
       <div className="site-footer__top">
         <div className="site-footer__brand">
           <Logo />

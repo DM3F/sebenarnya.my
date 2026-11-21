@@ -82,11 +82,11 @@ const rules = [
   },
   {
     id: 'font-family',
-    why: 'One family only, through --font-sans (Inter, loaded in app/layout.js).',
+    why: 'Only Manrope (--font-sans).',
     test: (l, p) => {
       if (isTokens(p)) return false;
       const m = code(l).match(/font-family:\s*([^;}]+)/);
-      return (m && !/^(var\(--font-sans\)|inherit)\s*$/.test(m[1].trim())) || /['"]Manrope['"]/.test(l);
+      return (m && !/^(var\(--font-sans\)|inherit)\s*$/.test(m[1].trim())) || /['"]Inter['"]/.test(l);
     },
   },
   {

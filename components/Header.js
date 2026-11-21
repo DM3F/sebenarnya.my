@@ -67,7 +67,7 @@ export default function Header() {
         <div className="header-actions">
           {/* Language selector: visual only for now, no translation wired up */}
           <Tabs mode="toggle" label="Bahasa" items={languages} value={lang} onChange={setLang} />
-          <Button size="sm" href={withBase(claimLink.href)} className="header-claim">
+          <Button href={withBase(claimLink.href)} className="header-claim">
             {claimLink.label}
           </Button>
           <button

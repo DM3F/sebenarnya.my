@@ -16,7 +16,7 @@
 
 :root {
   /* ── Fonts (loaded in app/layout.js via next/font) ───────────────────── */
-  --font-sans: var(--font-inter), 'Inter', Arial, sans-serif; /* the only family: content, headings, UI */
+  --font-sans: var(--font-manrope), 'Manrope', system-ui, sans-serif; /* the only family: content, headings, UI */
 
   /* ══ 1. PRIMITIVE ═══════════════════════════════════════════════════════ */
 
@@ -36,7 +36,6 @@
   --color-red-dark: #c8211c;
   --color-blue: #3a46f5;      /* violet spark */
   --color-azure: #2f5fd0;
-  --color-focus-blue: #2b7fff;
   --color-orange: #e08a00;
   --color-orange-dark: #a35a00;
   --color-green: #1fa463;
@@ -57,7 +56,7 @@
   --color-primary-foreground: var(--color-white);
   --color-foreground-inverse: var(--color-white);  /* text on dark/media */
   --color-selected: var(--color-grey-41);
-  --color-ring: var(--color-focus-blue);           /* keyboard focus only */
+  --color-ring: var(--color-blue);                 /* focus */
   --color-link: var(--color-blue);
   --color-destructive: var(--color-red-dark);      /* error text */
   --color-brand: var(--color-red);                 /* logo, sphere — never actions */
@@ -83,19 +82,12 @@
   --color-verdict-benar: var(--color-green-dark);
   --color-verdict-benar-dot: var(--color-green);
 
-  /* ── Font weight (primitive steps) ─────────────────────────────────── */
-  --font-weight-light: 300;
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-
-  /* ── Font weight roles — "the headline speaks softly" (ElevenLabs base) ─ */
-  --font-weight-display: var(--font-weight-light);   /* hero 48 */
-  --font-weight-heading: var(--font-weight-light);   /* section / closing 28–36 */
-  --font-weight-title: var(--font-weight-regular);   /* card & panel titles 18–24 */
-  --font-weight-label: var(--font-weight-regular);   /* buttons, nav, chips, tabs */
-  --font-weight-eyebrow: var(--font-weight-medium);  /* eyebrows, meta, footer links 12–14 */
-  /* --font-weight-semibold: verdict words and <strong> only */
+  /* ── Font weight — every headline (Display & Heading) is medium ───────── */
+  --font-weight-light: 300;    /* stat captions only */
+  --font-weight-regular: 400;  /* body; display via --font-weight-display */
+  --font-weight-medium: 500;   /* headings (24–36), labels */
+  --font-weight-display: var(--font-weight-regular); /* display titles (48+) and stat numbers — light, editorial (docs/design.md §8) */
+  --font-weight-semibold: 600; /* verdict */
 
   /* ── Font size ─────────────────────────────────────────────────────────── */
   --text-12: 12px;
@@ -164,8 +156,8 @@
   --radius-sm: 4px;
   --radius-input: 8px;
   --radius-md: 12px;    /* thumbnails, media, dropdown */
-  --radius-card: 16px;  /* media & feature cards, stages */
-  --radius-lg: 20px;    /* large product panels */
+  --radius-card: 20px;  /* cards, stages, panels */
+  --radius-lg: 24px;    /* feature card, hero stage */
   --radius-full: 9999px; /* every button, tab, chip, search */
 
   /* ── Shadow — elevation comes from tone, not shadow ───────────────────── */
@@ -211,17 +203,17 @@
 
   --text-heading-lg: var(--text-36);            /* section titles */
   --text-heading-lg--line-height: var(--leading-42);
-  --text-heading-lg--font-weight: var(--font-weight-heading);
-  --text-heading-lg--letter-spacing: normal;
+  --text-heading-lg--font-weight: var(--font-weight-medium);
+  --text-heading-lg--letter-spacing: var(--tracking-display);
 
   --text-heading: var(--text-24);               /* panel and card titles */
   --text-heading--line-height: var(--leading-32);
-  --text-heading--font-weight: var(--font-weight-title);
+  --text-heading--font-weight: var(--font-weight-medium);
   --text-heading--letter-spacing: var(--tracking-tight);
 
   --text-title: var(--text-18);                 /* compact card titles, subheadings */
   --text-title--line-height: var(--leading-28);
-  --text-title--font-weight: var(--font-weight-title);
+  --text-title--font-weight: var(--font-weight-medium);
 
   --text-body-lg: var(--text-18);
   --text-body-lg--line-height: var(--leading-28);
@@ -233,16 +225,14 @@
 
   --text-label: var(--text-16);                 /* buttons, chips, tabs, nav */
   --text-label--line-height: var(--leading-24);
-  --text-label--font-weight: var(--font-weight-label);
-  --text-nav: var(--text-14);                   /* header navigation */
-  --text-nav--line-height: var(--leading-20);
+  --text-label--font-weight: var(--font-weight-medium);
   --text-label-sm: var(--text-14);              /* form labels */
   --text-label-sm--line-height: var(--leading-21);
-  --text-label-sm--font-weight: var(--font-weight-eyebrow);
+  --text-label-sm--font-weight: var(--font-weight-medium);
 
   --text-badge: var(--text-13);
   --text-badge--line-height: var(--leading-18);
-  --text-badge--font-weight: var(--font-weight-eyebrow);
+  --text-badge--font-weight: var(--font-weight-medium);
 
   --text-verdict: var(--text-13);               /* UPPERCASE verdict word */
   --text-verdict--line-height: var(--leading-18);
@@ -251,19 +241,14 @@
 
   --text-caption: var(--text-12);               /* dates, credits */
   --text-caption--line-height: var(--leading-16);
-  --text-caption--font-weight: var(--font-weight-eyebrow);
+  --text-caption--font-weight: var(--font-weight-medium);
 
   --text-stat: var(--text-40);
   --text-stat--line-height: var(--leading-44);
   --text-stat--font-weight: var(--font-weight-display);
 
-  --text-closing: var(--text-32);               /* ruled closing band */
-  --text-closing--line-height: var(--leading-36);
-  --text-closing--font-weight: var(--font-weight-heading);
-
   /* ══ 2. SEMANTIC — sizes ════════════════════════════════════════════════ */
-  --size-control-sm: 36px;                      /* header actions, dense rows; hit area stays 44 */
-  --size-header: var(--spacing-64);             /* site header height */
+  --size-control-sm: 36px;                      /* dense rows; hit area stays 44 */
   --size-control: var(--spacing-44);            /* buttons, chips, tabs, fields */
   --size-control-lg: var(--spacing-48);         /* carousel controls */
   --size-control-xl: var(--spacing-56);         /* primary search */
@@ -296,7 +281,6 @@
   --radius-media: var(--radius-md);             /* thumbnails, inner media */
 
   --border-width: 1px;
-  --border-width-hairline: .5px;                /* pill & segmented edges */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --focus-ring-color: var(--color-ring);
