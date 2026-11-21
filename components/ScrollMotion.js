@@ -104,15 +104,18 @@ export default function ScrollMotion() {
           SplitText.create(el, {
             type: 'lines',
             mask: 'lines',
+            linesClass: 'split-line', // its mask wrapper is padded in global.css (div:has(> .split-line)) so glyphs aren't cut
             autoSplit: true, // re-split when fonts load or the width changes
             onSplit: (self) =>
               gsap.from(self.lines, {
-                yPercent: 100,
+                yPercent: 120,
                 duration: 0.9,
                 stagger: 0.08,
                 ease: 'power4.out',
                 delay,
                 scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+                // Hand the heading back as plain text: no masks left to clip it on resize or zoom
+                onComplete: () => self.revert(),
               }),
           }),
         );

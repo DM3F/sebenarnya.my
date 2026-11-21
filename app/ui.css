@@ -532,16 +532,16 @@
   white-space: nowrap;
   transition: var(--transition-colors);
 }
-/* States, each visibly different:
-   rest transparent · hover light fill · pressed 0.97 · current darker fill (not ink: the claim button owns that)
-   (focus-visible is the shared ring above). Hover is gated to real pointers. */
-.ui-navlink { transition: var(--transition-colors), scale var(--duration-fast) var(--ease-out); }
+/* States: rest regular weight · hover light fill (pointer only) · pressed 0.97 ·
+   current page one weight step heavier, no fill (fill is for hover only) · focus ring above.
+   Screen readers get the current page from aria-current. */
+.ui-navlink { font-weight: var(--font-weight-regular); transition: var(--transition-colors), scale var(--duration-fast) var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
   .ui-navlink:hover { background: var(--color-accent); }
 }
 .ui-navlink:active { background: var(--color-accent); scale: .97; }
 .ui-navlink[aria-current='page'],
-.ui-dropdown__trigger[data-current] { background: var(--color-secondary-hover); }
+.ui-dropdown__trigger[data-current] { font-weight: var(--font-weight-medium); }
 
 /* ── Dropdown menu (nav) — trigger is a .ui-navlink with a chevron ─────── */
 .ui-dropdown { position: relative; display: inline-flex; }

@@ -2915,3 +2915,11 @@ input::placeholder { color: var(--color-foreground); }
   .logo-card-info h2, .logo-card-info h3 { font-size: var(--text-28); line-height: var(--leading-34); }
   .logo-card-btn { width: 100%; justify-content: center; }
 }
+
+/* Line reveal masks (ScrollMotion › SplitText): extend each mask past the line box so
+   ascenders, accents and descenders aren't clipped at tight display leading; the negative
+   margin cancels the padding so layout doesn't move. */
+div:has(> .split-line) {
+  padding-block: .14em .2em;
+  margin-block: -.14em -.2em;
+}
