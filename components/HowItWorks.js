@@ -1,19 +1,13 @@
-import { Globe, MessageSquareText, ShieldCheck, Smartphone, Clock } from 'lucide-react';
+import { Globe, MessageSquareText, Smartphone, Clock } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 import Verdict from '@/components/ui/Verdict';
 import { withBase } from '@/lib/basePath';
+import SocialPeek from '@/components/SocialPeek';
 
 // "Cara Sebenarnya.my membantu": a 3-column bento.
 // Desktop areas: channels | photo (3 rows) | verdicts
 //                story    | photo         | stat (2 rows)
-//                agencies | photo         | stat
-const AGENCIES = [
-  { file: 'agency-mcmc.webp', name: 'MCMC' },
-  { file: 'agency-kkm.webp', name: 'KKM' },
-  { file: 'agency-pdrm.webp', name: 'PDRM' },
-  { file: 'agency-jpj.webp', name: 'JPJ' },
-  { file: 'agency-met.webp', name: 'METMalaysia' },
-];
+//                social   | photo         | stat
 
 export default function HowItWorks() {
   return (
@@ -44,10 +38,9 @@ export default function HowItWorks() {
         </figure>
 
         <article className="how__card how__card--verdicts">
-          <h3 className="how__card-title">Empat jawapan yang jelas</h3>
+          <h3 className="how__card-title">Tiga jawapan yang jelas</h3>
           <ul className="how__verdicts">
             <li><Verdict type="palsu" /></li>
-            <li><Verdict type="waspada" /></li>
             <li><Verdict type="makluman" /></li>
             <li><Verdict type="penjelasan" /></li>
           </ul>
@@ -73,18 +66,9 @@ export default function HowItWorks() {
         </article>
 
         <article className="how__card how__card--agencies">
-          <h3 className="how__card-title">
-            <Icon icon={ShieldCheck} size={20} className="how__title-icon" />
-            Disahkan agensi rasmi
-          </h3>
-          <p className="how__card-text">Setiap jawapan merujuk kenyataan agensi yang berkaitan.</p>
-          <ul className="how__avatars" aria-label="Contoh agensi">
-            {AGENCIES.map((a) => (
-              <li key={a.file}>
-                <img src={withBase(`/images/authors/${a.file}`)} alt={a.name} width="44" height="44" loading="lazy" />
-              </li>
-            ))}
-          </ul>
+          <h3 className="how__card-title">Ikuti kami di media sosial</h3>
+          <p className="how__card-text">Tekan logo untuk menonton petikan hantaran terkini kami.</p>
+          <SocialPeek className="how__social" />
         </article>
       </div>
     </section>

@@ -455,3 +455,14 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - Gerak (daripada komponen IconFolder yang ditampal, nilai asal): masuk sekali apabila 30% kelihatan — kad naik 34 px + skala .92 → rehat dalam .9s `cubic-bezier(.2,.8,.2,1)`, jubin menyusul dengan delay .35s + .08s setiap satu. Sebaran: hover tetikus, ketuk, atau fokus papan kekunci pada chip → kad naik 6 px + skala 1.02, poket turun 6 px, jubin merebak 10.5 px × jarak dari tengah, naik 4 px, condong ×1.2 (.6s, delay .04s setiap satu). Hover satu jubin: naik 26 px, skala 1.1, jubin lain skala .96 + saturasi .75 / kecerahan .85, label format muncul dan chip padanan disorot. Penyimpangan kecil: selepas kemasukan (1.6s) hover tidak lagi guna delay .35s supaya tindak balas serta-merta. Chip: `:active` skala .97, `:focus-visible` outline putih.
 - `prefers-reduced-motion`: tiada kemasukan, tiada pergerakan (jubin kekal condong asal).
 - Jubin ialah hiasan (`aria-hidden`); kawalan sebenar ialah pautan muat turun.
+
+## Hierarki tipografi satu sistem (21 Nov 2026)
+- Saiz maksimum 48px (H1 halaman). Peranan: display 48 · section 36 · heading 24 · title 20 · lead 18 · body 16 · small 14 · eyebrow 13; angka statistik 48. Tablet/telefon turun ikut token (`app/tokens.css` › Type roles). `body` kini 16 (dulu 20 dan bocor ke elemen tanpa saiz).
+- 63 deklarasi saiz ad hoc dibuang daripada kelas komponen; saiz kini datang dari blok "Type roles" di hujung `app/global.css`. Komponen baharu: pilih peranan, jangan tulis `font-size` sendiri.
+
+## Logo media sosial + pop-up pratonton (Utama › Cara Sebenarnya.my membantu)
+- `components/SocialPeek.js`: baris logo platform (Instagram, Threads, X, TikTok, Facebook; ikon Simple Icons dari `socialLinks`), butang 48px kanvas, hover tinta.
+- Tekan logo → `<dialog>` modal (`showModal`): backdrop 60% hitam, panel putih `--radius-card`, masuk opacity + scale .96 (200–250ms). Isi: badge platform + tarikh, tajuk (peranan heading), ringkasan, butang outline "Buka di …", media 9:16 di kanan.
+- Media: `video` tempatan (Instagram) → `embed` rasmi platform (Threads, X, TikTok; dimuat hanya bila pop-up dibuka) → imej muka depan (Facebook, pautan halaman). Data dalam `stories` (`data/content.js`).
+- Escape, butang tutup dan klik backdrop menutup; fokus kembali ke logo yang membukanya. Telefon: satu kolum, media 48dvh.
+- Kad verdict seksyen ini kini tiga sahaja: Palsu, Makluman, Penjelasan (jenis `benar`).

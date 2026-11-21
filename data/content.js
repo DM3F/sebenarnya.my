@@ -48,6 +48,8 @@ export const claimLink = { label: 'Salur Kepada Kami', href: '/submit-claim/' };
 // Five cards, one per platform (components/Stories.js, elastic gallery).
 // `platform` = id in `socialLinks` (icon + label); `href` = the post or profile;
 // `image` + `alt` = the cover; `date` is optional (omit for a profile link).
+// Pop-up preview (components/SocialPeek.js): `video` = local clip, else `embed` = the platform's
+// official embed URL (loaded only when the pop-up opens), else the cover image.
 export const stories = [
   {
     platform: 'instagram',
@@ -56,6 +58,7 @@ export const stories = [
     date: '7 Ogo 2025',
     href: 'https://www.instagram.com/reel/DNCUauizeUu/',
     image: withBase('/images/stories/instagram-aifa.jpg'),
+    video: withBase('/images/stories/instagram-aifa.mp4'), // sneak-peek clip (pop-up)
     alt: 'Video Instagram: tanya AIFA sebelum berkongsi',
   },
   {
@@ -64,6 +67,7 @@ export const stories = [
     summary: 'Bersama kita raikan perpaduan, pelihara kepercayaan dan utamakan kebenaran. Semak dahulu di portal Sebenarnya.my sebelum kongsi.',
     date: '15 Sep 2026',
     href: 'https://www.threads.com/@sebenarnya.myofficial/post/DdTV7PQlCdu',
+    embed: 'https://www.threads.com/@sebenarnya.myofficial/post/DdTV7PQlCdu/embed',
     image: withBase('/images/about/galeri-1.jpg'),
     alt: 'Dua orang menyemak mesej di telefon bersama-sama',
   },
@@ -73,6 +77,7 @@ export const stories = [
     summary: 'Terima kandungan yang meragukan? Jangan panik, jangan sebarkan. Semak melalui AIFA di portal Sebenarnya.my atau imbas kod QR.',
     date: '12 Jun 2025',
     href: 'https://x.com/sebenarnyaMY/status/1933107075279966676',
+    embed: 'https://platform.twitter.com/embed/Tweet.html?id=1933107075279966676&dnt=true&lang=ms',
     image: withBase('/images/stories/x-aifa.jpg'),
     alt: 'Infografik empat langkah semak maklumat dengan AIFA melalui WhatsApp 03-8688 7997',
   },
@@ -82,6 +87,7 @@ export const stories = [
     summary: 'Video terkini daripada @sebenarnyamy. Tidak pasti, jangan kongsi.',
     date: '14 Sep 2025',
     href: 'https://www.tiktok.com/@sebenarnyamy/video/7549728480137596167',
+    embed: 'https://www.tiktok.com/embed/v2/7549728480137596167',
     image: withBase('/images/about/galeri-4.jpg'),
     alt: 'Lelaki tersenyum sambil memegang telefon',
   },

@@ -66,14 +66,20 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 
 > Nota: Inter dan `--font-ui` sudah dibuang dari kod (21 Nov 2026). Manrope satu-satunya keluarga.
 
-| Peranan | Saiz / line-height | Weight | Nota |
+| Peranan | Desktop / ≤1024 / ≤600 | Weight | Dipakai untuk |
 |---|---|---|---|
-| Display | 48–56 / 1.1 | **400** | Tajuk hero. Tracking −0.02em. Besar tetapi ringan — rasa "editorial". |
-| Heading | 24–36 / 1.2 | 500 | Tajuk seksyen dan kad. |
-| Angka besar (statistik) | 40–72 / 1.0 | **400** | Weight normal, bukan bold. Unit (juta+, ribu) separuh saiz, sejajar baseline. Angka tabular. |
-| Body | 16–18 / 1.55 | 400 | Graphite. Lebar baris maks ±68 aksara. |
-| Label (butang, nav, chip) | 16 / 24 | 500 | Sentence case. |
-| Eyebrow / meta | 13–14 / 1.4 | 500 | Smoke. Verdict: 13 semibold UPPERCASE, tracking +0.04em. |
+| Display | 48/52 · 40/44 · 32/38 | **400** | H1 halaman sahaja (hero, detail artikel, Tentang Kami). **48px ialah saiz paling besar di laman.** Tracking −0.02em. |
+| Section | 36/42 · 32/38 · 28/34 | 500 | H2 seksyen. Tajuk slaid carousel dan banner WSIS guna saiz ini dengan weight 400 supaya tidak mengatasi H2. |
+| Heading | 24/32 · 22/30 · 20/28 | 500 | Tajuk ciri / sub-tajuk dalam seksyen, tajuk kad besar, tajuk pop-up. |
+| Title | 20/26 · 20/26 · 18/24 | 500 | Tajuk kad. |
+| Angka (statistik) | 48 · 40 · 36, line-height 1.1 | **400** | Semua angka statistik. Unit (juta+, ribu, jam) 0.42em. Angka tabular. |
+| Lead | 18/28 · 18/28 · 16/24 | 400 | Perenggan pengenalan di bawah tajuk. |
+| Body | 16/24 | 400 | Teks badan (`body` = 16). Graphite. Lebar baris maks ±68 aksara. |
+| Label (butang, nav, chip) | 16/24 | 500 | Sentence case. |
+| Small / meta | 14/20 | 400–500 | Tarikh, meta, label kecil. Smoke. |
+| Eyebrow | 13/18 | 500 (verdict 600) | UPPERCASE, tracking +0.04em: verdict, eyebrow, badge, heading footer. |
+
+Token peranan ada dalam `app/tokens.css` (`--type-display`, `--type-section`, `--type-heading`, `--type-title`, `--type-lead`, `--type-number` + `-lh`); blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya.
 
 **Peraturan rasa:**
 - Tiada weight 700+ di mana-mana. Penekanan = saiz, warna tinta vs smoke, atau ruang kosong.

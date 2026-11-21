@@ -97,6 +97,7 @@
   --text-16: 16px;
   --text-18: 18px;
   --text-20: 20px;
+  --text-22: 22px;
   --text-24: 24px;
   --text-28: 28px;
   --text-30: 30px;
@@ -115,9 +116,11 @@
   --leading-24: 24px;
   --leading-26: 26px;
   --leading-28: 28px;
+  --leading-30: 30px;
   --leading-32: 32px;
   --leading-34: 34px;
   --leading-36: 36px;
+  --leading-38: 38px;
   --leading-42: 42px;
   --leading-44: 44px;
   --leading-52: 52px;
@@ -328,3 +331,33 @@
 @media (max-width: 1024px) { :root { --space-section: var(--spacing-64); } }
 @media (max-width: 900px)  { :root { --space-page-x: var(--spacing-24); } }
 @media (max-width: 600px)  { :root { --space-page-x: var(--spacing-16); --space-section: var(--spacing-48); --space-page-top: var(--spacing-24); } }
+
+/* ── Type roles (one hierarchy for every page; 48px is the ceiling) ───────────
+   display  page H1 only · section  section H2 · heading  feature/sub-heading
+   title    card titles  · lead     intro paragraphs · number  statistics      */
+:root {
+  --type-display: var(--text-48);  --type-display-lh: var(--leading-52);
+  --type-section: var(--text-36);  --type-section-lh: var(--leading-42);
+  --type-heading: var(--text-24);  --type-heading-lh: var(--leading-32);
+  --type-title:   var(--text-20);  --type-title-lh:   var(--leading-26);
+  --type-lead:    var(--text-18);  --type-lead-lh:    var(--leading-28);
+  --type-number:  var(--text-48);
+}
+@media (max-width: 1024px) {
+  :root {
+    --type-display: var(--text-40); --type-display-lh: var(--leading-44);
+    --type-section: var(--text-32); --type-section-lh: var(--leading-38);
+    --type-heading: var(--text-22); --type-heading-lh: var(--leading-30);
+    --type-number:  var(--text-40);
+  }
+}
+@media (max-width: 600px) {
+  :root {
+    --type-display: var(--text-32); --type-display-lh: var(--leading-38);
+    --type-section: var(--text-28); --type-section-lh: var(--leading-34);
+    --type-heading: var(--text-20); --type-heading-lh: var(--leading-28);
+    --type-title:   var(--text-18); --type-title-lh:   var(--leading-24);
+    --type-lead:    var(--text-16); --type-lead-lh:    var(--leading-24);
+    --type-number:  var(--text-36);
+  }
+}
