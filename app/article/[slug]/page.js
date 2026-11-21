@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
 import ArticleDetail from '@/components/ArticleDetail';
+import Latest from '@/components/Latest';
 import Footer from '@/components/Footer';
 import { articles } from '@/data/content';
 import { getArticle } from '@/lib/articles';
@@ -32,6 +33,8 @@ export default async function ArticlePage({ params }) {
 
       <main className="main" id="main" tabIndex={-1}>
         <ArticleDetail article={article} />
+        {/* More fact-checks under the article, same section as the home page */}
+        <Latest />
       </main>
 
       <Footer />
