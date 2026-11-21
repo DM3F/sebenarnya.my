@@ -13,7 +13,7 @@ const START = Math.floor(stories.length / 2); // open the middle card first
  * Elastic accordion: all five cards share one row; the open card takes four parts of the
  * width, the others one part each. Hover, focus or tap opens a card. No slider.
  * Motion: width eases on --ease-out; the open card's photo settles from 1.1 to 1 and its
- * text rises in after a short beat; folded cards dim and show only the platform icon.
+ * text rises in after a short beat; folded cards are a platform-tinted ink panel with the icon centred.
  */
 export default function Stories() {
   const [active, setActive] = useState(START);
@@ -27,15 +27,17 @@ export default function Stories() {
         return (
           <article
             key={story.href}
-            className={`social-card${open ? ' is-open' : ''}`}
+            className={`social-card social-card--${story.platform}${open ? ' is-open' : ''}`}
             onMouseEnter={() => setActive(i)}
             onFocus={() => setActive(i)}
             onClick={() => setActive(i)}
           >
             <img className="social-card__img" src={story.image} alt={story.alt} loading="lazy" draggable={false} />
             <div className="social-card__scrim" aria-hidden="true" />
+            {/* Folded: platform-tinted ink panel; fades away to reveal the photo when the card opens */}
+            <div className="social-card__tint" aria-hidden="true" />
 
-            {/* Folded: platform icon only */}
+            {/* Folded: platform icon only, centred */}
             <span className="social-card__brand" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d={social.icon} /></svg>
             </span>

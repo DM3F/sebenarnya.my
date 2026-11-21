@@ -403,3 +403,6 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
   - Klik/ketuk → `<dialog>` asli, **foto sahaja tanpa kotak teks** (alt = kapsyen), butang tutup 44px ikon X; Esc/backdrop menutup. Masuk: opacity + scale .96 → 1, 300ms `--ease-out`; backdrop 200ms. Reduced motion: fade sahaja.
   - Petunjuk 14/20 `--color-muted-foreground`: "Seret untuk memutar, pilih foto untuk membesarkan."
   - **Paper belum dikemas kini.**
+- **Galeri media sosial — kad terlipat** (`.social-card__tint`): kembali seperti sebelum galeri elastik — panel dakwat dengan gradient warna platform (Instagram, Threads, X, TikTok, Facebook; `ds-allow: platform brand colour`) dan ikon platform 48px di tengah (32px ≤700). Foto hanya kelihatan pada kad terbuka.
+  - Buka: tint pudar 250ms `ease`, ikon pudar + skala .8 dalam 120ms. Tutup: tint dan ikon kembali selepas 250–300ms, bila baris sudah stabil. Hover (mouse) pada kad terlipat: tint brightness 1.35.
+  - Ini menyimpang daripada keputusan design.md "tiada gradient pada kad" atas permintaan pengguna (21 Nov 2026).
