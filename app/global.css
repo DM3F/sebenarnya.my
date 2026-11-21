@@ -2920,7 +2920,7 @@ div:has(> .split-line) {
    3-column bento: tall photo in the middle, stat card spanning two rows on the right.
    Cards sit on taupe (elevation by tone, no shadow); one ink card carries the number. */
 .how { display: flex; flex-direction: column; gap: var(--spacing-48); padding: 0 var(--space-page-x); }
-.how__head { display: flex; flex-direction: column; gap: var(--spacing-12); max-width: 720px; }
+.how__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-12); max-width: 720px; margin-inline: auto; text-align: center; }
 .how__title { margin: 0; text-wrap: balance; }
 .how__lead { margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
 

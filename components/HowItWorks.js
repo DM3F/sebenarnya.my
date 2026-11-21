@@ -14,8 +14,8 @@ export default function HowItWorks() {
   return (
     <section className="how" aria-labelledby="how-title">
       <div className="how__head">
-        <h2 className="how__title" id="how-title">Cara Sebenarnya.my membantu anda</h2>
-        <p className="how__lead">Dari mesej tular ke jawapan rasmi, dalam beberapa langkah mudah.</p>
+        <h2 className="how__title" id="how-title">Kenali Sebenarnya.my</h2>
+        <p className="how__lead">Saluran semakan, jawapan yang jelas dan pengiktirafan dunia, dalam satu pandangan.</p>
       </div>
 
       <div className="how__grid">
