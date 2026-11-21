@@ -471,3 +471,5 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Poster WSIS** (`/images/bento/wsis-prize-award.webp`, persegi) duduk di kad kiri tengah (kawasan `story`, dulu foto warga emas), `object-fit: contain` atas `--color-card` + garis rambut `--color-border`: trofi dan tulisan poster tidak pernah terpotong. Kad min 300px tinggi (poster ≈300px di desktop); telefon: kad persegi. Kad tinggi tengah kekal foto "Tanya sebelum kongsi."
 - Kad tinta (dulu "24 jam") kini **Juara Dunia**: eyebrow 13 UPPERCASE + ikon trofi, tajuk peranan section (36/400, telefon 28), satu baris konteks (lead, putih 60%), butang `media` "Ketahui lebih lanjut" → `/about-us/#berita-galeri`. Teks penuh kekal di Tentang Kami › Berita.
 - Banner WSIS (`components/Bento.js`) dan gayanya dibuang; "Aktiviti media sosial terkini" kini galeri media sosial sahaja.
+
+- Butang "Ketahui lebih lanjut" (kad Juara Dunia): bulatan 44 ikon sahaja; hover / fokus papan kekunci membuka label (padding 14 → 20, label max-width + opacity + translate 8px, 250ms ease-out). Hanya pada penunjuk sebenar; skrin sentuh terus papar butang penuh. Label sentiasa dalam pokok aksesibiliti.
