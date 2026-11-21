@@ -7,4 +7,5 @@ export { default as SearchField } from './SearchField';
 export { Field, Input, Textarea, Select } from './Field';
 export { default as NavLink } from './NavLink';
 export { default as DropdownMenu } from './DropdownMenu';
+export { default as LanguageMenu } from './LanguageMenu';
 export { default as Icon } from './Icon';

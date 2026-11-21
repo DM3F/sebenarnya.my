@@ -180,11 +180,12 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 ✅ **Komponen asas siap** dalam `components/ui/` (import dari `@/components/ui`) dengan CSS dalam `app/ui.css` (kelas `ui-*`, token semantik sahaja, font Manrope):
 - `Button` (`variant`: filled | outline | ghost, `icon`, `href`, `disabled`) + `ButtonGroup`
 - `Chip` (`href?`) + `ChipRow` (`label` cth. "Popular:")
-- `Tabs` (`items`, `value`, `onChange`, `label`) — juga language switcher; ikut corak ARIA tabs (anak panah, Home/End)
+- `Tabs` (`items`, `value`, `onChange`, `label`) — ikut corak ARIA tabs (anak panah, Home/End)
 - `Verdict` (`type`: palsu | waspada | makluman | benar | penjelasan→benar, `tone`: default | single, `agency`)
 - `SearchField` (`label`, `hideLabel`, `placeholder`, `buttonLabel`, `value`+`onChange(text)` atau `defaultValue`, `error`, `action` atau `onSubmit(query)`)
-- `Tabs` `mode="toggle"` → `role=group` + `aria-pressed` (untuk language switcher; tiada tab panel)
-- `NavLink` (`href`, `current`) — link nav tanpa border; halaman aktif bg `--color-muted`
+- `Tabs` `mode="toggle"` → `role=group` + `aria-pressed` (tiada tab panel)
+- `NavLink` (`href`, `current`) — link nav tanpa border. State: rehat transparent · hover `--color-accent` (pointer sahaja) · tekan scale .97 · halaman aktif bg `--color-secondary-hover` · fokus ring standard
+- `LanguageMenu` (`items` [{value, label, lang, flag}], `value`, `onChange`, `label`, `groupLabel`, `align`) — pill bendera bulat 24 + chevron (border `--color-border`, bg `--color-secondary`); panel `--radius-menu` + `--shadow-float`, label kumpulan caption muted, item bendera + nama, terpilih bg `--color-accent`. Masuk 150ms opacity+scale .96 dari sudut trigger. Bendera: `public/images/flags/*.svg`
 - `DropdownMenu` (`label`, `items` [{label, href, current}], `current`, `align`) — trigger NavLink + chevron, panel pautan
 - `Button`/`Chip`/`NavLink` dengan `href` render `<a>` biasa (tiada kebergantungan Next.js) supaya boleh guna di CMS/extension.
 
@@ -202,8 +203,8 @@ Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` j
 ### Chip
 `height 44 (padding 9.5px 12px + border .5px); radius pill; bg --color-background; border .5px --color-border; Label/16`. Hover `--color-muted`. Didahului label "Popular:" Body/14 Smoke.
 
-### Tabs/Segmented (dan Language switcher)
-Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px --color-border`. Item = Chip; item terpilih bg `--color-card` + border `.5px --color-border`. Language switcher sama (item BM/EN, gap 8).
+### Tabs/Segmented
+Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px --color-border`. Item = Chip; item terpilih bg `--color-card` + border `.5px --color-border`.
 
 ### Field/Search
 `height 56; padding 0 6px 0 20px; radius pill; bg --color-background; border 1px --color-border-strong; gap 12`. Ikon carian 18px Smoke, placeholder Body/16 Smoke, Button filled "Semak" di kanan. Focus: `border 2px --color-ring` + `box-shadow 0 0 0 1.5px --color-ring`. Label atas: 14 Medium Ink.
@@ -216,10 +217,10 @@ Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px
 
 ### Nav/Header ✅
 Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLinks`, `claimLink`):
-- Kiri logo 133×40 · tengah `NavLink` **Utama**, **Artikel** + `DropdownMenu` **Tentang Kami ▾** (Tentang kami, Logo) · kanan `Tabs mode="toggle"` BM/EN + `Button` filled **Salur Kepada Kami**.
+- Kiri logo 133×40 · tengah `NavLink` **Utama**, **Artikel** + `DropdownMenu` **Tentang Kami ▾** (Tentang kami, Logo) · kanan `LanguageMenu` (Bahasa Melayu / English) + `Button` filled **Salur Kepada Kami**.
 - Bar: bg `--color-background`, border bawah 1px `--color-border`, padding 16 / 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 24.
 - Item aktif: pill `--color-muted` (dropdown trigger aktif bila salah satu anaknya halaman semasa).
-- Segmented BM/EN: border 1px `--color-muted-strong`, padding 2, gap 2; item 44×44 min, padding 0 12, Body 16; aktif bg `--color-background` + border 1px `--color-border`, semibold, `--color-foreground`; tidak aktif `--color-muted-foreground`.
+- Bahasa: `LanguageMenu` (pill bendera, panel di kanan).
 - Dropdown: panel bg `--color-background`, border 1px `--color-border`, radius `--radius-md`, padding 8, `--shadow-float`; item 44px, padding 10 16, radius 8, hover/aktif `--color-muted`. Tutup dengan Escape (fokus balik ke trigger), klik luar, atau blur.
 - ≤1100px: nav jadi panel (butang menu 44×44); anak dropdown disenarai di bawah label kumpulan. ≤600px: butang "Salur Kepada Kami" pindah ke dalam panel, logo max 140.
 - Font: semua label header (NavLink, dropdown, BM/EN, butang "Salur Kepada Kami") guna **Manrope** (`--font-sans`). Kawalan UI lain juga Manrope (Inter dibuang).

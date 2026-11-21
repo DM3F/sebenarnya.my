@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
-import { Button, DropdownMenu, NavLink, Tabs } from '@/components/ui';
+import { Button, DropdownMenu, LanguageMenu, NavLink } from '@/components/ui';
 import { claimLink, navLinks } from '@/data/content';
 import { withBase } from '@/lib/basePath';
 
 const languages = [
-  { value: 'BM', label: 'BM', lang: 'ms', title: 'Bahasa Melayu' },
-  { value: 'EN', label: 'EN', lang: 'en', title: 'English' },
+  { value: 'BM', label: 'Bahasa Melayu', lang: 'ms', flag: withBase('/images/flags/my.svg') },
+  { value: 'EN', label: 'English', lang: 'en', flag: withBase('/images/flags/gb.svg') },
 ];
 
 const trim = (path) => (path.length > 1 ? path.replace(/\/$/, '') : path);
@@ -66,7 +66,7 @@ export default function Header() {
 
         <div className="header-actions">
           {/* Language selector: visual only for now, no translation wired up */}
-          <Tabs mode="toggle" label="Bahasa" items={languages} value={lang} onChange={setLang} />
+          <LanguageMenu label="Bahasa" groupLabel="Bahasa" items={languages} value={lang} onChange={setLang} />
           <Button href={withBase(claimLink.href)} className="header-claim">
             {claimLink.label}
           </Button>
