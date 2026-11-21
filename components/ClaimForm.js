@@ -172,31 +172,31 @@ export default function ClaimForm() {
     <dialog
       ref={dialogRef}
       className="claim-modal"
-      aria-labelledby="claim-title"
-      aria-describedby="claim-desc"
+      aria-labelledby={status === 'sent' ? 'claim-done-title' : 'claim-title'}
+      aria-describedby={status === 'sent' ? undefined : 'claim-desc'}
       onPointerDown={onPointerDown}
       onClick={onBackdropClick}
     >
-      <header className="claim-head">
-        <span className="claim-icon" aria-hidden="true">
-          <Icon icon={Flag} size={20} />
-        </span>
-        <div className="claim-heading">
-          <h2 id="claim-title">Lapor berita tular</h2>
-          <p id="claim-desc">Hantar berita atau mesej yang meragukan supaya pasukan kami boleh menyemaknya.</p>
-        </div>
-        <IconButton variant="ghost" icon={X} label="Tutup borang" className="claim-close" onClick={close} />
-      </header>
+      {/* Sent state is a bare confirmation: no header, closes with Esc or a backdrop click */}
+      {status !== 'sent' && (
+        <header className="claim-head">
+          <span className="claim-icon" aria-hidden="true">
+            <Icon icon={Flag} size={20} />
+          </span>
+          <div className="claim-heading">
+            <h2 id="claim-title">Lapor berita tular</h2>
+            <p id="claim-desc">Hantar berita atau mesej yang meragukan supaya pasukan kami boleh menyemaknya.</p>
+          </div>
+          <IconButton variant="ghost" icon={X} label="Tutup borang" className="claim-close" onClick={close} />
+        </header>
+      )}
 
       {status === 'sent' ? (
         <div className="claim-done" role="status">
           <span className="claim-done-icon" aria-hidden="true">
             <Icon icon={Check} size={28} />
           </span>
-          <h3>Laporan anda telah dihantar.</h3>
-          <div className="claim-done-actions">
-            <Button onClick={close}>Tutup</Button>
-          </div>
+          <h3 id="claim-done-title">Laporan anda telah dihantar.</h3>
         </div>
       ) : (
         <form className="claim-form-body" onSubmit={onSubmit} noValidate>
