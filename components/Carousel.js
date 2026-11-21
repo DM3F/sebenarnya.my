@@ -5,7 +5,7 @@ import { heroSlides } from '@/data/content';
 import { articleHref, getArticle } from '@/lib/articles';
 import { withBase } from '@/lib/basePath';
 import { ArrowRight, Pause, Play } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Button, IconButton, Verdict } from '@/components/ui';
 
 // Each slide points at an article; it links to that article and falls back to its image.
 // `eyebrow` is "Verdict | Agency" (e.g. "Palsu | KPDN"); the verdict sets the dot colour.
@@ -275,21 +275,23 @@ export default function Carousel() {
                     style={s.position ? { objectPosition: s.position } : undefined}
                   />
                   <div className="ct">
-                    <span className={`ey ey--${s.type}`}>
-                      <span className="ey-dot" aria-hidden="true" />
-                      {s.verdict}
-                      {s.agency && <> · {s.agency}</>}
-                    </span>
+                    <Verdict type={s.type} variant="plain" label={s.verdict} agency={s.agency} className="ey" />
                     <h3>
                       {s.title}
                       <br />
                       {s.titleEm}
                     </h3>
                     <p>{s.text}</p>
-                    <a className="hcta" href={s.href} draggable={false} tabIndex={cur ? 0 : -1}>
+                    <Button
+                      variant="media"
+                      href={s.href}
+                      iconEnd={ArrowRight}
+                      className="hcta"
+                      draggable={false}
+                      tabIndex={cur ? 0 : -1}
+                    >
                       {s.cta}
-                      <Icon icon={ArrowRight} />
-                    </a>
+                    </Button>
                   </div>
                   {/* Slide counter, centre slide only (Paper › HeroSlide / Active › Counter) */}
                   <span className="hc-count" aria-hidden="true">
@@ -318,9 +320,14 @@ export default function Carousel() {
             </button>
           ))}
         </div>
-        <button type="button" className="play" aria-label={playing ? 'Jeda slaid' : 'Main slaid'} onClick={togglePlay}>
-          {playing ? <Icon icon={Pause} /> : <Icon icon={Play} />}
-        </button>
+        <IconButton
+          variant="secondary"
+          size="icon-lg"
+          icon={playing ? Pause : Play}
+          label={playing ? 'Jeda slaid' : 'Main slaid'}
+          className="play"
+          onClick={togglePlay}
+        />
       </div>
     </section>
   );

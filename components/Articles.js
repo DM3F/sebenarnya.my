@@ -2,9 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import { Button } from '@/components/ui';
-import Icon from '@/components/ui/Icon';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button, Chip, IconButton, Input, SearchField, Select, Verdict } from '@/components/ui';
 import { articles, articleStatus } from '@/data/content';
 import { matchesQuery } from '@/lib/searchArticles';
 import { agencyInitials, articleHref, formatDate } from '@/lib/articles';
@@ -126,66 +125,55 @@ export default function Articles() {
       <div className="articles-filters">
         {/* Search + date range + sort + count */}
         <div className="articles-toolbar">
-          <form className="articles-search" role="search" onSubmit={(e) => e.preventDefault()}>
-            <label htmlFor="article-q" className="sr-only">Cari artikel</label>
-            <Icon icon={Search} size={18} className="articles-search__icon" />
-            <input
-              id="article-q"
-              type="search"
-              placeholder="Cari artikel…"
-              value={query}
-              onChange={(e) => changeQuery(e.target.value)}
-              autoComplete="off"
-            />
-          </form>
+          <SearchField
+            size="sm"
+            label="Cari artikel"
+            hideLabel
+            placeholder="Cari artikel…"
+            buttonLabel={null}
+            value={query}
+            onChange={changeQuery}
+            onSubmit={() => {}}
+            className="articles-search"
+          />
 
-          <label className="articles-select">
-            <span className="sr-only">Tapis mengikut tarikh</span>
-            <select value={range} onChange={(e) => setRange(e.target.value)}>
-              {DATE_OPTIONS.map((o) => (
-                <option key={o.id} value={o.id}>{o.label}</option>
-              ))}
-            </select>
-            <Icon icon={ChevronDown} className="articles-select__chevron" />
-          </label>
+          <Select pill aria-label="Tapis mengikut tarikh" value={range} onChange={(e) => setRange(e.target.value)} className="articles-select">
+            {DATE_OPTIONS.map((o) => (
+              <option key={o.id} value={o.id}>{o.label}</option>
+            ))}
+          </Select>
 
-          <label className="articles-select">
-            <span className="sr-only">Susun mengikut</span>
-            <select value={sort} onChange={(e) => setSort(e.target.value)}>
-              {SORT_OPTIONS.map((o) => (
-                <option key={o.id} value={o.id}>{o.label}</option>
-              ))}
-            </select>
-            <Icon icon={ChevronDown} className="articles-select__chevron" />
-          </label>
+          <Select pill aria-label="Susun mengikut" value={sort} onChange={(e) => setSort(e.target.value)} className="articles-select">
+            {SORT_OPTIONS.map((o) => (
+              <option key={o.id} value={o.id}>{o.label}</option>
+            ))}
+          </Select>
 
           <p className="articles-count" aria-live="polite">{list.length} artikel</p>
         </div>
 
         {range === 'custom' && (
           <div className="articles-range">
-            <label>
-              Dari
-              <input type="date" value={from} max={to || undefined} onChange={(e) => setFrom(e.target.value)} />
+            <label className="ui-field">
+              <span className="ui-label">Dari</span>
+              <Input type="date" value={from} max={to || undefined} onChange={(e) => setFrom(e.target.value)} />
             </label>
-            <label>
-              Hingga
-              <input type="date" value={to} min={from || undefined} onChange={(e) => setTo(e.target.value)} />
+            <label className="ui-field">
+              <span className="ui-label">Hingga</span>
+              <Input type="date" value={to} min={from || undefined} onChange={(e) => setTo(e.target.value)} />
             </label>
           </div>
         )}
 
         {/* Category chips: one line, scrolls sideways with the arrows when it overflows */}
         <div className={`articles-chips${scroll.overflow ? ' has-overflow' : ''}`}>
-          <button
-            type="button"
+          <IconButton
+            icon={ChevronLeft}
+            label="Kategori sebelumnya"
             className="articles-chips__arrow"
-            aria-label="Kategori sebelumnya"
             disabled={!scroll.prev}
             onClick={() => scrollBar(-1)}
-          >
-            <Icon icon={ChevronLeft} />
-          </button>
+          />
 
           <div
             className={`articles-chips__bar${scroll.prev ? ' fade-start' : ''}${scroll.next ? ' fade-end' : ''}`}
@@ -195,31 +183,27 @@ export default function Articles() {
             onScroll={updateScroll}
           >
             {[{ id: 'all', label: 'Semua' }, ...chips].map((c) => (
-              <button
+              <Chip
                 key={c.id}
-                type="button"
-                className={`articles-chip${articleStatus[c.id] ? ` articles-chip--${c.id}` : ''}`}
-                aria-pressed={category === c.id}
+                dot={articleStatus[c.id] ? c.id : undefined}
+                pressed={category === c.id}
                 onClick={(e) => {
                   setCategory(c.id);
                   e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
                 }}
               >
-                {articleStatus[c.id] && <span className="articles-chip__dot" aria-hidden="true" />}
                 {c.label}
-              </button>
+              </Chip>
             ))}
           </div>
 
-          <button
-            type="button"
+          <IconButton
+            icon={ChevronRight}
+            label="Kategori seterusnya"
             className="articles-chips__arrow"
-            aria-label="Kategori seterusnya"
             disabled={!scroll.next}
             onClick={() => scrollBar(1)}
-          >
-            <Icon icon={ChevronRight} />
-          </button>
+          />
         </div>
       </div>
 
@@ -250,12 +234,7 @@ export default function Articles() {
 
 // Verdict pill over a photo: dot + uppercase word, colour from the verdict tokens
 function VerdictTag({ status }) {
-  return (
-    <span className={`verdict-tag verdict-tag--${status}`}>
-      <span className="verdict-tag__dot" aria-hidden="true" />
-      {articleStatus[status]?.label ?? status}
-    </span>
-  );
+  return <Verdict type={status} variant="overlay" label={articleStatus[status]?.label} className="verdict-tag" />;
 }
 
 function AgencyAvatar({ agency }) {

@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { Badge, IconButton } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
 import SphereGallery from '@/components/SphereGallery';
 import { aboutHero as hero, aboutIntro as intro, aboutNews, socialLinks, whatWeDo } from '@/data/content';
@@ -76,18 +76,19 @@ function Functions() {
   const { items } = whatWeDo;
   const count = items.length;
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(false); // hover / focus hold
+  const [stopped, setStopped] = useState(false); // visible pause control (WCAG 2.2.2)
   const move = (n) => setActive((a) => (a + n + count) % count);
 
   // Autoplay: next function every 5s. Holds while hovered or focused, while the tab is
   // hidden, and never runs with reduced motion. A manual pick restarts the timer.
   useEffect(() => {
-    if (paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (paused || stopped || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const id = setTimeout(() => {
       if (!document.hidden) setActive((a) => (a + 1) % count);
     }, AUTOPLAY_MS);
     return () => clearTimeout(id);
-  }, [active, paused, count]);
+  }, [active, paused, stopped, count]);
   const rest = Array.from({ length: count - 1 }, (_, k) => (active + k + 1) % count);
   const feature = items[active];
 
@@ -106,7 +107,7 @@ function Functions() {
 
       <div className="about-fn-body">
         <div className="about-fn-main">
-          <article className="about-fn-feature" aria-live={paused ? 'polite' : 'off'}>
+          <article className="about-fn-feature" aria-live={paused || stopped ? 'polite' : 'off'}>
             {/* key restarts the enter animation when the selection changes */}
             <div className="about-fn-feature-top" key={`t${active}`}>
               <h3>{feature.title}</h3>
@@ -117,12 +118,13 @@ function Functions() {
 
           <div className="about-fn-controls">
             <div className="about-fn-arrows">
-              <button type="button" aria-label="Fungsi sebelumnya" onClick={() => move(-1)}>
-                <Icon icon={ChevronLeft} />
-              </button>
-              <button type="button" aria-label="Fungsi seterusnya" onClick={() => move(1)}>
-                <Icon icon={ChevronRight} />
-              </button>
+              <IconButton icon={ChevronLeft} label="Fungsi sebelumnya" onClick={() => move(-1)} />
+              <IconButton icon={ChevronRight} label="Fungsi seterusnya" onClick={() => move(1)} />
+              <IconButton
+                icon={stopped ? Play : Pause}
+                label={stopped ? 'Mainkan fungsi' : 'Jeda fungsi'}
+                onClick={() => setStopped((v) => !v)}
+              />
             </div>
             <div className="about-fn-track" aria-hidden="true">
               <span style={{ transform: `translateX(${active * 100}%)` }} />
@@ -176,7 +178,7 @@ function NewsGallery() {
               <img src={n.image} alt={n.alt} loading="lazy" />
             </div>
             <div className="about-news-body">
-              <span className="about-news-tag">{n.tag}</span>
+              <Badge className="about-news-tag">{n.tag}</Badge>
               <h4>{n.title}</h4>
               <p>{n.text}</p>
             </div>

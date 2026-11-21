@@ -40,9 +40,9 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] NavLink
 - [x] Dropdown menu (`DropdownMenu`) — untuk "Tentang Kami ▾"
 - [x] Ikon: Lucide (`lucide-react` ^0.577) melalui `Icon`; semua SVG tulis tangan diganti (kecuali logo jenama)
-- [ ] Button: saiz kecil + varian "on media" (butang putih atas imej, cth. "Baca semakan")
-- [ ] Icon button bulat (prev/next carousel 48px, jeda 56px)
-- [ ] Field teks biasa / textarea / select (Paper 12 › Inputs) — guna dalam ClaimForm
+- [x] Button: saiz `sm` + varian `media` (butang kanvas atas imej) + `secondary`, `iconEnd`
+- [x] Icon button bulat: `IconButton` (44 / 36 / 48), dipakai di carousel, Latest, Tentang Kami, Artikel, dialog
+- [x] Field / Input / Textarea / Select (`components/ui/Field.js`) — dipakai di ClaimForm, Artikel, AIFA
 - [ ] Pagination dots sebagai komponen kongsi (kini hanya dalam HeroCarousel). Pembilang "03 / 05" dipulihkan pada slaid aktif ikut Paper
 - [ ] Avatar agensi (30 / 40px)
 - [ ] Semak semula ketepatan dengan Paper 12 › Button, Inputs, Verdict (nilai tepat via `get_computed_styles`)

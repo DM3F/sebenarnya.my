@@ -7,6 +7,7 @@ import { articleHref, formatDate } from '@/lib/articles';
 import { withBase } from '@/lib/basePath';
 import { ArrowRight, MessageSquareText, X } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
+import { Chip, IconButton, Verdict } from '@/components/ui';
 
 // AIFA chatbot: a floating assistant on every page.
 // Rule-based for now — it answers by searching the site's published fact-checks.
@@ -133,17 +134,16 @@ export default function Chatbot() {
             <strong>Chatbot AIFA</strong>
             <span>Pembantu fakta pintar</span>
           </div>
-          <button
-            type="button"
+          <IconButton
+            variant="ghost"
+            icon={X}
+            label="Tutup sembang"
             className="aifa-close"
-            aria-label="Tutup sembang"
             onClick={() => {
               setOpen(false);
               toggleRef.current?.focus();
             }}
-          >
-            <Icon icon={X} size={20} />
-          </button>
+          />
         </header>
 
         <div className="aifa-log" ref={logRef} role="log" aria-live="polite">
@@ -156,9 +156,7 @@ export default function Chatbot() {
                   {m.articles.map((a) => (
                     <li key={a.slug}>
                       <a href={withBase(articleHref(a))}>
-                        <span className="aifa-status" style={{ '--status': articleStatus[a.status].color }}>
-                          {articleStatus[a.status].label}
-                        </span>
+                        <Verdict type={a.status} variant="plain" label={articleStatus[a.status].label} className="aifa-status" />
                         <span className="aifa-result-title">{a.title}</span>
                         <span className="aifa-result-date">{formatDate(a.date)}</span>
                       </a>
@@ -191,9 +189,9 @@ export default function Chatbot() {
         {messages.length === 1 && (
           <div className="aifa-suggest">
             {SUGGESTIONS.map((s) => (
-              <button key={s} type="button" onClick={() => send(s)}>
+              <Chip key={s} onClick={() => send(s)}>
                 {s}
-              </button>
+              </Chip>
             ))}
           </div>
         )}
@@ -201,6 +199,7 @@ export default function Chatbot() {
         <form className="aifa-form" onSubmit={onSubmit}>
           <input
             ref={inputRef}
+            className="ui-input ui-input--pill"
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -208,9 +207,7 @@ export default function Chatbot() {
             aria-label="Mesej kepada AIFA"
             maxLength={300}
           />
-          <button type="submit" aria-label="Hantar" disabled={!input.trim() || typing}>
-            <Icon icon={ArrowRight} size={18} />
-          </button>
+          <IconButton type="submit" variant="filled" icon={ArrowRight} label="Hantar" disabled={!input.trim() || typing} />
         </form>
 
         <p className="aifa-note">{DISCLAIMER}</p>

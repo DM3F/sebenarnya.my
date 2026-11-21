@@ -1,9 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import FlipCard from './FlipCard';
-import Icon from '@/components/ui/Icon';
+import { IconButton } from '@/components/ui';
 import { articles } from '@/data/content';
 import { agencyInitials, articleHref } from '@/lib/articles';
 
@@ -47,10 +47,15 @@ const latest = [...articles]
 export default function Latest() {
   const viewRef = useRef(null);
   const railRef = useRef(null);
-  const st = useRef({ x: 0, v: 0, nudge: 0, setW: 0, step: 0, hover: false, focus: false, open: false, drag: null, moved: false, reduce: false });
+  const st = useRef({ x: 0, v: 0, nudge: 0, setW: 0, step: 0, hover: false, focus: false, open: false, paused: false, drag: null, moved: false, reduce: false });
 
   // One card open at a time; hover waits a beat so sweeping across the row doesn't flip every card
   const [open, setOpen] = useState(null);
+  // Visible pause control: the row moves on its own (WCAG 2.2.2)
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    st.current.paused = paused;
+  }, [paused]);
   const hoverTimer = useRef(0);
   const hover = (href, on) => {
     clearTimeout(hoverTimer.current);
@@ -103,7 +108,7 @@ export default function Latest() {
     const tick = (now) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      const running = !s.hover && !s.focus && !s.open && !s.drag && !s.reduce;
+      const running = !s.hover && !s.focus && !s.open && !s.drag && !s.reduce && !s.paused;
       const target = running ? -SPEED : 0;
       s.v += (target - s.v) * Math.min(1, dt * EASE_RATE);
       if (Math.abs(s.v) < 0.05 && !running) s.v = 0;
@@ -228,12 +233,13 @@ export default function Latest() {
         </div>
 
         <div className="latest-checks__controls">
-          <button type="button" className="latest-checks__nav" aria-label="Semakan sebelumnya" onClick={() => go(-1)}>
-            <Icon icon={ChevronLeft} />
-          </button>
-          <button type="button" className="latest-checks__nav" aria-label="Semakan seterusnya" onClick={() => go(1)}>
-            <Icon icon={ChevronRight} />
-          </button>
+          <IconButton
+            icon={paused ? Play : Pause}
+            label={paused ? 'Mainkan baris semakan' : 'Jeda baris semakan'}
+            onClick={() => setPaused((p) => !p)}
+          />
+          <IconButton icon={ChevronLeft} label="Semakan sebelumnya" onClick={() => go(-1)} />
+          <IconButton icon={ChevronRight} label="Semakan seterusnya" onClick={() => go(1)} />
         </div>
       </div>
 

@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Share } from 'lucide-react';
+import { Check, Share } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
+import { Button } from '@/components/ui';
 
 // Share links; {url} and {text} are filled in when the menu opens
 const TARGETS = [
@@ -60,21 +61,22 @@ export default function ShareButton({ title }) {
 
   return (
     <div className="share" ref={wrapRef}>
-      <button type="button" className="share-btn" aria-expanded={open} aria-haspopup="true" onClick={share}>
-        <Icon icon={Share} />
+      <Button variant="outline" icon={Share} className="share-btn" aria-expanded={open} onClick={share}>
         Kongsi
-      </button>
+      </Button>
 
       {open && (
         <div className="share-menu">
           {TARGETS.map((t) => (
-            <a key={t.label} href={fill(t.href)} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
+            <a key={t.label} className="ui-dropdown__item" href={fill(t.href)} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
               {t.label}
             </a>
           ))}
-          <button type="button" onClick={copy} aria-live="polite">
-            {copied ? 'Pautan disalin ✓' : 'Salin pautan'}
+          <button type="button" className="ui-dropdown__item" onClick={copy}>
+            {copied ? 'Pautan disalin' : 'Salin pautan'}
+            {copied && <Icon icon={Check} />}
           </button>
+          <span className="ui-sr-only" role="status">{copied ? 'Pautan disalin' : ''}</span>
         </div>
       )}
     </div>

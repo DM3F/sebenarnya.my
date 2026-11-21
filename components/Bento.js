@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Button } from '@/components/ui';
 import { withBase } from '@/lib/basePath';
 
 /**
@@ -23,10 +23,9 @@ export default function Bento() {
             Malaysia yang melindungi <strong>33 juta rakyat</strong> bersama <strong>lebih 20 agensi persekutuan</strong>.
           </p>
         </div>
-        <a href={withBase('/about-us/#berita-galeri')} className="wsis-banner__cta">
+        <Button variant="media" href={withBase('/about-us/#berita-galeri')} iconEnd={ArrowRight} className="wsis-banner__cta">
           Ketahui lebih lanjut
-          <Icon icon={ArrowRight} />
-        </a>
+        </Button>
       </div>
 
       <div className="wsis-banner__media">

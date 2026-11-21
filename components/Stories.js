@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { stories, socialLinks } from '@/data/content';
 import { ArrowUpRight, Calendar } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
+import { Button } from '@/components/ui';
 
 const platforms = Object.fromEntries(socialLinks.map((p) => [p.id, p]));
 const START = Math.floor(stories.length / 2); // open the middle card first
@@ -58,11 +59,17 @@ export default function Stories() {
               </div>
               <h3 className="social-card__title">{story.title}</h3>
               <p className="social-card__summary">{story.summary}</p>
-              <a href={story.href} className="social-card__cta" target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="media"
+                href={story.href}
+                iconEnd={ArrowUpRight}
+                className="social-card__cta"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Buka di {social.label}
                 <span className="sr-only"> (tab baharu)</span>
-                <Icon icon={ArrowUpRight} />
-              </a>
+              </Button>
             </div>
           </article>
         );

@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
+import { Verdict } from '@/components/ui';
 
 const VERDICT_LABEL = { palsu: 'Palsu', waspada: 'Waspada', makluman: 'Makluman', benar: 'Penjelasan' };
 
@@ -53,10 +54,7 @@ export default function FlipCard({ post, flipped, onHover, onToggle }) {
         <div className="flip-face fc-front" inert={flipped}>
           <img className="fc-photo" src={post.image} alt={post.alt} loading="lazy" draggable={false} />
           <div className="fc-front-body">
-            <span className="fc-pill">
-              <span className="fc-dot" aria-hidden="true" />
-              {verdict}
-            </span>
+            <Verdict type={post.status} variant="overlay" label={verdict} className="fc-pill" />
             <h3 className="fc-title">{post.title}</h3>
           </div>
           <span className="fc-avatar" title={post.agency.name}>
@@ -78,11 +76,7 @@ export default function FlipCard({ post, flipped, onHover, onToggle }) {
         <div className="flip-face fc-back" inert={!flipped}>
           <div className="fc-back-body">
             <div className="fc-back-head">
-              <span className="fc-verdict">
-                <span className="fc-dot" aria-hidden="true" />
-                <span className="fc-verdict-word">{verdict}</span>
-                <span className="fc-agency">· {post.agency.short}</span>
-              </span>
+              <Verdict type={post.status} variant="plain" label={verdict} agency={post.agency.short} className="fc-verdict" />
               <span className="fc-avatar fc-avatar--sm">
                 {post.agency.image ? (
                   <img src={post.agency.image} alt="" loading="lazy" />

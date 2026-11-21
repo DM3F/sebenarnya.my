@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { withBase } from '@/lib/basePath';
 import { Check, CloudUpload, Flag, Link, X } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
-import { Button } from '@/components/ui';
+import { Button, IconButton } from '@/components/ui';
 
 // "Lapor berita tular" form, shown as a pop-up on every page.
 // Any link pointing to CLAIM_HREF (header nav, footer, AIFA chatbot) opens it instead of navigating.
@@ -144,12 +144,13 @@ export default function ClaimForm() {
   };
 
   const field = (name, label, props = {}) => (
-    <div className={errors[name] ? 'claim-field has-error' : 'claim-field'}>
-      <label htmlFor={`claim-${name}`}>
+    <div className="ui-field claim-field">
+      <label htmlFor={`claim-${name}`} className="ui-label">
         {label}
-        <span className="claim-req" aria-hidden="true">*</span>
+        <span className="ui-label__required" aria-hidden="true"> *</span>
       </label>
       <input
+        className="ui-input"
         id={`claim-${name}`}
         name={name}
         value={values[name]}
@@ -160,7 +161,7 @@ export default function ClaimForm() {
         {...props}
       />
       {errors[name] && (
-        <p className="claim-error" id={`claim-${name}-error`}>
+        <p className="ui-field__error" id={`claim-${name}-error`}>
           {errors[name]}
         </p>
       )}
@@ -184,9 +185,7 @@ export default function ClaimForm() {
           <h2 id="claim-title">Lapor berita tular</h2>
           <p id="claim-desc">Hantar berita atau mesej yang meragukan supaya pasukan kami boleh menyemaknya.</p>
         </div>
-        <button type="button" className="claim-close" aria-label="Tutup borang" onClick={close}>
-          <Icon icon={X} size={20} />
-        </button>
+        <IconButton variant="ghost" icon={X} label="Tutup borang" className="claim-close" onClick={close} />
       </header>
 
       {status === 'sent' ? (
@@ -200,9 +199,9 @@ export default function ClaimForm() {
             <b>{values.email.trim()}</b> jika perlukan maklumat lanjut.
           </p>
           <div className="claim-done-actions">
-            <button type="button" className="claim-ghost" onClick={reset}>
+            <Button variant="outline" onClick={reset}>
               Hantar laporan lain
-            </button>
+            </Button>
             <Button onClick={close}>Tutup</Button>
           </div>
         </div>
@@ -213,13 +212,14 @@ export default function ClaimForm() {
               {field('name', 'Nama', { type: 'text', placeholder: 'Nama penuh anda', autoComplete: 'name', maxLength: 120 })}
               {field('email', 'E-mel', { type: 'email', placeholder: 'nama@contoh.com', autoComplete: 'email', inputMode: 'email', maxLength: 160 })}
               {field('subject', 'Subjek', { type: 'text', placeholder: 'Contoh: Jadual bayaran STR Fasa 4', maxLength: 160 })}
-              <div className={errors.source ? 'claim-field has-error' : 'claim-field'}>
-                <label htmlFor="claim-source">
-                  Sumber / URL<span className="claim-req" aria-hidden="true">*</span>
+              <div className="ui-field claim-field">
+                <label htmlFor="claim-source" className="ui-label">
+                  Sumber / URL<span className="ui-label__required" aria-hidden="true"> *</span>
                 </label>
-                <div className="claim-input-icon">
+                <span className="ui-input-wrap">
                   <Icon icon={Link} />
                   <input
+                    className="ui-input"
                     id="claim-source"
                     name="source"
                     type="text"
@@ -231,18 +231,18 @@ export default function ClaimForm() {
                     aria-invalid={errors.source ? 'true' : undefined}
                     aria-describedby={errors.source ? 'claim-source-error' : undefined}
                   />
-                </div>
+                </span>
                 {errors.source && (
-                  <p className="claim-error" id="claim-source-error">
+                  <p className="ui-field__error" id="claim-source-error">
                     {errors.source}
                   </p>
                 )}
               </div>
             </div>
 
-            <div className="claim-field">
-              <span className="claim-label" id="claim-file-label">Tangkapan skrin</span>
-              <p className="claim-hint" id="claim-file-hint">
+            <div className="ui-field claim-field">
+              <span className="ui-label" id="claim-file-label">Tangkapan skrin</span>
+              <p className="ui-field__hint" id="claim-file-hint">
                 Seret tangkapan skrin mesej atau hantaran yang tular ke sini (pilihan).
               </p>
 
@@ -255,9 +255,9 @@ export default function ClaimForm() {
                     <strong>{file.name}</strong>
                     <span>{formatSize(file.size)}</span>
                   </div>
-                  <button type="button" className="claim-ghost" onClick={removeFile} aria-label={`Buang fail ${file.name}`}>
+                  <Button variant="outline" size="sm" onClick={removeFile} aria-label={`Buang fail ${file.name}`}>
                     Buang
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 <div
@@ -272,7 +272,7 @@ export default function ClaimForm() {
                   <Icon icon={CloudUpload} size={40} />
                   <strong>Pilih fail atau seret ke sini.</strong>
                   <span>jpg, png, pdf · maksimum 10MB</span>
-                  <label className="claim-pick">
+                  <label className="ui-btn ui-btn--outline ui-btn--sm claim-pick">
                     Pilih fail
                     <input
                       ref={fileInputRef}
@@ -286,17 +286,18 @@ export default function ClaimForm() {
                 </div>
               )}
               {fileError && (
-                <p className="claim-error" id="claim-file-error" role="alert">
+                <p className="ui-field__error" id="claim-file-error" role="alert">
                   {fileError}
                 </p>
               )}
             </div>
 
-            <div className={errors.message ? 'claim-field has-error' : 'claim-field'}>
-              <label htmlFor="claim-message">
-                Mesej<span className="claim-req" aria-hidden="true">*</span>
+            <div className="ui-field claim-field">
+              <label htmlFor="claim-message" className="ui-label">
+                Mesej<span className="ui-label__required" aria-hidden="true"> *</span>
               </label>
               <textarea
+                className="ui-textarea"
                 id="claim-message"
                 name="message"
                 rows={4}
@@ -309,7 +310,7 @@ export default function ClaimForm() {
                 aria-describedby={errors.message ? 'claim-message-error' : undefined}
               />
               {errors.message && (
-                <p className="claim-error" id="claim-message-error">
+                <p className="ui-field__error" id="claim-message-error">
                   {errors.message}
                 </p>
               )}

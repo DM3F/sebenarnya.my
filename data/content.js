@@ -377,11 +377,12 @@ export const articleCategories = [
 ];
 
 // Tag shown on each card
+// Verdict labels; colours come from the --color-verdict-* tokens (components/ui/Verdict.js)
 export const articleStatus = {
-  palsu: { label: 'Palsu', color: '#e51c23' },
-  makluman: { label: 'Makluman', color: '#0071e3' },
-  waspada: { label: 'Waspada', color: '#f56300' },
-  benar: { label: 'Penjelasan', color: '#1d8a4e' },
+  palsu: { label: 'Palsu' },
+  makluman: { label: 'Makluman' },
+  waspada: { label: 'Waspada' },
+  benar: { label: 'Penjelasan' },
 };
 
 const agencyLogo = (name) => withBase(`/images/authors/agency-${name}.webp`);

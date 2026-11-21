@@ -10,7 +10,7 @@
 // - The dialog is a native <dialog> showing the photo only (no text box), Esc and backdrop close it.
 import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { IconButton } from '@/components/ui';
 
 const NODES = 36; // photos repeat around the sphere so it never looks sparse
 const MAX_SIZE = 960;
@@ -238,9 +238,7 @@ export default function SphereGallery({ items }) {
         onClick={(e) => e.target === e.currentTarget && dialogRef.current.close()}
       >
         {selected && <img src={selected.image} alt={selected.caption} />}
-        <button type="button" className="sphere-dialog__close" aria-label="Tutup foto" onClick={() => dialogRef.current.close()}>
-          <Icon icon={X} size={20} />
-        </button>
+        <IconButton variant="media" icon={X} label="Tutup foto" className="sphere-dialog__close" onClick={() => dialogRef.current.close()} />
       </dialog>
     </div>
   );
