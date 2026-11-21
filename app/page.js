@@ -19,15 +19,17 @@ export default function HomePage() {
         {/* Hero + latest fact-checks slider */}
         <Hero />
 
+        {/* Agency logos: official statements come from these sources */}
+        <Collaborators />
+
         {/* Carousel */}
         <Carousel />
 
         {/* Latest fact-checks */}
         <Latest />
 
-        {/* Tentang ringkas: statement, stats and agency logos */}
+        {/* Tentang ringkas: statement and stats */}
         <Viewership />
-        <Collaborators />
 
         {/* Aktiviti media sosial terkini: WSIS banner + social posts */}
         <section className="activity" aria-labelledby="activity-title">
