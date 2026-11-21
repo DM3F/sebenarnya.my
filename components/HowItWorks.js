@@ -65,7 +65,7 @@ export default function HowItWorks() {
             <h3 className="how__award-title">Juara Dunia</h3>
             <p className="how__award-text">dalam Kepercayaan Digital &amp; Semakan Fakta Awam</p>
             <Button variant="media" href={withBase('/about-us/#berita-galeri')} iconEnd={ArrowRight} className="how__award-cta">
-              <span className="how__award-cta-label">Ketahui lebih lanjut</span>
+              Ketahui lebih lanjut
             </Button>
           </div>
         </article>

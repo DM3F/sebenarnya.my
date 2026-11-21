@@ -3266,36 +3266,3 @@ div:has(> .split-line) {
   @starting-style { .peek-modal[open] { scale: 1; } }
   .social-peek__logo:active { scale: none; }
 }
-
-/* "Ketahui lebih lanjut": starts as an arrow-only pill, opens to show its label on hover or
-   keyboard focus. Only on real pointers: touch screens get the full button straight away.
-   The label stays in the accessibility tree the whole time (opacity, not display). */
-@media (hover: hover) and (pointer: fine) {
-  .ui-btn.how__award-cta { /* two classes: ui.css loads after this file */
-    --btn-px: calc((var(--size-control) - var(--size-icon)) / 2); /* icon centred in a 44px circle */
-    gap: 0;
-    transition: padding var(--duration-base) var(--ease-out), var(--transition-colors);
-  }
-  .how__award-cta-label {
-    display: inline-block;
-    max-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    opacity: 0;
-    translate: var(--spacing-8) 0;
-    transition: max-width var(--duration-base) var(--ease-out), opacity var(--duration-fast) var(--ease-out),
-      translate var(--duration-base) var(--ease-out), margin-right var(--duration-base) var(--ease-out);
-  }
-  .ui-btn.how__award-cta:hover,
-  .ui-btn.how__award-cta:focus-visible { --btn-px: var(--space-control-x); }
-  .how__award-cta:hover .how__award-cta-label,
-  .how__award-cta:focus-visible .how__award-cta-label {
-    max-width: 12em;
-    margin-right: var(--space-inline);
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
-  .how__award-cta, .how__award-cta-label { transition: opacity var(--duration-fast) ease; }
-}
