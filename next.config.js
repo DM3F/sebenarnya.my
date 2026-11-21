@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 
-// GitHub Pages serves the site from /sebenarnya-design, so production builds need that prefix.
+// GitHub Pages serves this repo (DM3F/sebenarnya.my) from /sebenarnya.my, so production builds need that prefix.
 // `npm run dev` runs without it, so the local site stays at http://localhost:3000/
-const basePath = process.env.NODE_ENV === "production" ? "/sebenarnya-design" : "";
+const basePath = process.env.NODE_ENV === "production" ? "/sebenarnya.my" : "";
 
 const nextConfig = {
   output: "export",

@@ -13,7 +13,7 @@ Rujukan awal: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork")
 
 ## 0. Konteks repo (status sekarang)
 
-- Next.js 16 + React 19, **JavaScript** (bukan TS), App Router, `output: "export"`, `basePath` `/sebenarnya-design` untuk production (GitHub Pages). Guna `withBase()` dari `lib/basePath.js` untuk path aset.
+- Next.js 16 + React 19, **JavaScript** (bukan TS), App Router, `output: "export"`, `basePath` `/sebenarnya.my` untuk production (GitHub Pages). Guna `withBase()` dari `lib/basePath.js` untuk path aset.
 - Routes: `/` (Home), `/about-us`, `/logo`, `/article`, `/article/[slug]`.
 - Styling: satu fail `app/global.css` (~3,900 baris), **tiada Tailwind**. Root font-size 62.5% → `1rem = 10px`.
 - Font: **Manrope sahaja** (`--font-manrope` → `--font-sans`) via `next/font/google` dalam `app/layout.js`, untuk kandungan, tajuk dan semua kawalan UI. Inter dan `--font-ui` dibuang (21 Nov 2026, `design.md` §8). ✅ Siap.
