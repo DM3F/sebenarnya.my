@@ -61,8 +61,8 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] HeroCarousel: infinite loop, teks pada slaid tengah sahaja (ikut Paper), pembilang slaid, autoplay + dots + jeda
 - [x] Page transition antara route (`components/PageTransition.js`, View Transitions API)
 - [x] PromoBanner / Award (WSIS)
-- [x] Galeri media sosial (Aktiviti media sosial): 5 kad elastik tanpa slider, kad terlipat = panel gradient platform + ikon di tengah — kod; **Paper belum dikemas kini**
-- [x] Galeri Tentang Kami: sfera 3D foto bulat (seret + auto-putar), klik → dialog foto sahaja tanpa teks — kod; **Paper belum dikemas kini**
+- [x] Galeri media sosial (Aktiviti media sosial): 5 kad elastik tanpa slider, kad terlipat = panel gradient platform + ikon di tengah — kod + Paper (21 Nov)
+- [x] Galeri Tentang Kami: sfera 3D foto bulat (seret + auto-putar), klik → dialog foto sahaja tanpa teks — kod + Paper (21 Nov)
 - [x] AgencyLogoStrip (Sumber kenyataan rasmi)
 - [ ] Band: Closing, Announcement
 - [ ] Timeline (Tentang Kami)

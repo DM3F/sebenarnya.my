@@ -383,7 +383,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - **Semakan fakta terkini:** butang "Lihat lagi" dibuang (kod + Paper).
 - **Logo:** halaman `/logo` dibuang. Seksyen Logo dalam Tentang Kami ada `id="logo"`; menu Tentang Kami › Logo → `/about-us/#logo`. `PageTransition` kini mendarat pada `#hash` selepas transisi (dulu sentiasa ke atas).
 - **Kad artikel:** border kini `--color-muted-strong` (hairline lembut, kod + Paper); **tiada hover pada border** — hover hanya zoom foto 1.03.
-- **Tentang Kami, seksyen 2:** diganti satu pernyataan dua baris, gaya sama dengan tajuk "Semakan fakta terkini" (36/42 Medium; mobile 28/34): "Setiap dakwaan disemak bersama agensi rasmi, / sebelum jawapannya sampai kepada anda." Kad & baris fakta lama dibuang. Paper belum dikemas kini.
+- **Tentang Kami, seksyen 2:** diganti satu pernyataan dua baris, gaya sama dengan tajuk "Semakan fakta terkini" (36/42 Medium; mobile 28/34): "Setiap dakwaan disemak bersama agensi rasmi, / sebelum jawapannya sampai kepada anda." Kad & baris fakta lama dibuang. Paper dikemas kini (21 Nov).
 - **Empat fungsi:** autoplay setiap 5s (`AUTOPLAY_MS`); berhenti bila hover atau fokus, bila tab tersembunyi, dan tiada autoplay dengan `prefers-reduced-motion`. Pilihan manual mula semula pemasa. `aria-live` hanya `polite` bila pengguna yang mengawal.
 - **Galeri media sosial** (`components/Stories.js`, `.social-gallery`), menggantikan slider:
   - 5 kad sebaris (Instagram, Threads, X, TikTok, Facebook), tinggi 560, gap 8, `--radius-lg`. Kad terbuka `flex-grow: 4`, kad lipat `1`. Hover / fokus / ketik membuka kad.
@@ -402,7 +402,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
   - Nod: butang bulat, border 2px putih 20%, `--shadow-float`; hover (mouse) skala 1.2, tekan .97, fokus outline `--color-ring`.
   - Klik/ketuk → `<dialog>` asli, **foto sahaja tanpa kotak teks** (alt = kapsyen), butang tutup 44px ikon X; Esc/backdrop menutup. Masuk: opacity + scale .96 → 1, 300ms `--ease-out`; backdrop 200ms. Reduced motion: fade sahaja.
   - Petunjuk 14/20 `--color-muted-foreground`: "Seret untuk memutar, pilih foto untuk membesarkan."
-  - **Paper belum dikemas kini.**
+  - Paper dikemas kini (21 Nov): snapshot statik sfera dalam Tentang Kami › Galeri.
 - **Galeri media sosial — kad terlipat** (`.social-card__tint`): kembali seperti sebelum galeri elastik — panel dakwat dengan gradient warna platform (Instagram, Threads, X, TikTok, Facebook; `ds-allow: platform brand colour`) dan ikon platform 48px di tengah (32px ≤700). Foto hanya kelihatan pada kad terbuka.
   - Buka: tint pudar 250ms `ease`, ikon pudar + skala .8 dalam 120ms. Tutup: tint dan ikon kembali selepas 250–300ms, bila baris sudah stabil. Hover (mouse) pada kad terlipat: tint brightness 1.35.
   - Ini menyimpang daripada keputusan design.md "tiada gradient pada kad" atas permintaan pengguna (21 Nov 2026).
