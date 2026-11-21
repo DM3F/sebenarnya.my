@@ -206,7 +206,7 @@ export const heroSlides = [
 // `image` = card with a photo background and light text
 export const viewershipStats = [
   { value: 1016, sep: true, text: 'Artikel semakan dari Januari 2022 hingga Mei 2026.' },
-  { value: 20, suffix: '+', text: 'Agensi rakan dari berbagai pejabat.' },
+  { value: 20, suffix: '+', text: 'Kementerian dan agensi yang mengesahkan semakan kami.' },
   { value: 200, unit: 'ribu', text: 'Mesej diproses Aifa, pembantu AI, sejak Januari 2025.' },
   { value: 275, unit: 'juta+', image: '/images/about/viewership-bg.jpg', text: 'Lawatan ke portal dari Mac 2017 hingga September 2021.' },
 ];

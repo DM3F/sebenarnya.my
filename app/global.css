@@ -1417,9 +1417,18 @@ input::placeholder { color: var(--color-foreground); }
   border-radius: var(--radius-card);
   background: var(--color-muted) center / cover no-repeat;
 }
-.viewership-stat--image { color: var(--color-primary-foreground); }
-.viewership-stat--image dt,
-.viewership-stat--image dd { color: inherit; }
+/* Photo card: white text. A 25% dark layer keeps it at 4.5:1 (WCAG 1.4.3) on the lightest parts of the photo. */
+.viewership-stat--image { position: relative; isolation: isolate; color: var(--color-primary-foreground); }
+.viewership-stat--image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--color-foreground) 25%, transparent);
+}
+.viewership-stats .viewership-stat--image dt,
+.viewership-stats .viewership-stat--image dd { color: inherit; } /* must outrank .viewership-stats dt / dd below */
 
 /* 72px display number (no token at that size) */
 .viewership-stats dt {
@@ -1445,6 +1454,7 @@ input::placeholder { color: var(--color-foreground); }
   line-height: 135%;
   font-weight: var(--font-weight-light);
   color: var(--color-foreground);
+  text-wrap: balance; /* the four captions break into two even lines */
 }
 
 /* Width is locked by JS (--count-w) so the layout doesn't jump while counting */
