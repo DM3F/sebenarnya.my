@@ -252,7 +252,9 @@ export default function Carousel() {
   };
 
   return (
-    <section className="hero-carousel" aria-roledescription="carousel" aria-label="Semakan fakta pilihan">
+    <section className="hero-carousel" aria-roledescription="carousel" aria-labelledby="hero-carousel-title">
+      {/* Outline: H1 (hero) → this H2 → slide H3s, so screen readers don't skip a level */}
+      <h2 className="sr-only" id="hero-carousel-title">Semakan fakta pilihan</h2>
       <div className="gal" ref={galRef} tabIndex={0} aria-live={playing ? 'off' : 'polite'}>
         <div className="gtrack">
           {slides.map((s, i) => {

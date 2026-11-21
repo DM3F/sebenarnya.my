@@ -30,6 +30,7 @@ export default function LogoKit({ headingLevel = 2 }) {
               </div>
 
               <Button
+                variant="outline" /* two downloads side by side: none is the one primary action */
                 className="logo-card-btn"
                 href={item.file}
                 download={item.filename}

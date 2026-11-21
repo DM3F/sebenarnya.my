@@ -97,7 +97,10 @@ export default function SphereGallery({ items }) {
         if (!el) return;
         const shown = p.fade > 0;
         el.style.width = el.style.height = `${base}px`;
-        el.style.transform = `translate3d(${size / 2 + p.x - base / 2}px, ${size / 2 + p.y - base / 2}px, 0) scale(${p.final ?? p.scale})`;
+        const s = p.final ?? p.scale;
+        el.style.transform = `translate3d(${size / 2 + p.x - base / 2}px, ${size / 2 + p.y - base / 2}px, 0) scale(${s})`;
+        // On-screen size = base × s; CSS keeps the hit area ≥ 24px (WCAG 2.5.8) from these two
+        el.style.setProperty('--node-hit', `${Math.max(base, 24 / s)}px`);
         el.style.opacity = p.fade;
         el.style.zIndex = Math.round(1000 + p.z);
         el.style.visibility = shown ? 'visible' : 'hidden';

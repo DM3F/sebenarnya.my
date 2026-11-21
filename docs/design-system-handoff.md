@@ -426,3 +426,13 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 ## Halaman baharu (21 Nov 2026)
 - `/submit-claim/` (`app/submit-claim/page.js`): lawatan terus (pautan dikongsi, tab baharu) dapat halaman "Lapor berita tular" dan borang pop-up `ClaimForm` terbuka sendiri. Klik dalam laman masih buka pop-up tanpa navigasi.
 - 404 (`app/not-found.js`): header + footer, eyebrow "Ralat 404", tajuk display, dua jalan keluar (Utama filled, Artikel outline). Gaya `.page-notice`.
+
+## Pembaikan audit MEDIUM (21 Nov 2026)
+- **Tajuk seksyen:** satu peranan untuk semua halaman (`.latest-checks__title`, `.activity__title`, `.about-title`, `.about-fn-title`, `.logo-kit-title`): 36/42, weight 500, rata kiri; telefon 28/34. Display 400 hanya untuk hero. Sub-tajuk dalam seksyen (`.about-subtitle`) 24/32.
+- **Outline tajuk:** carousel hero ada `<h2 class="sr-only">Semakan fakta pilihan</h2>` supaya slaid H3 tidak melangkau tahap.
+- **Semibold (600)** hanya untuk label verdict (dan wordmark logo). Eyebrow, badge, heading footer, label AIFA, tajuk keputusan AIFA, tajuk borang: 500. `b, strong`: 500 (deklarasi rosak `…semibold)er` dibaiki).
+- **Satu butang filled per skrin:** muat turun Logo/Ikon kini `variant="outline"`.
+- **Merah jenama** tidak lagi dipakai sebagai teks (eyebrow WSIS → `--color-muted-foreground-inverse`). Tanya AIFA kekal merah (keputusan #4 terbuka) tetapi tanpa glow merah dan tanpa lompat: `--shadow-float`, hover sedikit gelap, tekan scale .97.
+- **Poster WSIS** (`img[src*="wsis"]`) guna `object-fit: contain` atas `--color-card` supaya teks poster tidak terpotong.
+- **Kad foto "275 juta+":** lapisan 20% + scrim kecerunan hanya di separuh atas (60% → 45% → 0 pada 80%). Diukur pada piksel sebenar: kapsyen ≥ 4.75:1 (desktop) / 5.32:1 (telefon) pada titik paling terang.
+- **Galeri sfera:** kawasan tekan halimunan ≥ 24 px pada skrin (`--node-hit` dari JS, `.sphere-node::after`).
