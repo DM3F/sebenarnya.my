@@ -6,16 +6,16 @@
 // - Fibonacci layout is deterministic (seeded jitter), so server and client agree.
 // - Pointer events + capture after a 4px threshold: a drag never fires a click, a tap still opens.
 // - touch-action: pan-y — on phones a horizontal swipe spins, a vertical one scrolls the page.
-// - Auto-rotate pauses while hovered, focused, dragged, off-screen, in the dialog, or under reduced motion.
+// - Auto-rotate keeps going on hover (as the original); it pauses only while keyboard-focused, dragged, off-screen, in the dialog, or under reduced motion.
 // - The dialog is a native <dialog> showing the photo only (no text box), Esc and backdrop close it.
 import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 
 const NODES = 36; // photos repeat around the sphere so it never looks sparse
-const MAX_SIZE = 640;
+const MAX_SIZE = 960;
 const RADIUS = 0.4; // × stage size
-const NODE = 0.2; // × stage size, before depth scaling
+const NODE = 0.18; // × stage size, before depth scaling
 const DRAG = 0.4; // degrees per px
 const DECAY = 0.94;
 const MAX_SPEED = 6;
@@ -50,7 +50,7 @@ export default function SphereGallery({ items }) {
   const [selected, setSelected] = useState(null);
 
   // Mutable motion state lives in a ref: changing it must not re-render
-  const motion = useRef({ rx: -12, ry: 0, vx: 0, vy: 0, size: 0, hover: false, focus: false, drag: null, dragged: false, visible: false, open: false });
+  const motion = useRef({ rx: -12, ry: 0, vx: 0, vy: 0, size: 0, focus: false, drag: null, dragged: false, visible: false, open: false });
 
   useEffect(() => {
     const m = motion.current;
@@ -108,7 +108,7 @@ export default function SphereGallery({ items }) {
       const dt = last ? Math.min((now - last) / 16.67, 3) : 1;
       last = now;
       if (!m.drag) {
-        const auto = !reduce.matches && !m.hover && !m.focus && !m.open ? AUTO_SPEED : 0;
+        const auto = !reduce.matches && !m.focus && !m.open ? AUTO_SPEED : 0;
         m.vx *= Math.pow(DECAY, dt);
         m.vy *= Math.pow(DECAY, dt);
         if (Math.abs(m.vx) < 0.01) m.vx = 0;
@@ -126,7 +126,7 @@ export default function SphereGallery({ items }) {
       }
     };
 
-    // Size the stage to the column, up to 640px
+    // Size the stage to the column, up to 960px
     const ro = new ResizeObserver(([entry]) => {
       m.size = Math.min(entry.contentRect.width, MAX_SIZE);
       stageRef.current.style.width = stageRef.current.style.height = `${m.size}px`;
@@ -196,6 +196,7 @@ export default function SphereGallery({ items }) {
   };
   const onClose = () => {
     motion.current.open = false;
+    motion.current.focus = false; // focus returns to the photo on close; keep spinning
     document.documentElement.style.overflow = '';
   };
 
@@ -209,9 +210,7 @@ export default function SphereGallery({ items }) {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         onClickCapture={onClickCapture}
-        onPointerEnter={(e) => e.pointerType === 'mouse' && (motion.current.hover = true)}
-        onPointerLeave={() => (motion.current.hover = false)}
-        onFocus={() => (motion.current.focus = true)}
+        onFocus={(e) => (motion.current.focus = e.target.matches(':focus-visible'))}
         onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && (motion.current.focus = false)}
       >
         {nodes.map((item, i) => (

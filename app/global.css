@@ -3034,7 +3034,7 @@ input::placeholder { color: var(--color-foreground); }
 .sphere-stage {
   position: relative;
   width: 100%;
-  max-width: 640px;
+  max-width: 960px;
   aspect-ratio: 1;
   cursor: grab;
   touch-action: pan-y;
@@ -3112,7 +3112,7 @@ input::placeholder { color: var(--color-foreground); }
 
 @media (hover: hover) and (pointer: fine) {
   .about-news-card:hover .about-news-media img { transform: scale(1.03); }
-  .sphere-node:hover .sphere-node__disc { transform: scale(1.12); }
+  .sphere-node:hover .sphere-node__disc { transform: scale(1.2); }
   .sphere-dialog__close:hover { background: color-mix(in srgb, var(--color-foreground) 80%, transparent); }
 }
 
