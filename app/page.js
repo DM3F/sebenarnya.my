@@ -19,11 +19,11 @@ export default function HomePage() {
         {/* Hero + latest fact-checks slider */}
         <Hero />
 
-        {/* Agency logos: official statements come from these sources */}
-        <Collaborators />
-
         {/* Carousel */}
         <Carousel />
+
+        {/* Agency logos: official statements come from these sources */}
+        <Collaborators />
 
         {/* Latest fact-checks */}
         <Latest />
