@@ -34,7 +34,7 @@ Decision guide:
 | Family | Tokens |
 |---|---|
 | Colour | `--color-background · foreground · card · muted · muted-strong · accent · secondary(-hover/-foreground) · primary(-hover/-foreground) · input · border · border-strong · ring · link · destructive · disabled(-foreground) · surface-overlay · brand · verdict-*` |
-| Type roles | `--text-display · heading-lg · heading · title · intro · body-lg · body · body-sm · label · label-sm · eyebrow · badge · verdict · caption · stat`, each with `--line-height`, and where it applies `--font-weight` / `--letter-spacing` (Tailwind v4 shape: `--text-label--line-height`) |
+| Type roles | `--text-display · heading-lg · heading · title · intro · article · body · body-sm · label · label-sm · eyebrow · badge · verdict · caption · stat`, each with `--line-height`, and where it applies `--font-weight` / `--letter-spacing` (Tailwind v4 shape: `--text-label--line-height`) |
 | Size | `--size-control-sm (36) · control (44) · control-lg (48) · control-xl (56) · hit-area · badge · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu` |
 | Space roles | `--space-control-x(-sm) · field-x · badge-x/-y · inline(-tight) · stack · segment` + the 4px scale `--spacing-*` for layout |
 | Shape | `--radius-control (pill) · field (8) · menu · menu-item · media · card · lg` |
@@ -49,9 +49,9 @@ Decision guide:
 | `heading-lg` | 28 → 36 fluid | 1.2 | section H2 |
 | `heading` | 20 → 24 fluid | 1.3 | panel / feature H3 |
 | `title` | 18 → 20 fluid | 1.3 | card titles |
-| `intro` | 20 → 24 fluid | 1.3 | big intro paragraphs (Figma Body/24 Large) |
-| `body-lg` | 16 → 18 fluid | 1.55 | lead, article body |
-| `body` | 16 | 1.5 | default paragraph |
+| `intro` | 20 → 24 fluid | 1.3 | one big statement **per page, max** (Figma Body/24 Large) |
+| `article` | 16 → 18 fluid | 1.55 | article reading column (`/article/[slug]`) **only** |
+| `body` | 16 | 1.5 | **every other paragraph**: leads, summaries, footer, UI text |
 | `body-sm` | 14 | 1.5 | meta, support text |
 | `label` / `label-sm` | 16 / 14, medium | 1.5 | buttons, nav, form labels |
 | `eyebrow` / `badge` / `verdict` | 13 | 1.4 | eyebrows, badges, verdict word |
@@ -61,6 +61,11 @@ Decision guide:
 Fluid roles use `clamp()` inside tokens.css, so there are **no type media
 queries**: components write `font-size: var(--text-heading)` and get the right
 size on every screen. Body, label and small roles are fixed on purpose.
+
+**Paragraph rule in one sentence:** all text is 16; the exceptions are the
+article body (16 → 18), meta (14) and one intro statement per page. A lead
+under a title is still `body` — set it apart with colour (`--color-text-secondary`)
+and spacing, not size.
 To change a size, edit the role in tokens.css — never the component.
 
 ## 2. Hard rules (checked by `npm run lint:ds`)
@@ -68,7 +73,7 @@ To change a size, edit the role in tokens.css — never the component.
 1. No hex/rgb colours outside `tokens.css`.
 2. No palette primitives (`--color-grey-*`, `--color-red`…) in components.
 3. `app/ui.css`: **no raw lengths** (`px`); use roles. Exceptions carry `/* ds-allow: reason */`.
-3a. **Type, every file except tokens.css:** only type roles. No `--text-16`/`--leading-*` steps, no raw `font-size` (px, `clamp()`, `calc()`), no `px` line-height, no `fontSize` in JSX. Percent/em tweaks are fine.
+3a. **Type, every file except tokens.css:** only type roles. No `--text-16`/`--leading-*` steps, no raw `font-size` (px, `clamp()`, `calc()`), no `px` line-height, no `fontSize` in JSX, no role that tokens.css does not define. Percent/em tweaks are fine.
 4. Icons: Lucide only, always through `components/ui/Icon.js`.
 5. No `rem` (the root is 62.5% and the CSS is reused in the extension).
 6. Font weights only from `--font-weight-*`; nothing above 600.

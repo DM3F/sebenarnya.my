@@ -364,8 +364,8 @@ input::placeholder { color: var(--color-foreground); }
 
 .hero-lede {
   font-family: var(--font-sans);
-  font-size: var(--text-title);
-  line-height: var(--text-title--line-height);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
 }
@@ -1028,8 +1028,8 @@ input::placeholder { color: var(--color-foreground); }
 .site-footer__text {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: var(--text-body-lg);
-  line-height: var(--text-body-lg--line-height);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
   font-weight: var(--font-weight-regular);
   color: var(--color-text-secondary);
 }
@@ -1623,8 +1623,8 @@ input::placeholder { color: var(--color-foreground); }
 .articles-empty p {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: var(--text-body-lg);
-  line-height: var(--text-body-lg--line-height);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
   color: var(--color-text-secondary);
 }
 
@@ -1761,8 +1761,8 @@ input::placeholder { color: var(--color-foreground); }
   max-width: 514px;
   margin: 0 auto;
   padding-top: var(--spacing-56);
-  font-size: var(--text-body-lg);
-  line-height: var(--text-body-lg--line-height);
+  font-size: var(--text-article);
+  line-height: var(--text-article--line-height);
   color: var(--color-text-secondary);
 }
 .post-body p { margin: 0; }
@@ -1784,7 +1784,6 @@ input::placeholder { color: var(--color-foreground); }
 
 @media (max-width: 600px) {
   .post-back { margin-bottom: var(--spacing-16); }
-  .post-subtitle, .post-body { font-size: var(--text-body); line-height: var(--text-body--line-height); }
   .post-image { aspect-ratio: 4 / 3; }
   .post-body { padding-top: var(--spacing-40); }
   .post-section { margin-top: var(--spacing-32); padding-top: var(--spacing-32); }
@@ -2427,8 +2426,8 @@ input::placeholder { color: var(--color-foreground); }
 .about-fn-feature p {
   max-width: 400px;
   margin: 0;
-  font-size: var(--text-body-lg);
-  line-height: var(--text-body-lg--line-height);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
   color: var(--color-text-secondary);
 }
 .about-fn-num {
@@ -2554,7 +2553,7 @@ input::placeholder { color: var(--color-foreground); }
 .news-card .news-media { flex: none; }
 .news-card__body { display: flex; flex-direction: column; align-items: flex-start; padding: var(--spacing-10); }
 .news-card__title { font-size: var(--text-label-sm); line-height: var(--text-label-sm--line-height); font-weight: var(--font-weight-medium); letter-spacing: var(--tracking-tight); text-wrap: balance; }
-.news-lead { max-width: 848px; margin: 0; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); color: var(--color-text-secondary); text-wrap: pretty; }
+.news-lead { max-width: 848px; margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); text-wrap: pretty; }
 
 /* Content eases in on every change, like Empat fungsi */
 .news-media,
@@ -3178,8 +3177,8 @@ div:has(> .split-line) {
 .logo-kit-intro,
 .post-subtitle,
 .post-lead {
-  font-size: var(--text-body-lg);
-  line-height: var(--text-body-lg--line-height);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
 }
 .viewership-stats dt,
 .about-intro__stat-value,

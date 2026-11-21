@@ -30,6 +30,12 @@ const files = SOURCE_DIRS.flatMap((d) => walk(join(ROOT, d))).map((f) => ({
   lines: readFileSync(f, 'utf8').split('\n'),
 }));
 
+// Every custom property defined in tokens.css (for the unknown-role check)
+const TOKENS = new Set(
+  files.filter((f) => /(^|\/)tokens\.css$/.test(f.path))
+    .flatMap((f) => [...f.lines.join('\n').matchAll(/--([\w-]+)\s*:/g)].map((m) => m[1])),
+);
+
 const isTokens = (p) => /(^|\/)tokens\.css$/.test(p);
 const isCss = (p) => p.endsWith('.css');
 const isIconWrapper = (p) => /components\/ui\/Icon\.js$/.test(p);
@@ -69,6 +75,11 @@ const rules = [
     id: 'type-primitive',
     why: 'Type scale step used outside tokens.css; use a type role (--text-body, --text-heading…), never --text-16 / --leading-*.',
     test: (l, p) => !isTokens(p) && /var\(--(text-\d+|leading-[\w-]+|type-[\w-]+)\)/.test(code(l)),
+  },
+  {
+    id: 'unknown-type-role',
+    why: 'Type role not defined in tokens.css (typo or invented role); pick an existing --text-* role.',
+    test: (l, p) => !isTokens(p) && [...code(l).matchAll(/var\(--(text-[a-z][\w-]*)\)/g)].some((m) => !TOKENS.has(m[1])),
   },
   {
     id: 'raw-font-size',

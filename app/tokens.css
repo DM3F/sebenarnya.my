@@ -221,14 +221,14 @@
   --text-title--line-height: var(--leading-heading);
   --text-title--font-weight: var(--font-weight-medium);
 
-  --text-intro: clamp(var(--text-20), 18.34px + 0.442vw, var(--text-24));     /* big intro paragraphs (Figma Body/24 Large) · 20→24 */
+  --text-intro: clamp(var(--text-20), 18.34px + 0.442vw, var(--text-24));     /* one big statement per page (Figma Body/24 Large) · 20→24 */
   --text-intro--line-height: var(--leading-heading);
   --text-intro--font-weight: var(--font-weight-medium);
   --text-intro--letter-spacing: var(--tracking-tight);
 
-  --text-body-lg: clamp(var(--text-16), 15.17px + 0.221vw, var(--text-18));   /* lead, article body · 16→18 */
-  --text-body-lg--line-height: var(--leading-relaxed);
-  --text-body: var(--text-16);                                                /* default paragraph */
+  --text-article: clamp(var(--text-16), 15.17px + 0.221vw, var(--text-18)); /* article reading column ONLY · 16→18 */
+  --text-article--line-height: var(--leading-relaxed);
+  --text-body: var(--text-16);                                                /* EVERY paragraph, lead and summary, all screens */
   --text-body--line-height: var(--leading-body);
   --text-body--letter-spacing: var(--tracking-body);
   --text-body-sm: var(--text-14);                                             /* meta, support text */

@@ -73,13 +73,14 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 | Heading | 24/32 · 22/30 · 20/28 | 500 | Tajuk ciri / sub-tajuk dalam seksyen, tajuk kad besar, tajuk pop-up. |
 | Title | 20/26 · 20/26 · 18/24 | 500 | Tajuk kad. |
 | Angka (statistik) | 48 · 40 · 36, line-height 1.1 | **400** | Semua angka statistik. Unit (juta+, ribu, jam) 0.42em. Angka tabular. |
-| Lead | 18/28 · 18/28 · 16/24 | 400 | Perenggan pengenalan di bawah tajuk. |
+| Lead | 16/24 | 400 | Perenggan pengenalan di bawah tajuk. Sama saiz dengan Body; dibezakan dengan warna Smoke dan ruang. |
+| Article | 16 → 18 (fluid) | 400 | Body dalam lajur bacaan artikel sahaja. |
 | Body | 16/24 | 400 | Teks badan (`body` = 16). Graphite. Lebar baris maks ±68 aksara. |
 | Label (butang, nav, chip) | 16/24 | 500 | Sentence case. |
 | Small / meta | 14/20 | 400–500 | Tarikh, meta, label kecil. Smoke. |
 | Eyebrow | 13/18 | 500 (verdict 600) | UPPERCASE, tracking +0.04em: verdict, eyebrow, badge, heading footer. |
 
-Token peranan ada dalam `app/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-body-lg` = Lead, `--text-body`, `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi tiga lajur saiz di atas jadi satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
+Token peranan ada dalam `app/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (body artikel sahaja, 16 → 18), `--text-body` (16, termasuk Lead), `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi tiga lajur saiz di atas jadi satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
 
 **Peraturan rasa:**
 - Tiada weight 700+ di mana-mana. Penekanan = saiz, warna tinta vs smoke, atau ruang kosong.
