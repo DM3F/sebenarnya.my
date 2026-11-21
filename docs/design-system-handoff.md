@@ -186,7 +186,9 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 - `Tabs` `mode="toggle"` → `role=group` + `aria-pressed` (tiada tab panel)
 - `NavLink` (`href`, `current`) — link nav tanpa border, padding sisi `--space-control-x` (20). State: rehat weight 400 transparent · hover bg `--color-accent` (pointer sahaja) · tekan scale .97 · halaman aktif weight 500, tanpa fill · fokus ring standard
 - `LanguageMenu` (`items` [{value, label, lang, flag}], `value`, `onChange`, `label`, `groupLabel`, `align`) — pill bendera bulat 24 + chevron (border `--color-border`, bg `--color-secondary`); panel `--radius-menu` + `--shadow-float`, label kumpulan caption muted, item bendera + nama, terpilih bg `--color-accent`. Masuk 150ms opacity+scale .96 dari sudut trigger. Bendera: `public/images/flags/*.svg`
-- `DropdownMenu` (`label`, `items` [{label, href, current}], `current`, `align`) — trigger NavLink + chevron, panel pautan
+- `DropdownMenu` (`label`, `items` [{label, href, current}], `current`, `align`) — trigger NavLink + chevron, panel pautan. `.ui-dropdown__item` boleh `<a>` atau `<button>` (chrome butang browser dibuang: tiada border/bg, lebar penuh)
+- Menu mudah alih: label kumpulan (cth. Tentang Kami) sama saiz/warna dengan Utama/Artikel; anak pautan `--text-label-sm` (14), muted, inden 32
+- Menu Kongsi: muncul 150ms opacity + scale .96 dari tengah atas (butang Kongsi)
 - `Button`/`Chip`/`NavLink` dengan `href` render `<a>` biasa (tiada kebergantungan Next.js) supaya boleh guna di CMS/extension.
 
 Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Sudah dipasang: **Header** dan **Hero** (lihat di bawah). Komponen lain belum.

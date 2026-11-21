@@ -575,6 +575,14 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  justify-content: space-between; /* trailing icon (e.g. copied ✓) sits at the end */
+  gap: var(--space-inline);
+  width: 100%;
+  margin: 0;
+  border: 0; /* items can be <button>: drop the browser's default button chrome */
+  background: transparent;
+  text-align: start;
+  cursor: pointer;
   min-height: var(--size-control);
   padding: 0 var(--space-field-x);
   border-radius: var(--radius-menu-item);
@@ -585,8 +593,11 @@
   color: var(--color-foreground);
   text-decoration: none;
 }
-.ui-dropdown__item:hover,
+@media (hover: hover) and (pointer: fine) {
+  .ui-dropdown__item:hover { background: var(--color-accent); }
+}
 .ui-dropdown__item[aria-current='page'] { background: var(--color-accent); }
+.ui-dropdown__item:active { background: var(--color-secondary-hover); }
 .ui-dropdown__item:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: calc(var(--focus-ring-width) * -1);

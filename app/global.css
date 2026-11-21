@@ -289,16 +289,25 @@ input::placeholder { color: var(--color-foreground); }
   .menu-panel.open { display: block; }
   .menu-panel ul { flex-direction: column; align-items: stretch; gap: var(--spacing-2); }
   .menu-panel .ui-navlink { width: 100%; padding: 10px var(--spacing-16); }
+  /* Group heading reads as a sibling of Utama / Artikel (same size, weight, colour);
+     its links are the subordinate level: one step smaller and indented. */
   .menu-panel .menu-group-label {
     display: block;
-    padding: var(--spacing-12) var(--spacing-16) var(--spacing-4);
+    padding: 10px var(--spacing-16);
     font-family: var(--font-sans);
-    font-size: var(--text-14);
-    line-height: var(--leading-20);
-    font-weight: var(--font-weight-medium);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-foreground);
+  }
+  .menu-panel .menu-group .ui-navlink {
+    min-height: var(--size-control-sm);
+    padding: var(--spacing-6) var(--spacing-16) var(--spacing-6) var(--spacing-32);
+    font-size: var(--text-label-sm);
+    line-height: var(--text-label-sm--line-height);
     color: var(--color-muted-foreground);
   }
-  .menu-panel .menu-group .ui-navlink { padding-left: var(--spacing-24); }
+  .menu-panel .menu-group .ui-navlink[aria-current='page'] { color: var(--color-foreground); }
   .menu-panel .menu-claim { display: none; }
 }
 
@@ -1860,10 +1869,6 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Share button + menu (components/ShareButton.js) */
 .share { position: relative; }
-
-
-
-
 .share-menu {
   position: absolute;
   z-index: 20;
@@ -1878,8 +1883,13 @@ input::placeholder { color: var(--color-foreground); }
   border-radius: var(--radius-md);
   background: var(--color-card);
   box-shadow: var(--shadow-float);
-  transform: translateX(-50%);
+  translate: -50% 0;
+  /* Pop in from the Kongsi button: origin at the top centre, where the trigger is */
+  transform-origin: top center;
+  transition: opacity var(--duration-fast) var(--ease-out), scale var(--duration-fast) var(--ease-out);
 }
+@starting-style { .share-menu { opacity: 0; scale: .96; } }
+@media (prefers-reduced-motion: reduce) { .share-menu { transition: opacity var(--duration-fast) ease; } @starting-style { .share-menu { scale: 1; } } }
 
 
 
