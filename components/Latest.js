@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { PauseFilled, PlayFilled } from '@/components/ui/filledIcons';
 import FlipCard from './FlipCard';
 import { IconButton } from '@/components/ui';
 import { articles } from '@/data/content';
@@ -234,7 +235,7 @@ export default function Latest() {
 
         <div className="latest-checks__controls">
           <IconButton
-            icon={paused ? Play : Pause}
+            icon={paused ? PlayFilled : PauseFilled}
             label={paused ? 'Mainkan baris semakan' : 'Jeda baris semakan'}
             onClick={() => setPaused((p) => !p)}
           />

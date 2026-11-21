@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { PauseFilled, PlayFilled } from '@/components/ui/filledIcons';
 import { Badge, IconButton } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
 import SphereGallery from '@/components/SphereGallery';
@@ -173,7 +174,7 @@ function Functions() {
               <IconButton icon={ChevronLeft} label="Fungsi sebelumnya" onClick={() => move(-1)} />
               <IconButton icon={ChevronRight} label="Fungsi seterusnya" onClick={() => move(1)} />
               <IconButton
-                icon={stopped ? Play : Pause}
+                icon={stopped ? PlayFilled : PauseFilled}
                 label={stopped ? 'Mainkan fungsi' : 'Jeda fungsi'}
                 onClick={() => setStopped((v) => !v)}
               />

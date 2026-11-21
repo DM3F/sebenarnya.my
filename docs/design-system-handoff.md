@@ -122,7 +122,7 @@ import { Icon } from '@/components/ui';
 ```
 - Garis **1.75px pada semua saiz** (`absoluteStrokeWidth`), warna `currentColor` (ikut token teks), `aria-hidden` — nama boleh-capai datang dari kawalan.
 - Saiz: 16 dalam button/label/kad · 18–20 kawalan (search, tutup, anak panah carousel) · 24 butang terapung (Tanya AIFA) · 28–40 ilustrasi status (borang).
-- Dipakai: ArrowLeft, ArrowRight, ArrowUpRight, ChevronDown/Left/Right, Search, X, MessageSquareText, Flag, Check, Link, CloudUpload, Share, Download, Calendar, Play, Pause.
+- Dipakai: ArrowLeft, ArrowRight, ArrowUpRight, ChevronDown/Left/Right, Search, X, MessageSquareText, Flag, Check, Link, CloudUpload, Share, Download, Calendar, Play, Pause (diisi: `PlayFilled`/`PauseFilled` dari `components/ui/filledIcons`, fill currentColor).
 - **Pengecualian:** logo jenama (Facebook, Instagram, Threads, X, TikTok) bukan dalam Lucide → kekal SVG jenama (`data/content.js`).
 - Jangan guna glyph teks (↗ → ‹ ›), SVG tulis tangan atau set ikon lain. Jangan override `stroke-width` dalam CSS.
 
@@ -243,7 +243,6 @@ Baseline asal dari Figma:
 - **Hanya slide tengah tunjuk teks** (eyebrow, tajuk, teks, CTA, kaunter); slide sisi imej sahaja dengan scrim gelap 25%. Teks muncul selepas slide berhenti (fade .5s, delay .6s).
 - Kandungan: kiri 64, lebar max 484, gap 16. Eyebrow Verdict/13 putih + dot 8px warna `--color-verdict-*-dot` (halo 3px 25%) — "PALSU · KPDN". Tajuk Heading/48 Medium putih 2 baris (`title` + `titleEm`). Teks Body/16 putih, max 400. CTA pill `--color-background` + teks `--color-foreground` + anak panah.
 - Overlay: `linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.05) 85%)`.
-- Kaunter "04 / 05": pill bawah kanan 24, bg rgba(0,0,0,.6), 14/21 tabular.
 - Kawalan: pill dots bg `--color-muted` h48 padding 20 gap 12; dot 8 `--color-border-strong`, aktif 32 lebar dengan isian progres `--color-foreground` 6s; butang jeda/main 48 bulat `--color-muted`.
 - **Autoplay 6s**; jeda/main; mula dijeda jika `prefers-reduced-motion`. Seret/swipe, trackpad, kekunci ←/→ (gallery boleh difokus). Klik slide sisi = bawa ke tengah; klik slide tengah = buka artikel.
 - ≤900px: lebar `100vw − 64`, tajuk 36/42. ≤700px: imej atas (16:10), teks bawah, tajuk 28/34, slide sisi 50% opacity.
@@ -282,7 +281,7 @@ Pill `padding 10px 22px 10px 18px; min-height 44`, ikon chat 24px + "Tanya AIFA"
 - **Logo download card:** border 1px `--color-border`, radius 20; area pratonton bg subtle; bawah: Heading/36 + Body/16 @80% + meta 14 @60% + Button filled "Muat turun" (ikon muat turun).
 
 ### Carousel "Semakan fakta popular" (Hero carousel)
-Slide 960×480 radius 20, gap 20, slide aktif di tengah. Overlay `linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.05) 85%)`. Eyebrow Verdict/13 Smoke ("Palsu · KPDN"), tajuk Heading/48 Medium putih, teks Body/16 putih, Button canvas + ikon panah. Butang prev/next 48 bulat Ink + border Stone. Counter "04 / 05" pill Ink. Bawah: pill dots bg subtle (dot 8, aktif 48 lebar) + butang Jeda 56.
+Slide 960×480 radius 20, gap 20, slide aktif di tengah. Overlay `linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.05) 85%)`. Eyebrow Verdict/13 Smoke ("Palsu · KPDN"), tajuk Heading/48 Medium putih, teks Body/16 putih, Button canvas + ikon panah. Butang prev/next 48 bulat Ink + border Stone. Bawah: pill dots bg subtle (dot 8, aktif 48 lebar) + butang Jeda 56.
 
 ### Media sosial carousel
 Kad 220×560 radius 20 (bg gradient ikut platform), kad aktif 920 lebar + `0 24px 50px rgba(0,0,0,.45)`. Progress bar 680×4. Butang 48 bulat bg subtle.

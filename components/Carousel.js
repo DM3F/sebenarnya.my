@@ -4,7 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { heroSlides } from '@/data/content';
 import { articleHref, getArticle } from '@/lib/articles';
 import { withBase } from '@/lib/basePath';
-import { ArrowRight, Pause, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { PauseFilled, PlayFilled } from '@/components/ui/filledIcons';
 import { Button, IconButton, Verdict } from '@/components/ui';
 
 // Each slide points at an article; it links to that article and falls back to its image.
@@ -293,10 +294,6 @@ export default function Carousel() {
                       {s.cta}
                     </Button>
                   </div>
-                  {/* Slide counter, centre slide only */}
-                  <span className="hc-count" aria-hidden="true">
-                    {String(i + 1).padStart(2, '0')} / {String(COUNT).padStart(2, '0')}
-                  </span>
                 </div>
               </div>
             );
@@ -323,7 +320,7 @@ export default function Carousel() {
         <IconButton
           variant="secondary"
           size="icon-lg"
-          icon={playing ? Pause : Play}
+          icon={playing ? PauseFilled : PlayFilled}
           label={playing ? 'Jeda slaid' : 'Main slaid'}
           className="play"
           onClick={togglePlay}
