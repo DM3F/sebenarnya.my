@@ -1687,6 +1687,7 @@ input::placeholder { color: var(--color-foreground); }
   display: flex;
   flex: 1;
   flex-direction: column;
+  justify-content: space-between; /* title top, date pinned to the bottom */
   gap: var(--spacing-8);
   padding: var(--spacing-20) var(--spacing-24) var(--spacing-24);
 }
