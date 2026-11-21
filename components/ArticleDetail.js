@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import ShareButton from './ShareButton';
-import { agencyParts, formatDate, getCategoryLabel } from '@/lib/articles';
+import { agencyParts, formatDate } from '@/lib/articles';
 import { ArrowLeft } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
-import { Badge, Verdict } from '@/components/ui';
+import { Verdict } from '@/components/ui';
 
 /**
  * Article detail.
- * Back link, verdict + category pills, title, subtitle, meta + share,
+ * Back link, verdict pill, title, subtitle, meta + share,
  * 1100×550 image, then a 680px reading column: lead, divider, "Penjelasan rasmi".
  */
 export default function ArticleDetail({ article }) {
@@ -22,10 +22,7 @@ export default function ArticleDetail({ article }) {
         </Link>
 
         <div className="post-tags">
-          <Verdict type={article.status} tone="single" agency={short} />
-          {article.categories.map((id) => (
-            <Badge key={id} variant="outline" size="lg">{getCategoryLabel(id)}</Badge>
-          ))}
+          <Verdict type={article.status} tone="single" />
         </div>
 
         <h1 className="post-title">{article.title}</h1>
