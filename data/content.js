@@ -362,10 +362,10 @@ export const logoPage = {
     },
     {
       name: 'Ikon',
-      text: 'Ikon segi empat untuk ruang kecil seperti gambar profil dan ikon aplikasi.',
+      text: 'Ikon segi empat untuk ruang kecil seperti gambar profil.',
       src: withBase('/images/logo/icon-download.png'),
-      width: 134,
-      height: 134,
+      width: 116,
+      height: 116,
       meta: 'PNG · 134 × 134 px · 20 KB',
       formats: [
         { label: 'PNG', file: withBase('/images/logo/icon-download.png'), filename: 'sebenarnya-ikon.png' },

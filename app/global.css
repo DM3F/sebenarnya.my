@@ -2675,17 +2675,17 @@ input::placeholder { color: var(--color-foreground); }
 .logo-kit__head { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .logo-kit-intro { margin: var(--spacing-24) 0 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
-.logo-kit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-32); padding-top: var(--spacing-40); }
+.logo-kit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-32); padding-top: var(--spacing-72); }
 .logo-card {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-24);
+  gap: var(--spacing-64);
   min-width: 0;
-  padding: var(--spacing-32);
+  padding: var(--spacing-48);
   border-radius: var(--radius-lg);
   background: var(--color-muted);
 }
-.logo-card__text p { max-width: 445px; margin: var(--spacing-6) 0 0; font-size: var(--text-16); line-height: var(--leading-24); letter-spacing: var(--tracking-body); color: var(--color-text-secondary); }
+.logo-card__text p { margin: var(--spacing-6) 0 0; font-size: var(--text-16); line-height: var(--leading-24); letter-spacing: var(--tracking-body); color: var(--color-text-secondary); }
 .logo-card__name {
   margin: 0;
   font-weight: var(--font-weight-medium);
@@ -2694,23 +2694,31 @@ input::placeholder { color: var(--color-foreground); }
 .logo-card__text .logo-card__meta { margin-top: var(--spacing-10); font-size: var(--text-14); line-height: var(--leading-21); font-variant-numeric: tabular-nums; color: var(--color-muted-foreground); font-weight: var(--font-weight-medium); }
 /* Shown at native size or smaller, so the previews stay sharp */
 .logo-card__preview { display: grid; flex: 1; place-items: center; min-height: 200px; }
-.logo-card__preview img { display: block; max-width: 100%; height: auto; }
+.logo-card__preview img { display: block; max-width: 100%; height: auto; mix-blend-mode: multiply; } /* drops the white ground of the PNGs onto the card */
+/* Desktop: both cards share row lines, so previews and folders align whatever the text length */
+@media (min-width: 901px) {
+  .logo-kit-grid { row-gap: 0; }
+  .logo-card { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: var(--spacing-64); }
+}
 
 /* Logo terms of use (demo copy until MCMC provides the official text) */
 .logo-terms {
-  margin-top: var(--spacing-56);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--spacing-16) var(--spacing-32);
+  margin-top: var(--spacing-32);
   padding: var(--spacing-32);
   border-radius: var(--radius-card);
-  background: var(--color-border);
+  background: var(--color-muted);
   font-size: var(--text-16);
-  line-height: var(--leading-21);
-  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-24);
   color: var(--color-foreground);
 }
-.logo-terms p { margin: 0; }
-.logo-terms__title { margin: 0; font-weight: var(--font-weight-regular); color: inherit; }
-.logo-terms__list { margin: var(--spacing-20) 0; padding: 0; list-style-position: inside; }
-.logo-terms__note { color: inherit; }
+.logo-terms__body { max-width: 72ch; }
+.logo-terms__body p { margin: 0; text-wrap: pretty; }
+.logo-terms__title { margin: 0; letter-spacing: var(--tracking-display); color: inherit; }
+.logo-terms__list { display: grid; gap: var(--spacing-8); margin: var(--spacing-16) 0; padding-left: var(--spacing-20); }
+.logo-terms__note { color: var(--color-text-secondary); }
 
 /* ── Format folder (components/FormatFolder.js) ────────────────────────────
    Drawn on a 391 × 286 stage (the canvas card) and scaled to the card width by a unitless ratio
@@ -2863,8 +2871,8 @@ input::placeholder { color: var(--color-foreground); }
   .logo-kit-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .logo-card { padding: var(--spacing-20); }
-  .logo-terms { padding: var(--spacing-20); }
+  .logo-card { gap: var(--spacing-40); padding: var(--spacing-20); }
+  .logo-terms { grid-template-columns: 1fr; padding: var(--spacing-20); }
 }
 
 /* Line reveal masks (ScrollMotion › SplitText): extend each mask past the line box so
