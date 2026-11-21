@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { Button } from '@/components/ui';
 import { viewershipStats as stats } from '@/data/content';
+import { withBase } from '@/lib/basePath';
 
 const DURATION = 2000; // count-up length in ms
 
@@ -53,33 +55,38 @@ export default function Viewership() {
     <section className="viewership container" aria-labelledby="viewership-lead">
       <div className="viewership-inner">
         <div className="viewership-side">
-          <p className="viewership-kicker">
-            Pusat semakan fakta
-            <br />
-            MCMC sejak 2017
-          </p>
+          <div className="viewership-intro">
+            <p className="viewership-kicker">
+              Pusat semakan fakta
+              <br />
+              MCMC sejak 2017
+            </p>
+            <p className="viewership-lead" id="viewership-lead">
+              Sebenarnya.my membantu rakyat Malaysia menyemak berita tular sebelum dikongsi. Setiap semakan merujuk
+              kenyataan rasmi agensi kerajaan, supaya maklumat yang sampai kepada anda tepat, jelas dan boleh dipercayai.
+            </p>
+          </div>
+          <Button href={withBase('/about-us/')}>Semak Tentang Kami</Button>
         </div>
 
-        <div className="viewership-main">
-          <p className="viewership-lead" id="viewership-lead">
-            Sebenarnya.my membantu rakyat Malaysia menyemak berita tular sebelum dikongsi. Setiap semakan merujuk
-            kenyataan rasmi agensi kerajaan, supaya maklumat yang sampai kepada anda tepat, jelas dan boleh dipercayai.
-          </p>
-
-          <dl className="viewership-stats">
-            {stats.map((s, i) => (
-              <div key={s.text}>
-                <dt>
-                  <span className="count" data-i={i} ref={(el) => (countRefs.current[i] = el)}>
-                    {format(s.value, s.sep)}
-                  </span>
-                  {s.unit && <small> {s.unit}</small>}
-                </dt>
-                <dd>{s.text}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <dl className="viewership-stats">
+          {stats.map((s, i) => (
+            <div
+              key={s.text}
+              className={s.image ? 'viewership-stat viewership-stat--image' : 'viewership-stat'}
+              style={s.image ? { backgroundImage: `url(${withBase(s.image)})` } : undefined}
+            >
+              <dt>
+                <span className="count" data-i={i} ref={(el) => (countRefs.current[i] = el)}>
+                  {format(s.value, s.sep)}
+                </span>
+                {s.suffix}
+                {s.unit && <small> {s.unit}</small>}
+              </dt>
+              <dd>{s.text}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );
