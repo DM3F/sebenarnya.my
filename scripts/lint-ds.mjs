@@ -61,6 +61,16 @@ const rules = [
     test: (l, p, file) => !isIconWrapper(p) && file.lucide.size > 0 && [...file.lucide].some((n) => new RegExp(`<${n}[\\s/>]`).test(l)),
   },
   {
+    id: 'ui-raw-length',
+    why: 'components/ui layer (app/ui.css) takes no raw lengths; use a semantic token (--size-*, --space-*, --radius-*).',
+    test: (l, p) => /(^|\/)app\/ui\.css$/.test(p) && /(^|[^\w-])\d*\.?\d+px\b/.test(code(l)),
+  },
+  {
+    id: 'ui-type-primitive',
+    why: 'components/ui layer uses type roles (--text-label, --text-body…), not raw scale steps (--text-16, --leading-24).',
+    test: (l, p) => /(^|\/)app\/ui\.css$/.test(p) && /var\(--(text|leading)-\d+\)/.test(code(l)),
+  },
+  {
     id: 'rem',
     why: 'rem breaks inside the extension and with the 62.5% root; use px tokens.',
     test: (l, p) => isCss(p) && /\d(\.\d+)?rem\b/.test(code(l)),

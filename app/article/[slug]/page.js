@@ -30,7 +30,7 @@ export default async function ArticlePage({ params }) {
     <div className="site">
       <Header />
 
-      <main className="main">
+      <main className="main" id="main" tabIndex={-1}>
         <ArticleDetail article={article} />
       </main>
 

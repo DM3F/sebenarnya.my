@@ -3,7 +3,7 @@ import ShareButton from './ShareButton';
 import { agencyParts, formatDate, getCategoryLabel } from '@/lib/articles';
 import { ArrowLeft } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
-import Verdict from '@/components/ui/Verdict';
+import { Badge, Verdict } from '@/components/ui';
 
 /**
  * Article detail (Paper › Artwork › detail artikel page).
@@ -24,7 +24,7 @@ export default function ArticleDetail({ article }) {
         <div className="post-tags">
           <Verdict type={article.status} tone="single" agency={short} />
           {article.categories.map((id) => (
-            <span key={id} className="post-category">{getCategoryLabel(id)}</span>
+            <Badge key={id} variant="outline" size="lg">{getCategoryLabel(id)}</Badge>
           ))}
         </div>
 

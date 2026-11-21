@@ -1,21 +1,49 @@
+import { isValidElement } from 'react';
+import Icon from './Icon';
+
+// Accept a Lucide component (preferred) or a ready element (<Icon icon={X} />)
+const renderIcon = (icon, className) =>
+  isValidElement(icon) ? icon : <Icon icon={icon} className={className} />;
+
 /**
- * Button — pill control. Variants: filled (default), outline, ghost.
- * Pass `href` to render a plain <a> that looks like a button (no framework
- * dependency, so it also works in the CMS and the browser extension).
+ * Button — pill control, API modelled on shadcn/ui.
+ *
+ *   variant: filled (default) · outline · secondary · ghost · media · link
+ *            `media` = canvas pill for photos and dark panels.
+ *   size:    default (44) · sm (36, 44px hit area) · icon (44) · icon-sm (36) · icon-lg (48)
+ *   icon:    Lucide component placed before the label (e.g. Download, Share)
+ *   iconEnd: Lucide component after the label (e.g. ArrowRight); nudges on hover
+ *   href:    renders an <a>. Pass `as={Link}` to use next/link.
+ *
+ * Icon-only buttons (size icon*) must get an `aria-label`.
  */
-export default function Button({ variant = 'filled', icon, href, className = '', children, ...props }) {
-  const cls = `ui-btn ui-btn--${variant} ${className}`.trim();
+export default function Button({
+  variant = 'filled',
+  size = 'default',
+  icon,
+  iconEnd,
+  href,
+  as,
+  className = '',
+  children,
+  ...props
+}) {
+  const cls = ['ui-btn', `ui-btn--${variant}`, size !== 'default' && `ui-btn--${size}`, className]
+    .filter(Boolean)
+    .join(' ');
   const content = (
     <>
-      {icon}
+      {icon && renderIcon(icon)}
       {children}
+      {iconEnd && renderIcon(iconEnd, 'ui-btn__icon-end')}
     </>
   );
   if (href) {
+    const Tag = as ?? 'a';
     return (
-      <a href={href} className={cls} {...props}>
+      <Tag href={href} className={cls} {...props}>
         {content}
-      </a>
+      </Tag>
     );
   }
   return (
@@ -23,6 +51,11 @@ export default function Button({ variant = 'filled', icon, href, className = '',
       {content}
     </button>
   );
+}
+
+/** IconButton — Button with only an icon. `label` becomes the accessible name. */
+export function IconButton({ icon, label, size = 'icon', variant = 'outline', ...props }) {
+  return <Button variant={variant} size={size} icon={icon} aria-label={label} {...props} />;
 }
 
 export function ButtonGroup({ className = '', children }) {

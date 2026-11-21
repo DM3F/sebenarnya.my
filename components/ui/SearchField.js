@@ -11,6 +11,8 @@ import Icon from './Icon';
  * `onSubmit(query)` receives the trimmed query (default submit is prevented).
  * `error` shows a message under the field and marks the input invalid.
  * `label` is shown above the field; with `hideLabel` it is kept for screen readers.
+ * `size="sm"` is the 44px toolbar version; `buttonLabel={null}` drops the submit button
+ * (live filtering), Enter still submits.
  */
 export default function SearchField({
   label = 'Cari dakwaan',
@@ -24,6 +26,7 @@ export default function SearchField({
   error,
   action,
   onSubmit,
+  size = 'default',
   className = '',
 }) {
   const id = useId();
@@ -38,7 +41,7 @@ export default function SearchField({
       <label htmlFor={id} className={hideLabel ? 'ui-sr-only' : 'ui-field__label'}>
         {label}
       </label>
-      <div className="ui-search" data-invalid={error ? '' : undefined}>
+      <div className={`ui-search${size === 'sm' ? ' ui-search--sm' : ''}`} data-invalid={error ? '' : undefined}>
         <Icon icon={Search} size={18} className="ui-search__icon" />
         <input
           id={id}
@@ -53,7 +56,7 @@ export default function SearchField({
           className="ui-search__input"
           autoComplete="off"
         />
-        <Button type="submit">{buttonLabel}</Button>
+        {buttonLabel && <Button type="submit">{buttonLabel}</Button>}
       </div>
       {error && (
         <p id={errorId} className="ui-field__error" role="alert">

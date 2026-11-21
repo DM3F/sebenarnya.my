@@ -1,16 +1,27 @@
-/** Chip — small pill for suggestions/filters. Pass `href` for a link. */
-export default function Chip({ href, className = '', children, ...props }) {
-  const cls = `ui-chip ${className}`.trim();
+/**
+ * Chip — taupe pill for suggestions and filters.
+ *   href:    renders a link
+ *   pressed: makes it a toggle (aria-pressed); selected = ink fill
+ *   dot:     verdict key (palsu | waspada | makluman | benar) for a filter dot
+ */
+export default function Chip({ href, pressed, dot, className = '', children, ...props }) {
+  const cls = ['ui-chip', dot && `ui-chip--${dot === 'penjelasan' ? 'benar' : dot}`, className].filter(Boolean).join(' ');
+  const content = (
+    <>
+      {dot && <span className="ui-chip__dot" aria-hidden="true" />}
+      {children}
+    </>
+  );
   if (href) {
     return (
       <a href={href} className={cls} {...props}>
-        {children}
+        {content}
       </a>
     );
   }
   return (
-    <button type="button" className={cls} {...props}>
-      {children}
+    <button type="button" className={cls} aria-pressed={pressed} {...props}>
+      {content}
     </button>
   );
 }

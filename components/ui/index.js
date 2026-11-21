@@ -1,8 +1,10 @@
-export { default as Button, ButtonGroup } from './Button';
+export { default as Button, ButtonGroup, IconButton } from './Button';
 export { default as Chip, ChipRow } from './Chip';
+export { default as Badge } from './Badge';
 export { default as Tabs } from './Tabs';
 export { default as Verdict } from './Verdict';
 export { default as SearchField } from './SearchField';
+export { Field, Input, Textarea, Select } from './Field';
 export { default as NavLink } from './NavLink';
 export { default as DropdownMenu } from './DropdownMenu';
 export { default as Icon } from './Icon';

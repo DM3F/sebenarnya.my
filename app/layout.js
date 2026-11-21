@@ -42,6 +42,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ms" className={`${manrope.variable}`}>
       <body>
+        {/* First focusable element: jump past the header (WCAG 2.4.1) */}
+        <a href="#main" className="ui-btn ui-btn--filled ui-skip-link">
+          Langkau ke kandungan
+        </a>
         {children}
         {/* Page transition between routes (animation in global.css) */}
         <PageTransition />

@@ -1,20 +1,26 @@
 /* ==========================================================================
    Sebenarnya.my — design tokens
    ONE naming set shared by Paper, this site, the CMS dashboard and the
-   browser extension. Names follow the Paper file (Tailwind v4 namespaces +
-   shadcn-style semantic colours), so this block can also be pasted into a
-   Tailwind `@theme`. Values in px.
+   browser extension. Names follow Tailwind v4 namespaces + shadcn-style
+   semantic colours, so this block can also be pasted into a Tailwind `@theme`.
 
-   Use the SEMANTIC tokens in components (--color-background, --color-primary,
-   --color-muted-foreground, --color-verdict-*…), never the palette ones
-   (--color-grey-*, --color-red…) or raw hex.
+   Three tiers — change a value in exactly one place:
+     1. PRIMITIVE  raw palette and scales (--color-grey-95, --text-16,
+                   --spacing-44). Never used by components/ui.
+     2. SEMANTIC   roles (--color-primary, --text-label, --size-control,
+                   --radius-control, --focus-ring-*). Components use these.
+     3. COMPONENT  per-component knobs defined in app/ui.css (--btn-bg,
+                   --chip-height…). Variants only reassign these.
+   Rules for agents and contributors: docs/design-system-rules.md
    ========================================================================== */
 
 :root {
   /* ── Fonts (loaded in app/layout.js via next/font) ───────────────────── */
   --font-sans: var(--font-manrope), 'Manrope', system-ui, sans-serif; /* the only family: content, headings, UI */
 
-  /* ── Palette (primitives — do not use in components) ──────────────────── */
+  /* ══ 1. PRIMITIVE ═══════════════════════════════════════════════════════ */
+
+  /* ── Palette (do not use in components) ───────────────────────────────── */
   --color-white: #ffffff;
   --color-grey-99: #fdfcfc;   /* eggshell */
   --color-grey-95: #f5f3f1;   /* warm taupe */
@@ -35,7 +41,7 @@
   --color-green: #1fa463;
   --color-green-dark: #137a49;
 
-  /* ── Semantic colours (use these) ─────────────────────────────────────── */
+  /* ══ 2. SEMANTIC — colour ═══════════════════════════════════════════════ */
   --color-background: var(--color-grey-99);        /* page canvas, controls */
   --color-foreground: var(--color-black);          /* primary text */
   --color-card: var(--color-white);                /* raised surface */
@@ -57,6 +63,14 @@
   --color-brand-strong: var(--color-red-dark);
   --color-brand-spark: var(--color-blue);          /* decorative spark */
   --color-hairline: rgba(0, 0, 0, .05);
+  --color-input: var(--color-border-strong);       /* field + outline-button edge (3:1) */
+  --color-secondary: var(--color-muted);           /* secondary button / chip fill */
+  --color-secondary-hover: var(--color-muted-strong);
+  --color-secondary-foreground: var(--color-foreground);
+  --color-accent: var(--color-muted);              /* hover surface for quiet controls */
+  --color-disabled: var(--color-muted-strong);
+  --color-disabled-foreground: var(--color-muted-foreground);
+  --color-surface-overlay: color-mix(in srgb, var(--color-card) 90%, transparent); /* pills over photos */
 
   /* Verdict: word colour (tone="single") + dot colour */
   --color-verdict-palsu: var(--color-red-dark);
@@ -178,4 +192,114 @@
   --breakpoint-type: 600px;   /* mobile type scale below this */
   --breakpoint-stack: 900px;
   --breakpoint-nav: 1100px;   /* compact header below this */
+
+  /* ══ 2. SEMANTIC — typography roles ═════════════════════════════════════
+     Tailwind v4 shape: --text-<role>, --text-<role>--line-height, …
+     ───────────────────────────────────────────────────────────────────── */
+  --text-display: var(--text-48);
+  --text-display--line-height: var(--leading-52);
+  --text-display--font-weight: var(--font-weight-display);
+  --text-display--letter-spacing: var(--tracking-display);
+
+  --text-heading-lg: var(--text-36);            /* section titles */
+  --text-heading-lg--line-height: var(--leading-42);
+  --text-heading-lg--font-weight: var(--font-weight-medium);
+  --text-heading-lg--letter-spacing: var(--tracking-display);
+
+  --text-heading: var(--text-24);               /* panel and card titles */
+  --text-heading--line-height: var(--leading-32);
+  --text-heading--font-weight: var(--font-weight-medium);
+  --text-heading--letter-spacing: var(--tracking-tight);
+
+  --text-title: var(--text-18);                 /* compact card titles, subheadings */
+  --text-title--line-height: var(--leading-28);
+  --text-title--font-weight: var(--font-weight-medium);
+
+  --text-body-lg: var(--text-18);
+  --text-body-lg--line-height: var(--leading-28);
+  --text-body: var(--text-16);
+  --text-body--line-height: var(--leading-24);
+  --text-body--letter-spacing: var(--tracking-body);
+  --text-body-sm: var(--text-14);
+  --text-body-sm--line-height: var(--leading-21);
+
+  --text-label: var(--text-16);                 /* buttons, chips, tabs, nav */
+  --text-label--line-height: var(--leading-24);
+  --text-label--font-weight: var(--font-weight-medium);
+  --text-label-sm: var(--text-14);              /* form labels */
+  --text-label-sm--line-height: var(--leading-21);
+  --text-label-sm--font-weight: var(--font-weight-medium);
+
+  --text-badge: var(--text-13);
+  --text-badge--line-height: var(--leading-18);
+  --text-badge--font-weight: var(--font-weight-medium);
+
+  --text-verdict: var(--text-13);               /* UPPERCASE verdict word */
+  --text-verdict--line-height: var(--leading-18);
+  --text-verdict--font-weight: var(--font-weight-semibold);
+  --text-verdict--letter-spacing: var(--tracking-label);
+
+  --text-caption: var(--text-12);               /* dates, credits */
+  --text-caption--line-height: var(--leading-16);
+  --text-caption--font-weight: var(--font-weight-medium);
+
+  --text-stat: var(--text-40);
+  --text-stat--line-height: var(--leading-44);
+  --text-stat--font-weight: var(--font-weight-display);
+
+  /* ══ 2. SEMANTIC — sizes ════════════════════════════════════════════════ */
+  --size-control-sm: 36px;                      /* dense rows; hit area stays 44 */
+  --size-control: var(--spacing-44);            /* buttons, chips, tabs, fields */
+  --size-control-lg: var(--spacing-48);         /* carousel controls */
+  --size-control-xl: var(--spacing-56);         /* primary search */
+  --size-hit-area: var(--spacing-44);           /* minimum touch target */
+  --size-badge: 28px;
+  --size-icon-sm: 14px;
+  --size-icon: 16px;
+  --size-icon-lg: 18px;
+  --size-icon-xl: 20px;
+  --size-dot: 8px;                              /* verdict / status dot */
+  --size-textarea: 120px;
+  --size-menu: 220px;                           /* dropdown min width */
+
+  /* ══ 2. SEMANTIC — spacing roles ════════════════════════════════════════ */
+  --space-control-x: var(--spacing-20);         /* button side padding */
+  --space-control-x-sm: var(--spacing-16);
+  --space-field-x: var(--spacing-16);           /* input / chip side padding */
+  --space-badge-x: var(--spacing-12);
+  --space-badge-y: var(--spacing-4);
+  --space-inline: var(--spacing-8);             /* icon↔label, paired controls */
+  --space-inline-tight: var(--spacing-6);
+  --space-stack: var(--spacing-8);              /* label↔field, field↔hint */
+  --space-segment: var(--spacing-2);            /* inside segmented controls */
+
+  /* ══ 2. SEMANTIC — shape, borders, focus, effects ═══════════════════════ */
+  --radius-control: var(--radius-full);         /* every button, chip, tab, search */
+  --radius-field: var(--radius-input);          /* rectangular inputs */
+  --radius-menu: var(--radius-md);
+  --radius-menu-item: var(--radius-input);
+  --radius-media: var(--radius-md);             /* thumbnails, inner media */
+
+  --border-width: 1px;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-ring);
+
+  --blur-overlay: 10px;                         /* pills over photos */
+  --press-scale: .97;                           /* :active feedback */
+  --transition-colors:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+/* Mobile type steps (docs/design-system-handoff.md §2.3) */
+@media (max-width: 600px) {
+  :root {
+    --text-display: var(--text-38);
+    --text-display--line-height: 42px;
+    --text-heading-lg: var(--text-30);
+    --text-heading-lg--line-height: var(--leading-36);
+  }
 }
