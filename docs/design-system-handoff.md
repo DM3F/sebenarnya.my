@@ -431,7 +431,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - **Tajuk seksyen:** satu peranan untuk semua halaman (`.latest-checks__title`, `.activity__title`, `.about-title`, `.about-fn-title`, `.logo-kit-title`): 36/42, weight 500, rata kiri; telefon 28/34. Display 400 hanya untuk hero. Sub-tajuk dalam seksyen (`.about-subtitle`) 24/32.
 - **Outline tajuk:** carousel hero ada `<h2 class="sr-only">Semakan fakta pilihan</h2>` supaya slaid H3 tidak melangkau tahap.
 - **Semibold (600)** hanya untuk label verdict (dan wordmark logo). Eyebrow, badge, heading footer, label AIFA, tajuk keputusan AIFA, tajuk borang: 500. `b, strong`: 500 (deklarasi rosak `…semibold)er` dibaiki).
-- **Satu butang filled per skrin:** muat turun Logo/Ikon kini `variant="outline"`.
+- **Satu butang filled per skrin:** muat turun Logo/Ikon kini `variant="outline"`. Butang header "Salur Kepada Kami" jadi outline di Utama sahaja (hero "Semak" ialah aksi utama di sana); halaman lain kekal filled.
 - **Merah jenama** tidak lagi dipakai sebagai teks (eyebrow WSIS → `--color-muted-foreground-inverse`). Tanya AIFA kekal merah (keputusan #4 terbuka) tetapi tanpa glow merah dan tanpa lompat: `--shadow-float`, hover sedikit gelap, tekan scale .97.
 - **Poster WSIS** (`img[src*="wsis"]`) guna `object-fit: contain` atas `--color-card` supaya teks poster tidak terpotong.
 - **Kad foto "275 juta+":** lapisan 20% + scrim kecerunan hanya di separuh atas (60% → 45% → 0 pada 80%). Diukur pada piksel sebenar: kapsyen ≥ 4.75:1 (desktop) / 5.32:1 (telefon) pada titik paling terang.

@@ -67,7 +67,12 @@ export default function Header() {
         <div className="header-actions">
           {/* Language selector: visual only for now, no translation wired up */}
           <LanguageMenu label="Bahasa" groupLabel="Bahasa" items={languages} value={lang} onChange={setLang} />
-          <Button href={withBase(claimLink.href)} className="header-claim">
+          {/* Home's hero already has the one filled action ("Semak"), so the claim button steps back to outline there */}
+          <Button
+            href={withBase(claimLink.href)}
+            variant={trim(pathname) === '/' ? 'outline' : 'filled'}
+            className="header-claim"
+          >
             {claimLink.label}
           </Button>
           <button
