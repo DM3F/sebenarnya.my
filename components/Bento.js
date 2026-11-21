@@ -23,7 +23,7 @@ export default function Bento() {
             Malaysia yang melindungi <strong>33 juta rakyat</strong> bersama <strong>lebih 20 agensi persekutuan</strong>.
           </p>
         </div>
-        <Button variant="media" href={withBase('/about-us/#berita-galeri')} iconEnd={ArrowRight} className="wsis-banner__cta">
+        <Button href={withBase('/about-us/#berita-galeri')} iconEnd={ArrowRight} className="wsis-banner__cta">
           Ketahui lebih lanjut
         </Button>
       </div>

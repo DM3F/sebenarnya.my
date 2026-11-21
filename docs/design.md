@@ -62,18 +62,19 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 
 ## 3. Typography
 
-**Satu keluarga font: Manrope.** Satu suara dari tajuk hero hingga label butang dan angka. Kontras dicipta melalui **saiz dan warna**, bukan dengan menukar font atau menebalkan huruf.
+**Satu keluarga font: Inter** (pengganti Waldenburg/Inter dalam rujukan asal ElevenLabs). Satu suara dari tajuk hero hingga label butang dan angka. Kontras dicipta melalui **saiz dan warna**, bukan dengan menukar font atau menebalkan huruf.
 
-> Nota: Inter dan `--font-ui` sudah dibuang dari kod (21 Nov 2026). Manrope satu-satunya keluarga.
+> Nota (22 Nov 2026): Manrope diganti Inter, dan berat huruf dikembalikan ke design system asal ElevenLabs: "the headline speaks softly".
 
 | Peranan | Saiz / line-height | Weight | Nota |
 |---|---|---|---|
-| Display | 48–56 / 1.1 | **400** | Tajuk hero. Tracking −0.02em. Besar tetapi ringan — rasa "editorial". |
-| Heading | 24–36 / 1.2 | 500 | Tajuk seksyen dan kad. |
-| Angka besar (statistik) | 40–72 / 1.0 | **400** | Weight normal, bukan bold. Unit (juta+, ribu) separuh saiz, sejajar baseline. Angka tabular. |
+| Display | 48 / 52 | **300** | Tajuk hero, 2 baris di kiri; penerangan di kanan. Tracking −0.02em. |
+| Heading | 28–36 / 1.17 | **300** | Tajuk seksyen dan closing band (32/36). |
+| Tajuk kad / panel | 18–24 | 400 | Tajuk kad artikel, panel, fungsi. |
+| Angka besar (statistik) | 40–72 / 1.0 | **300** | Ringan, bukan bold. Unit (juta+, ribu) separuh saiz, sejajar baseline. Angka tabular. |
 | Body | 16–18 / 1.55 | 400 | Graphite. Lebar baris maks ±68 aksara. |
-| Label (butang, nav, chip) | 16 / 24 | 500 | Sentence case. |
-| Eyebrow / meta | 13–14 / 1.4 | 500 | Smoke. Verdict: 13 semibold UPPERCASE, tracking +0.04em. |
+| Label (butang, chip) | 16 / 24 | **400** | Sentence case. Nav header 14 / 20, 400. |
+| Eyebrow / meta / link footer | 13–14 | 500 | Smoke, sentence case. Verdict: 13 semibold UPPERCASE, tracking +0.04em. |
 
 **Peraturan rasa:**
 - Tiada weight 700+ di mana-mana. Penekanan = saiz, warna tinta vs smoke, atau ruang kosong.
@@ -98,7 +99,7 @@ Bahasa bentuk: **pill untuk apa yang ditekan, kotak membulat lembut untuk apa ya
 - Monokrom secara lalai: garis/bar tinta atau graphite atas kanvas, grid garis rambut `#EBE8E4`, label 13–14 smoke.
 - Satu siri sahaja boleh berwarna — dan warnanya mesti bermakna (cth. verdict). Selebihnya kelabu.
 - Tiada 3D, tiada gradient isian, tiada legenda berwarna-warni. Label terus pada garis/bar (direct labelling) lebih baik daripada legenda.
-- Angka dalam chart guna angka tabular Manrope, weight 400.
+- Angka dalam chart guna angka tabular Inter, weight 400.
 
 ### Meter (progress / skor / kiraan)
 - Trek: pill nipis (4–8px) `#EBE8E4`; isian: tinta `#000`.
@@ -151,7 +152,7 @@ Skala 1–3 (1 = rendah, 3 = tinggi).
 | Do | Don't |
 |---|---|
 | Biarkan foto dan verdict jadi satu-satunya warna | Butang merah, latar seksyen berwarna, gradient pada kad |
-| Tajuk besar weight 400–500 | Bold 700 untuk "menarik perhatian" |
+| Tajuk besar weight 300 | Bold 700 untuk "menarik perhatian" |
 | Angka statistik besar dan ringan | Angka tebal dalam kotak berwarna |
 | Pill untuk semua aksi | Butang segi empat tajam bercampur pill |
 | Elevation melalui nada (eggshell → taupe → stone) | Bayang berlapis pada setiap kad |
@@ -167,9 +168,9 @@ Keputusan (21 Nov 2026):
 
 | # | Perkara | Keputusan | Status implementasi |
 |---|---|---|---|
-| 1 | Keluarga font | **Manrope sahaja.** Buang Inter / `--font-ui`. | ✅ Siap: kod, handoff. |
-| 2 | Display weight | **400** untuk tajuk display (hero, tajuk besar). Heading kekal 500. | ✅ Siap: kod, handoff (`--font-weight-display`). |
-| 3 | Angka besar | **400** untuk semua angka statistik. | ✅ Siap: kod, handoff (angka statistik guna `--font-weight-display`; kapsyen kekal Light). |
+| 1 | Keluarga font | **Inter sahaja** (22 Nov, menggantikan Manrope). | ✅ Siap: kod. |
+| 2 | Berat tajuk | **300** untuk display dan heading; 400 untuk tajuk kad, butang, nav (22 Nov). | ✅ Siap: kod (`--font-weight-display/heading/title/label/eyebrow`). |
+| 3 | Angka besar | **300** untuk semua angka statistik. | ✅ Siap: kod (`--font-weight-display`). |
 | 4 | Tanya AIFA | **Biarkan merah buat masa ini** (belum ada idea). | Kekal terbuka di `plan.md`. |
 | 5 | Chart & meter | Garis panduan §4 jadi titik mula bila diperlukan (cth. dashboard CMS). | Belum ada dalam sistem. |
 

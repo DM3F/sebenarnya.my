@@ -1,18 +1,19 @@
 import './tokens.css';
 import './global.css';
 import './ui.css';
-import { Manrope } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import Chatbot from '@/components/Chatbot';
 import PageTransition from '@/components/PageTransition';
 import ClaimForm from '@/components/ClaimForm';
 import { withBase } from '@/lib/basePath';
 
-// Manrope (variable font, 200–800) is the only family: content, headings and UI controls.
-// tokens.css reads it through var(--font-manrope).
-const manrope = Manrope({
+// Inter (variable font) is the only family: content, headings and UI controls.
+// It stands in for the ElevenLabs reference's Waldenburg/Inter pairing. tokens.css reads it
+// through var(--font-inter).
+const inter = Inter({
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
-  variable: '--font-manrope',
+  variable: '--font-inter',
 });
 
 
@@ -40,7 +41,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ms" className={`${manrope.variable}`}>
+    <html lang="ms" className={`${inter.variable}`}>
       <body>
         {/* First focusable element: jump past the header (WCAG 2.4.1) */}
         <a href="#main" className="ui-btn ui-btn--filled ui-skip-link">

@@ -10,7 +10,8 @@ and these docs. The Paper file is no longer a reference — its canvas does not
 match the current design, so never copy values or layouts from it.
 
 Stack: Next.js 16 (App Router, static export), React 19, JavaScript, plain CSS
-(no Tailwind), Lucide icons, Manrope only.
+(no Tailwind), Lucide icons, Inter only. Visual base: the ElevenLabs "living
+instruments on cream" reference (light headings, quiet chrome, color inside media).
 
 ---
 
@@ -39,6 +40,7 @@ Decision guide:
 | Space roles | `--space-control-x(-sm) · field-x · badge-x/-y · inline(-tight) · stack · segment` + the 4px scale `--spacing-*` for layout |
 | Shape | `--radius-control (pill) · field (8) · menu · menu-item · media · card · lg` |
 | Focus & effects | `--border-width · focus-ring-width · focus-ring-offset · focus-ring-color · blur-overlay · press-scale · transition-colors · shadow-*` |
+| Weight roles | `--font-weight-display (300) · heading (300) · title (400) · label (400) · eyebrow (500)`; `--font-weight-semibold` (600) only for verdict words and `<strong>` |
 | Motion | `--duration-fast/base/slow · ease-out/in-out/emphasized` |
 
 Mobile type steps (Display 38/42, Heading-lg 30/36) are applied once, inside
@@ -52,7 +54,7 @@ tokens.css, by reassigning the role tokens under `@media (max-width: 600px)`.
 4. Icons: Lucide only, always through `components/ui/Icon.js`.
 5. No `rem` (the root is 62.5% and the CSS is reused in the extension).
 6. Font weights only from `--font-weight-*`; nothing above 600.
-7. Manrope only (`--font-sans`).
+7. Inter only (`--font-sans`).
 8. No `transition: all`.
 
 Run it before every commit; it exits 1 on failure.
