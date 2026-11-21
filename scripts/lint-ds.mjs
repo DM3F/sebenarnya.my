@@ -82,6 +82,12 @@ const rules = [
     test: (l, p) => !isTokens(p) && [...code(l).matchAll(/var\(--(text-[a-z][\w-]*)\)/g)].some((m) => !TOKENS.has(m[1])),
   },
   {
+    id: 'letter-spacing',
+    why: 'Tracking is 0 (Manrope as drawn). Only UPPERCASE labels take var(--tracking-label) or a role\'s --letter-spacing.',
+    test: (l, p) => !isTokens(p) && isCss(p) && /letter-spacing:/.test(code(l))
+      && !/letter-spacing:\s*(0|normal|inherit|var\(--tracking-label\)|var\(--text-[\w-]+--letter-spacing\))\s*[;}]/.test(code(l)),
+  },
+  {
     id: 'raw-font-size',
     why: 'Raw font-size; use a type role (--text-*). Percent/em for relative tweaks are fine.',
     test: (l, p) => !isTokens(p) && /font-size:\s*(\d*\.?\d+px|clamp\(|calc\()/.test(code(l)),

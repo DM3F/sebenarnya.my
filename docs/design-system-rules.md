@@ -45,22 +45,27 @@ Decision guide:
 
 | Role | Size (375 → 1280px) | Line-height | Use |
 |---|---|---|---|
-| `display` | 32 → 48 fluid | 1.1 | page H1 only |
+| `display` | 32 → 48 fluid | 1.2 | page H1 only |
 | `heading-lg` | 28 → 36 fluid | 1.2 | section H2 |
-| `heading` | 20 → 24 fluid | 1.3 | panel / feature H3 |
-| `title` | 18 → 20 fluid | 1.3 | card titles |
-| `intro` | 20 → 24 fluid | 1.3 | one big statement **per page, max** (Figma Body/24 Large) |
-| `article` | 16 → 18 fluid | 1.55 | article reading column (`/article/[slug]`) **only** |
+| `heading` | 20 → 24 fluid | 1.2 | panel / feature H3 |
+| `title` | 18 → 20 fluid | 1.2 | card titles |
+| `intro` | 20 → 24 fluid | 1.2 | one big statement **per page, max** (Figma Body/24 Large) |
+| `article` | 16 → 18 fluid | 1.5 | article reading column (`/article/[slug]`) **only** |
 | `body` | 16 | 1.5 | **every other paragraph**: leads, summaries, footer, UI text |
 | `body-sm` | 14 | 1.5 | meta, support text |
 | `label` / `label-sm` | 16 / 14, medium | 1.5 | buttons, nav, form labels |
-| `eyebrow` / `badge` / `verdict` | 13 | 1.4 | eyebrows, badges, verdict word |
-| `caption` | 12 | 1.4 | dates, credits |
-| `stat` | 36 → 48 fluid | 1.1 | statistic numbers |
+| `eyebrow` / `badge` / `verdict` | 13 | 1.5 | eyebrows, badges, verdict word |
+| `caption` | 12 | 1.5 | dates, credits |
+| `stat` | 36 → 48 fluid | 1.2 | statistic numbers |
 
 Fluid roles use `clamp()` inside tokens.css, so there are **no type media
 queries**: components write `font-size: var(--text-heading)` and get the right
 size on every screen. Body, label and small roles are fixed on purpose.
+
+**Line-height:** only two — `1.2` for every heading, title, intro and stat;
+`1.5` for everything else.
+**Tracking:** `0` everywhere (Manrope is spaced well as drawn). Only UPPERCASE
+labels (eyebrow, verdict) use `--tracking-label` (.04em). Lint enforces this.
 
 **Paragraph rule in one sentence:** all text is 16; the exceptions are the
 article body (16 → 18), meta (14) and one intro statement per page. A lead

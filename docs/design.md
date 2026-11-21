@@ -68,7 +68,7 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 
 | Peranan | Desktop / ≤1024 / ≤600 | Weight | Dipakai untuk |
 |---|---|---|---|
-| Display | 48/52 · 40/44 · 32/38 | **400** | H1 halaman sahaja (hero, detail artikel, Tentang Kami). **48px ialah saiz paling besar di laman.** Tracking −0.02em. |
+| Display | 48/52 · 40/44 · 32/38 | **400** | H1 halaman sahaja (hero, detail artikel, Tentang Kami). **48px ialah saiz paling besar di laman.** |
 | Section | 36/42 · 32/38 · 28/34 | 500 | H2 seksyen. Tajuk slaid carousel dan banner WSIS guna saiz ini dengan weight 400 supaya tidak mengatasi H2. |
 | Heading | 24/32 · 22/30 · 20/28 | 500 | Tajuk ciri / sub-tajuk dalam seksyen, tajuk kad besar, tajuk pop-up. |
 | Title | 20/26 · 20/26 · 18/24 | 500 | Tajuk kad. |
@@ -78,9 +78,11 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 | Body | 16/24 | 400 | Teks badan (`body` = 16). Graphite. Lebar baris maks ±68 aksara. |
 | Label (butang, nav, chip) | 16/24 | 500 | Sentence case. |
 | Small / meta | 14/20 | 400–500 | Tarikh, meta, label kecil. Smoke. |
-| Eyebrow | 13/18 | 500 (verdict 600) | UPPERCASE, tracking +0.04em: verdict, eyebrow, badge, heading footer. |
+| Eyebrow | 13/18 | 500 (verdict 600) | UPPERCASE, tracking +0.04em (satu-satunya tracking bukan 0): verdict, eyebrow, heading footer. |
 
 Token peranan ada dalam `app/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (body artikel sahaja, 16 → 18), `--text-body` (16, termasuk Lead), `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi tiga lajur saiz di atas jadi satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
+
+**Line-height & tracking:** semua tajuk 1.2, semua teks lain 1.5. Tracking 0 di mana-mana (Manrope sudah seimbang); kecuali label UPPERCASE kecil (+0.04em).
 
 **Peraturan rasa:**
 - Tiada weight 700+ di mana-mana. Penekanan = saiz, warna tinta vs smoke, atau ruang kosong.

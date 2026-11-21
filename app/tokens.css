@@ -105,19 +105,14 @@
   --text-36: 36px;
   --text-48: 48px;
 
-  /* ── Line height — unitless, so it scales with fluid sizes ─────────── */
-  --leading-tight: 1.1;     /* display, stat numbers */
-  --leading-snug: 1.2;      /* section titles */
-  --leading-heading: 1.3;   /* headings, card titles, intro */
-  --leading-compact: 1.4;   /* badges, eyebrows, captions */
-  --leading-body: 1.5;      /* body, labels */
-  --leading-relaxed: 1.55;  /* long reading (article body, lead) */
+  /* ── Line height — only two, unitless so they scale with fluid sizes ── */
+  --leading-heading: 1.2;   /* every heading, title, intro and stat */
+  --leading-body: 1.5;      /* every paragraph, label and small text */
 
-  /* ── Letter spacing ────────────────────────────────────────────────────── */
-  --tracking-display: -.02em;
-  --tracking-tight: -.01em;
-  --tracking-body: .01em;
-  --tracking-label: .04em;
+  /* ── Letter spacing — Manrope is spaced well as drawn: 0 everywhere.
+     Only UPPERCASE small labels (eyebrow, verdict) get tracking, because
+     capitals set at default spacing look cramped at 13px. ───────────────── */
+  --tracking-label: .04em;   /* UPPERCASE labels only */
 
   /* ── Spacing (4px base, plus control sizes 44 / 56) ───────────────────── */
   --spacing-2: 2px;
@@ -203,19 +198,16 @@
        slope = (max - min) / 905 * 100 (vw);  base = min - slope * 3.75 (px)
      Body, label and small roles stay fixed: reading text should not shrink. */
   --text-display: clamp(var(--text-32), 25.37px + 1.768vw, var(--text-48));  /* page H1 only · 32→48 */
-  --text-display--line-height: var(--leading-tight);
+  --text-display--line-height: var(--leading-heading);
   --text-display--font-weight: var(--font-weight-display);
-  --text-display--letter-spacing: var(--tracking-display);
 
   --text-heading-lg: clamp(var(--text-28), 24.69px + 0.884vw, var(--text-36)); /* section H2 · 28→36 */
-  --text-heading-lg--line-height: var(--leading-snug);
+  --text-heading-lg--line-height: var(--leading-heading);
   --text-heading-lg--font-weight: var(--font-weight-medium);
-  --text-heading-lg--letter-spacing: var(--tracking-display);
 
   --text-heading: clamp(var(--text-20), 18.34px + 0.442vw, var(--text-24));   /* panel/feature H3 · 20→24 */
   --text-heading--line-height: var(--leading-heading);
   --text-heading--font-weight: var(--font-weight-medium);
-  --text-heading--letter-spacing: var(--tracking-tight);
 
   --text-title: clamp(var(--text-18), 17.17px + 0.221vw, var(--text-20));     /* card titles · 18→20 */
   --text-title--line-height: var(--leading-heading);
@@ -224,13 +216,11 @@
   --text-intro: clamp(var(--text-20), 18.34px + 0.442vw, var(--text-24));     /* one big statement per page (Figma Body/24 Large) · 20→24 */
   --text-intro--line-height: var(--leading-heading);
   --text-intro--font-weight: var(--font-weight-medium);
-  --text-intro--letter-spacing: var(--tracking-tight);
 
   --text-article: clamp(var(--text-16), 15.17px + 0.221vw, var(--text-18)); /* article reading column ONLY · 16→18 */
-  --text-article--line-height: var(--leading-relaxed);
+  --text-article--line-height: var(--leading-body);
   --text-body: var(--text-16);                                                /* EVERY paragraph, lead and summary, all screens */
   --text-body--line-height: var(--leading-body);
-  --text-body--letter-spacing: var(--tracking-body);
   --text-body-sm: var(--text-14);                                             /* meta, support text */
   --text-body-sm--line-height: var(--leading-body);
 
@@ -242,25 +232,25 @@
   --text-label-sm--font-weight: var(--font-weight-medium);
 
   --text-eyebrow: var(--text-13);               /* eyebrows, small column headings */
-  --text-eyebrow--line-height: var(--leading-compact);
+  --text-eyebrow--line-height: var(--leading-body);
   --text-eyebrow--font-weight: var(--font-weight-medium);
   --text-eyebrow--letter-spacing: var(--tracking-label);
 
   --text-badge: var(--text-13);
-  --text-badge--line-height: var(--leading-compact);
+  --text-badge--line-height: var(--leading-body);
   --text-badge--font-weight: var(--font-weight-medium);
 
   --text-verdict: var(--text-13);               /* UPPERCASE verdict word */
-  --text-verdict--line-height: var(--leading-compact);
+  --text-verdict--line-height: var(--leading-body);
   --text-verdict--font-weight: var(--font-weight-semibold);
   --text-verdict--letter-spacing: var(--tracking-label);
 
   --text-caption: var(--text-12);               /* dates, credits */
-  --text-caption--line-height: var(--leading-compact);
+  --text-caption--line-height: var(--leading-body);
   --text-caption--font-weight: var(--font-weight-medium);
 
   --text-stat: clamp(var(--text-36), 31.03px + 1.326vw, var(--text-48));      /* statistic numbers · 36→48 */
-  --text-stat--line-height: var(--leading-tight);
+  --text-stat--line-height: var(--leading-heading);
   --text-stat--font-weight: var(--font-weight-display);
 
   /* ══ 2. SEMANTIC — sizes ════════════════════════════════════════════════ */
