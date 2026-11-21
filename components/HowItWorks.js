@@ -1,13 +1,14 @@
-import { Globe, MessageSquareText, Smartphone, Clock } from 'lucide-react';
+import { ArrowRight, Globe, MessageSquareText, Smartphone, Trophy } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 import Verdict from '@/components/ui/Verdict';
+import { Button } from '@/components/ui';
 import { withBase } from '@/lib/basePath';
 import SocialPeek from '@/components/SocialPeek';
 
 // "Cara Sebenarnya.my membantu": a 3-column bento.
-// Desktop areas: channels | photo (3 rows) | verdicts
-//                story    | photo         | stat (2 rows)
-//                social   | photo         | stat
+// Desktop areas: channels | WSIS poster (3 rows) | verdicts
+//                story    | poster              | award "Juara Dunia" (2 rows)
+//                social   | poster              | award
 
 export default function HowItWorks() {
   return (
@@ -28,13 +29,13 @@ export default function HowItWorks() {
           </ul>
         </article>
 
-        <figure className="how__card how__card--photo how__card--main">
+        <figure className="how__card how__card--poster how__card--main">
+          {/* Square poster in a tall card: shown whole (object-fit: contain) on white, never cropped */}
           <img
-            src={withBase('/images/posts/sebenarnya-fc-phone-sharing.jpg')}
-            alt="Dua orang menyemak mesej di telefon di kedai kopi"
+            src={withBase('/images/bento/wsis-prize-award.webp')}
+            alt="Poster Anugerah WSIS 2026 dengan trofi, World Summit on the Information Society, Geneva, Switzerland"
             loading="lazy"
           />
-          <figcaption className="how__pill">Tanya sebelum kongsi.</figcaption>
         </figure>
 
         <article className="how__card how__card--verdicts">
@@ -55,13 +56,17 @@ export default function HowItWorks() {
           <figcaption className="how__story">Satu semakan kecil, satu berita palsu berhenti di sini.</figcaption>
         </figure>
 
-        <article className="how__card how__card--stat">
-          <Icon icon={Clock} size={32} className="how__stat-icon" />
-          <div>
-            <p className="how__stat-number">
-              24<span> jam</span>
-            </p>
-            <p className="how__stat-text">AIFA menjawab di WhatsApp <span className="how__nowrap">03-8688 7997</span>, setiap hari.</p>
+        <article className="how__card how__card--award">
+          <p className="how__award-eyebrow">
+            <Icon icon={Trophy} size={16} />
+            Pengiktirafan tertinggi · WSIS PBB
+          </p>
+          <div className="how__award-body">
+            <h3 className="how__award-title">Juara Dunia</h3>
+            <p className="how__award-text">dalam Kepercayaan Digital &amp; Semakan Fakta Awam</p>
+            <Button variant="media" href={withBase('/about-us/#berita-galeri')} iconEnd={ArrowRight} className="how__award-cta">
+              Ketahui lebih lanjut
+            </Button>
           </div>
         </article>
 

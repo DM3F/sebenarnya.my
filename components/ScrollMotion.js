@@ -42,12 +42,11 @@ const blocks = [
   ['.how__card--main', 0.12],
   ['.how__card--verdicts', 0.18],
   ['.how__card--story', 0.22],
-  ['.how__card--stat', 0.27],
+  ['.how__card--award', 0.27],
   ['.how__card--agencies', 0.3],
   // Aktiviti media sosial
   ['.social-gallery', 0.08],
-  // Home: WSIS banner, Tentang ringkas
-  ['.wsis-banner', 0.08],
+  // Home: Tentang ringkas
   ['.viewership-inner', 0],
   ['.partners-inner', 0.08],
   // Footer

@@ -698,83 +698,6 @@ input::placeholder { color: var(--color-foreground); }
   .social-card.is-open .social-card__content { transition-duration: 0ms; transition-delay: 0ms; }
 }
 
-/* WSIS award banner (components/Bento.js) */
-.wsis-banner { display: flex; gap: var(--spacing-24); height: 560px; }
-.wsis-banner__story {
-  display: flex;
-  flex: 1.62 1 0;
-  flex-direction: column;
-  justify-content: space-between;
-  min-width: 0;
-  padding: var(--spacing-48);
-  border-radius: var(--radius-lg);
-  background: var(--color-black);
-  color: var(--color-foreground-inverse);
-}
-.wsis-banner__top { display: flex; flex-direction: column; align-items: flex-start; gap: var(--spacing-20); }
-.wsis-banner__badge {
-  padding: var(--spacing-4) var(--spacing-12);
-  border: 1px solid rgba(255, 255, 255, .16);
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, .06);
-  font-family: var(--font-sans);
-  font-size: var(--text-13);
-  line-height: var(--leading-18);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-}
-.wsis-banner__heading { display: flex; flex-direction: column; gap: var(--spacing-8); margin: 0; font-family: var(--font-sans); }
-.wsis-banner__eyebrow {
-  font-size: var(--text-13);
-  line-height: var(--leading-18);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--color-muted-foreground-inverse); /* brand red is for the logo only (design.md §2) */
-}
-.wsis-banner__title {
-  font-weight: var(--font-weight-display);
-  letter-spacing: var(--tracking-display);
-}
-.wsis-banner__sub {
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-display);
-}
-.wsis-banner__text {
-  max-width: 620px;
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: var(--text-16);
-  line-height: var(--leading-body);
-  color: rgba(255, 255, 255, .78);
-}
-.wsis-banner__text strong { color: var(--color-foreground-inverse); font-weight: var(--font-weight-medium); }
-.wsis-banner__cta { align-self: flex-start; }
-
-
-
-.wsis-banner__media {
-  flex: 1 1 0;
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--color-black);
-  border-radius: var(--radius-lg);
-  background: var(--color-muted);
-}
-.wsis-banner__media img { width: 100%; height: 100%; object-fit: cover; }
-
-@media (max-width: 1100px) {
-  .wsis-banner { flex-direction: column; height: auto; }
-  .wsis-banner__story { flex: none; gap: var(--spacing-40); }
-  .wsis-banner__media { flex: none; aspect-ratio: 16 / 10; }
-}
-@media (max-width: 600px) {
-  .wsis-banner__story { padding: var(--spacing-24); }
-}
-
-/* Bento: pill buttons */
-
 /* Semakan fakta terkini — components/Latest.js + FlipCard.js */
 .latest-checks {
   --latest-side: var(--space-page-x); /* title and controls inset; the card row bleeds past it */
@@ -2982,9 +2905,7 @@ div:has(> .split-line) {
 
 
 /* WSIS poster is a lettered graphic, not a photo: show it whole on its own white paper */
-.wsis-banner__media img[src*="wsis"],
 .about-news-media img[src*="wsis"] { object-fit: contain; }
-.wsis-banner__media:has(img[src*="wsis"]),
 .about-news-media:has(img[src*="wsis"]) { background: var(--color-card); }
 
 /* ── Cara Sebenarnya.my membantu (components/HowItWorks.js) ─────────────────
@@ -3011,7 +2932,7 @@ div:has(> .split-line) {
 .how__card--main { grid-area: main; }
 .how__card--verdicts { grid-area: verdicts; }
 .how__card--story { grid-area: story; }
-.how__card--stat { grid-area: stat; }
+.how__card--award { grid-area: stat; }
 .how__card--agencies { grid-area: agencies; }
 
 .how__card {
@@ -3103,19 +3024,35 @@ div:has(> .split-line) {
   text-wrap: balance;
 }
 
-/* Stat: the one ink surface in the section; big light number, half-size unit */
-.how__card--stat { justify-content: space-between; background: var(--color-primary); color: var(--color-primary-foreground); }
-.how__stat-icon { color: var(--color-muted-foreground-inverse); }
-.how__stat-number {
-  margin: 0 0 var(--spacing-8); /* same scale as the viewership numbers */
-  font-weight: var(--font-weight-display);
-  letter-spacing: var(--tracking-display);
-  font-variant-numeric: tabular-nums;
+/* Award: the one ink surface in the section. Short copy only: eyebrow, headline,
+   one line of context, then the action (the full story lives on Tentang Kami). */
+.how__card--award { justify-content: space-between; gap: var(--spacing-32); background: var(--color-primary); color: var(--color-primary-foreground); }
+.how__award-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  margin: 0;
+  font-size: var(--text-13);
+  line-height: var(--leading-18);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-muted-foreground-inverse);
 }
-.how__stat-number span { font-size: .42em; letter-spacing: -.01em; }
-.how__nowrap { white-space: nowrap; } /* keep the phone number on one line */
-.how__stat-text { margin: 0; max-width: 28ch; font-size: var(--text-16); line-height: var(--leading-24); color: var(--color-muted-foreground-inverse); }
+.how__award-body { display: flex; flex-direction: column; align-items: flex-start; gap: var(--spacing-12); }
+.how__award-title { margin: 0; text-wrap: balance; }
+.how__award-text { margin: 0; max-width: 26ch; color: var(--color-muted-foreground-inverse); text-wrap: pretty; }
+.how__award-cta { margin-top: var(--spacing-12); }
 
+/* Poster: square artwork in a tall card, shown whole on white with a hairline edge */
+.how__card--poster {
+  display: grid;
+  place-items: center;
+  padding: var(--spacing-16);
+  background: var(--color-card);
+  box-shadow: inset 0 0 0 var(--border-width) var(--color-border);
+}
+.how__card--poster img { display: block; width: 100%; height: 100%; object-fit: contain; }
 
 @media (max-width: 1024px) {
   .how__grid {
@@ -3138,9 +3075,8 @@ div:has(> .split-line) {
     gap: var(--spacing-12);
   }
   .how__card { padding: var(--spacing-24); }
-  .how__card--main { min-height: 360px; }
+  .how__card--main { min-height: 0; aspect-ratio: 1; }
   .how__card--story { min-height: 240px; }
-  .how__card--stat { gap: var(--spacing-32); }
 }
 @media (prefers-reduced-motion: reduce) { .how__card--photo img { transition: none; } }
 
@@ -3162,7 +3098,7 @@ div:has(> .split-line) {
 .about-fn-title,
 .logo-kit-title,
 .hero-carousel h3,
-.wsis-banner__title {
+.how__award-title {
   font-size: var(--type-section);
   line-height: var(--type-section-lh);
   letter-spacing: var(--tracking-display);
@@ -3173,9 +3109,9 @@ div:has(> .split-line) {
 .about-title,
 .about-fn-title,
 .logo-kit-title { font-weight: var(--font-weight-medium); }
-/* Slide and banner headlines share the section size but stay light, so they never outrank the H2 */
+/* Slide and award headlines share the section size but stay light, so they never outrank the H2 */
 .hero-carousel h3,
-.wsis-banner__title { font-weight: var(--font-weight-display); }
+.how__award-title { font-weight: var(--font-weight-display); }
 .social-card__title,
 .viewership-kicker,
 .post-section h2,
@@ -3205,7 +3141,7 @@ div:has(> .split-line) {
   line-height: var(--type-title-lh);
   font-weight: var(--font-weight-medium);
 }
-.wsis-banner__sub,
+.how__award-text,
 .viewership-lead,
 .about-hero-text p,
 .about-intro__lead,
@@ -3218,7 +3154,6 @@ div:has(> .split-line) {
   line-height: var(--type-lead-lh);
 }
 .viewership-stats dt,
-.how__stat-number,
 .about-intro__stat-value,
 .about-intro__facts-row dt {
   font-size: var(--type-number);
