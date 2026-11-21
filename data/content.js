@@ -201,12 +201,14 @@ export const heroSlides = [
   },
 ];
 
-// Viewership stats (components/Viewership.js)
-// `sep` = show a thousands separator (1,016)
+// Viewership stats (components/Viewership.js), in display order (2 × 2 cards)
+// `sep` = thousands separator (1,016); `suffix` = sign after the number (20+);
+// `image` = card with a photo background and light text
 export const viewershipStats = [
-  { value: 275, unit: 'juta+', text: 'Lawatan ke portal dari Mac 2017 hingga September 2021.' },
   { value: 1016, sep: true, text: 'Artikel semakan dari Januari 2022 hingga Mei 2026.' },
+  { value: 20, suffix: '+', text: 'Agensi rakan dari berbagai pejabat.' },
   { value: 200, unit: 'ribu', text: 'Mesej diproses Aifa, pembantu AI, sejak Januari 2025.' },
+  { value: 275, unit: 'juta+', image: '/images/about/viewership-bg.jpg', text: 'Lawatan ke portal dari Mac 2017 hingga September 2021.' },
 ];
 
 /* About us page (app/about-us) */
