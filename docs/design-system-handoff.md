@@ -468,6 +468,6 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - Kad verdict seksyen ini kini tiga sahaja: Palsu, Makluman, Penjelasan (jenis `benar`).
 
 ## WSIS dipindah ke "Cara Sebenarnya.my membantu" (21 Nov 2026)
-- Kad tinggi tengah kini **poster WSIS** (`/images/bento/wsis-prize-award.webp`, persegi) dengan `object-fit: contain` atas `--color-card` + garis rambut `--color-border`: trofi dan tulisan poster tidak pernah terpotong. Telefon: kad persegi.
+- **Poster WSIS** (`/images/bento/wsis-prize-award.webp`, persegi) duduk di kad kiri tengah (kawasan `story`, dulu foto warga emas), `object-fit: contain` atas `--color-card` + garis rambut `--color-border`: trofi dan tulisan poster tidak pernah terpotong. Kad min 300px tinggi (poster ≈300px di desktop); telefon: kad persegi. Kad tinggi tengah kekal foto "Tanya sebelum kongsi."
 - Kad tinta (dulu "24 jam") kini **Juara Dunia**: eyebrow 13 UPPERCASE + ikon trofi, tajuk peranan section (36/400, telefon 28), satu baris konteks (lead, putih 60%), butang `media` "Ketahui lebih lanjut" → `/about-us/#berita-galeri`. Teks penuh kekal di Tentang Kami › Berita.
 - Banner WSIS (`components/Bento.js`) dan gayanya dibuang; "Aktiviti media sosial terkini" kini galeri media sosial sahaja.

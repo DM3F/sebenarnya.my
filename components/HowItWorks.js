@@ -6,9 +6,9 @@ import { withBase } from '@/lib/basePath';
 import SocialPeek from '@/components/SocialPeek';
 
 // "Cara Sebenarnya.my membantu": a 3-column bento.
-// Desktop areas: channels | WSIS poster (3 rows) | verdicts
-//                story    | poster              | award "Juara Dunia" (2 rows)
-//                social   | poster              | award
+// Desktop areas: channels    | photo (3 rows) | verdicts
+//                WSIS poster | photo          | award "Juara Dunia" (2 rows)
+//                social      | photo          | award
 
 export default function HowItWorks() {
   return (
@@ -29,13 +29,13 @@ export default function HowItWorks() {
           </ul>
         </article>
 
-        <figure className="how__card how__card--poster how__card--main">
-          {/* Square poster in a tall card: shown whole (object-fit: contain) on white, never cropped */}
+        <figure className="how__card how__card--photo how__card--main">
           <img
-            src={withBase('/images/bento/wsis-prize-award.webp')}
-            alt="Poster Anugerah WSIS 2026 dengan trofi, World Summit on the Information Society, Geneva, Switzerland"
+            src={withBase('/images/posts/sebenarnya-fc-phone-sharing.jpg')}
+            alt="Dua orang menyemak mesej di telefon di kedai kopi"
             loading="lazy"
           />
+          <figcaption className="how__pill">Tanya sebelum kongsi.</figcaption>
         </figure>
 
         <article className="how__card how__card--verdicts">
@@ -47,13 +47,13 @@ export default function HowItWorks() {
           </ul>
         </article>
 
-        <figure className="how__card how__card--photo how__card--story">
+        <figure className="how__card how__card--poster how__card--story">
+          {/* Square poster in a short card: shown whole (object-fit: contain) on white, trophy and lettering never cropped */}
           <img
-            src={withBase('/images/posts/sebenarnya-fc-senior-dialogue.jpg')}
-            alt="Warga emas berbincang bersama keluarga di ruang menunggu"
+            src={withBase('/images/bento/wsis-prize-award.webp')}
+            alt="Poster Anugerah WSIS 2026 dengan trofi, World Summit on the Information Society, Geneva, Switzerland"
             loading="lazy"
           />
-          <figcaption className="how__story">Satu semakan kecil, satu berita palsu berhenti di sini.</figcaption>
         </figure>
 
         <article className="how__card how__card--award">

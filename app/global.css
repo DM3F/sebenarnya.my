@@ -2987,7 +2987,6 @@ div:has(> .split-line) {
 @media (hover: hover) and (pointer: fine) {
   .how__card--photo:hover img { scale: 1.03; }
 }
-.how__card--story img { object-position: center 30%; }
 .how__pill {
   position: absolute;
   top: var(--spacing-24);
@@ -2998,30 +2997,6 @@ div:has(> .split-line) {
   font-size: var(--text-16);
   line-height: var(--leading-24);
   font-weight: var(--font-weight-medium);
-}
-/* White caption on the photo sits on a bottom scrim. Measured on the real pixels at
-   1440/768/390: caption ≥ 6.4:1 at its brightest point (design.md §4: 4.5:1 on photos). */
-.how__card--story::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top,
-    color-mix(in srgb, var(--color-foreground) 80%, transparent) 0%,
-    color-mix(in srgb, var(--color-foreground) 55%, transparent) 50%,
-    transparent 85%);
-  pointer-events: none;
-}
-.how__story {
-  position: absolute;
-  right: var(--spacing-24);
-  bottom: var(--spacing-24);
-  left: var(--spacing-24);
-  z-index: 1;
-  margin: 0;
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-foreground-inverse);
-  text-wrap: balance;
 }
 
 /* Award: the one ink surface in the section. Short copy only: eyebrow, headline,
@@ -3044,15 +3019,16 @@ div:has(> .split-line) {
 .how__award-text { margin: 0; max-width: 26ch; color: var(--color-muted-foreground-inverse); text-wrap: pretty; }
 .how__award-cta { margin-top: var(--spacing-12); }
 
-/* Poster: square artwork in a tall card, shown whole on white with a hairline edge */
+/* Poster: square artwork shown whole on white with a hairline edge (never cropped) */
 .how__card--poster {
   display: grid;
   place-items: center;
-  padding: var(--spacing-16);
+  padding: var(--spacing-12);
   background: var(--color-card);
   box-shadow: inset 0 0 0 var(--border-width) var(--color-border);
 }
 .how__card--poster img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.how__card--story.how__card--poster { min-height: 300px; } /* room for the square poster to stay legible (≈276px) */
 
 @media (max-width: 1024px) {
   .how__grid {
@@ -3075,8 +3051,8 @@ div:has(> .split-line) {
     gap: var(--spacing-12);
   }
   .how__card { padding: var(--spacing-24); }
-  .how__card--main { min-height: 0; aspect-ratio: 1; }
-  .how__card--story { min-height: 240px; }
+  .how__card--main { min-height: 360px; }
+  .how__card--story { aspect-ratio: 1; } /* square poster fills the card on phones */
 }
 @media (prefers-reduced-motion: reduce) { .how__card--photo img { transition: none; } }
 
@@ -3135,7 +3111,6 @@ div:has(> .split-line) {
 .about-news-body h4,
 .folder__title,
 .how__card-title,
-.how__story,
 .logo-terms__title {
   font-size: var(--type-title);
   line-height: var(--type-title-lh);
