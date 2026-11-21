@@ -14,6 +14,7 @@ const lineBlocks = [
   ['.post-title', 0.1],
   ['.latest-checks__title', 0],
   ['.activity__title', 0],
+  ['.how__title', 0],
   ['.viewership-kicker', 0],
   ['.viewership-lead', 0.1],
   ['.about-title', 0],
@@ -35,6 +36,14 @@ const blocks = [
   ['.logo-kit-intro', 0.08],
   ['.logo-card:nth-child(1)', 0.14],
   ['.logo-card:nth-child(2)', 0.22],
+  // Cara Sebenarnya.my membantu: cards rise in with a short, uneven stagger
+  ['.how__lead', 0.08],
+  ['.how__card--channels', 0.06],
+  ['.how__card--main', 0.12],
+  ['.how__card--verdicts', 0.18],
+  ['.how__card--story', 0.22],
+  ['.how__card--stat', 0.27],
+  ['.how__card--agencies', 0.3],
   // Aktiviti media sosial
   ['.social-gallery', 0.08],
   // Home: WSIS banner, Tentang ringkas

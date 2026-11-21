@@ -436,3 +436,13 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - **Poster WSIS** (`img[src*="wsis"]`) guna `object-fit: contain` atas `--color-card` supaya teks poster tidak terpotong.
 - **Kad foto "275 juta+":** lapisan 20% + scrim kecerunan hanya di separuh atas (60% → 45% → 0 pada 80%). Diukur pada piksel sebenar: kapsyen ≥ 4.75:1 (desktop) / 5.32:1 (telefon) pada titik paling terang.
 - **Galeri sfera:** kawasan tekan halimunan ≥ 24 px pada skrin (`--node-hit` dari JS, `.sphere-node::after`).
+
+## Seksyen "Cara Sebenarnya.my membantu" (Utama, sebelum Aktiviti media sosial)
+`components/HowItWorks.js`, gaya `.how*` dalam `app/global.css`. Grid bento 3 kolum (`grid-template-areas`):
+saluran | foto tinggi (3 baris) | empat verdict · cerita foto | foto | stat "24 jam" (2 baris) · agensi | foto | stat.
+Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (telefon 12), padding kad 32 (telefon 24), radius `--radius-card`.
+- Kad baca: latar taupe `--color-muted`, tanpa bayang. Satu kad tinta (stat) dengan angka besar weight 400 + unit separuh saiz (sama skala dengan statistik viewership).
+- Foto: full-bleed, hover zoom 1.03 (pointer sahaja). Kapsyen putih atas scrim bawah (80% → 55% → 0), diukur ≥ 6.4:1 pada piksel paling terang di 1440/768/390.
+- Verdict guna komponen `Verdict` (dot + perkataan). Ikon Lucide dalam cakera kanvas 48.
+- Tajuk seksyen guna peranan tajuk seksyen dikongsi (`.how__title`). Animasi: tajuk naik per baris; kad masuk melalui ScrollMotion dengan stagger tidak sekata 60–300 ms; `prefers-reduced-motion` matikan.
+- Disesuaikan daripada contoh BentoGridShowcase (Tailwind/shadcn/framer-motion): susun atur sahaja; tiada kebergantungan baharu.
