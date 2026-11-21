@@ -156,3 +156,5 @@ grep -rn 'transition: all' app design-system
 ## Keputusan terbuka
 
 - [?] Mode dark: bila
+- [ ] **Logo SVG** — user akan hantar fail SVG rasmi (logo + ikon). Bila sampai: letak dalam `public/images/logo/`, tambah pilihan muat turun SVG di samping PNG (`logoPage.items` dalam `data/content.js`, `components/LogoKit.js`).
+- [ ] **Terma penggunaan logo** — teks sekarang ialah DEMO (`logoPage.terms`). Ganti dengan teks rasmi MCMC sebelum lancar.

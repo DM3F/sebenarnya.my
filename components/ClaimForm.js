@@ -193,15 +193,8 @@ export default function ClaimForm() {
           <span className="claim-done-icon" aria-hidden="true">
             <Icon icon={Check} size={28} />
           </span>
-          <h3>Laporan anda telah dihantar</h3>
-          <p>
-            Terima kasih, {values.name.trim().split(' ')[0]}. Pasukan kami akan menyemak laporan ini dan menghubungi anda di{' '}
-            <b>{values.email.trim()}</b> jika perlukan maklumat lanjut.
-          </p>
+          <h3>Laporan anda telah dihantar.</h3>
           <div className="claim-done-actions">
-            <Button variant="outline" onClick={reset}>
-              Hantar laporan lain
-            </Button>
             <Button onClick={close}>Tutup</Button>
           </div>
         </div>

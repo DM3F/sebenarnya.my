@@ -35,6 +35,7 @@ export const navLinks = [
     label: 'Tentang Kami',
     children: [
       { label: 'Tentang kami', href: '/about-us/' },
+      { label: 'Berita dan Galeri', href: '/about-us/#berita-galeri' },
       { label: 'Logo', href: '/about-us/#logo' }, // Logo section on Tentang Kami (no page of its own)
     ],
   },
@@ -132,9 +133,9 @@ export const socialLinks = [
 /* Footer */
 export const footerColumns = [
   {
-    title: 'Semak & Lapor',
+    title: 'Semak dan Lapor',
     links: [
-      { label: 'Semak Fakta', href: '/article/' },
+      { label: 'Artikel', href: '/article/' },
       { label: 'AIFA', href: '/aifa/' },
       { label: 'Salur Kepada Kami', href: '/submit-claim/' },
     ],
@@ -175,7 +176,7 @@ export const heroSlides = [
   {
     slug: 'amaran-hujan-lebat-pantai-timur-november',
     image: withBase('/images/carousel/hero-cuaca.jpg'),
-    eyebrow: 'Waspada | METMalaysia',
+    eyebrow: 'Makluman | METMalaysia',
     title: 'Hujan lebat tiga hari',
     titleEm: 'di Pantai Timur.',
     text: 'Amaran hujan lebat dari 12 hingga 14 November 2026. Ikuti kemas kini rasmi.',
@@ -337,6 +338,20 @@ export const logoPage = {
       meta: 'PNG · 134 × 134 px · 20 KB',
     },
   ],
+  // DEMO copy — replace with MCMC's official terms before launch (docs/plan.md).
+  terms: {
+    title: 'Terma penggunaan logo',
+    intro:
+      'Logo dan ikon Sebenarnya.my dimiliki oleh Suruhanjaya Komunikasi dan Multimedia Malaysia (MCMC). Dengan memuat turun fail ini, anda bersetuju dengan terma berikut.',
+    items: [
+      'Gunakan logo untuk merujuk atau mempromosikan Sebenarnya.my, seperti dalam laporan berita, pembentangan dan bahan pendidikan.',
+      'Gunakan fail asal tanpa mengubah warna, bentuk, huruf atau slogan.',
+      'Beri ruang kosong di sekeliling logo, sekurang-kurangnya setinggi huruf “S”.',
+      'Pastikan penggunaan anda tidak memberi gambaran bahawa MCMC menyokong produk, perkhidmatan atau pendapat anda.',
+      'Dapatkan kebenaran bertulis daripada MCMC sebelum menggunakan logo untuk tujuan komersial.',
+    ],
+    note: 'MCMC boleh meminta anda berhenti menggunakan logo jika terma ini tidak dipatuhi.',
+  },
 };
 
 // Collaborators ticker (components/Collaborators.js)
@@ -357,12 +372,11 @@ export const partners = [
 
 /* Articles page (app/article/page.js) */
 
-// Filter bar, in display order. `dot` = coloured dot shown in the chip.
+// Category labels. The filter bar shows the three verdicts only (components/Articles.js).
 export const articleCategories = [
-  { id: 'palsu', label: 'Palsu', dot: '#e51c23' },
-  { id: 'benar', label: 'Penjelasan', dot: '#1d8a4e' },
-  { id: 'makluman', label: 'Makluman', dot: '#0071e3' },
-  { id: 'waspada', label: 'Waspada', dot: '#f56300' },
+  { id: 'palsu', label: 'Palsu' },
+  { id: 'benar', label: 'Penjelasan' },
+  { id: 'makluman', label: 'Makluman' },
   { id: 'bencana', label: 'Bencana' },
   { id: 'ekonomi', label: 'Ekonomi' },
   { id: 'keselamatan', label: 'Keselamatan' },
@@ -381,17 +395,15 @@ export const articleCategories = [
 export const articleStatus = {
   palsu: { label: 'Palsu' },
   makluman: { label: 'Makluman' },
-  waspada: { label: 'Waspada' },
   benar: { label: 'Penjelasan' },
 };
 
 const agencyLogo = (name) => withBase(`/images/authors/agency-${name}.webp`);
 
-// `status` = card tag (palsu / makluman / benar / waspada)
+// `status` = card tag (palsu / makluman / benar)
 // `categories` = filter-bar ids this article also appears under
 // `date` = YYYY-MM-DD
 // `slug` = page address (/article/<slug>); `lead` + `explanation` = article body
-// optional `actions` = [{ title, text }] to replace the default "Apa Yang Perlu Anda Buat" list
 export const articles = [
   {
     title: 'Mesej pautan pendaftaran bantuan tunai di WhatsApp adalah palsu',
@@ -412,7 +424,7 @@ export const articles = [
     explanation: 'Kawasan yang terlibat termasuk Kelantan, Terengganu dan utara Pahang. Orang ramai dinasihatkan untuk sentiasa merujuk saluran rasmi METMalaysia bagi kemas kini terkini dan tidak bergantung pada mesej yang dikongsi semula.',
     image: post('rain.jpg'),
     alt: 'Jalan bandar dan penunggang basikal',
-    status: 'waspada',
+    status: 'makluman',
     categories: ['bencana'],
     date: '2026-11-05',
     agency: { name: agency.met, image: agencyLogo('met') },
@@ -484,7 +496,7 @@ export const articles = [
     explanation: 'Penipu biasanya mendakwa mangsa terlibat dalam kes jenayah dan meminta wang dipindahkan ke akaun tertentu. PDRM tidak pernah meminta orang ramai memindahkan wang melalui panggilan telefon.',
     image: post('call.jpg'),
     alt: 'Menyemak telefon di kedai kopi',
-    status: 'waspada',
+    status: 'makluman',
     categories: ['keselamatan', 'jenayah'],
     date: '2026-08-12',
     agency: { name: agency.pdrm, image: agencyLogo('pdrm') },
@@ -587,7 +599,7 @@ export const articles = [
     lead: 'Menurut Jabatan Meteorologi Malaysia (MET Malaysia), amaran ramalan cuaca signifikan dikeluarkan bagi beberapa kawasan di Semenanjung Malaysia bermula 24 hingga 26 Oktober 2026.',
     image: post('heavyrain.jpg'),
     alt: 'Hujan lebat di kawasan bandar',
-    status: 'waspada',
+    status: 'makluman',
     categories: ['bencana'],
     date: '2026-10-23',
     agency: { name: agency.met, image: agencyLogo('met') },

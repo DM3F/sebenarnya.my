@@ -25,8 +25,8 @@ const SORT_OPTIONS = [
   { id: 'za', label: 'Tajuk Z–A', compare: (a, b) => b.title.localeCompare(a.title, 'ms', { sensitivity: 'base' }) },
 ];
 
-// Category chips: the four verdicts only
-const CHIP_IDS = ['palsu', 'benar', 'waspada', 'makluman'];
+// Category chips: three verdicts only
+const CHIP_IDS = ['palsu', 'benar', 'makluman'];
 
 const pad = (n) => String(n).padStart(2, '0');
 
