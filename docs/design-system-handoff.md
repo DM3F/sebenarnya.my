@@ -268,7 +268,7 @@ Border-top 1px `--color-border`, padding 96 atas / 32 bawah, sisi 96 (48 ≤1280
 ### Halaman Tentang Kami ✅
 - **Hero:** kad foto `--radius-lg`, padding 56/40/64, tinggi min(755px, 85svh). Atas: "Ikuti kami" 36/42 + 4 butang sosial 48 bulat (`--color-card`, ikon jenama 24). Bawah: tajuk 48/52 + lead 24/32, putih.
 - **Empat fungsi:** tajuk 56 rata kanan. Kiri: kad pilihan 560×440 `--color-muted-strong` (36/42, nombor `/01` tnum, teks 18/28) + butang ‹ › 44 + bar kemajuan 3px (ibu jari 25%, gelongsor .45s `--ease-in-out`). Kanan: 3 kad kecil `--color-muted` (24/32, 16/24) — klik untuk pilih. Kandungan masuk .32s `--ease` (opacity + 6px + blur 2px), kad kecil berperingkat 40ms. Reduced motion: pudar sahaja.
-- **Berita dan Galeri:** tajuk 56/60, intro 24/32. Berita 3 kad (border 1px, tag pil muted 14/20, tajuk 24/32). Galeri = akordion elastik foto sahaja (lihat Kemas kini 21 Nov, malam). Hover kad berita (mouse sahaja): imej skala 1.03.
+- **Berita dan Galeri (kemas kini 21 Nov, mengikut kanvas):** kepala di tengah (tajuk bahagian + intro, gap 8). Carousel seperti Empat fungsi: kad berita besar 480 lebar × 488 tinggi (imej + tag + tajuk heading), kawalan (panah, jeda, trek kemajuan `--n` = bilangan berita), kad kecil kanan (butang; imej 43/24, tag, tajuk 14) dan satu perenggan `aboutNews.lead`. Autoplay 5s kongsi hook `useCarousel` dengan Empat fungsi (jeda semasa hover/fokus, butang jeda, reduced-motion). Di bawahnya sfera foto; tajuk "Galeri" kini `sr-only`. Saiz tajuk/intro ikut tangga jenis tapak (36/18), bukan 48/24 pada kanvas.
 - **Logo:** `LogoKit headingLevel={2}` — gaya sama dengan page `/logo` (tajuk 36/42, pratonton 475 muted, butang `Button` filled).
 
 ### Halaman detail artikel ✅
