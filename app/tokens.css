@@ -167,6 +167,20 @@
   --shadow-subtle-3: inset 0 0 0 .5px rgba(0, 0, 0, .10);
   --shadow-float: 0 0 0 .5px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12); /* floating only */
 
+  /* ── Format folder (components/FormatFolder.js, Logo section) ───────────
+     Colours of the folder card and its file-type tiles; the tiles keep their own palette. */
+  --color-folder-back: var(--color-border);
+  --color-folder-front: color-mix(in srgb, var(--color-border-strong) 95%, transparent);
+  --color-folder-edge: color-mix(in srgb, var(--color-foreground-inverse) 15%, transparent);
+  --color-folder-glow: color-mix(in srgb, var(--color-foreground-inverse) 10%, transparent);
+  --color-folder-pill: #766e69;
+  --color-folder-label: rgb(0 0 0 / .55);
+  --gradient-tile-jpeg: linear-gradient(135deg, #2c2c2c, #141414);
+  --color-tile-png: #7b2e19;
+  --gradient-tile-svg: linear-gradient(135deg, #1a1a7a, #00005b);
+  --color-tile-svg-mini: #080864;
+  --shadow-tile: 0 18px 40px rgb(0 0 0 / .55), 0 0 0 1px rgb(255 255 255 / .14);
+
   /* ── Motion (docs/design.md §6: purposeful, ease-out, 150–600ms) ────────── */
   --duration-fast: 150ms;   /* hover, colour, press */
   --duration-base: 250ms;   /* small moves, fades, icon nudge */
