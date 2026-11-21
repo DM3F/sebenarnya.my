@@ -33,7 +33,7 @@ const TAU = 0.11; // seconds; exponential ease toward the target (interruptible,
 const wrap = (n) => ((n % COUNT) + COUNT) % COUNT;
 
 /**
- * Hero carousel (Paper › Home › HeroCarousel).
+ * Hero carousel.
  * Infinite loop: slides are placed around a continuous position, so there is no first or last.
  * Auto-advances every 6s; only the centre slide shows its text.
  * Pause button, dots, drag/swipe with momentum, trackpad and arrow keys.
@@ -293,7 +293,7 @@ export default function Carousel() {
                       {s.cta}
                     </Button>
                   </div>
-                  {/* Slide counter, centre slide only (Paper › HeroSlide / Active › Counter) */}
+                  {/* Slide counter, centre slide only */}
                   <span className="hc-count" aria-hidden="true">
                     {String(i + 1).padStart(2, '0')} / {String(COUNT).padStart(2, '0')}
                   </span>

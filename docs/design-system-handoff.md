@@ -1,7 +1,9 @@
 # Sebenarnya.my — Design System Handoff
 
 Untuk: agent coding (Claude Code) yang akan implement design system baru ke repo `DM3F/sebenarnya.my` (branch `endahbyu`).
-Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork") dan Paper file `sebenarnya.my` (`01M7VAW17RGCJXGYKR590PX12M`, page "Design system" & "Artwork").
+Rujukan awal: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork").
+
+> **Sumber kebenaran:** kod dalam repo ini (`app/tokens.css`, `app/ui.css`, `components/ui/`) bersama [`design.md`](design.md) dan [`design-system-rules.md`](design-system-rules.md). Fail Paper `sebenarnya.my` **bukan lagi rujukan**: kanvasnya tidak sama dengan design semasa. Jangan salin nilai atau susun atur daripada Paper.
 
 > Checklist kemajuan: [`plan.md`](plan.md) — kemas kini bersama fail ini setiap commit.
 
@@ -32,7 +34,7 @@ Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork"
 
 ## 2. Design tokens
 
-✅ **Satu set nama token** dipakai di Paper, situs, CMS dashboard dan browser extension — nama ikut Paper (namespace Tailwind v4 + warna semantik gaya shadcn). Sumber: `app/tokens.css` (sama dengan Paper › Design tokens; boleh ditampal terus ke `@theme` Tailwind). Shadow hanya dalam kod (Paper belum ada jenis token shadow).
+✅ **Satu set nama token** untuk situs, CMS dashboard dan browser extension (namespace Tailwind v4 + warna semantik gaya shadcn). Sumber tunggal: `app/tokens.css` (boleh ditampal terus ke `@theme` Tailwind). Tiga lapis: primitive → semantic → component; peraturan di [`design-system-rules.md`](design-system-rules.md).
 
 ### 2.1 Palette (primitive — JANGAN guna dalam komponen)
 `--color-white #FFFFFF` · `--color-grey-99 #FDFCFC` (eggshell) · `--color-grey-95 #F5F3F1` (warm taupe) · `--color-grey-91 #EBE8E4` (stone) · `--color-grey-82 #D7D2CC` (pill edge) · `--color-grey-62 #A59F97` (ash, hiasan sahaja) · `--color-grey-50 #878179` (field edge) · `--color-grey-43 #6F6A63` (smoke) · `--color-grey-41 #6B6A68` · `--color-grey-25 #44403B` (graphite) · `--color-black #000` · `--color-red #E8302A` · `--color-red-dark #C8211C` · `--color-blue #3A46F5` · `--color-azure #2F5FD0` · `--color-orange #E08A00` · `--color-orange-dark #A35A00` · `--color-green #1FA463` · `--color-green-dark #137A49`
@@ -62,7 +64,7 @@ Sumber design: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork"
 | `--color-verdict-*-dot` | red / orange / blue / green | titik verdict |
 
 Saiz kawalan guna spacing: tinggi `--spacing-44` (min sasaran sentuh), search `--spacing-56`, padding sisi `--spacing-20`, radius `--radius-full`.
-(Mode dark ada dalam Paper "11 · Forms & themes" — belum wajib.)
+(Mode dark belum wajib.)
 
 ### 2.3 Typography
 Font: **Manrope** 300/400/500/600 untuk semuanya (`--font-sans`) — kandungan, tajuk, navigasi dan kawalan UI.
@@ -123,7 +125,6 @@ import { Icon } from '@/components/ui';
 - Dipakai: ArrowLeft, ArrowRight, ArrowUpRight, ChevronDown/Left/Right, Search, X, MessageSquareText, Flag, Check, Link, CloudUpload, Share, Download, Calendar, Play, Pause.
 - **Pengecualian:** logo jenama (Facebook, Instagram, Threads, X, TikTok) bukan dalam Lucide → kekal SVG jenama (`data/content.js`).
 - Jangan guna glyph teks (↗ → ‹ ›), SVG tulis tangan atau set ikon lain. Jangan override `stroke-width` dalam CSS.
-- Paper: Design system › 12 — Components › Icons · Lucide.
 
 ### 2.7 Layout
 Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1624 = 81px side padding), rails 1180, side 32 / 16. Editorial grid 12 kolum, gap 12 (heading span 7, copy col 9–12). Breakpoints: `--breakpoint-nav` 1100 · `--breakpoint-stack` 900 · `--breakpoint-type` 600 (rujukan; media query tak boleh baca variable).
@@ -213,7 +214,7 @@ Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px
 - `tone="single"`: perkataan guna warna text verdict.
 - Selalu dot + perkataan + agensi (WCAG 1.4.1). Varian: `palsu | waspada | makluman | benar` (page Artikel ada juga "Penjelasan" — petakan ke `benar`).
 
-### Nav/Header ✅ (ikut Paper Artwork › Home › Nav/Header; master di Design system › 12 — Components › Nav/Header)
+### Nav/Header ✅
 Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLinks`, `claimLink`):
 - Kiri logo 133×40 · tengah `NavLink` **Utama**, **Artikel** + `DropdownMenu` **Tentang Kami ▾** (Tentang kami, Logo) · kanan `Tabs mode="toggle"` BM/EN + `Button` filled **Salur Kepada Kami**.
 - Bar: bg `--color-background`, border bawah 1px `--color-border`, padding 16 / 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 24.
@@ -221,23 +222,23 @@ Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLin
 - Segmented BM/EN: border 1px `--color-muted-strong`, padding 2, gap 2; item 44×44 min, padding 0 12, Body 16; aktif bg `--color-background` + border 1px `--color-border`, semibold, `--color-foreground`; tidak aktif `--color-muted-foreground`.
 - Dropdown: panel bg `--color-background`, border 1px `--color-border`, radius `--radius-md`, padding 8, `--shadow-float`; item 44px, padding 10 16, radius 8, hover/aktif `--color-muted`. Tutup dengan Escape (fokus balik ke trigger), klik luar, atau blur.
 - ≤1100px: nav jadi panel (butang menu 44×44); anak dropdown disenarai di bawah label kumpulan. ≤600px: butang "Salur Kepada Kami" pindah ke dalam panel, logo max 140.
-- Font: semua label header (NavLink, dropdown, BM/EN, butang "Salur Kepada Kami") guna **Manrope** (`--font-sans`), sama dengan Paper. Kawalan UI lain juga Manrope (Inter dibuang).
+- Font: semua label header (NavLink, dropdown, BM/EN, butang "Salur Kepada Kami") guna **Manrope** (`--font-sans`). Kawalan UI lain juga Manrope (Inter dibuang).
 - "Hubungi kami" belum dalam dropdown — tiada page `/contact/` lagi.
 
 Baseline asal dari Figma:
 - Wide: `padding 16; flex space-between; bg --color-background`. Logo 133×40 dalam slot 160×56. Nav items: Chip tanpa border (active bg `--color-muted`), gap 4: Utama, Artikel, Tentang Kami ▾ (dropdown), Berita dan Galeri, Salur Kepada Kami. Kanan: Language switcher + Button filled "Tanya AIFA".
 - Compact (<1100): baris 1 logo + utilities, baris 2 nav.
 - Dropdown menu: `padding 8; radius 12; bg canvas; border 1px --color-border`; item 44px, padding 10px 16px, Label/16. Item: Tentang kami, Logo, Hubungi kami.
-- Header dalam artwork Paper sekarang: tinggi 120, padding sisi 81, nav gap 45, language switcher bg `#efeef0` dengan BM aktif bg Ink — **selaraskan ke token** (bg `--color-muted`, aktif `--color-primary`).
+- Language switcher **guna token** (bg `--color-muted`, aktif `--color-primary`).
 
-### Hero ✅ (ikut Paper Artwork › Home › Hero)
+### Hero ✅
 `components/Hero.js` + `components/Carousel.js`. Hero: padding atas 96, gap 48; heading group gap 16.
 - Tajuk Display/56 Medium, **2 baris**: "Tidak pasti? / Semak sebelum kongsi." (≤600px: `--text-38`, baris mengalir dengan `text-wrap: balance`, tetap 2 baris).
 - Lede 18/32 Medium `--color-text-secondary`, **2 baris** (69 + 69 aksara): "Portal rujukan rasmi yang disahkan terus oleh kementerian dan agensi. / Tampal tajuk mesej tular di sini, atau tanya AIFA 24 jam di WhatsApp." (≤760px mengalir bebas).
 - `SearchField` max 800, placeholder "Contoh: bantuan tunai WhatsApp", ralat bawah field.
 - Bawah search (gap 16): `ChipRow` "Carian popular:" (Body/14 `--color-muted-foreground`) + 4 `Chip`: Bantuan tunai · RON95 · Hujan lebat · Lesen memandu. Setiap kata kunci mesti pulangkan sekurang-kurangnya satu semakan; klik = cari terus (`/article?q=`).
 
-### HeroCarousel ✅ (Paper › Home › HeroCarousel)
+### HeroCarousel ✅
 - Slide 960×480 (lebar `min(960, 100vw − 128)`), radius `--radius-card`, gap 20; slide tengah di tengah, jiran kiri/kanan mengintai.
 - **Hanya slide tengah tunjuk teks** (eyebrow, tajuk, teks, CTA, kaunter); slide sisi imej sahaja dengan scrim gelap 25%. Teks muncul selepas slide berhenti (fade .5s, delay .6s).
 - Kandungan: kiri 64, lebar max 484, gap 16. Eyebrow Verdict/13 putih + dot 8px warna `--color-verdict-*-dot` (halo 3px 25%) — "PALSU · KPDN". Tajuk Heading/48 Medium putih 2 baris (`title` + `titleEm`). Teks Body/16 putih, max 400. CTA pill `--color-background` + teks `--color-foreground` + anak panah.
@@ -246,21 +247,21 @@ Baseline asal dari Figma:
 - Kawalan: pill dots bg `--color-muted` h48 padding 20 gap 12; dot 8 `--color-border-strong`, aktif 32 lebar dengan isian progres `--color-foreground` 6s; butang jeda/main 48 bulat `--color-muted`.
 - **Autoplay 6s**; jeda/main; mula dijeda jika `prefers-reduced-motion`. Seret/swipe, trackpad, kekunci ←/→ (gallery boleh difokus). Klik slide sisi = bawa ke tengah; klik slide tengah = buka artikel.
 - ≤900px: lebar `100vw − 64`, tajuk 36/42. ≤700px: imej atas (16:10), teks bawah, tajuk 28/34, slide sisi 50% opacity.
-- Tajuk seksyen lama "Semakan Fakta Popular" dibuang (Paper tiada).
+- Tajuk seksyen lama "Semakan Fakta Popular" dibuang.
 
-### Footer ✅ (Paper › Footer; `components/Footer.js`)
+### Footer ✅
 Border-top 1px `--color-border`, padding 96 atas / 32 bawah, sisi 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 64. Kiri: logo 180 + teks Medium 18/24 (max 400). Kanan: 3 kolum lebar 180, gap 48 — **Sosial** (teks sahaja, buka di tab baharu), **Semak & Lapor** (Semak Fakta, AIFA, Salur Kepada Kami), **Sebenarnya.my** (Tentang Kami, Berita dan Galeri). Tajuk kolum 14 semibold UPPERCASE `--tracking-label` `--color-muted-foreground`; pautan 16/24 Medium, gap 12, garis bawah semasa hover. Hak cipta 14/21 `--color-muted-foreground`. ≤1100 bertindan; ≤600 kolum 2 sebaris.
 
-### Halaman Tentang Kami ✅ (Paper › Artwork › Tentang Kami; `components/AboutUs.js`)
+### Halaman Tentang Kami ✅
 - **Hero:** kad foto `--radius-lg`, padding 56/40/64, tinggi min(755px, 85svh). Atas: "Ikuti kami" 36/42 + 4 butang sosial 48 bulat (`--color-card`, ikon jenama 24). Bawah: tajuk 48/52 + lead 24/32, putih.
 - **Empat fungsi:** tajuk 56 rata kanan. Kiri: kad pilihan 560×440 `--color-muted-strong` (36/42, nombor `/01` tnum, teks 18/28) + butang ‹ › 44 + bar kemajuan 3px (ibu jari 25%, gelongsor .45s `--ease-in-out`). Kanan: 3 kad kecil `--color-muted` (24/32, 16/24) — klik untuk pilih. Kandungan masuk .32s `--ease` (opacity + 6px + blur 2px), kad kecil berperingkat 40ms. Reduced motion: pudar sahaja.
 - **Berita dan Galeri:** tajuk 56/60, intro 24/32. Berita 3 kad (border 1px, tag pil muted 14/20, tajuk 24/32). Galeri = akordion elastik foto sahaja (lihat Kemas kini 21 Nov, malam). Hover kad berita (mouse sahaja): imej skala 1.03.
 - **Logo:** `LogoKit headingLevel={2}` — gaya sama dengan page `/logo` (tajuk 36/42, pratonton 475 muted, butang `Button` filled).
 
-### Halaman detail artikel ✅ (Paper › Artwork › detail artikel page; `components/ArticleDetail.js`)
+### Halaman detail artikel ✅
 Padding 32 atas / 96 bawah, sisi 81 (48 ≤1280, 24 ≤900, 16 ≤600). "Semua artikel" 16/24 Medium + ikon 20. Tag: `Verdict tone="single"` dengan agensi + pil kategori 14/20 Medium, kedua-duanya border .5px `--color-border`, tinggi 44. Tajuk 48/52 Medium `--tracking-display` (32/36 ≤600), subtajuk 18/28 `--color-text-secondary`, meta 14/21 `--color-muted-foreground` + butang Kongsi (border 1px, 16/24 Medium, ikon 20). Imej 1100 × 2:1, `--radius-card` (4:3 ≤600). Lajur bacaan 680: lead 18/28, garis pemisah, "Penjelasan rasmi" 24/32 Medium.
 
-### Halaman Artikel ✅ (Paper › Artwork › Artikel; `components/Articles.js`)
+### Halaman Artikel ✅
 - Sisi `--articles-side` 96 / 48 / 24 / 16, padding atas 40, bawah 96.
 - **Penapis:** carian pill 44 (border 1px `--color-border-strong`, ikon Search 18, input Manrope 16) + 2 `<select>` asli bergaya pill 44 (border `--color-border`, label 16 Medium, ChevronDown Lucide) + kiraan 14 `--color-muted-foreground`. Chip kategori pill 44 bg `--color-muted`, label 16 Medium, dot verdict 7px; terpilih = `--color-primary` + `--color-primary-foreground`; baris boleh skrol dengan butang ‹ › 44 bila melimpah.
 - **Hasil:** jika >4 hasil — kad utama (960:440, tinggi 560, radius 20, scrim bawah, tajuk 28/36 Medium putih, tarikh 14) + senarai sisi 4 item (thumb 160×122 radius 12, tajuk 20/26 Medium, tarikh 14); kemudian grid 4 kolum (3 ≤1280, 2 ≤900, 1 ≤600), gap 32/24. Kad grid: bg `--color-muted`, radius 20, padding 8/8/20, foto 220 radius 12, tajuk 20/26, tarikh 14.
@@ -272,7 +273,7 @@ Pill `padding 10px 22px 10px 18px; min-height 44`, ikon chat 24px + "Tanya AIFA"
 
 ### Kad
 - **Article card (page Artikel):** lebar 230; imej 276 tinggi radius 26→`--radius-card`; pill verdict kiri atas (bg white 90% + blur 10, padding 6px 10px, dot 7px, 13 SemiBold); avatar agensi 30px bulat kiri bawah; tajuk Heading/20; tarikh Body/14 @60%.
-- **FactCheckCard ✅ (Home "Semakan fakta terkini"; Paper › 06 › FactCheckCard – States):** `components/FlipCard.js`, 340×480, radius `--radius-card`. Flip dikekalkan: hover tetikus, klik/tap, Enter/Space (fokus pindah ke sisi yang kelihatan), `rotateY(180deg)` .6s `cubic-bezier(.77,0,.175,1)`, tiada animasi jika reduced motion.
+- **FactCheckCard ✅ (Home "Semakan fakta terkini"):** `components/FlipCard.js`, 340×480, radius `--radius-card`. Flip dikekalkan: hover tetikus, klik/tap, Enter/Space (fokus pindah ke sisi yang kelihatan), `rotateY(180deg)` .6s `cubic-bezier(.77,0,.175,1)`, tiada animasi jika reduced motion.
   - Depan: foto penuh; scrim atas tipis (0.35→0, 120px) di belakang logo dan scrim bawah pekat (0.8→0.55→0, 300px) di bawah teks supaya teks putih kekal ≥4.5:1 atas sebarang foto; **logo agensi 44 putih (logo 30, atau monogram) di kanan atas**; **pill verdict (dot + PERKATAAN 13 semibold) + tajuk 24/125% Medium putih di bawah** (inset 24); tiada ikon panah.
   - Belakang: bg `--color-muted`, border 1px `--color-border`, padding 24; `● PALSU · MCMC` (perkataan warna `--color-verdict-*`) + avatar 36; tajuk 20/130% Medium; ringkasan 16/24 `--color-text-secondary`; meta 13 `--color-muted-foreground` "Disemak {tarikh}" + "Sumber: kenyataan rasmi {agensi}" atas garisan; CTA penuh lebar tinggi 48, padding 6/6/6/20, `--color-primary`, label 16 Medium "Baca semakan" + bulatan ↗ putih 36 (konsentrik dengan radius pill); hover `--color-primary-hover` + ikon geser 2px ↗; tekan `scale .96`. Kedua-dua sisi tepat 480px (`box-sizing: border-box`) supaya tinggi kad tidak berubah semasa flip; ringkasan max 4 baris.
 - **Seksyen "Semakan fakta terkini" ✅:** `components/Latest.js`. Padding atas/bawah 96 (64 ≤1280, 48 ≤600), sisi `--latest-side` 96 / 48 ≤1280 / 24 ≤900 / 16 ≤600 untuk tajuk dan butang sahaja — **baris kad full-bleed hingga tepi skrin** (seperti hero carousel), kad pertama sejajar dengan tajuk; gap 48; tajuk Heading/36 Medium **2 baris seimbang (22 + 22 aksara): "Semakan fakta terkini, / disahkan agensi rasmi."** (≤600px baris mengalir dengan `text-wrap: balance`, kekal 2 baris). Baris kartu = **gelangsar automatik tanpa hujung** (12 semakan terbaru, setiap satu gambar unik): kad duduk atas "cincin" — kad yang keluar di kiri masuk semula di kanan, tiada salinan pendua. Kelajuan 36px/s; **hover tetikus = perlahan hingga berhenti, mouse leave = laju semula** (ease ~0.2s). Juga berhenti semasa kad diflip, fokus papan kekunci di dalam (kad yang difokus dibawa ke pandangan), diseret (sentuh/pen), dan sentiasa di bawah `prefers-reduced-motion`. Butang ‹ › 44 bulat (border `--color-border`) gelongsor tepat satu kad; "Lihat lagi" `Button` outline dengan border `--color-foreground`, di tengah.
@@ -294,17 +295,17 @@ Kad 220×560 radius 20 (bg gradient ikut platform), kad aktif 920 lebar + `0 24p
 
 ---
 
-## 5. Pemetaan page → artboard Paper / Figma
+## 5. Pemetaan page → komponen
 
-| Route | Paper artboard | Figma node |
-|---|---|---|
-| `/` | Home | `3:203` |
-| `/article` | Artikel | `20:3033` |
-| `/about-us` | Tentang Kami | `4:1359` |
-| `/logo` | Logo \| Sebenarnya.my | `4:1701` |
-| `/article/[slug]` | Mesej pautan pendaftaran… | `4:1876` |
-| (rujukan) | 01–08 Design system | `14:14` … `14:1347` |
-| (komponen) | 09–11 (gambar render) | `25:50`, `25:53`, `25:56` |
+| Route | Komponen |
+|---|---|
+| `/` | `Hero`, `Carousel`, `Latest` + `FlipCard`, `Viewership`, `Bento`, `Stories` |
+| `/article` | `Articles` |
+| `/article/[slug]` | `ArticleDetail` |
+| `/about-us` | `AboutUs`, `SphereGallery`, `LogoKit` |
+| semua | `Header`, `Footer`, `Chatbot`, `ClaimForm` |
+
+Node Figma (rujukan awal sahaja): `/` `3:203` · `/article` `20:3033` · `/about-us` `4:1359` · `/article/[slug]` `4:1876` · design system `14:14`–`14:1347`.
 
 Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma perlu dimuat turun ke `public/` (URL Figma MCP tamat 7 hari).
 
@@ -317,10 +318,10 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 3. ✅ Tambah `app/tokens.css` (bahagian 2) dan import.
 4. ✅ Petakan variable lama dalam `:root` `global.css` (bahagian 3). Semak visual setiap page masih perlu.
 5. ✅ Bina `components/ui/` (Button, Chip, Tabs, Verdict, SearchField). Belum: guna dalam komponen sedia ada.
-6. ✅ Header + Hero (ikut Paper). Belum: Footer, Tanya AIFA.
+6. ✅ Header + Hero. Belum: Footer, Tanya AIFA.
 7. Kemas section ikut page (bahagian 4 & 5), satu commit setiap section.
 8. Ganti hex keras yang tinggal dengan token.
-9. `npm run build` (export statik mesti lulus), semak dengan `npm run dev`, banding screenshot dengan Paper.
+9. `npm run build` (export statik mesti lulus), semak dengan `npm run dev`, `npm run lint:ds`, dan semak visual desktop + 390px.
 10. Buka PR ke `endahbyu`.
 
 ## 7. Perkara terbuka (sahkan dengan user)
@@ -328,21 +329,21 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - Page Artikel masih guna Montserrat dan radius 26 — tukar ke Manrope / 20 (cadangan: ya).
 - Perlu mode Dark sekarang atau kemudian.
 
-## Home — bagian bawah (Paper › Home › 3KA-0, 3IW-0)
+## Home — bagian bawah
 
 - **Tentang ringkas** (`.viewership`, `.partners`): sisi `--brief-side` 96 → 48 (≤1280) → 24 (≤960) → 16 (≤600). Kicker 24 Medium, lead 20/130%. Angka statistik `clamp(48px, 5vw, 72px)` Medium, keterangan 16 Light. Label mitra 14 semibold uppercase `--color-muted-foreground`, jarak logo 40, ticker tetap.
 - **Aktiviti media sosial terkini** (`.activity`): padding sisi 96, gap 32, judul Heading/36 Medium.
 - **WSIS PromoBanner** (`components/Bento.js`, `.wsis-banner`): baris flex tinggi 560, gap 24. Kartu cerita flex 1.62, padding 48, `--radius-lg`, latar `--color-black`; eyebrow merah merek (bukan aksi); CTA pil terang 44px, label 16/24 Medium, ikon Lucide `ArrowRight`, scale .96 saat ditekan → `/about-us/#berita-galeri`. Media flex 1, border 1px, `--radius-lg`. Menumpuk di ≤1100.
 - **SocialCarousel** (`components/Stories.js`): tanpa judul sendiri (judul dari `.activity`). Ukuran dari lebar viewport: kecil = 15.3%, besar = sisa, gap 8; ≤700: kecil max(16%, 56), besar min(80%, 380). Kartu `--radius-lg`, progress track `--color-muted-strong` / bar `--color-foreground`, tombol bulat 44px outline dengan focus ring.
 
-## Penyelarasan dengan Paper (Tentang Kami, Artikel, detail artikel)
+## Catatan halaman (Tentang Kami, Artikel, detail artikel)
 
-- **Artikel** (`components/Articles.js`): mengikut Paper terkini — baris kartu utama + senarai sisi dibuang; semua hasil dalam grid kartu 4 kolom. Chip kategori hanya `Semua` + empat keputusan (Palsu, Penjelasan, Waspada, Makluman). Tajuk kartu kini `box-sizing: border-box` supaya padding kanan 12 dihormati.
-- **Detail artikel**: kolum bacaan `.post-body` 514px (Paper › Body), 18/28.
+- **Artikel** (`components/Articles.js`): baris kartu utama + senarai sisi dibuang; semua hasil dalam grid kartu 4 kolom. Chip kategori hanya `Semua` + empat keputusan (Palsu, Penjelasan, Waspada, Makluman). Tajuk kartu kini `box-sizing: border-box` supaya padding kanan 12 dihormati.
+- **Detail artikel**: kolum bacaan `.post-body` 514px, 18/28.
 - **Tentang Kami › About** (`.about-intro`, data `aboutIntro`): pill label 14 Medium berbingkai `--color-border`; lead 24/32 lebar 700. Tiga kartu tinggi 340, gap 12, `--radius-card`: (1) `--color-primary` dengan teks 24 Medium + bahagian `--color-muted-foreground` dan penunjuk status (suis hiasan, `--color-link`); (2) `--color-muted-strong` dengan pill 16/24 Medium; (3) `--color-muted` dengan angka 40 Light + bar putus-putus keputusan (dikira daripada `articles`). Baris fakta: judul 20 Medium tengah, angka 40 Light, label 14 `--color-muted-foreground`. ≤1100 kartu menindan, fakta 2×2.
 - Bahagian "Bagaimana kami menyemak fakta" dibuang daripada halaman kerana tiada dalam canvas (data `howItWorks` dikekalkan).
 - **Mobile fixes**: `.about-intro__lead` `flex: none` ≤1100 (flex-basis 700 jadi tinggi dalam kolum); `.about-fn-card` `flex: none` ≤700 (kad kecil Empat fungsi runtuh ke 48px); `.articles-card` `box-sizing: border-box` (kad melimpah 28px daripada slot grid).
-- **Hero carousel**: teks hanya pada slaid tengah (slaid sisi: gambar sahaja, fade .2s keluar / .3s masuk); pembilang `03 / 05` 14px tnum dalam pill hitam 60% di kanan bawah slaid aktif (disembunyikan ≤600). Slaid RON95 guna foto pam minyak seperti Paper.
+- **Hero carousel**: teks hanya pada slaid tengah (slaid sisi: gambar sahaja, fade .2s keluar / .3s masuk); pembilang `03 / 05` 14px tnum dalam pill hitam 60% di kanan bawah slaid aktif (disembunyikan ≤600). Slaid RON95 guna foto pam minyak.
 
 ## Fasa 5 — Pembersihan (21 Nov 2026)
 
@@ -363,10 +364,10 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 
 ## Kad artikel gaya baharu (21 Nov 2026, rujukan elevenlabs.io)
 
-`components/Articles.js › GridCard`, `.articles-card` dalam `global.css`; Paper › Artwork › Artikel dikemas kini sama.
+`components/Articles.js › GridCard`, `.articles-card` dalam `global.css`.
 
 - Kad: latar `--color-card`, border 1px `--color-border`, radius `--radius-card` (20), `overflow: hidden`, tiada bayang.
-- Foto: full-bleed di atas (dipotong oleh radius kad), `aspect-ratio: 16 / 10` (Paper: 340×212), latar `--color-muted-strong` sementara imej dimuat.
+- Foto: full-bleed di atas (dipotong oleh radius kad), `aspect-ratio: 16 / 10`, latar `--color-muted-strong` sementara imej dimuat.
 - Pill verdict atas foto: putih solid `--color-card`, 16px dari tepi, padding 8/12; teks kekal 13 Semibold UPPERCASE warna verdict.
 - Avatar agensi: kiri bawah foto, 16px dari tepi.
 - Badan (`.articles-card__body`): padding 20/24/24 (mobile 16/20/20), jarak 8; tajuk 20/26 Medium (mobile 18/24); tarikh 14 **Medium** `--color-muted-foreground`.
@@ -374,16 +375,16 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 
 ## Keputusan 21 Nov 2026
 
-- Paper ↔ `design.md` bercanggah → **ikut `design.md`**: kad media sosial kini hitam polos (gradient platform dibuang); teks meta (tarikh kad, `.fc-meta`, `.story-meta`, `.post-meta`, meta kad logo) = Medium 500.
+- **Ikut `design.md`**: kad media sosial kini hitam polos (gradient platform dibuang); teks meta (tarikh kad, `.fc-meta`, `.story-meta`, `.post-meta`, meta kad logo) = Medium 500.
 - Tanya AIFA = `--color-brand-strong` (kekal).
 - Skop: laman web sahaja — CMS & extension dibuang dari plan.
 
 ## Kemas kini 21 Nov 2026 (petang)
 
-- **Semakan fakta terkini:** butang "Lihat lagi" dibuang (kod + Paper).
+- **Semakan fakta terkini:** butang "Lihat lagi" dibuang ().
 - **Logo:** halaman `/logo` dibuang. Seksyen Logo dalam Tentang Kami ada `id="logo"`; menu Tentang Kami › Logo → `/about-us/#logo`. `PageTransition` kini mendarat pada `#hash` selepas transisi (dulu sentiasa ke atas).
-- **Kad artikel:** border kini `--color-muted-strong` (hairline lembut, kod + Paper); **tiada hover pada border** — hover hanya zoom foto 1.03.
-- **Tentang Kami, seksyen 2:** diganti satu pernyataan dua baris, gaya sama dengan tajuk "Semakan fakta terkini" (36/42 Medium; mobile 28/34): "Setiap dakwaan disemak bersama agensi rasmi, / sebelum jawapannya sampai kepada anda." Kad & baris fakta lama dibuang. Paper dikemas kini (21 Nov).
+- **Kad artikel:** border kini `--color-muted-strong` (hairline lembut); **tiada hover pada border** — hover hanya zoom foto 1.03.
+- **Tentang Kami, seksyen 2:** diganti satu pernyataan dua baris, gaya sama dengan tajuk "Semakan fakta terkini" (36/42 Medium; mobile 28/34): "Setiap dakwaan disemak bersama agensi rasmi, / sebelum jawapannya sampai kepada anda." Kad & baris fakta lama dibuang.
 - **Empat fungsi:** autoplay setiap 5s (`AUTOPLAY_MS`); berhenti bila hover atau fokus, bila tab tersembunyi, dan tiada autoplay dengan `prefers-reduced-motion`. Pilihan manual mula semula pemasa. `aria-live` hanya `polite` bila pengguna yang mengawal.
 - **Galeri media sosial** (`components/Stories.js`, `.social-gallery`), menggantikan slider:
   - 5 kad sebaris (Instagram, Threads, X, TikTok, Facebook), tinggi 560, gap 8, `--radius-lg`. Kad terbuka `flex-grow: 4`, kad lipat `1`. Hover / fokus / ketik membuka kad.
@@ -402,7 +403,6 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
   - Nod: butang bulat, border 2px putih 20%, `--shadow-float`; hover (mouse) skala 1.2, tekan .97, fokus outline `--color-ring`.
   - Klik/ketuk → `<dialog>` asli, **foto sahaja tanpa kotak teks** (alt = kapsyen), butang tutup 44px ikon X; Esc/backdrop menutup. Masuk: opacity + scale .96 → 1, 300ms `--ease-out`; backdrop 200ms. Reduced motion: fade sahaja.
   - Petunjuk 14/20 `--color-muted-foreground`: "Seret untuk memutar, pilih foto untuk membesarkan."
-  - Paper dikemas kini (21 Nov): snapshot statik sfera dalam Tentang Kami › Galeri.
 - **Galeri media sosial — kad terlipat** (`.social-card__tint`): kembali seperti sebelum galeri elastik — panel dakwat dengan gradient warna platform (Instagram, Threads, X, TikTok, Facebook; `ds-allow: platform brand colour`) dan ikon platform 48px di tengah (32px ≤700). Foto hanya kelihatan pada kad terbuka.
   - Buka: tint pudar 250ms `ease`, ikon pudar + skala .8 dalam 120ms. Tutup: tint dan ikon kembali selepas 250–300ms, bila baris sudah stabil. Hover (mouse) pada kad terlipat: tint brightness 1.35.
   - Ini menyimpang daripada keputusan design.md "tiada gradient pada kad" atas permintaan pengguna (21 Nov 2026).

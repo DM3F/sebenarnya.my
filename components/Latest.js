@@ -35,7 +35,7 @@ const latest = [...articles]
   }));
 
 /**
- * "Semakan fakta terkini" (Paper › Home).
+ * "Semakan fakta terkini".
  * An endless, slowly gliding row of FactCheckCards: the cards sit on a ring and the
  * one that leaves on the left re-enters on the right, so the row never ends and never
  * shows a duplicate.

@@ -1,7 +1,7 @@
 /* ==========================================================================
    Sebenarnya.my — design tokens
-   ONE naming set shared by Paper, this site, the CMS dashboard and the
-   browser extension. Names follow Tailwind v4 namespaces + shadcn-style
+   ONE naming set shared by this site, the CMS dashboard and the browser
+   extension. This file is the source of truth for every value. Names follow Tailwind v4 namespaces + shadcn-style
    semantic colours, so this block can also be pasted into a Tailwind `@theme`.
 
    Three tiers — change a value in exactly one place:

@@ -2,13 +2,13 @@
 
 Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** setiap kali satu item siap (sama seperti `docs/design-system-handoff.md`).
 
-- Sumber design: Paper `sebenarnya.my` (`01M7VAW17RGCJXGYKR590PX12M`) — page *Design system* (artboard 01–12) dan *Artwork* (Home, Artikel, Tentang Kami, Mesej… ).
+> **Sumber kebenaran:** kod dalam repo ini (`app/tokens.css`, `app/ui.css`, `components/ui/`) bersama [`design.md`](design.md) dan [`design-system-rules.md`](design-system-rules.md). Fail Paper `sebenarnya.my` **bukan lagi rujukan**: kanvasnya tidak sama dengan design semasa. Jangan salin nilai atau susun atur daripada Paper.
 - Spec penuh: [`design-system-handoff.md`](design-system-handoff.md).
 - Branch: `endahbyu`.
 - Skop: **laman web Sebenarnya.my sahaja** (Next.js 16, CSS biasa). CMS dashboard dan browser extension di luar skop tugasan ini (dibuang dari plan, 21 Nov 2026).
 
 **Peraturan tetap**
-- Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`. Nama token sama di Paper dan kod.
+- Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`.
 - Font: **Manrope sahaja** (kandungan, tajuk, navigasi dan kawalan UI). Display 48+ dan angka statistik **400** (`--font-weight-display`); heading 24–36 dan label **Medium 500**. Tiada 700+. Rujuk [`design.md`](design.md).
 - Merah Kebenaran bukan warna aksi (button, link, nav).
 - Ikon: **Lucide** sahaja, melalui `components/ui/Icon.js` (garis 1.75px `absoluteStrokeWidth`, currentColor, `aria-hidden`). Logo jenama (Facebook, TikTok…) kekal SVG jenama.
@@ -25,10 +25,10 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] `app/tokens.css`: primitive, semantic, type scale, weight, spacing, radius, shadow, container, skala mobile
 - [x] Petakan variable lama `:root` dalam `global.css` ke token
 - [x] Peraturan berat tajuk dalam dokumen (display 400, heading 500 — ikut `design.md`)
-- [x] **Satu set nama token Paper ↔ kod** — ikut nama Paper (Tailwind v4 + shadcn). Shadow kekal dalam kod sahaja.
+- [x] **Satu set nama token** dalam `app/tokens.css` (namespace Tailwind v4 + warna semantik gaya shadcn), tiga lapis: primitive → semantic → component.
 - [x] Token untuk overlay media: `--gradient-scrim-media`, `-media-wide`, `-bottom`, `-bottom-short`, `-top`
 - [x] Token motion dalam `tokens.css`: `--duration-fast/base/slow/page`, `--ease-out` (lalai), `--ease-in-out`, `--ease-emphasized`, `--ease-page`. `--ease`/`--slide` lama dibuang; tiada `cubic-bezier` keras lagi kecuali lengkung flip FlipCard
-- [?] Mode dark (Paper artboard 11 · Forms & themes) — sekarang atau kemudian.
+- [?] Mode dark — sekarang atau kemudian.
 
 ## Fasa 2 — Komponen asas (`components/ui/`, `app/ui.css`)
 
@@ -43,51 +43,49 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] Button: saiz `sm` + varian `media` (butang kanvas atas imej) + `secondary`, `iconEnd`
 - [x] Icon button bulat: `IconButton` (44 / 36 / 48), dipakai di carousel, Latest, Tentang Kami, Artikel, dialog
 - [x] Field / Input / Textarea / Select (`components/ui/Field.js`) — dipakai di ClaimForm, Artikel, AIFA
-- [ ] Pagination dots sebagai komponen kongsi (kini hanya dalam HeroCarousel). Pembilang "03 / 05" dipulihkan pada slaid aktif ikut Paper
+- [ ] Pagination dots sebagai komponen kongsi (kini hanya dalam HeroCarousel).
 - [ ] Avatar agensi (30 / 40px)
-- [ ] Semak semula ketepatan dengan Paper 12 › Button, Inputs, Verdict (nilai tepat via `get_computed_styles`)
 
-## Fasa 3 — Komponen jenama & corak (Paper 06, 12 › Card / Home patterns)
+## Fasa 3 — Komponen jenama & corak
 
-- [x] Nav/Header (ikut Paper Home): dropdown "Tentang Kami ▾", nav Utama/Artikel, segmented BM/EN; font label Manrope
+- [x] Nav/Header: dropdown "Tentang Kami ▾", nav Utama/Artikel, segmented BM/EN; font label Manrope
 - [ ] Nav/Header: item "Hubungi kami" (perlu page `/contact/`)
-- [x] Footer (Paper 12 › Footer) — semua halaman
+- [x] Footer — semua halaman
 - [x] Tanya AIFA floating button — merah gelap `--color-brand-strong` (5.56:1, lulus AA), diputuskan 21 Nov 2026
-- [x] Article card (grid Artikel), gaya baharu ala elevenlabs.io: kad putih + border, foto full-bleed, pill verdict putih. Kod + Paper
+- [x] Article card (grid Artikel), gaya baharu ala elevenlabs.io: kad putih + border, foto full-bleed, pill verdict putih
 - [x] FactCheckCard / Flip card: satu kad terbuka pada satu masa, hover intent 90/140ms, buka 0.7s ease-out, tutup 0.45s
 - [x] Seksyen "Semakan fakta terkini": gelangsar automatik tanpa hujung, berhenti bila hover, butang ‹ › (butang "Lihat lagi" dibuang)
 - [x] 20 artikel baharu (Oktober 2026) dengan gambar unik; monogram agensi bila tiada logo
 - [ ] Logo agensi baharu: MOF, JAIS, Kesultanan Pahang, PMO, JPM, Caltex, KTMB (kini monogram)
-- [x] HeroCarousel: infinite loop, teks pada slaid tengah sahaja (ikut Paper), pembilang slaid, autoplay + dots + jeda
+- [x] HeroCarousel: infinite loop, teks pada slaid tengah sahaja, pembilang slaid, autoplay + dots + jeda
 - [x] Page transition antara route (`components/PageTransition.js`, View Transitions API)
 - [x] PromoBanner / Award (WSIS)
-- [x] Galeri media sosial (Aktiviti media sosial): 5 kad elastik tanpa slider, kad terlipat = panel gradient platform + ikon di tengah — kod + Paper (21 Nov)
-- [x] Galeri Tentang Kami: sfera 3D foto bulat (seret + auto-putar), klik → dialog foto sahaja tanpa teks — kod + Paper (21 Nov)
+- [x] Galeri media sosial (Aktiviti media sosial): 5 kad elastik tanpa slider, kad terlipat = panel gradient platform + ikon di tengah
+- [x] Galeri Tentang Kami: sfera 3D foto bulat (seret + auto-putar), klik → dialog foto sahaja tanpa teks
 - [x] AgencyLogoStrip (Sumber kenyataan rasmi)
 - [ ] Band: Closing, Announcement
 - [ ] Timeline (Tentang Kami)
 - [ ] Fungsi card, Feature card, Logo download card
 
-## Fasa 4 — Halaman (Paper › Artwork)
+## Fasa 4 — Halaman
 
 | Route | Artboard | Status |
 |---|---|---|
 | `/` | Home | [x] Header, Hero (+ carian popular), HeroCarousel, Semakan fakta terkini, Tentang ringkas, Aktiviti media sosial (WSIS + SocialCarousel), footer |
-| `/article` | Artikel | [x] Paper + kod: penapis (5 chip keputusan), grid kad 4 kolum, footer (`components/Articles.js`, `components/Footer.js`) |
-| `/article/[slug]` | detail artikel page | [x] Paper + kod: Verdict + pil kategori, tajuk 48/52, meta + Kongsi, imej 1100×550, lajur bacaan 514 (`components/ArticleDetail.js`) |
-| `/about-us` | Tentang Kami | [x] Kod: Hero (foto + Ikuti kami), About (susun atur Paper, kandungan Sebenarnya.my), Empat fungsi, Berita dan Galeri, Logo (`components/AboutUs.js`, `LogoKit.js`). "Bagaimana kami menyemak" dibuang (tiada dalam Paper). Teks templat tenis dalam Paper masih perlu diganti di Paper |
+| `/article` | Artikel | [x] Kod: penapis (5 chip keputusan), grid kad 4 kolum, footer (`components/Articles.js`, `components/Footer.js`) |
+| `/article/[slug]` | detail artikel page | [x] Kod: Verdict + pil kategori, tajuk 48/52, meta + Kongsi, imej 1100×550, lajur bacaan 514 (`components/ArticleDetail.js`) |
+| `/about-us` | Tentang Kami | [x] Kod: Hero (foto + Ikuti kami), About, Empat fungsi, Berita dan Galeri, Logo (`components/AboutUs.js`, `LogoKit.js`). "Bagaimana kami menyemak" dibuang. |
 | ~~`/logo`~~ | — | Dibuang (21 Nov 2026). Logo kini seksyen `#logo` dalam Tentang Kami; menu Tentang Kami › Logo menuju `/about-us/#logo` |
 
 - [x] Hero: tajuk baru "Tidak pasti? Jangan kongsi / Semak dakwaan, Temukan kebenaran"
-- [ ] Hero: kemas kini tajuk yang sama di Paper
 
 ## Keputusan arah visual (docs/design.md, 21 Nov 2026)
 
-- [x] Satu keluarga font: Manrope sahaja — kod, handoff, Paper
-- [x] Display (tajuk besar) weight 400 — kod, handoff, Paper (`--font-weight-display`)
-- [x] Angka statistik weight 400 — kod, handoff, Paper
+- [x] Satu keluarga font: Manrope sahaja — kod, handoff
+- [x] Display (tajuk besar) weight 400 — kod, handoff
+- [x] Angka statistik weight 400 — kod, handoff
 - [x] Tanya AIFA merah gelap `--color-brand-strong` (diputuskan 21 Nov 2026)
-- [x] Konflik Paper ↔ design.md: **ikut design.md** (kad media sosial tanpa gradient, meta 500)
+- [x] Bila ragu, **ikut design.md** (kad media sosial tanpa gradient, meta 500)
 
 ## Fasa 5 — Pembersihan
 
@@ -100,7 +98,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 
 ## Fasa 6 — Kualiti & serahan (laman web)
 
-- [x] Semakan visual setiap page desktop (1624) + mobile (390) berbanding Paper — lihat [`audit-localhost-vs-paper.md`](audit-localhost-vs-paper.md)
+- [x] Semakan visual setiap page desktop (1440) + mobile (390), axe WCAG 2.2 AA bersih (22 Nov)
 - [x] Aksesibiliti: kontras (semua teks lulus AA — diimbas pada runtime), fokus keyboard (Tab melalui setiap halaman), `prefers-reduced-motion` (autoplay & ticker berhenti)
 - [x] `npm run build` (export statik) lulus
 - [ ] Halaman katalog komponen `/design-system` (dev sahaja) — rujukan visual

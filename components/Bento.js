@@ -3,7 +3,7 @@ import { Button } from '@/components/ui';
 import { withBase } from '@/lib/basePath';
 
 /**
- * WSIS award banner (Paper › Home › Aktiviti media sosial › PromoBanner / Award).
+ * WSIS award banner.
  * Dark story card + trophy photo, 1.62 : 1, 560 tall on desktop.
  */
 export default function Bento() {

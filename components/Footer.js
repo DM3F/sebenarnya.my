@@ -3,7 +3,7 @@ import { footerColumns, socialLinks } from '@/data/content';
 import { withBase } from '@/lib/basePath';
 
 /**
- * Footer (Paper › 12 — Components › Footer; Home › Footer).
+ * Footer.
  * Brand block on the leading side, three link columns on the trailing side,
  * copyright underneath. Column headings are labels, not page headings.
  */

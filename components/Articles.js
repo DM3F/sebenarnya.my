@@ -25,7 +25,7 @@ const SORT_OPTIONS = [
   { id: 'za', label: 'Tajuk Z–A', compare: (a, b) => b.title.localeCompare(a.title, 'ms', { sensitivity: 'base' }) },
 ];
 
-// Category chips: the four verdicts only (Paper › Artikel › Kategori)
+// Category chips: the four verdicts only
 const CHIP_IDS = ['palsu', 'benar', 'waspada', 'makluman'];
 
 const pad = (n) => String(n).padStart(2, '0');
@@ -55,7 +55,7 @@ function filterArticles(query, category, range, from, to, sort) {
 }
 
 /**
- * Artikel page (Paper › Artwork › Artikel).
+ * Artikel page.
  * Filters: search, date range, sort, result count, category chips.
  * Results: a 4-column card grid.
  */

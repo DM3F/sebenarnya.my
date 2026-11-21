@@ -26,7 +26,7 @@ const agency = {
   jpwpkl: 'JPWPKL (Jabatan Pendidikan WP Kuala Lumpur)',
 };
 
-/* Header — follows Paper › Home › Nav/Header.
+/* Header navigation.
    An item with `children` renders as a dropdown (the parent has no page of its own). */
 export const navLinks = [
   { label: 'Utama', href: '/' },
@@ -187,7 +187,7 @@ export const heroSlides = [
     title: 'RON95 tidak naik',
     titleEm: '20 sen esok.',
     text: 'Mesej yang tular itu palsu. Harga bahan api diumumkan secara rasmi setiap minggu.',
-    image: post('budimadani.jpg'), // Paper: petrol pump photo (the article keeps its own)
+    image: post('budimadani.jpg'), // petrol pump photo (the article keeps its own)
     cta: 'Baca semakan',
   },
   {
@@ -208,7 +208,7 @@ export const viewershipStats = [
   { value: 200, unit: 'ribu', text: 'Mesej diproses Aifa, pembantu AI, sejak Januari 2025.' },
 ];
 
-/* About us page (app/about-us; Paper › Artwork › Tentang Kami) */
+/* About us page (app/about-us) */
 const aboutImg = (name) => withBase(`/images/about/${name}`);
 
 // Hero: photo card with "Ikuti kami" + social icons on top, title and lead at the bottom.

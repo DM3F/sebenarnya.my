@@ -5,6 +5,10 @@ visual direction live in [`design.md`](design.md); exact component specs in
 [`design-system-handoff.md`](design-system-handoff.md). This file says **how to
 write the code** so the system stays easy to update.
 
+**Source of truth:** the code (`app/tokens.css`, `app/ui.css`, `components/ui/`)
+and these docs. The Paper file is no longer a reference — its canvas does not
+match the current design, so never copy values or layouts from it.
+
 Stack: Next.js 16 (App Router, static export), React 19, JavaScript, plain CSS
 (no Tailwind), Lucide icons, Manrope only.
 
@@ -88,6 +92,6 @@ design needs a new look, add a variant in `ui.css` first.
 
 1. Can an existing component + variant do it? Use it.
 2. Need a new look? Add a variant (knob reassignment) in `ui.css`.
-3. Need a new value? Add a semantic token in `tokens.css` (and a primitive only if the raw value is new). Mirror the name in Paper/Figma variables.
+3. Need a new value? Add a semantic token in `tokens.css` (and a primitive only if the raw value is new).
 4. Run `npm run lint:ds` and `npm run build`.
 5. Update this file and `design-system-handoff.md` if the API changed.

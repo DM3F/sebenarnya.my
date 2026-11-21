@@ -308,7 +308,7 @@ input::placeholder { color: var(--color-foreground); }
   .menu-panel .menu-claim { display: block; }
 }
 
-/* Hero — centered headline, lede and search (Paper › Home › Hero) */
+/* Hero — centered headline, lede and search */
 .hero {
   color: var(--color-foreground);
   background-color: var(--color-background);
@@ -511,7 +511,7 @@ input::placeholder { color: var(--color-foreground); }
   .agencies small { text-align: left; }
 }
 
-/* Aktiviti media sosial terkini (Paper › Home › WSIS section) */
+/* Aktiviti media sosial terkini */
 .activity {
   --activity-side: var(--spacing-96);
   display: flex;
@@ -784,7 +784,7 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Bento: pill buttons */
 
-/* Semakan fakta terkini (Paper › Home) — components/Latest.js + FlipCard.js */
+/* Semakan fakta terkini — components/Latest.js + FlipCard.js */
 .latest-checks {
   --latest-side: var(--spacing-96); /* title and controls inset; the card row bleeds past it */
   display: flex;
@@ -842,7 +842,7 @@ input::placeholder { color: var(--color-foreground); }
   
 }
 
-/* "Lihat lagi": outline pill with a foreground edge (Paper) */
+/* "Lihat lagi": outline pill with a foreground edge */
 
 @media (max-width: 1280px) { .latest-checks { --latest-side: var(--spacing-48); padding: var(--spacing-64) var(--latest-side); } }
 @media (max-width: 900px)  { .latest-checks { --latest-side: var(--spacing-24); padding: var(--spacing-64) var(--latest-side); gap: var(--spacing-32); } }
@@ -1097,7 +1097,7 @@ input::placeholder { color: var(--color-foreground); }
   .fc-photo, .fc-read, .fc-read-icon { transition: none; }
 }
 
-/* Footer (components/Footer.js) — Paper › Footer */
+/* Footer (components/Footer.js) */
 .site-footer {
   --footer-side: var(--spacing-96);
   display: flex;
@@ -1223,7 +1223,7 @@ input::placeholder { color: var(--color-foreground); }
    Scoped to .hero-carousel so it doesn't clash with .hero or Bento's .dots.
    Sizes in px to match the mockup.
    ========================================================================== */
-/* Hero carousel (Paper › Home › HeroCarousel): 960×480 slides, gap 20, centre slide
+/* Hero carousel: 960×480 slides, gap 20, centre slide
    shows its text; the neighbours peek in as images only. */
 .hero-carousel {
   --w: min(960px, calc(100vw - 2 * var(--spacing-64)));
@@ -1276,7 +1276,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 .hero-carousel .slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transform: scale(1.04); transition: transform 6s linear; }
 .hero-carousel .slide.cur img { transform: scale(1); }
-/* Media overlay (Paper): left-to-right scrim so white text stays readable */
+/* Media overlay: left-to-right scrim so white text stays readable */
 .hero-carousel .curve::after { content: ""; position: absolute; inset: 0; background: var(--gradient-scrim-media); transition: opacity .6s ease; }
 .hero-carousel .slide.hs.wd img { left: auto; right: 0; width: 74%; }
 .hero-carousel .slide.hs.wd .curve::after { background: var(--gradient-scrim-media-wide); }
@@ -1308,7 +1308,7 @@ input::placeholder { color: var(--color-foreground); }
   line-height: var(--leading-21);
   font-variant-numeric: tabular-nums;
 }
-/* Side slides: hide the text (Paper shows it on the centre slide only) */
+/* Side slides: hide the text (text shows on the centre slide only) */
 .hero-carousel .slide:not(.cur) .hc-count { opacity: 0; visibility: hidden; }
 @media (max-width: 600px) { .hero-carousel .hc-count { display: none; } }
 .hero-carousel .ct { transition: opacity .3s var(--ease-out), visibility 0s; }
@@ -1338,7 +1338,7 @@ input::placeholder { color: var(--color-foreground); }
   line-height: var(--leading-24);
   color: var(--color-foreground-inverse);
 }
-/* CTA: light pill on media (Paper "Baca semakan") */
+/* CTA: light pill on media ("Baca semakan") */
 
 
 
@@ -1379,7 +1379,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 /* ==========================================================================
-   Tentang ringkas (Paper › Home › Tentang ringkas):
+   Tentang ringkas:
    Viewership.js (statement + stats) and Collaborators.js (agency logos)
    ========================================================================== */
 .viewership,
@@ -1431,7 +1431,7 @@ input::placeholder { color: var(--color-foreground); }
   gap: 30px;
 }
 
-/* Paper uses a 72px display number (no token at that size) */
+/* 72px display number (no token at that size) */
 .viewership-stats dt {
   font-family: var(--font-sans);
   font-size: clamp(48px, 5vw, 72px);
@@ -1776,7 +1776,7 @@ input::placeholder { color: var(--color-foreground); }
 /* ==========================================================================
    Single article page (app/article/[slug]/page.js, components/ArticleDetail.js)
    ========================================================================== */
-/* Article detail (Paper › Artwork › detail artikel page) */
+/* Article detail */
 .post-page {
   padding: var(--spacing-32) 81px var(--spacing-96);
   color: var(--color-foreground);
@@ -1881,7 +1881,7 @@ input::placeholder { color: var(--color-foreground); }
 
 .post-back:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
 
-/* Body: 514px reading column (Paper › detail artikel › Body) */
+/* Body: 514px reading column */
 .post-body {
   box-sizing: border-box;
   width: 100%;
@@ -2376,7 +2376,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 /* ==========================================================================
-   Tentang Kami (components/AboutUs.js; Paper › Artwork › Tentang Kami)
+   Tentang Kami (components/AboutUs.js)
    ========================================================================== */
 .about-hero,
 .about-fn,

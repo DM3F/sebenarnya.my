@@ -6,7 +6,7 @@ import Icon from '@/components/ui/Icon';
 import { Badge, Verdict } from '@/components/ui';
 
 /**
- * Article detail (Paper › Artwork › detail artikel page).
+ * Article detail.
  * Back link, verdict + category pills, title, subtitle, meta + share,
  * 1100×550 image, then a 680px reading column: lead, divider, "Penjelasan rasmi".
  */

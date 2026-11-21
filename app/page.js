@@ -25,7 +25,7 @@ export default function HomePage() {
         {/* Latest fact-checks */}
         <Latest />
 
-        {/* Tentang ringkas: statement, stats and agency logos (Paper order) */}
+        {/* Tentang ringkas: statement, stats and agency logos */}
         <Viewership />
         <Collaborators />
 

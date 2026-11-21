@@ -167,10 +167,10 @@ Keputusan (21 Nov 2026):
 
 | # | Perkara | Keputusan | Status implementasi |
 |---|---|---|---|
-| 1 | Keluarga font | **Manrope sahaja.** Buang Inter / `--font-ui`. | ✅ Siap: kod, handoff, Paper (`--font-ui` dalam Paper kini alias `--font-sans`). |
-| 2 | Display weight | **400** untuk tajuk display (hero, tajuk besar). Heading kekal 500. | ✅ Siap: kod, handoff, Paper (token `--font-weight-display` dicipta dalam Paper). |
-| 3 | Angka besar | **400** untuk semua angka statistik. | ✅ Siap: kod, handoff, Paper (angka statistik guna `--font-weight-display`; kapsyen kekal Light). |
+| 1 | Keluarga font | **Manrope sahaja.** Buang Inter / `--font-ui`. | ✅ Siap: kod, handoff. |
+| 2 | Display weight | **400** untuk tajuk display (hero, tajuk besar). Heading kekal 500. | ✅ Siap: kod, handoff (`--font-weight-display`). |
+| 3 | Angka besar | **400** untuk semua angka statistik. | ✅ Siap: kod, handoff (angka statistik guna `--font-weight-display`; kapsyen kekal Light). |
 | 4 | Tanya AIFA | **Biarkan merah buat masa ini** (belum ada idea). | Kekal terbuka di `plan.md`. |
 | 5 | Chart & meter | Garis panduan §4 jadi titik mula bila diperlukan (cth. dashboard CMS). | Belum ada dalam sistem. |
 
-Bila 1–3 dilaksana, kemas kini serentak: `app/tokens.css`, Paper (artboard 03 · Typography scale + semua artboard), `design-system-handoff.md` §2.3, dan kod.
+Bila 1–3 dilaksana, kemas kini serentak: `app/tokens.css`, `design-system-handoff.md` §2.3, dan kod.

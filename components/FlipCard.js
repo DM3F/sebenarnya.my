@@ -9,7 +9,7 @@ import { Verdict } from '@/components/ui';
 const VERDICT_LABEL = { palsu: 'Palsu', waspada: 'Waspada', makluman: 'Makluman', benar: 'Penjelasan' };
 
 /**
- * FactCheckCard (Paper › 06 Brand components › FactCheckCard – States).
+ * FactCheckCard.
  * Front: photo, verdict pill, title, agency avatar.
  * Back (rotateY 180°): verdict · agency, title, summary, checked date + source, "Baca semakan".
  * Controlled by the parent so only one card is open at a time (see Latest.js).

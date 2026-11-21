@@ -10,7 +10,7 @@ import { aboutHero as hero, aboutIntro as intro, aboutNews, socialLinks, whatWeD
 const pad = (n) => String(n).padStart(2, '0');
 const AUTOPLAY_MS = 5000; // Empat fungsi: time on each function
 
-// Tentang Kami (Paper › Artwork › Tentang Kami): Hero, About, Empat fungsi,
+// Tentang Kami: Hero, About, Empat fungsi,
 // Berita dan Galeri, Logo
 export default function AboutUs() {
   return (
