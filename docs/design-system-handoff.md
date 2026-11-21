@@ -93,7 +93,7 @@ Font: **Manrope** 300/400/500/600 untuk semuanya (`--font-sans`) — kandungan, 
 
 **Peraturan: semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = 16 / 24 Medium** — tiada label 18px. **Display (48–56) dan angka statistik guna 400** melalui `--font-weight-display` — besar tetapi ringan (`design.md` §3). **Heading (24–36) guna Medium 500.** Regular 400 untuk body; Light 300 hanya untuk kapsyen statistik. Tiada 700+. Pengguna `--font-weight-display`: `.hero-title`, `.hero-carousel h3`, `.wsis-banner__title`, `.post-title`, `.about-hero-text h1`, `.about-title`, `.about-fn-title`, `.viewership-stats dt`, `.about-intro__stat-value`, `.about-intro__facts-row dt`.
 
-Token: saiz `--text-{12,13,14,16,18,20,24,28,30,32,36,38,40,48,56}`, line-height `--leading-{16,18,20,21,24,26,28,32,34,36,42,44,52,60}` (+ `--leading-display/heading/body` %), tracking `--tracking-{display,tight,body,label}`, weight `--font-weight-{light,regular,medium,semibold}`. Contoh Display/56 = `--text-56` / `--leading-60` / `--tracking-display` / `--font-weight-medium`.
+Token: komponen **hanya** guna type role `--text-{display,heading-lg,heading,title,intro,body-lg,body,body-sm,label,label-sm,eyebrow,badge,verdict,caption,stat}` (+ `--line-height`, `--font-weight`, `--letter-spacing`). Role besar fluid dengan `clamp()` (375 → 1280px), tiada media query untuk type. Jadual penuh: `docs/design-system-rules.md` › Type roles. Primitive (`--text-12…48`, `--leading-tight…relaxed`) hanya dalam tokens.css.
 
 Mobile (<600px, `--breakpoint-type`): Display → `--text-38`/`--leading-42`, Heading/36 → `--text-30`/`--leading-36`, Heading/32 → `--text-28`/`--leading-34` (tukar dalam media query komponen). Body kekal 400, max 68ch.
 

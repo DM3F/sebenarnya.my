@@ -66,9 +66,24 @@ const rules = [
     test: (l, p) => /(^|\/)app\/ui\.css$/.test(p) && /(^|[^\w-])\d*\.?\d+px\b/.test(code(l)),
   },
   {
-    id: 'ui-type-primitive',
-    why: 'components/ui layer uses type roles (--text-label, --text-body…), not raw scale steps (--text-16, --leading-24).',
-    test: (l, p) => /(^|\/)app\/ui\.css$/.test(p) && /var\(--(text|leading)-\d+\)/.test(code(l)),
+    id: 'type-primitive',
+    why: 'Type scale step used outside tokens.css; use a type role (--text-body, --text-heading…), never --text-16 / --leading-*.',
+    test: (l, p) => !isTokens(p) && /var\(--(text-\d+|leading-[\w-]+|type-[\w-]+)\)/.test(code(l)),
+  },
+  {
+    id: 'raw-font-size',
+    why: 'Raw font-size; use a type role (--text-*). Percent/em for relative tweaks are fine.',
+    test: (l, p) => !isTokens(p) && /font-size:\s*(\d*\.?\d+px|clamp\(|calc\()/.test(code(l)),
+  },
+  {
+    id: 'raw-line-height',
+    why: 'line-height in px; use the role\'s --text-*--line-height or a unitless number.',
+    test: (l, p) => !isTokens(p) && isCss(p) && /line-height:\s*\d*\.?\d+px/.test(code(l)),
+  },
+  {
+    id: 'inline-font-size',
+    why: 'fontSize in JSX; put type in CSS with a role class.',
+    test: (l, p) => !isCss(p) && /fontSize\s*:/.test(code(l)),
   },
   {
     id: 'rem',

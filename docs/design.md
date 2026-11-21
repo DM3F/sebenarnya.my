@@ -79,7 +79,7 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 | Small / meta | 14/20 | 400–500 | Tarikh, meta, label kecil. Smoke. |
 | Eyebrow | 13/18 | 500 (verdict 600) | UPPERCASE, tracking +0.04em: verdict, eyebrow, badge, heading footer. |
 
-Token peranan ada dalam `app/tokens.css` (`--type-display`, `--type-section`, `--type-heading`, `--type-title`, `--type-lead`, `--type-number` + `-lh`); blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya.
+Token peranan ada dalam `app/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-body-lg` = Lead, `--text-body`, `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi tiga lajur saiz di atas jadi satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
 
 **Peraturan rasa:**
 - Tiada weight 700+ di mana-mana. Penekanan = saiz, warna tinta vs smoke, atau ruang kosong.
