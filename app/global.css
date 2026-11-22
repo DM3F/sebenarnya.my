@@ -417,9 +417,6 @@ input::placeholder { color: var(--color-foreground); }
   .hero-content { gap: var(--spacing-32); }
 }
 
-/* Latest fact-checks (slider under the hero) */
-.latest { padding-bottom: 12vh; }
-
 /* The slider runs edge to edge; its padding lines the first card up with the page container */
 .slider {
   --edge: calc(max(0px, (100% - var(--max-width) - 2 * var(--side)) / 2) + var(--side));
@@ -570,7 +567,7 @@ input::placeholder { color: var(--color-foreground); }
   --latest-side: var(--space-page-x); /* title and controls inset; the card row bleeds past it */
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-48);
+  gap: var(--gap-block);
   padding: 0 var(--latest-side);
   background-color: var(--color-background);
 }
@@ -602,7 +599,7 @@ input::placeholder { color: var(--color-foreground); }
   overflow: hidden;
   touch-action: pan-y;
 }
-.latest-checks__rail { display: flex; gap: var(--spacing-24); }
+.latest-checks__rail { display: flex; gap: var(--gap-cards); }
 .latest-checks__rail > .fc { flex: 0 0 340px; will-change: transform; }
 
 .latest-checks__controls {
@@ -2462,15 +2459,14 @@ input::placeholder { color: var(--color-foreground); }
    pop-in on scroll, spread on hover / tap / focus, per-tile lift. Transform and opacity only. */
 .folder-wrap { container-type: inline-size; width: 100%; max-width: 480px; margin-inline: auto; } /* a single wide card never blows the folder up past 480 */
 /* Small folders (phones): the text keeps its real size, so make room — tighter chips, title closer
-   to the chips, and the decorative mini-icon pill goes */
+   to the chips (the mini-icon pill is gone for good) */
 @container (max-width: 340px) {
   .folder .folder__text { gap: var(--gap-text); }
   .folder .folder__chip { padding-inline: var(--spacing-8); }
-  .folder .folder__pill { display: none; }
 }
 .folder {
   --folder-ease: cubic-bezier(.2, .8, .2, 1);
-  --s: tan(atan2(100cqw, 391px));
+  --s: .85; /* fallback; FormatFolder.js sets the measured ratio (card width / 391) */
   position: relative;
   height: calc(286px * var(--s));
   color: var(--color-foreground-inverse);
@@ -2478,6 +2474,7 @@ input::placeholder { color: var(--color-foreground); }
   -webkit-tap-highlight-color: transparent;
 }
 .folder[data-wide] { z-index: 2; }
+@supports (width: calc(tan(atan2(1px, 1px)) * 1px)) { .folder { --s: tan(atan2(100cqw, 391px)); } }
 .folder__stage { position: absolute; top: 0; left: 0; width: 391px; height: 286px; transform: scale(var(--s)); transform-origin: 0 0; }
 .folder__card { position: absolute; inset: 0; transition: transform .9s var(--folder-ease), opacity .6s ease; }
 .folder[data-armed]:not([data-shown]) .folder__card { opacity: 0; transform: translateY(34px) scale(.92); }
@@ -2595,25 +2592,6 @@ input::placeholder { color: var(--color-foreground); }
 @media (hover: hover) and (pointer: fine) {
   .folder__chip:hover { background: var(--color-folder-edge); }
 }
-.folder__pill {
-  position: absolute;
-  right: 14px;
-  bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-6);
-  height: 34px;
-  padding: 0 var(--spacing-10);
-  border-radius: var(--radius-full);
-  background: var(--color-folder-pill);
-}
-.folder__mini { display: grid; place-items: center; width: 22px; height: 22px; overflow: hidden; border-radius: var(--radius-input); }
-.folder__mini[data-format='JPEG'] { background: var(--gradient-tile-jpeg); }
-.folder__mini[data-format='PNG'] { background: var(--color-tile-png); }
-.folder__mini[data-format='SVG'] { background: var(--color-tile-svg-mini); }
-.folder__mini img { display: block; height: 15px; width: auto; }
-.folder__mini[data-format='SVG'] img { height: 17px; }
-
 @media (prefers-reduced-motion: reduce) {
   .folder__card, .folder__tile, .folder__lift, .folder__pocket, .folder__label, .folder__chip { transition: none; }
   .folder[data-wide] .folder__card,

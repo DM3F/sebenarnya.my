@@ -133,12 +133,12 @@ Bahasa bentuk: **pill untuk apa yang ditekan, kotak membulat lembut untuk apa ya
 
 **Lapang — rendah ketumpatan, tinggi keyakinan.**
 
-- Ruang kosong ialah bahan utama. Seksyen dipisah oleh 96px (64 tablet, 48 telefon); tepi halaman 96px pada desktop.
+- Ruang kosong ialah bahan utama. Seksyen dipisah oleh 64 → 120px (fluid, telefon → desktop), kira-kira 3× jarak tajuk → kandungan (24 → 40); tepi halaman 96px pada desktop.
 - Satu idea per seksyen: satu tajuk, satu baris kandungan, satu aksi. Jangan tumpuk tiga grid dalam satu skrin.
 - Dalam kumpulan rapat (8–16px), antara kumpulan sekurang-kurangnya 2× lebih jauh. Ruang yang membina struktur, bukan garis.
 - Teks kecil (13–14px) boleh padat; tajuk dan angka besar mesti diberi ruang bernafas di sekeliling.
 - Kad dalam grid: 3–4 sebaris pada desktop, sentiasa sama tinggi. Tiada kad mini 6 sebaris.
-- **Jarak ikut hubungan, bukan nombor:** dalam satu kumpulan teks 8, antara kumpulan dalam kad 16, antara kad 12, tajuk seksyen → kandungan 40.
+- **Jarak ikut hubungan, bukan nombor:** dalam satu kumpulan teks 8, antara kumpulan dalam kad 16, antara kad 12, tajuk seksyen → kandungan 24 → 40, antara seksyen 64 → 120.
 - **Saiz kad menentukan padding + radius serentak:** kecil 16/20, biasa 24/20 (default), besar 32→24/24 (feature, modal). Gap dalam kad tidak pernah lebih besar daripada padding kad. Jadual penuh: `docs/design-system-rules.md` › Spacing & radius roles.
 - Bila ragu: buang satu elemen, bukan kecilkan semua.
 

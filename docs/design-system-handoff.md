@@ -107,7 +107,7 @@ Mobile (<600px, `--breakpoint-type`): Display → `--text-38`/`--leading-42`, He
 | Token | Desktop | ≤1280 | ≤1024 | ≤900 | ≤600 | Guna |
 |---|---|---|---|---|---|---|
 | `--space-page-x` | 96 | 48 | 48 | 24 | 16 | Gutter halaman: header, setiap seksyen, footer (`--side` ialah alias) |
-| `--space-section` | 96 | 96 | 64 | 64 | 48 | Jarak antara seksyen; `.main` ialah flex column dengan `row-gap` ini + `padding-bottom` sebelum footer; padding atas footer |
+| `--space-section` | 120 | ≈120 | ≈104 | ≈96 | 64 → ≈78 | Fluid `clamp(64, 40.8px + 6.188vw, 120)`: 64 @375 → 120 @1280, ≈3× `--gap-block`. Jarak antara seksyen; `.main` ialah flex column dengan `row-gap` ini + `padding-bottom` sebelum footer; padding atas footer |
 | `--space-page-top` | 40 | 40 | 40 | 40 | 24 | Header → blok pertama pada halaman tanpa hero (Artikel, detail) |
 
 Seksyen **tidak** ada padding atas/bawah sendiri; jarak datang dari `.main`. Kumpulan rapat dapat separuh (`.hero + .hero-carousel`, `.hero-carousel + .partners`: −½ `--space-section`). Seksyen baharu: cukup `padding-inline: var(--space-page-x)`.
@@ -494,7 +494,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Panel AIFA:** kepala `--pad-card-sm`, avatar ↔ tajuk `--gap-inline`; tajuk panel kini peranan title (20/500) sama seperti tajuk borang Lapor; mesej dan hasil `--gap-cards`, gelembung `--radius-media`; cadangan boleh berbalut (tidak terkeluar panel di telefon).
 - **Pop-up pratonton:** badge guna `--space-badge-x` / `--space-inline-tight`; ruang butang tutup di telefon = `--size-control` + `--gap-inline`.
 - **Menu Kongsi + menu telefon:** ikut peranan menu dropdown: padding `--space-inline`, radius `--radius-menu`, item `--space-field-x` sisi dengan tinggi kawalan.
-- **Footer:** blok `--gap-block` (40), tajuk lajur → senarai `--gap-group` (16), antara pautan `--gap-cards` (12).
+- **Footer:** blok `--gap-block` (24 → 40 fluid), tajuk lajur → senarai `--gap-group` (16), antara pautan `--gap-cards` (12).
 
 ## Verdict diseragamkan: Palsu · Makluman · Benar (22 Nov 2026)
 - Hanya tiga verdict wujud: **Palsu** (`palsu`), **Makluman** (`makluman`), **Benar** (`benar`). Label "Penjelasan" ditukar kepada **Benar** di mana-mana (penapis Artikel, kad flip, kad Kenali Sebenarnya.my, badge). Alias `penjelasan` dibuang; jenis yang tidak dikenali jatuh ke `makluman`.
@@ -503,7 +503,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 
 ## Grid kad Artikel (22 Nov 2026, ikut Wonder › Container)
 - **Grid cecair:** `repeat(auto-fill, minmax(max(min(100%, var(--media-min) + 2 × --cell-pad-x), 25% − 1px), 1fr))` dengan `--media-min: 320px` → 1 kolum telefon, 2 (tablet, ≈768–1100), 3 (laptop, foto ≈350–440 nisbah 420 × 230), 4 (≥≈1520); tidak pernah lebih 4.
-- **Garis rambut berterusan** antara kolum dan baris: setiap sel lukis garis kanan + bawah `--color-muted-strong`; pembungkus `.articles-results` (overflow hidden) + margin negatif menyembunyikan garis tepi luar. Ruang dalam sel: `--cell-pad` atas/bawah `--gap-block` (40), `--cell-pad-x` kiri/kanan `--pad-card` (24) supaya foto lebih lebar; telefon `--pad-card` atas/bawah, tiada garis tegak.
+- **Garis rambut berterusan** antara kolum dan baris: setiap sel lukis garis kanan + bawah `--color-muted-strong`; pembungkus `.articles-results` (overflow hidden) + margin negatif menyembunyikan garis tepi luar. Ruang dalam sel: `--cell-pad` atas/bawah `--gap-block` (24 → 40 fluid), `--cell-pad-x` kiri/kanan `--pad-card` (24) supaya foto lebih lebar; telefon `--pad-card` atas/bawah, tiada garis tegak.
 - **Kad terbuka** (tiada latar/border): foto nisbah 42:23 (420 × 230) radius `--radius-card` dengan logo agensi di dalamnya (kiri bawah); di bawah foto baris meta `Verdict tint · tarikh · N minit bacaan` (caption 12, smoke) lalu tajuk (peranan title). Hover: foto zoom 1.03.
 - **`Verdict` varian `tint`** (baharu, `app/ui.css`): pill 28px di atas warna verdict 22% atas putih.
 - **Masa baca:** `readingMinutes()` (`lib/articles.js`): perkataan tajuk + lead + penjelasan ÷ 200, minimum 1.
@@ -534,3 +534,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
   - **Kad logo fluid:** grid `auto-fit, minmax(min(100%, 320px), 1fr)` (2 lajur dari ≈700px), folder maks 480px di tengah; folder ≤340px (container query): cip lebih rapat, tajuk → cip `--gap-text`, pil ikon kecil disembunyikan — cip kekal satu baris dalam poket hingga 320px.
   - **Artikel:** anak panah bar cip kategori disembunyikan ≤600px (leret sahaja).
   - **H1 Utama sentiasa dua baris** (telefon juga): setiap baris `nowrap`, saiz = `min(--text-display, (100vw − 2 × --side) / 12.8)` (≈12.3em setiap baris), jadi 22.5px @320, 28px @390, 39px @768, 48px desktop. Verdict tidak lagi di baris sendiri di telefon.
+
+- **Ritma seksyen fluid (22 Nov 2026):** `--space-section` kini `clamp(64, 40.8px + 6.188vw, 120)` (dulu langkah 96 · 64 · 48) dan `--gap-block` `clamp(24, 17.37px + 1.768vw, 40)` (dulu tetap 40), jadi antara seksyen ≈ 3× tajuk → kandungan pada setiap lebar. Breakpoint `--space-section` ≤1024 / ≤600 dibuang. "Semakan fakta terkini": kepala → kandungan `--gap-block` (dulu 48), rel kad `--gap-cards` (dulu 24). Peraturan mati `.latest` dibuang.
+
+- **Folder format, mudah alih (22 Nov 2026):** pil ikon mini (`.folder__pill`, token `--color-folder-pill`, `--color-tile-svg-mini`) dibuang. Ikon muat turun pada chip kekal Lucide `Download` 14px (`Icon`). Skala pentas (`--s` = lebar kad / 391) kini diukur dengan `ResizeObserver` dalam `FormatFolder.js` dan ditulis sebagai gaya inline; `tan(atan2())` hanya dipakai bila pelayar menyokongnya (`@supports`), dengan sandaran `--s: .85`. Sebelum ini Safari tanpa `tan(atan2())` tidak mengira skala lalu folder terpotong. Nota 455 di atas tentang "nisbah tanpa unit daripada container query" kini hanya laluan sokongan, bukan satu-satunya.

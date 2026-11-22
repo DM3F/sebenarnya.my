@@ -83,8 +83,8 @@ Ask "what is the relationship between these two things?", never "16 or 24?".
 | Inside one text group | `--gap-text` | 8 | eyebrow → title → description → meta |
 | Between groups inside a card | `--gap-group` | 16 | text ↔ actions, media ↔ body |
 | Between cards | `--gap-cards` | 12 | every card grid and card row |
-| Section heading → content | `--gap-block` | 40 | "Semakan fakta terkini" → its grid |
-| Between sections | `--space-section` | 96 · 64 · 48 | page rhythm |
+| Section heading → content | `--gap-block` | 24 → 40 fluid | "Semakan fakta terkini" → its grid |
+| Between sections | `--space-section` | 64 → 120 fluid | page rhythm; related blocks (hero → carousel → agency logos) take half |
 
 **Card size decides padding and radius together** (one decision, two values):
 
@@ -95,7 +95,8 @@ Ask "what is the relationship between these two things?", never "16 or 24?".
 | `lg` | `--pad-card-lg` 32 → 24 fluid | `--radius-card-lg` 24 | feature card, modal, panel, a card ≥ half the row |
 
 Four rules:
-1. **Between groups ≥ 2× inside a group** (8 → 16).
+1. **Between groups ≥ 2× inside a group** (8 → 16). The page keeps one ratio on every screen:
+   between sections ≈ 3× heading → content ≈ 10× between cards.
 2. **Inside a card, every gap ≤ the card padding**, so the content belongs to its
    container. A column gutter inside a card equals the card padding.
 3. **Nested radius = outer − inset**: media inset 8px in a 20px card gets 12.

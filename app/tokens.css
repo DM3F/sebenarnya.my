@@ -153,12 +153,10 @@
   --color-folder-front: rgb(71 67 64 / .95);
   --color-folder-edge: color-mix(in srgb, var(--color-foreground-inverse) 15%, transparent);
   --color-folder-glow: color-mix(in srgb, var(--color-foreground-inverse) 10%, transparent);
-  --color-folder-pill: #766e69;
   --color-folder-label: rgb(0 0 0 / .55);
   --gradient-tile-jpeg: linear-gradient(135deg, #2c2c2c, #141414);
   --color-tile-png: #7b2e19;
   --gradient-tile-svg: linear-gradient(135deg, #1a1a7a, #00005b);
-  --color-tile-svg-mini: #080864;
   --shadow-tile: 0 18px 40px rgb(0 0 0 / .55), 0 0 0 1px rgb(255 255 255 / .14);
 
   /* ── Motion (docs/design.md §6: purposeful, ease-out, 150–600ms) ────────── */
@@ -277,7 +275,7 @@
   --space-inline-tight: var(--spacing-6);
   --space-stack: var(--spacing-8);              /* label↔field, field↔hint */
   --space-page-x: var(--spacing-96);            /* page gutter (design.md §5: 96 desktop) */
-  --space-section: var(--spacing-96);           /* gap between page sections (96 · 64 tablet · 48 phone) */
+  --space-section: clamp(var(--spacing-64), 40.8px + 6.188vw, var(--spacing-120)); /* between page sections · 64 at 375 → 120 at 1280 (≈3× --gap-block) */
   --space-page-top: var(--spacing-40);          /* header → first block on pages without a hero */
   --space-nav-gap: var(--spacing-8);            /* between header nav items / header actions */
   --space-segment: var(--spacing-2);            /* inside segmented controls */
@@ -289,7 +287,7 @@
   --gap-text: var(--spacing-8);     /* inside one text group: eyebrow→title→description→meta */
   --gap-group: var(--spacing-16);   /* between groups inside a card: text↔actions, media↔body */
   --gap-cards: var(--spacing-12);   /* between cards in any grid or row */
-  --gap-block: var(--spacing-40);   /* section heading → its content */
+  --gap-block: clamp(var(--spacing-24), 17.37px + 1.768vw, var(--spacing-40)); /* section heading → its content · 24 → 40 */
 
   /* ── Card size: padding and radius always travel together ─────────────
      sm  card narrower than ~280px (flip card, news card)   16 · radius 20
@@ -324,6 +322,5 @@
 
 /* Page rhythm breakpoints: one gutter and one section gap for every page */
 @media (max-width: 1280px) { :root { --space-page-x: var(--spacing-48); } }
-@media (max-width: 1024px) { :root { --space-section: var(--spacing-64); } }
 @media (max-width: 900px)  { :root { --space-page-x: var(--spacing-24); } }
-@media (max-width: 600px)  { :root { --space-page-x: var(--spacing-16); --space-section: var(--spacing-48); --space-page-top: var(--spacing-24); } }
+@media (max-width: 600px)  { :root { --space-page-x: var(--spacing-16); --space-page-top: var(--spacing-24); } }
