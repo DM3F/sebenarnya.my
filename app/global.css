@@ -660,7 +660,6 @@ input::placeholder { color: var(--color-foreground); }
 /* ── FactCheckCard: 340 × 480 ── */
 .fc { --dot: var(--color-verdict-makluman-dot); --verdict: var(--color-verdict-makluman); }
 .fc--palsu    { --dot: var(--color-verdict-palsu-dot);    --verdict: var(--color-verdict-palsu); }
-.fc--waspada  { --dot: var(--color-verdict-waspada-dot);  --verdict: var(--color-verdict-waspada); }
 .fc--makluman { --dot: var(--color-verdict-makluman-dot); --verdict: var(--color-verdict-makluman); }
 .fc--benar    { --dot: var(--color-verdict-benar-dot);    --verdict: var(--color-verdict-benar); }
 

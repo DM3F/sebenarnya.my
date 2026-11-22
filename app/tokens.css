@@ -76,8 +76,6 @@
   /* Verdict: word colour (tone="single") + dot colour */
   --color-verdict-palsu: var(--color-red-dark);
   --color-verdict-palsu-dot: var(--color-red);
-  --color-verdict-waspada: var(--color-orange-dark);
-  --color-verdict-waspada-dot: var(--color-orange);
   --color-verdict-makluman: var(--color-azure);
   --color-verdict-makluman-dot: var(--color-blue);
   --color-verdict-benar: var(--color-green-dark);

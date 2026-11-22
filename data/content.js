@@ -388,7 +388,7 @@ export const partners = [
 // Category labels. The filter bar shows the three verdicts only (components/Articles.js).
 export const articleCategories = [
   { id: 'palsu', label: 'Palsu' },
-  { id: 'benar', label: 'Penjelasan' },
+  { id: 'benar', label: 'Benar' },
   { id: 'makluman', label: 'Makluman' },
   { id: 'bencana', label: 'Bencana' },
   { id: 'ekonomi', label: 'Ekonomi' },
@@ -408,7 +408,7 @@ export const articleCategories = [
 export const articleStatus = {
   palsu: { label: 'Palsu' },
   makluman: { label: 'Makluman' },
-  benar: { label: 'Penjelasan' },
+  benar: { label: 'Benar' },
 };
 
 const agencyLogo = (name) => withBase(`/images/authors/agency-${name}.webp`);

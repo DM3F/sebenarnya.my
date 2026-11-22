@@ -43,7 +43,7 @@ export default function KenaliSebenarnya() {
           <ul className="kenali__verdicts">
             <li><Verdict type="palsu" /></li>
             <li><Verdict type="makluman" /></li>
-            <li><Verdict type="penjelasan" /></li>
+            <li><Verdict type="benar" /></li>
           </ul>
         </article>
 

@@ -6,7 +6,7 @@ import { ArrowUpRight } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 import { Verdict } from '@/components/ui';
 
-const VERDICT_LABEL = { palsu: 'Palsu', waspada: 'Waspada', makluman: 'Makluman', benar: 'Penjelasan' };
+const VERDICT_LABEL = { palsu: 'Palsu', makluman: 'Makluman', benar: 'Benar' };
 
 /**
  * FactCheckCard.

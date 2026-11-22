@@ -33,7 +33,7 @@ Decision guide:
 
 | Family | Tokens |
 |---|---|
-| Colour | `--color-background · foreground · card · muted · muted-strong · accent · secondary(-hover/-foreground) · primary(-hover/-foreground) · input · border · border-strong · ring · link · destructive · disabled(-foreground) · surface-overlay · brand · verdict-*` |
+| Colour | `--color-background · foreground · card · muted · muted-strong · accent · secondary(-hover/-foreground) · primary(-hover/-foreground) · input · border · border-strong · ring · link · destructive · disabled(-foreground) · surface-overlay · brand · verdict-{palsu,makluman,benar}(-dot)` (three verdicts only: Palsu, Makluman, Benar) |
 | Type roles | `--text-display · heading-lg · heading · title · intro · article · body · body-sm · label · label-sm · eyebrow · badge · verdict · caption · stat`, each with `--line-height`, and where it applies `--font-weight` / `--letter-spacing` (Tailwind v4 shape: `--text-label--line-height`) |
 | Size | `--size-control-sm (36) · control (44) · control-lg (48) · control-xl (56) · hit-area · badge · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu` |
 | Space roles | Content: `--gap-inline · gap-text · gap-group · gap-cards · gap-block`, cards: `--pad-card-sm · pad-card · pad-card-lg`; controls: `--space-control-x(-sm) · field-x · badge-x/-y · inline-tight · stack · segment`; page: `--space-page-x · section · page-top` |

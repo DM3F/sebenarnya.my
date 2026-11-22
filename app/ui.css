@@ -206,7 +206,6 @@
   background: var(--chip-dot);
 }
 .ui-chip--palsu    { --chip-dot: var(--color-verdict-palsu-dot); }
-.ui-chip--waspada  { --chip-dot: var(--color-verdict-waspada-dot); }
 .ui-chip--makluman { --chip-dot: var(--color-verdict-makluman-dot); }
 .ui-chip--benar    { --chip-dot: var(--color-verdict-benar-dot); }
 
@@ -341,7 +340,6 @@
   white-space: nowrap;
 }
 .ui-verdict--palsu    { --verdict-dot: var(--color-verdict-palsu-dot);    --verdict-text: var(--color-verdict-palsu); }
-.ui-verdict--waspada  { --verdict-dot: var(--color-verdict-waspada-dot);  --verdict-text: var(--color-verdict-waspada); }
 .ui-verdict--makluman { --verdict-dot: var(--color-verdict-makluman-dot); --verdict-text: var(--color-verdict-makluman); }
 .ui-verdict--benar    { --verdict-dot: var(--color-verdict-benar-dot);    --verdict-text: var(--color-verdict-benar); }
 

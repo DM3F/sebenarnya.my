@@ -2,10 +2,10 @@
  * Chip — taupe pill for suggestions and filters.
  *   href:    renders a link
  *   pressed: makes it a toggle (aria-pressed); selected = ink fill
- *   dot:     verdict key (palsu | waspada | makluman | benar) for a filter dot
+ *   dot:     verdict key (palsu | makluman | benar) for a filter dot
  */
 export default function Chip({ href, pressed, dot, className = '', children, ...props }) {
-  const cls = ['ui-chip', dot && `ui-chip--${dot === 'penjelasan' ? 'benar' : dot}`, className].filter(Boolean).join(' ');
+  const cls = ['ui-chip', dot && `ui-chip--${dot}`, className].filter(Boolean).join(' ');
   const content = (
     <>
       {dot && <span className="ui-chip__dot" aria-hidden="true" />}

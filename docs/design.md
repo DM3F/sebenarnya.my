@@ -8,7 +8,7 @@ Referensi rasa: **elevenlabs.io** — diambil *bahasa visualnya saja* (ketenanga
 
 ## 1. Identity
 
-**Produknya:** portal semakan fakta rasmi Malaysia. Orang datang dalam keadaan ragu — baru menerima mesej tular — dan pergi dengan jawapan yang jelas: *Palsu, Waspada, Makluman, atau Penjelasan*, beserta sumber rasminya.
+**Produknya:** portal semakan fakta rasmi Malaysia. Orang datang dalam keadaan ragu — baru menerima mesej tular — dan pergi dengan jawapan yang jelas: *Palsu, Makluman atau Benar*, beserta sumber rasminya.
 
 **Rasanya:** tenang, yakin, editorial. Seperti majalah yang dicetak di kertas krem hangat, bukan dashboard kerajaan dan bukan media sosial yang ribut. Antaramuka menyingkir supaya **dakwaan, verdict, dan sumber rasmi** yang bercakap.
 
@@ -48,9 +48,8 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 | Fokus / pautan | Violet spark `#3A46F5` | Cincin fokus, pautan teks dalam artikel. Kecil dan jarang. |
 | Jenama | Merah Kebenaran `#E8302A` | Logo dan elemen identiti (sfera/atmosfera). Bukan untuk butang, nav, atau ralat biasa. |
 | Verdict — Palsu | titik `#E8302A`, teks `#C8211C` | Hanya pada label verdict. |
-| Verdict — Waspada | titik `#E08A00`, teks `#A35A00` | Hanya pada label verdict. |
 | Verdict — Makluman | titik `#3A46F5`, teks `#2F5FD0` | Hanya pada label verdict. |
-| Verdict — Penjelasan | titik `#1FA463`, teks `#137A49` | Hanya pada label verdict. |
+| Verdict — Benar | titik `#1FA463`, teks `#137A49` | Hanya pada label verdict. |
 
 **Peraturan rasa:**
 - Satu "percikan" warna per pandangan sudah cukup. Jika satu skrin ada lebih dari dua warna kromatik di luar verdict, ada yang salah.

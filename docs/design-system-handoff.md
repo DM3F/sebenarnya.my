@@ -61,7 +61,7 @@ Rujukan awal: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork")
 | `--color-brand` / `-strong` | red / red-dark | logo, sphere — BUKAN aksi |
 | `--color-brand-spark` | blue | hiasan |
 | `--color-hairline` | rgba(0,0,0,.05) | garis halus |
-| `--color-verdict-{palsu,waspada,makluman,benar}` | red-dark / orange-dark / azure / green-dark | perkataan verdict (tone single) |
+| `--color-verdict-{palsu,makluman,benar}` | red-dark / azure / green-dark | perkataan verdict (tone single) |
 | `--color-verdict-*-dot` | red / orange / blue / green | titik verdict |
 
 Saiz kawalan guna spacing: tinggi `--spacing-44` (min sasaran sentuh), search `--spacing-56`, padding sisi `--spacing-20`, radius `--radius-full`.
@@ -193,7 +193,7 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 - `Button` (`variant`: filled | outline | ghost, `icon`, `href`, `disabled`) + `ButtonGroup`
 - `Chip` (`href?`) + `ChipRow` (`label` cth. "Popular:")
 - `Tabs` (`items`, `value`, `onChange`, `label`) — ikut corak ARIA tabs (anak panah, Home/End)
-- `Verdict` (`type`: palsu | waspada | makluman | benar | penjelasan→benar, `tone`: default | single, `agency`)
+- `Verdict` (`type`: palsu | makluman | benar, `tone`: default | single, `agency`) — hanya tiga verdict
 - `SearchField` (`label`, `hideLabel`, `placeholder`, `buttonLabel`, `value`+`onChange(text)` atau `defaultValue`, `error`, `action` atau `onSubmit(query)`)
 - `Tabs` `mode="toggle"` → `role=group` + `aria-pressed` (tiada tab panel)
 - `NavLink` (`href`, `current`) — link nav tanpa border, padding sisi `--space-control-x` (20). State: rehat weight 400 transparent · hover bg `--color-accent` (pointer sahaja) · tekan scale .97 · halaman aktif weight 500, tanpa fill · fokus ring standard
@@ -227,7 +227,7 @@ Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px
 `min-height 44; padding 8px; gap 8; radius pill; bg --color-background`. Dot 8px (warna dot) + halo `0 0 0 3px <dot> @18%` + perkataan Verdict/13 + agensi Body/13 Smoke (`· KPDN`).
 - `tone="default"`: perkataan Ink.
 - `tone="single"`: perkataan guna warna text verdict.
-- Selalu dot + perkataan + agensi (WCAG 1.4.1). Varian: `palsu | waspada | makluman | benar` (page Artikel ada juga "Penjelasan" — petakan ke `benar`).
+- Selalu dot + perkataan + agensi (WCAG 1.4.1). Varian: `palsu | makluman | benar` sahaja (label: Palsu, Makluman, Benar).
 
 ### Nav/Header ✅
 Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLinks`, `claimLink`):
@@ -280,7 +280,7 @@ Padding 32 atas / 96 bawah, sisi 81 (48 ≤1280, 24 ≤900, 16 ≤600). "Semua a
 - Sisi `--articles-side` 96 / 48 / 24 / 16, padding atas 40, bawah 96.
 - **Penapis:** carian pill 44 (border 1px `--color-border-strong`, ikon Search 18, input Manrope 16) + 2 `<select>` asli bergaya pill 44 (border `--color-border`, label 16 Medium, ChevronDown Lucide) + kiraan 14 `--color-muted-foreground`. Chip kategori pill 44 bg `--color-muted`, label 16 Medium, dot verdict 7px; terpilih = `--color-primary` + `--color-primary-foreground`; baris boleh skrol dengan butang ‹ › 44 bila melimpah.
 - **Hasil:** jika >4 hasil — kad utama (960:440, tinggi 560, radius 20, scrim bawah, tajuk 28/36 Medium putih, tarikh 14) + senarai sisi 4 item (thumb 160×122 radius 12, tajuk 20/26 Medium, tarikh 14); kemudian grid 4 kolum (3 ≤1280, 2 ≤900, 1 ≤600), gap 32/24. Kad grid: bg `--color-muted`, radius 20, padding 8/8/20, foto 220 radius 12, tajuk 20/26, tarikh 14.
-- Pill verdict atas foto: bg `--color-background` 90%, dot `--color-verdict-*-dot`, perkataan 13 semibold UPPERCASE `--color-verdict-*`. Status `benar` dilabel **"Penjelasan"**.
+- Pill verdict atas foto: bg `--color-background` 90%, dot `--color-verdict-*-dot`, perkataan 13 semibold UPPERCASE `--color-verdict-*`. Status `benar` dilabel **"Benar"**.
 - Seluruh kad boleh diklik (pautan tajuk `::after`), cincin fokus pada kad.
 
 ### Tanya AIFA (floating)
@@ -495,3 +495,8 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Pop-up pratonton:** badge guna `--space-badge-x` / `--space-inline-tight`; ruang butang tutup di telefon = `--size-control` + `--gap-inline`.
 - **Menu Kongsi + menu telefon:** ikut peranan menu dropdown: padding `--space-inline`, radius `--radius-menu`, item `--space-field-x` sisi dengan tinggi kawalan.
 - **Footer:** blok `--gap-block` (40), tajuk lajur → senarai `--gap-group` (16), antara pautan `--gap-cards` (12).
+
+## Verdict diseragamkan: Palsu · Makluman · Benar (22 Nov 2026)
+- Hanya tiga verdict wujud: **Palsu** (`palsu`), **Makluman** (`makluman`), **Benar** (`benar`). Label "Penjelasan" ditukar kepada **Benar** di mana-mana (penapis Artikel, kad flip, kad Kenali Sebenarnya.my, badge). Alias `penjelasan` dibuang; jenis yang tidak dikenali jatuh ke `makluman`.
+- **Waspada dibuang** daripada sistem: tiada lagi `--color-verdict-waspada(-dot)`, `.ui-verdict--waspada`, `.ui-chip--waspada`, `.fc--waspada`. Primitif `--color-orange*` kekal dalam palet tetapi tiada peranan verdict.
+- Nota lama di atas yang menyebut Waspada / "Penjelasan" sebagai label verdict kini sejarah sahaja. Tajuk bahagian artikel "Penjelasan rasmi" dan tajuk artikel bukan label verdict dan kekal.
