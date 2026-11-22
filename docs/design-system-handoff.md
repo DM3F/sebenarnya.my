@@ -146,7 +146,7 @@ Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1
 ### 2.x Motion — page transition
 - Token (`app/global.css`): `--ease-in-out cubic-bezier(.87,0,.13,1)` · `--duration-page 1.2s`.
 - `components/PageTransition.js` (dalam `app/layout.js`): tangkap klik link dalaman, jalankan `document.startViewTransition`, lalu `router.push`. Link `/submit-claim/`, tab baru, link luar dan hash tidak disentuh.
-- CSS `::view-transition-old/new(root)`: page lama naik 35% + redup ke .4; page baru di-wipe dari bawah (clip-path polygon).
+- CSS `::view-transition-old/new(root)` (dikemas kini 22 Nov 2026, *centre clip reveal*): page lama kekal diam di bawah; page baru dibuka dari tengah sebagai tetingkap bucu bulat `--radius-card-lg` sambil mengecil 1.4× → 1× (78% masa), lalu bucu jadi tajam. `--duration-page` 1.2s, `--ease-page` cubic-bezier(.76,0,.24,1). Reduced motion: pudar 0.2s.
 - `prefers-reduced-motion`: crossfade 200ms sahaja.
 - Browser tanpa `startViewTransition`: navigasi biasa.
 
