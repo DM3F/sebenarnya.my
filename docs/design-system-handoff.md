@@ -502,9 +502,9 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - Nota lama di atas yang menyebut Waspada / "Penjelasan" sebagai label verdict kini sejarah sahaja. Tajuk bahagian artikel "Penjelasan rasmi" dan tajuk artikel bukan label verdict dan kekal.
 
 ## Grid kad Artikel (22 Nov 2026, ikut Wonder › Container)
-- **Grid cecair:** `repeat(auto-fill, minmax(max(min(100%, 360px), 25% − 1px), 1fr))` → 1 kolum telefon, 2 (≈900), 3 (laptop), 4 (≥≈1700); tidak pernah lebih 4.
+- **Grid cecair:** `repeat(auto-fill, minmax(max(min(100%, var(--media-min) + 2 × --cell-pad), 25% − 1px), 1fr))` dengan `--media-min: 420px` → foto sekurang-kurangnya 420 × 230. 1 kolum telefon, 2 (tablet–laptop, foto ≈540–590), 3 (≥≈1600), 4 (≥≈2100); tidak pernah lebih 4. *(Dikemas kini 22 Nov 2026: sebelum ini lajur min 360px → 3 kolum pada laptop dengan foto ≈330.)*
 - **Garis rambut berterusan** antara kolum dan baris: setiap sel lukis garis kanan + bawah `--color-muted-strong`; pembungkus `.articles-results` (overflow hidden) + margin negatif menyembunyikan garis tepi luar. Ruang dalam sel `--gap-block` (40); telefon `--pad-card` atas/bawah, tiada garis tegak.
-- **Kad terbuka** (tiada latar/border): foto 16:9 radius `--radius-card` dengan logo agensi di dalamnya (kiri bawah); di bawah foto baris meta `Verdict tint · tarikh · N minit bacaan` (caption 12, smoke) lalu tajuk (peranan title). Hover: foto zoom 1.03.
+- **Kad terbuka** (tiada latar/border): foto nisbah 42:23 (420 × 230) radius `--radius-card` dengan logo agensi di dalamnya (kiri bawah); di bawah foto baris meta `Verdict tint · tarikh · N minit bacaan` (caption 12, smoke) lalu tajuk (peranan title). Hover: foto zoom 1.03.
 - **`Verdict` varian `tint`** (baharu, `app/ui.css`): pill 28px di atas warna verdict 22% atas putih.
 - **Masa baca:** `readingMinutes()` (`lib/articles.js`): perkataan tajuk + lead + penjelasan ÷ 200, minimum 1.
 

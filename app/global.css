@@ -1338,15 +1338,17 @@ input::placeholder { color: var(--color-foreground); }
 /* Top row: featured card + side list */
 
 /* Fluid grid, open cards divided by soft hairlines (continuous across the whole grid).
-   Columns ≥360px → 1 on phones, 2–3 on laptops, 4 on wide screens (the 25% floor caps it at 4).
+   Photo ≥420×230 (wide enough to carry the 20px title) → 1 column on phones, 2 on laptops,
+   3 from ~1600px, 4 on wide screens (the 25% floor caps it at 4).
    Each cell draws its right and bottom line; the wrapper clips the outer edge so lines only sit
    between cells. Outer cell padding is pulled back so text lines up with the page gutter. */
 .articles-results { overflow: hidden; }
 .articles-grid {
   --cell-pad: var(--gap-block);
+  --media-min: 420px; /* ds-allow: minimum card photo width, not spacing */
   display: grid;
-  /* ≥360px per column, never more than 4 (each column ≥ a quarter of the row) */
-  grid-template-columns: repeat(auto-fill, minmax(max(min(100%, 360px), 25% - var(--border-width)), 1fr));
+  /* photo ≥ --media-min plus the cell padding, never more than 4 columns (each ≥ a quarter of the row) */
+  grid-template-columns: repeat(auto-fill, minmax(max(min(100%, var(--media-min) + 2 * var(--cell-pad)), 25% - var(--border-width)), 1fr));
   margin: calc(-1 * var(--cell-pad)) calc(-1 * var(--cell-pad) - var(--border-width)) calc(-1 * var(--cell-pad) - var(--border-width)) calc(-1 * var(--cell-pad)); /* hides the outer hairlines */
   padding: 0;
   list-style: none;
@@ -1369,7 +1371,7 @@ input::placeholder { color: var(--color-foreground); }
 /* Photo: its own rounded frame; the agency mark stays inside it */
 .articles-card__media {
   position: relative;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 42 / 23; /* 420 × 230 */
   overflow: hidden;
   border-radius: var(--radius-card);
   background: var(--color-muted-strong);
