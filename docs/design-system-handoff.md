@@ -581,3 +581,8 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
   - **Utama:** seksyen "Pusat semakan fakta MCMC sejak 2017" (`Viewership`) kini paling bawah, selepas Kenali Sebenarnya.my dan tepat sebelum footer. Ritma kekal 120 (1440) / 65 (390) antara setiap seksyen.
   - **Folder format (Logo):** jubin JPEG/PNG/SVG kini semua putih (`--color-tile` = `--color-card`); warna datang daripada ikon fail. Token `--gradient-tile-jpeg`, `--color-tile-png`, `--gradient-tile-svg` dibuang. `--shadow-tile` dilembutkan untuk jubin putih (garis .5px 8% + 0 12px 32px 14%).
   - **H1 hero Tentang Kami** disemak: guna peranan `--text-display` sama seperti H1 Utama dan artikel (48 / 39 / 32 px pada 1440 / 768 / 390, 500, 1.2); lead 16/24 400 seperti lead lain. Konsisten.
+
+- **Hero Tentang Kami: lead diredupkan + fakta dalam angka satu kolum (23 Nov 2026):**
+  - Lead hero (`.about-hero-text p`) kini `--color-text-secondary-inverse` (putih 80%, kembar graphite), jadi tajuk > lead seperti halaman lain. Scrim ≤600 sedikit lebih kuat dan tinggi (70% → 50% pada 50% → lutsinar pada 80%) kerana lead lebih banyak baris di telefon. Diukur pada piksel foto sebenar (piksel paling terang di bawah teks): lead ≥ 6.2:1 dari 320 hingga 1440; H1 ≥ 4:1 (teks besar, had 3:1).
+  - "Beberapa fakta tentang kami dalam angka": `.about-intro__facts-row` kini `flex-direction: column` di semua saiz skrin (satu fakta setiap baris, di tengah), jarak `--gap-block`. Grid 2 kolum ≤1100 dibuang.
+  - Petunjuk di bawah galeri sfera (`.sphere-hint`) kini `text-align: center`; ≤600px dua baris tetap: "Seret untuk memusingkan," / "pilih foto untuk melihatnya lebih besar." (dua `<span>` jadi block).
