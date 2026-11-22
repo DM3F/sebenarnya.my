@@ -508,4 +508,4 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **`Verdict` varian `tint`** (baharu, `app/ui.css`): pill 28px di atas warna verdict 22% atas putih.
 - **Masa baca:** `readingMinutes()` (`lib/articles.js`): perkataan tajuk + lead + penjelasan ÷ 200, minimum 1.
 
-- **Pemilih bahasa (22 Nov 2026):** tiada bendera lagi. Butang memaparkan kod bahasa (`BM` / `EN`, peranan label 16/500) + chevron; menu senarai kod sahaja (lebar 3 × `--size-control`). Nama penuh kekal dalam nama aksesibel ("BM — Bahasa Melayu"). Fail `public/images/flags/` dibuang.
+- **Pemilih bahasa (22 Nov 2026):** tiada bendera lagi. Butang memaparkan kod bahasa (`BM` / `EN`, peranan label 16/500) + chevron; menu senarai kod sahaja, tanpa tajuk "Bahasa" (lebar 3 × `--size-control`). Nama penuh kekal dalam nama aksesibel ("BM — Bahasa Melayu"). Fail `public/images/flags/` dibuang.

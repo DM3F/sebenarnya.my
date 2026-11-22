@@ -66,7 +66,7 @@ export default function Header() {
 
         <div className="header-actions">
           {/* Language selector: visual only for now, no translation wired up */}
-          <LanguageMenu label="Bahasa" groupLabel="Bahasa" items={languages} value={lang} onChange={setLang} />
+          <LanguageMenu label="Bahasa" items={languages} value={lang} onChange={setLang} />
           {/* Home's hero already has the one filled action ("Semak"), so the claim button steps back to outline there */}
           <Button
             href={withBase(claimLink.href)}
