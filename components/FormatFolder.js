@@ -130,7 +130,7 @@ export default function FormatFolder({ title, subject, formats }) {
                 <path d="M0 24A24 24 0 0 1 24 0L176 0C201.3 0 196.7 24 222 24L396 24A24 24 0 0 1 420 48L420 156A24 24 0 0 1 396 180L24 180A24 24 0 0 1 0 156Z" />
               </svg>
 
-              {/* Text is counter-scaled out of the stage scale, so it renders at the type roles (title / label-sm) at any card width */}
+              {/* Text is counter-scaled out of the stage scale, so it renders at the type roles (title / label) at any card width */}
               <div className="folder__text">
                 <p className="folder__title">{title}</p>
 
@@ -147,7 +147,7 @@ export default function FormatFolder({ title, subject, formats }) {
                       onPointerLeave={() => setHi((h) => (h === f.label ? null : h))}
                     >
                       {f.label}
-                      <Icon icon={Download} size="sm" />
+                      <Icon icon={Download} />
                     </a>
                   ))}
                 </div>
