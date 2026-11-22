@@ -2066,6 +2066,34 @@ input::placeholder { color: var(--color-foreground); }
 .about-hero-follow a:active { transform: scale(.94); }
 .about-hero-follow svg { width: 24px; height: 24px; fill: currentColor; }
 .about-hero-follow a:focus-visible { outline: 2px solid var(--color-foreground-inverse); outline-offset: 3px; }
+/* Info cards: absolute on the right, same top and right inset as "Ikuti kami" has top and left (the card padding) */
+.about-hero-aifa {
+  position: absolute;
+  z-index: 1;
+  top: var(--spacing-56);
+  right: var(--spacing-40);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  width: min(330px, 34%);
+}
+.aifa-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  border-radius: var(--radius-card);
+  transition: transform .2s var(--ease-out);
+}
+.aifa-card:hover { transform: translateY(-2px); }
+.aifa-card p { margin: 0; text-wrap: pretty; }
+.aifa-card--media { padding: var(--spacing-8); background: var(--color-card); color: var(--color-foreground); }
+.aifa-card__media { aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-media); background: var(--color-muted-strong); }
+.aifa-card__media img,
+.aifa-card__media iframe { display: block; width: 100%; height: 100%; border: 0; object-fit: cover; }
+.aifa-card--media p { padding: var(--spacing-4) var(--spacing-8) var(--spacing-8); font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); }
+.aifa-card--info { padding: var(--spacing-16) var(--spacing-16) var(--spacing-20); background: var(--color-muted-strong); color: var(--color-foreground); }
+.aifa-card--info .aifa-card__title { font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--text-label--font-weight); }
+.aifa-card--info p:not(.aifa-card__title) { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); }
 .about-hero-text h1 {
   max-width: 12em; /* design: 462px at 40px — the title breaks into 2–3 short lines */
   margin: 0;
@@ -2334,6 +2362,8 @@ input::placeholder { color: var(--color-foreground); }
 
 @media (max-width: 900px) {
   .about-hero-card { min-height: 560px; padding: var(--spacing-32) var(--spacing-24) var(--spacing-40); }
+  /* No room beside the title: the info cards join the flow between "Ikuti kami" and the title */
+  .about-hero-aifa { position: relative; top: auto; right: auto; width: 100%; max-width: 420px; }
 }
 
 @media (max-width: 700px) {
@@ -2356,7 +2386,9 @@ input::placeholder { color: var(--color-foreground); }
   .sphere-dialog[open] { animation: sphere-fade 200ms ease; }
   .about-fn-track span,
   .sphere-node__disc,
-  .about-hero-follow a { transition: none; }
+  .about-hero-follow a,
+  .aifa-card { transition: none; }
+  .aifa-card:hover { transform: none; }
 }
 @keyframes about-fn-fade { from { opacity: 0; } }
 

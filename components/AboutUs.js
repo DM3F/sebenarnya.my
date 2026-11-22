@@ -57,6 +57,19 @@ function Hero() {
           </ul>
         </div>
 
+        <div className="about-hero-aifa">
+          <article className="aifa-card aifa-card--media">
+            <div className="aifa-card__media">
+              <img src={hero.aifa.media} alt="" loading="lazy" />
+            </div>
+            <p>{hero.aifa.caption}</p>
+          </article>
+          <article className="aifa-card aifa-card--info">
+            <p className="aifa-card__title">{hero.aifa.title}</p>
+            <p>{hero.aifa.text}</p>
+          </article>
+        </div>
+
         <div className="about-hero-text">
           <h1 id="about-hero-title">{hero.title}</h1>
           <p>{hero.lead}</p>
