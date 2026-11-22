@@ -236,7 +236,7 @@ export default function SphereGallery({ items }) {
 
       <dialog
         tabIndex={-1}
-        className="sphere-dialog"
+        className="ui-modal sphere-dialog"
         ref={dialogRef}
         aria-label={selected?.caption}
         onClose={onClose}

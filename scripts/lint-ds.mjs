@@ -52,7 +52,7 @@ const rules = [
   {
     id: 'palette-primitive',
     why: 'Palette primitive used directly; use a semantic token (--color-foreground, --color-border…).',
-    test: (l, p) => !isTokens(p) && /var\(--color-(grey-\d+|red|red-dark|blue|azure|orange|orange-dark|green|green-dark|white)\)/.test(code(l)),
+    test: (l, p) => !isTokens(p) && /var\(--color-(grey-\d+|red|red-dark|blue|azure|orange|orange-dark|green|green-dark|white|black)\)/.test(code(l)),
     allow: (l) => /--color-(white|black)\)/.test(l) && /token|alias/.test(l),
   },
   {
@@ -104,9 +104,15 @@ const rules = [
   },
   {
     id: 'raw-spacing',
-    why: 'Raw px in padding/margin/gap; use a spacing role (--gap-*, --pad-card*, --space-*) or a --spacing-* step.',
+    why: 'Raw px in padding/margin/gap; use a spacing role (--gap-*, --pad-card*, --space-*); a --spacing-* step only for geometry inside one component.',
     test: (l, p) => !isTokens(p) && isCss(p)
       && /(?:^|[\s{;])(padding|margin|gap|row-gap|column-gap)(-[a-z-]+)?\s*:[^;]*\b[1-9]\d*(\.\d+)?px/.test(code(l)),
+  },
+  {
+    id: 'group-gap-primitive',
+    why: 'A gap of 16px or more separates groups or blocks: use a role (--gap-group, --gap-cards, --gap-block, --space-section). --spacing-* steps are for geometry inside one component (≤12px gaps, padding, offsets).',
+    test: (l, p) => !isTokens(p) && isCss(p)
+      && /(?:^|[\s{;])(gap|row-gap|column-gap)\s*:[^;]*var\(--spacing-(1[6-9]|[2-9]\d|\d{3,})\)/.test(code(l)),
   },
   {
     id: 'raw-radius',

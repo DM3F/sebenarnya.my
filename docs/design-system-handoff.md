@@ -144,10 +144,8 @@ Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1
 ---
 
 ### 2.x Motion — page transition
-- Token (`app/global.css`): `--ease-in-out cubic-bezier(.87,0,.13,1)` · `--duration-page 1.2s`.
 - `components/PageTransition.js` (dalam `app/layout.js`): tangkap klik link dalaman, jalankan `document.startViewTransition`, lalu `router.push`. Link `/submit-claim/`, tab baru, link luar dan hash tidak disentuh.
-- CSS `::view-transition-old/new(root)`: page lama naik 35% + redup ke .4; page baru di-wipe dari bawah (clip-path polygon).
-- `prefers-reduced-motion`: crossfade 200ms sahaja.
+- CSS: crossfade bawaan pelayar, `::view-transition-group(root)` `--duration-base` (250ms) `--ease-out`. Opacity sahaja, jadi sama untuk reduced motion. Halaman baru main entrance sendiri (`PageEnter`). (Dulu 1.2s naik + wipe; `--duration-page` dan `--ease-page` dibuang, 23 Nov 2026.)
 - Browser tanpa `startViewTransition`: navigasi biasa.
 
 ### 2.y Motion — hero carousel
@@ -200,7 +198,7 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 - `LanguageMenu` (`items` [{value, label, lang, flag}], `value`, `onChange`, `label`, `groupLabel`, `align`) — pill bendera bulat 24 + chevron (border `--color-border`, bg `--color-secondary`); panel `--radius-menu` + `--shadow-float`, label kumpulan caption muted, item bendera + nama, terpilih bg `--color-accent`. Masuk 150ms opacity+scale .96 dari sudut trigger. Bendera: `public/images/flags/*.svg`
 - `DropdownMenu` (`label`, `items` [{label, href, current}], `current`, `align`) — trigger NavLink + chevron, panel pautan. `.ui-dropdown__item` boleh `<a>` atau `<button>` (chrome butang browser dibuang: tiada border/bg, lebar penuh)
 - Menu mudah alih: label kumpulan (cth. Tentang Kami) sama saiz/warna dengan Utama/Artikel; anak pautan `--text-label-sm` (14), muted, inden 32
-- Menu Kongsi: muncul 150ms opacity + scale .96 dari tengah atas (butang Kongsi)
+- Menu Kongsi: `.ui-menu` (sama dengan dropdown nav dan bahasa), muncul 150ms opacity + scale .96 dari tengah atas (butang Kongsi)
 - `Button`/`Chip`/`NavLink` dengan `href` render `<a>` biasa (tiada kebergantungan Next.js) supaya boleh guna di CMS/extension.
 
 Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Sudah dipasang: **Header** dan **Hero** (lihat di bawah). Komponen lain belum.
@@ -569,3 +567,12 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Ruang atas header (23 Nov 2026):** pautan langkau "Langkau ke kandungan" (`a.ui-btn.ui-skip-link`) sepatutnya `position: fixed`, tetapi `.ui-btn { position: relative }` (kemudian dalam `ui.css`, spesifisiti sama) menang, jadi pautan halimunan itu kekal dalam aliran dan menolak header 44px ke bawah di setiap halaman. Kini `.ui-btn.ui-skip-link` (dua kelas). Header bermula pada 0, logo 16px dari atas (padding header 16, seperti spesifikasi). Pautan langkau masih muncul di kiri atas (8/8) pada Tab pertama, cincin tinta.
 
 - **Kad flip di iOS Safari (23 Nov 2026):** `backface-visibility: hidden` tidak cukup di WebKit: anak muka depan yang ada lapisan sendiri (blok verdict + tajuk `position: absolute; z-index`, avatar agensi, butang flip) tembus ke muka belakang, terbalik ("NAMULKAM", logo di kiri atas, tajuk atas "Baca semakan"). Kini muka yang berpaling juga `visibility: hidden`, ditukar tepat bila kad tegak (90°): tutup (lengkung simetri) pada 50% `--duration-slow`; buka (`--ease-out` kuat) pada 13% `--duration-slower` (79ms, diselesaikan daripada lengkung). Diukur di Chrome: suis berlaku pada 94°, satu bingkai selepas tegak. Papan kekunci: fokus berpindah ke "Baca semakan" sebaik muka belakang kelihatan (`FlipCard.js` menunggu sehingga ~1s). Gerakan dikurangkan: suis serta-merta. Belum diuji pada peranti iOS sebenar.
+
+- **Audit design system: overlay, menu, jarak dan motion (23 Nov 2026):**
+  - **Satu resepi modal `.ui-modal`** (`app/ui.css`) untuk borang Lapor, pratonton sosial dan foto sfera: permukaan `--color-card`, `--radius-card-lg`, `--shadow-overlay` (token baharu), backdrop `--color-scrim` (token baharu, tinta 60%), masuk 250ms opacity + scale .96 dan **keluar** .98 (transition, boleh disampuk). Dulu empat gaya: bayang `rgba(21,22,24,…)` mentah, backdrop 55/60/70%, masuk 450 atau 250ms, tiga daripadanya hilang serta-merta bila ditutup. Panel AIFA: `--shadow-overlay` + pop 250ms yang sama, juga keluar (`display` allow-discrete).
+  - **Satu permukaan menu `.ui-menu`** untuk dropdown nav, bahasa dan Kongsi: `--color-background`, border, `--radius-menu`, padding `--space-inline`, `--shadow-float`, pop 150ms dari tepi pemicu. Dulu dropdown nav tiada animasi dan Kongsi berlatar `--color-card` dengan CSS salinan penuh di `global.css`.
+  - **Token baharu:** `--color-surface-media` (latar foto/video, kad hero gelap; ganti `--color-black` di FlipCard, carousel, hero Tentang Kami), `--color-scrim`, `--shadow-overlay`. Lint `palette-primitive` kini juga menangkap `--color-black`.
+  - **Jarak:** gap antara kumpulan/blok (≥16px) kini peranan (`--gap-text/inline/group/cards/block`), bukan `--spacing-*`; override breakpoint yang menyalin nilai fluid dibuang (hero, Semakan terkini, Kenali, Artikel, artikel, footer). Lint baharu `group-gap-primitive`. Kepala seksyen: tajuk → lead `--gap-text` (8); tajuk seksyen → kandungan `--gap-block` (40 → 24) di semua halaman, termasuk Logo (dulu 72) dan "Semakan fakta terkini" telefon (dulu 32). H1 display → lede `--gap-group` (16) di kedua-dua hero. Diukur: antara seksyen 120 (1440) / 65 (390) di semua halaman.
+  - **Motion:** transisi route 1.2s → crossfade 250ms; hover logo agensi dan kad AIFA kini hanya untuk tetikus (`hover: hover`); titik carousel tidak lagi menganimasi `width` (snap; bar isi menunjukkan kemajuan).
+  - **Kod mati:** `gsap` dibuang dari `package.json`, blok `@media` kosong, `--fade`, komen tanpa peraturan.
+  - **Verdict H1 telefon di tengah optik:** ≤600px baris verdict sendiri, jadi `.typewriter__row` kini `justify-self: center` + `margin-inline-start: .12em` (separuh daripada kursor dan jaraknya), supaya huruf "palsu", "benar" dan "makluman" tepat di paksi tengah H1 (diukur 0.0px pada 320/390/600). Desktop tidak berubah (verdict mengikut "Semak dakwaan").

@@ -51,7 +51,7 @@ export default function DropdownMenu({ label, items, current = false, align = 's
         {label}
         <Icon icon={ChevronDown} className="ui-dropdown__chevron" />
       </button>
-      <ul id={menuId} className="ui-dropdown__menu" hidden={!open}>
+      <ul id={menuId} className="ui-menu ui-dropdown__menu" hidden={!open}>
         {items.map((item) => (
           <li key={item.href}>
             <a href={item.href} className="ui-dropdown__item" aria-current={item.current ? 'page' : undefined}>
