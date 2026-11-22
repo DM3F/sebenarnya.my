@@ -10,9 +10,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
  * - The new word goes into the layout once, at the start of the flip. Its letters roll in from
  *   below (rotateX −90° → 0) while the old word, laid over it, rolls away (0 → 90°), one letter
  *   after another, like the faces of small cubes.
- * - The width change would make the centred line jump, so the line (and, on phones where the word
- *   has its own line, the word) is FLIP-translated back to where it was and glides to its new place
- *   over the whole flip.
+ * - The word sits in a slot as wide as the longest word, so the text before it stays put. On phones,
+ *   where the word is centred on its own line, it FLIP-glides to its new centre over the flip.
  * - Holds each word, pauses while the tab is hidden or the word is off screen.
  * - Reduced motion: the word changes in place, no flip.
  * - Decorative: aria-hidden; the parent gives screen readers the full text.
@@ -122,6 +121,11 @@ export default function FlipWord({ words, hold = 2200, duration = 700, stagger =
           ))}
         </span>
       </span>
+      {/* Invisible copies of every word, stacked in the same grid cell: the slot is as wide as the
+          longest word, so the text before it never moves when the word changes length */}
+      {words.map((w) => (
+        <span key={w} className="flip-word__ghost">{w}</span>
+      ))}
     </span>
   );
 }

@@ -370,9 +370,12 @@ input::placeholder { color: var(--color-foreground); }
 /* Rotating verdict in the H1 (components/FlipWord.js): semibold so it reads as the answer */
 .hero-title__verdict { white-space: nowrap; } /* "dakwaan" + verdict never split across lines */
 .flip-word {
-  display: inline-block;
+  display: inline-grid; /* row + ghost words share one cell → slot = widest word */
   font-weight: var(--font-weight-semibold);
 }
+.flip-word > * { grid-area: 1 / 1; }
+.flip-word__ghost { visibility: hidden; white-space: pre; }
+.flip-word__row { justify-self: start; } /* grows to the right; "Semak dakwaan" stays put */
 /* New word, in the layout; the old word lies over it while it rolls away */
 .flip-word__row,
 .flip-word__out {
@@ -422,7 +425,8 @@ input::placeholder { color: var(--color-foreground); }
 @media (max-width: 600px) {
   .hero-lede { font-size: var(--text-body); line-height: var(--text-body--line-height); }
   /* Verdict on its own line: PALSU and MAKLUMAN would otherwise wrap the line differently and the page would jump */
-  .hero-title .flip-word { display: flex; justify-content: center; }
+  .hero-title .flip-word { display: grid; justify-content: center; }
+  .hero-title .flip-word__row { justify-self: center; }
   .hero-inner { padding-top: var(--spacing-48); }
   .hero-content { gap: var(--spacing-32); }
 }
