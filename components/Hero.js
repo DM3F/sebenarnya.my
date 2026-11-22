@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Chip, ChipRow, SearchField } from '@/components/ui';
 import { keywords, searchArticles } from '@/lib/searchArticles';
-import FlipWord from '@/components/FlipWord';
+import Typewriter from '@/components/Typewriter';
 
 // The three verdicts the H1 cycles through
 const VERDICTS = ['palsu', 'benar', 'makluman'];
@@ -41,9 +41,9 @@ export default function Hero() {
                 <span className="hero-title__part">Tidak pasti?</span>{' '}
                 <span className="hero-title__part">Jangan kongsi</span>
               </span>{' '}
-              <span data-flip-line>
+              <span>
                 <span className="hero-title__part">Semak dakwaan</span>{' '}
-                <FlipWord words={VERDICTS} />
+                <Typewriter words={VERDICTS} />
                 <span className="sr-only">palsu, benar atau makluman</span>
               </span>
             </h1>

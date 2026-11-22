@@ -357,29 +357,29 @@ input::placeholder { color: var(--color-foreground); }
   text-wrap: balance;
 }
 
-/* Rotating verdict in the H1 (components/FlipWord.js): same weight as the rest of the line */
+/* Rotating verdict in the H1 (components/Typewriter.js): same weight as the rest of the line */
 .hero-title__part { white-space: nowrap; } /* "Tidak pasti?", "Jangan kongsi", "Semak dakwaan" never break inside */
-.flip-word {
-  display: inline-grid; /* row + ghost words share one cell → slot = widest word */
+.typewriter {
+  display: inline-grid; /* the typed row + ghost words share one cell → slot = widest word + caret */
+  text-align: start;
 }
-.flip-word > * { grid-area: 1 / 1; }
-.flip-word__ghost { visibility: hidden; white-space: pre; }
-.flip-word__row { justify-self: start; } /* grows to the right; "Semak dakwaan" stays put */
-/* New word, in the layout; the old word lies over it while it rolls away */
-.flip-word__row,
-.flip-word__out {
-  display: inline-flex;
-  white-space: pre;
-  perspective: 800px; /* ds-allow: 3D depth for the letter cubes, not spacing */
-  perspective-origin: center;
-}
-.flip-word__row { position: relative; }
-.flip-word__out { position: absolute; top: 0; left: 0; pointer-events: none; }
-.flip-word__char {
+.typewriter > * { grid-area: 1 / 1; white-space: pre; }
+.typewriter__row { justify-self: start; } /* typed from the slot's start; "Semak dakwaan" stays put */
+.typewriter__ghost { visibility: hidden; }
+/* Text caret: a thin bar about cap height, in the heading's ink. Blinks while the word rests, solid
+   while characters go in or out (data-busy), like a real cursor. Hard on/off, the OS blink rate. */
+.typewriter__caret {
   display: inline-block;
-  backface-visibility: hidden;
-  transform-origin: center;
+  width: .06em;
+  height: .82em;
+  margin-inline-start: .06em;
+  vertical-align: -.06em;
+  background: currentColor;
+  animation: typewriter-caret 1.06s step-end infinite; /* ds-allow: caret blink at the OS rate (530ms on / off), not a UI transition */
 }
+.typewriter[data-busy] .typewriter__caret { animation: none; }
+@keyframes typewriter-caret { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .typewriter__caret { animation: none; } }
 
 .hero-lede {
   font-family: var(--font-sans);
@@ -934,7 +934,7 @@ input::placeholder { color: var(--color-foreground); }
 .hero-carousel img { display: block; }
 .hero-carousel button { font: inherit; color: inherit; }
 .hero-carousel :focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
-.hero-carousel .gal:focus-visible { outline-offset: calc(-1 * var(--focus-ring-offset)); } /* inside the edge-to-edge slide */
+.hero-carousel .gal:focus-visible { outline-color: var(--focus-ring-color-inverse); outline-offset: calc(-1 * var(--focus-ring-offset)); } /* inside the edge-to-edge slide, on the photo */
 
 /* Gallery + track */
 /* Infinite slider: Carousel.js positions every slide with translate3d; --h is measured in JS. */
@@ -2034,7 +2034,7 @@ input::placeholder { color: var(--color-foreground); }
 .aifa-card:hover { transform: translateY(-2px); }
 .aifa-card p { margin: 0; text-wrap: pretty; }
 .aifa-card--media { padding: var(--spacing-8); background: var(--color-card); color: var(--color-foreground); }
-.aifa-card__media:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.aifa-card__media:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); } /* inside the white card: ink ring */
 .aifa-card__media { display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-media); background: var(--color-muted-strong); }
 .aifa-card__media img,
 .aifa-card__media video,
@@ -2959,12 +2959,10 @@ input::placeholder { color: var(--color-foreground); }
 .hero .hero-title { width: fit-content; max-width: 100%; font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 12.8)); }
 
 /* Phones: four lines, "Tidak pasti?" / "Jangan kongsi" / "Semak dakwaan" / <verdict>. Each part is a
-   block that never breaks inside; the verdict sits centred on its own line and FlipWord glides it to
-   the new centre as the word changes length. The widest line is ≈7.5em, so the display size (32+,
+   block that never breaks inside; the verdict's slot (as wide as "makluman") sits centred on its own
+   line and the word is typed from the slot's start, so the text never jumps while it grows. The widest line is ≈7.5em, so the display size (32+,
    above the 28px H2) is capped at content width / 7.8 and every line fits (32px from 320 up). */
 @media (max-width: 600px) {
   .hero-title__part { display: block; }
-  .hero-title .flip-word { display: grid; justify-content: center; }
-  .hero-title .flip-word__row { justify-self: center; }
   .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 7.8)); }
 }
