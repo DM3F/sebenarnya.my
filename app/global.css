@@ -1338,25 +1338,27 @@ input::placeholder { color: var(--color-foreground); }
 /* Top row: featured card + side list */
 
 /* Fluid grid, open cards divided by soft hairlines (continuous across the whole grid).
-   Photo ≥420×230 (wide enough to carry the 20px title) → 1 column on phones, 2 on laptops,
-   3 from ~1600px, 4 on wide screens (the 25% floor caps it at 4).
+   Photo ≥320 wide (ratio 420×230) → 1 column on phones, 2 on tablets, 3 on laptops,
+   4 from ~1520px (the 25% floor caps it at 4). Cells are 24 apart from the line sideways,
+   40 above/below, so the photos get the width.
    Each cell draws its right and bottom line; the wrapper clips the outer edge so lines only sit
    between cells. Outer cell padding is pulled back so text lines up with the page gutter. */
 .articles-results { overflow: hidden; }
 .articles-grid {
-  --cell-pad: var(--gap-block);
-  --media-min: 420px; /* ds-allow: minimum card photo width, not spacing */
+  --cell-pad: var(--gap-block);   /* above / below */
+  --cell-pad-x: var(--pad-card);  /* either side of the column line */
+  --media-min: 320px; /* ds-allow: minimum card photo width, not spacing */
   display: grid;
   /* photo ≥ --media-min plus the cell padding, never more than 4 columns (each ≥ a quarter of the row) */
-  grid-template-columns: repeat(auto-fill, minmax(max(min(100%, var(--media-min) + 2 * var(--cell-pad)), 25% - var(--border-width)), 1fr));
-  margin: calc(-1 * var(--cell-pad)) calc(-1 * var(--cell-pad) - var(--border-width)) calc(-1 * var(--cell-pad) - var(--border-width)) calc(-1 * var(--cell-pad)); /* hides the outer hairlines */
+  grid-template-columns: repeat(auto-fill, minmax(max(min(100%, var(--media-min) + 2 * var(--cell-pad-x)), 25% - var(--border-width)), 1fr));
+  margin: calc(-1 * var(--cell-pad)) calc(-1 * var(--cell-pad-x) - var(--border-width)) calc(-1 * var(--cell-pad) - var(--border-width)) calc(-1 * var(--cell-pad-x)); /* hides the outer hairlines */
   padding: 0;
   list-style: none;
 }
 .articles-grid > li {
   display: flex;
   min-width: 0;
-  padding: var(--cell-pad);
+  padding: var(--cell-pad) var(--cell-pad-x);
   border-right: var(--border-width) solid var(--color-muted-strong);
   border-bottom: var(--border-width) solid var(--color-muted-strong);
 }
