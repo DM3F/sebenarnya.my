@@ -42,7 +42,7 @@ export default function SearchField({
         {label}
       </label>
       <div className={`ui-search${size === 'sm' ? ' ui-search--sm' : ''}`} data-invalid={error ? '' : undefined}>
-        <Icon icon={Search} size={18} className="ui-search__icon" />
+        <Icon icon={Search} size="lg" className="ui-search__icon" />
         <input
           id={id}
           name={name}

@@ -188,7 +188,7 @@ export default function ClaimForm() {
       {status !== 'sent' && (
         <header className="claim-head">
           <span className="claim-icon" aria-hidden="true">
-            <Icon icon={Flag} size={20} />
+            <Icon icon={Flag} size="lg" />
           </span>
           <div className="claim-heading">
             <h2 id="claim-title">Lapor berita tular</h2>
@@ -201,7 +201,7 @@ export default function ClaimForm() {
       {status === 'sent' ? (
         <div className="claim-done" role="status">
           <span className="claim-done-icon" aria-hidden="true">
-            <Icon icon={Check} size={28} />
+            <Icon icon={Check} size="xl" />
           </span>
           <h3 id="claim-done-title">Laporan anda telah dihantar.</h3>
         </div>
@@ -269,7 +269,7 @@ export default function ClaimForm() {
                   onDragLeave={() => setDragging(false)}
                   onDrop={onDrop}
                 >
-                  <Icon icon={CloudUpload} size={40} />
+                  <Icon icon={CloudUpload} size="display" />
                   <strong>Pilih fail atau seret ke sini.</strong>
                   <span>jpg, png, pdf · maksimum 10MB</span>
                   <label className="ui-btn ui-btn--outline ui-btn--sm claim-pick">

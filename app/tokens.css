@@ -162,7 +162,8 @@
   /* ── Motion (docs/design.md §6: purposeful, ease-out, 150–600ms) ────────── */
   --duration-fast: 150ms;   /* hover, colour, press */
   --duration-base: 250ms;   /* small moves, fades, icon nudge */
-  --duration-slow: 450ms;   /* reveals, panel/drawer */
+  --duration-slow: 450ms;   /* reveals, panel/drawer, flip */
+  --duration-slower: 700ms; /* large reveals, scroll-in sections */
   --duration-page: 1.2s;    /* route transition only */
   --ease-out: cubic-bezier(.23, 1, .32, 1);         /* default: enter, move, reveal */
   --ease-in-out: cubic-bezier(.645, .045, .355, 1); /* on-screen morphs (menu icon) */
@@ -257,9 +258,17 @@
   --size-control-xl: var(--spacing-56);         /* primary search */
   --size-hit-area: var(--spacing-44);           /* minimum touch target */
   --size-badge: 28px;
-  --size-icon-sm: 14px;
-  --size-icon: 16px;
-  --size-icon-lg: 18px;
+  /* Icons: five sizes, named in <Icon size="…"> too. Pick by job, not by eye. */
+  --size-icon-sm: 14px;      /* sm: inside badges and 12–13px meta */
+  --size-icon: 16px;         /* md (default): next to a label, inside buttons */
+  --size-icon-lg: 20px;      /* lg: field and search icons, icon-only list items */
+  --size-icon-xl: 24px;      /* xl: icon-only buttons (close, chat toggle), status marks */
+  --size-icon-display: 40px; /* display: empty states, upload drop zones */
+
+  /* Avatars (agency logos, AIFA). The logo sits --avatar-inset inside the ring. */
+  --size-avatar-sm: 32px;    /* on cards and images */
+  --size-avatar: 40px;       /* default: flip card, chat */
+  --avatar-inset: var(--spacing-4);
   --size-icon-xl: 20px;
   --size-dot: 8px;                              /* verdict / status dot */
   --size-textarea: 120px;
@@ -306,10 +315,12 @@
   --radius-menu-item: var(--radius-input);
   --radius-media: var(--radius-md);             /* thumbnails, inner media */
 
-  --border-width: 1px;
+  --border-width: 1px;          /* cards, panels, menus, fields, dividers */
+  --border-width-hairline: .5px; /* small pills and chips (Figma "pill edge") */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --focus-ring-color: var(--color-ring);
+  --focus-ring-color-inverse: var(--color-foreground-inverse); /* on photos and dark surfaces */
 
   --blur-overlay: 10px;                         /* pills over photos */
   --press-scale: .97;                           /* :active feedback */

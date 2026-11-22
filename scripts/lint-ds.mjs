@@ -131,6 +131,31 @@ const rules = [
     test: (l, p) => !isTokens(p) && isCss(p) && /z-index:\s*(\d{2,}|[6-9]|-[2-9]|-\d{2,})\b/.test(code(l)),
   },
   {
+    id: 'raw-motion',
+    why: 'Raw duration or easing; use --duration-fast/base/slow/slower/page and --ease-*. Ambient loops of 2s+ are fine.',
+    test: (l, p) => !isTokens(p) && isCss(p) && /(transition|animation)[\w-]*\s*:/.test(code(l))
+      && (/(?<![\w.-])(0?\.\d+|1(\.\d+)?)s\b|(?<![\w-])\d{1,4}ms\b/.test(code(l))
+        || /(?<![\w(-])(ease|ease-in|ease-out|ease-in-out)(?![\w-])/.test(code(l))),
+  },
+  {
+    id: 'focus-ring',
+    why: 'Focus ring must use --focus-ring-width / --focus-ring-color(-inverse) / --focus-ring-offset.',
+    test: (l, p) => !isTokens(p) && isCss(p)
+      && (/outline:\s*\.?\d*[1-9]/.test(code(l))
+        || /outline-offset:\s*-?\d+px/.test(code(l))
+        || /outline:\s*var\(--focus-ring-width\)\s+solid\s+var\(--(?!focus-ring-color)/.test(code(l))),
+  },
+  {
+    id: 'raw-border',
+    why: 'Raw border width; use var(--border-width). Decorative rings carry ds-allow.',
+    test: (l, p) => !isTokens(p) && isCss(p) && /border(-top|-bottom|-left|-right)?:\s*\.?\d*[1-9]\d*(\.\d+)?px/.test(code(l)),
+  },
+  {
+    id: 'icon-size',
+    why: 'Icon size by name: <Icon size="sm|md|lg|xl|display">, never a number.',
+    test: (l, p) => !isCss(p) && /<Icon\b[^>]*\bsize=\{/.test(code(l)),
+  },
+  {
     id: 'rem',
     why: 'rem breaks inside the extension and with the 62.5% root; use px tokens.',
     test: (l, p) => isCss(p) && /\d(\.\d+)?rem\b/.test(code(l)),

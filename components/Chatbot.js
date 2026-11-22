@@ -223,10 +223,10 @@ export default function Chatbot() {
         onClick={() => setOpen(!open)}
       >
         {open ? (
-          <Icon icon={X} size={24} />
+          <Icon icon={X} size="xl" />
         ) : (
           <>
-            <Icon icon={MessageSquareText} size={24} />
+            <Icon icon={MessageSquareText} size="xl" />
             <span className="aifa-toggle-label">Tanya AIFA</span>
           </>
         )}

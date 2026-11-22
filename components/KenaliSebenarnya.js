@@ -23,9 +23,9 @@ export default function KenaliSebenarnya() {
           <h3 className="kenali__card-title">Semak di mana-mana</h3>
           <p className="kenali__card-text">WhatsApp AIFA, portal Sebenarnya.my dan media sosial rasmi kami.</p>
           <ul className="kenali__icons" aria-label="Saluran semakan">
-            <li><Icon icon={MessageSquareText} size={20} /><span className="sr-only">WhatsApp AIFA</span></li>
-            <li><Icon icon={Globe} size={20} /><span className="sr-only">Portal Sebenarnya.my</span></li>
-            <li><Icon icon={Smartphone} size={20} /><span className="sr-only">Media sosial</span></li>
+            <li><Icon icon={MessageSquareText} size="lg" /><span className="sr-only">WhatsApp AIFA</span></li>
+            <li><Icon icon={Globe} size="lg" /><span className="sr-only">Portal Sebenarnya.my</span></li>
+            <li><Icon icon={Smartphone} size="lg" /><span className="sr-only">Media sosial</span></li>
           </ul>
         </article>
 
@@ -65,7 +65,7 @@ export default function KenaliSebenarnya() {
 
         <article className="kenali__card kenali__card--award">
           <p className="kenali__award-eyebrow">
-            <Icon icon={Trophy} size={16} />
+            <Icon icon={Trophy} />
             Pengiktirafan tertinggi · WSIS PBB
           </p>
           <div className="kenali__award-body">
