@@ -370,6 +370,15 @@
   backdrop-filter: blur(var(--blur-overlay));
   -webkit-backdrop-filter: blur(var(--blur-overlay));
 }
+/* Tint: compact pill on a pale wash of the verdict colour (article cards, outside the photo) */
+.ui-verdict--tint {
+  --verdict-height: var(--size-badge);
+  --verdict-pad: var(--space-badge-y) var(--spacing-10) var(--space-badge-y) var(--space-inline);
+  --verdict-gap: var(--space-inline-tight);
+  --verdict-bg: color-mix(in srgb, var(--verdict-dot) 22%, var(--color-card));
+  --verdict-border: transparent;
+  --verdict-halo: 0 * var(--border-width);
+}
 .ui-verdict--plain {
   --verdict-height: 0;
   --verdict-pad: 0;

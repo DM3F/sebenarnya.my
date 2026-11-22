@@ -1310,7 +1310,7 @@ input::placeholder { color: var(--color-foreground); }
 .card-link::after { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; }
 .card-link:focus-visible { outline: none; }
 
-.articles-card:focus-within { outline: 2px solid var(--color-ring); outline-offset: 3px; }
+.articles-card:focus-within { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--spacing-8); border-radius: var(--radius-card); }
 
 /* Verdict pill over photos */
 .verdict-tag { position: absolute; z-index: 1; top: var(--spacing-12); left: var(--spacing-12); pointer-events: none; }
@@ -1337,59 +1337,65 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Top row: featured card + side list */
 
-/* 4-column grid */
+/* Fluid grid, open cards divided by soft hairlines (continuous across the whole grid).
+   Columns ≥360px → 1 on phones, 2–3 on laptops, 4 on wide screens (the 25% floor caps it at 4).
+   Each cell draws its right and bottom line; the wrapper clips the outer edge so lines only sit
+   between cells. Outer cell padding is pulled back so text lines up with the page gutter. */
+.articles-results { overflow: hidden; }
 .articles-grid {
+  --cell-pad: var(--gap-block);
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--gap-cards);
-  margin: 0;
+  /* ≥360px per column, never more than 4 (each column ≥ a quarter of the row) */
+  grid-template-columns: repeat(auto-fill, minmax(max(min(100%, 360px), 25% - var(--border-width)), 1fr));
+  margin: calc(-1 * var(--cell-pad)) calc(-1 * var(--cell-pad) - var(--border-width)) calc(-1 * var(--cell-pad) - var(--border-width)) calc(-1 * var(--cell-pad)); /* hides the outer hairlines */
   padding: 0;
   list-style: none;
 }
-.articles-card {
-  box-sizing: border-box;
-  position: relative;
+.articles-grid > li {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-  border: 1px solid var(--color-muted-strong); /* hairline, like the reference */
-  border-radius: var(--radius-card);
-  background: var(--color-card);
+  min-width: 0;
+  padding: var(--cell-pad);
+  border-right: var(--border-width) solid var(--color-muted-strong);
+  border-bottom: var(--border-width) solid var(--color-muted-strong);
 }
-/* Photo is the card's roof: full bleed, clipped by the card radius */
-.articles-card__media {
+.articles-card {
   position: relative;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  background: var(--color-muted-strong);
-}
-.articles-card__media > img { width: 100%; height: 100%; object-fit: cover; }
-.articles-card__media .verdict-tag { top: var(--spacing-16); left: var(--spacing-16); }
-.articles-card__media .agency-avatar { position: absolute; left: var(--spacing-16); bottom: var(--spacing-16); }
-.articles-card__body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: space-between; /* title top, date pinned to the bottom */
-  gap: var(--gap-text);
-  padding: var(--pad-card);
+  gap: var(--gap-group);
+  min-width: 0;
 }
-
+/* Photo: its own rounded frame; the agency mark stays inside it */
+.articles-card__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--color-muted-strong);
+}
+.articles-card__media > img { width: 100%; height: 100%; object-fit: cover; }
+.articles-card__media .agency-avatar { position: absolute; left: var(--spacing-16); bottom: var(--spacing-16); }
+.articles-card__body { display: flex; flex-direction: column; gap: var(--gap-group); }
+/* Verdict · date · read time */
+.articles-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-inline-tight);
+  margin: 0;
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  color: var(--color-muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.articles-card__meta .ui-verdict { margin-right: var(--space-inline-tight); }
 .articles-card__title {
   margin: 0;
   font-family: var(--font-sans);
   font-weight: var(--font-weight-medium);
   color: var(--color-foreground);
   text-wrap: pretty;
-}
-.articles-card__date {
-  font-family: var(--font-sans);
-  font-size: var(--text-label-sm);
-  line-height: var(--text-label-sm--line-height);
-  font-variant-numeric: tabular-nums;
-  color: var(--color-muted-foreground);
-  font-weight: var(--font-weight-medium);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1415,19 +1421,16 @@ input::placeholder { color: var(--color-foreground); }
   color: var(--color-text-secondary);
 }
 
-@media (max-width: 1280px) {
-  .articles-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
 
 @media (max-width: 900px) {
-  .articles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .articles-count { flex-basis: 100%; margin-left: 0; }
 }
 @media (max-width: 600px) {
   .articles { gap: var(--spacing-24); }
 
-  .articles-grid { grid-template-columns: minmax(0, 1fr); }
-  .articles-card__body { padding: var(--pad-card-sm); }
+  /* One column: only row lines remain; less air so a phone shows more than one card */
+  .articles-grid { --cell-pad: var(--pad-card); margin-inline: 0 calc(-1 * var(--border-width)); }
+  .articles-grid > li { padding-inline: 0; }
   .articles-toolbar { gap: var(--spacing-12); }
   .articles-select { flex: none; } /* natural width; wraps to its own line when two don't fit */
   

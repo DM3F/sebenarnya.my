@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button, Chip, IconButton, Input, SearchField, Select, Verdict } from '@/components/ui';
 import { articles, articleStatus } from '@/data/content';
 import { matchesQuery } from '@/lib/searchArticles';
-import { agencyInitials, articleHref, formatDate } from '@/lib/articles';
+import { agencyInitials, articleHref, formatDate, readingMinutes } from '@/lib/articles';
 
 const DATE_OPTIONS = [
   { id: 'all', label: 'Semua tarikh' },
@@ -209,13 +209,15 @@ export default function Articles() {
 
       {/* Results */}
       {list.length > 0 ? (
-        <ul className="articles-grid">
-          {list.map((a) => (
-            <li key={a.slug}>
-              <GridCard article={a} />
-            </li>
-          ))}
-        </ul>
+        <div className="articles-results">
+          <ul className="articles-grid">
+            {list.map((a) => (
+              <li key={a.slug}>
+                <GridCard article={a} />
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : (
         <div className="articles-empty" role="status">
           <p>
@@ -233,9 +235,6 @@ export default function Articles() {
 /* ── Pieces ─────────────────────────────────────────────────────────────── */
 
 // Verdict pill over a photo: dot + uppercase word, colour from the verdict tokens
-function VerdictTag({ status }) {
-  return <Verdict type={status} variant="overlay" label={articleStatus[status]?.label} className="verdict-tag" />;
-}
 
 function AgencyAvatar({ agency }) {
   return (
@@ -257,14 +256,18 @@ function GridCard({ article }) {
     <article className="articles-card">
       <div className="articles-card__media">
         <img src={article.image} alt={article.alt} loading="lazy" />
-        <VerdictTag status={article.status} />
         <AgencyAvatar agency={article.agency} />
       </div>
       <div className="articles-card__body">
+        <p className="articles-card__meta">
+          <Verdict type={article.status} variant="tint" label={articleStatus[article.status]?.label} />
+          <time dateTime={article.date}>{formatDate(article.date)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{readingMinutes(article)} minit bacaan</span>
+        </p>
         <h3 className="articles-card__title">
           <Link href={articleHref(article)} className="card-link">{article.title}</Link>
         </h3>
-        <time className="articles-card__date" dateTime={article.date}>{formatDate(article.date)}</time>
       </div>
     </article>
   );
