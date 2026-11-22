@@ -147,7 +147,7 @@ export default function FormatFolder({ title, subject, formats }) {
                       onPointerLeave={() => setHi((h) => (h === f.label ? null : h))}
                     >
                       {f.label}
-                      <Icon icon={Download} size={14} />
+                      <Icon icon={Download} size="sm" />
                     </a>
                   ))}
                 </div>

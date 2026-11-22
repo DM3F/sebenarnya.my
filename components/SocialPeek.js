@@ -85,7 +85,7 @@ export default function SocialPeek({ className = '' }) {
                 </span>
                 {story.date && (
                   <span className="peek-modal__date">
-                    <Icon icon={Calendar} size={14} />
+                    <Icon icon={Calendar} size="sm" />
                     {story.date}
                   </span>
                 )}

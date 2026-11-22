@@ -30,7 +30,7 @@
   position: fixed;
   top: var(--space-stack);
   left: var(--space-stack);
-  z-index: 1000;
+  z-index: var(--z-skip);
   transform: translateY(-200%);
 }
 .ui-skip-link:focus-visible { transform: none; }
@@ -565,7 +565,7 @@
   position: absolute;
   top: calc(100% + var(--space-inline));
   left: 0;
-  z-index: 20;
+  z-index: var(--z-dropdown);
   box-sizing: border-box;
   min-width: var(--size-menu);
   margin: 0;
@@ -642,7 +642,7 @@
   position: absolute;
   top: calc(100% + var(--space-inline));
   left: 0;
-  z-index: 20;
+  z-index: var(--z-dropdown);
   box-sizing: border-box;
   min-width: calc(3 * var(--size-control)); /* two short codes: a narrow menu */
   padding: var(--space-inline);

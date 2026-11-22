@@ -113,11 +113,63 @@ Four rules:
 Exceptions: a full-screen modal on a phone uses `sm` (= the 16px page gutter).
 Hero stages (`.about-hero-card`) are layout, not cards: they use section spacing.
 
+### Layout: breakpoints, layers, reading widths
+
+**Four breakpoints only** (`max-width`, mobile last). Need a change between two of
+them? Use the next one up, never a new number.
+
+| Width | Name | What changes |
+|---|---|---|
+| 1280 | xl | page gutter 96 → 48 |
+| 1100 | lg | nav collapses to the compact header |
+| 900 | md | grids and side-by-side layouts stack to one column |
+| 600 | sm | phone: gutter 16, full-screen sheets, single-column stats |
+
+**Layers** (`z-index`): global stacking uses tokens, lowest to highest:
+`--z-sticky` 10 header · `--z-dropdown` 20 menus · `--z-overlay` 30 scrims ·
+`--z-floating` 40 Tanya AIFA · `--z-skip` 50 skip link. Inside one component,
+plain `-1…5` orders siblings (image under text, badge over image).
+
+**Reading widths:** `--measure-text` (68ch) for any paragraph that runs long;
+`--measure-head` (720px) for a centred section heading and its lead. Short
+headings may use `em` caps (`max-width: 12em`) to balance line breaks.
+
+### Details: focus, icons, avatars, motion, borders
+
+**Focus ring:** one ring everywhere — `--focus-ring-width` (2px) ·
+`--focus-ring-color` · `--focus-ring-offset` (2px). On photos and dark surfaces use
+`--focus-ring-color-inverse`. Never a hand-made outline.
+
+**Icons** (Lucide via `<Icon size="…">`, never a number):
+
+| Name | px | Job |
+|---|---|---|
+| `sm` | 14 | inside badges, next to 12–13px meta |
+| `md` (default) | 16 | next to a label, inside buttons |
+| `lg` | 20 | field and search icons, icon-only list items |
+| `xl` | 24 | icon-only buttons (close, chat toggle), status marks |
+| `display` | 40 | empty states, upload drop zones |
+
+**Avatars:** `--size-avatar-sm` 32 on cards and images · `--size-avatar` 40
+default. The logo sits `--avatar-inset` (4px) inside the white ring.
+
+**Motion:** `--duration-fast` 150 hover/colour/press · `base` 250 small moves,
+fades · `slow` 450 reveals, panels, flips · `slower` 700 large scroll-in reveals ·
+`page` 1.2s route change only. Easing `--ease-out` by default. Ambient loops
+(marquees, autoplay timers, 2s+) may use raw seconds; hand-tuned sequences
+(the logo folder) carry `ds-allow`.
+
+**Borders:** `--border-width` 1px for cards, panels, menus, fields and dividers ·
+`--border-width-hairline` .5px for small pills and chips. Edge colour
+`--color-border`; a divider inside a surface `--color-muted-strong`.
+
 ## 2. Hard rules (checked by `npm run lint:ds`)
 
 1. No hex/rgb colours outside `tokens.css`.
 2. No palette primitives (`--color-grey-*`, `--color-red`…) in components.
 3. `app/ui.css`: **no raw lengths** (`px`); use roles. Exceptions carry `/* ds-allow: reason */`.
+3d. **Details:** focus rings, motion and border widths only from tokens; `<Icon>` sizes by name.
+3c. **Layout:** only the four breakpoints; z-index above 5 must be a `--z-*` layer.
 3b. **Spacing & radius, every file except tokens.css:** no raw `px` in padding, margin or gap, no raw `px` radius, no `--radius-lg` (use `--radius-card-lg`). Optical nudges and overlaps carry `/* ds-allow: reason */`.
 3a. **Type, every file except tokens.css:** only type roles. No `--text-16`/`--leading-*` steps, no raw `font-size` (px, `clamp()`, `calc()`), no `px` line-height, no `fontSize` in JSX, no role that tokens.css does not define. Percent/em tweaks are fine.
 4. Icons: Lucide only, always through `components/ui/Icon.js`.
