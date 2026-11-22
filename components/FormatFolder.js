@@ -23,10 +23,10 @@ const TILES = [
   { key: 'SVG', icon: '/images/formats/svg.svg', k: 1, x: 235.89, y: 62.74, rot: 12.5, iconRot: 1.8 },
 ];
 
-const MINI_ORDER = ['JPEG', 'PNG', 'SVG'];
-
 export default function FormatFolder({ title, subject, formats }) {
   const rootRef = useRef(null);
+  const wrapRef = useRef(null);
+  const [scale, setScale] = useState(null); // stage scale = card width / 391, measured so old Safari (no tan(atan2())) never clips the card
   const [armed, setArmed] = useState(false); // pop-in is only hidden once JS runs (no-JS / reduced motion: always visible)
   const [shown, setShown] = useState(false);
   const [settled, setSettled] = useState(false); // entrance finished: hover motion uses shorter delays
@@ -56,11 +56,21 @@ export default function FormatFolder({ title, subject, formats }) {
     };
   }, []);
 
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || !('ResizeObserver' in window)) return;
+    const measure = () => setScale(el.getBoundingClientRect().width / 391);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const wide = open || hover || focus;
   const mouse = (fn) => (e) => e.pointerType === 'mouse' && fn();
 
   return (
-    <div className="folder-wrap">
+    <div className="folder-wrap" ref={wrapRef}>
       <div
         ref={rootRef}
         className="folder"
@@ -68,6 +78,7 @@ export default function FormatFolder({ title, subject, formats }) {
         data-shown={shown || undefined}
         data-settled={settled || undefined}
         data-wide={wide || undefined}
+        style={scale ? { '--s': scale } : undefined}
         onPointerEnter={mouse(() => setHover(true))}
         onPointerLeave={() => {
           setHover(false);
@@ -140,14 +151,6 @@ export default function FormatFolder({ title, subject, formats }) {
                     </a>
                   ))}
                 </div>
-              </div>
-
-              <div className="folder__pill" aria-hidden="true">
-                {MINI_ORDER.map((key) => (
-                  <span key={key} className="folder__mini" data-format={key}>
-                    <img src={withBase(TILES.find((t) => t.key === key).icon)} alt="" draggable={false} />
-                  </span>
-                ))}
               </div>
             </div>
           </div>

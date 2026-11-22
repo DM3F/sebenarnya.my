@@ -2467,7 +2467,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 .folder {
   --folder-ease: cubic-bezier(.2, .8, .2, 1);
-  --s: tan(atan2(100cqw, 391px));
+  --s: .85; /* fallback; FormatFolder.js sets the measured ratio (card width / 391) */
   position: relative;
   height: calc(286px * var(--s));
   color: var(--color-foreground-inverse);
@@ -2475,6 +2475,7 @@ input::placeholder { color: var(--color-foreground); }
   -webkit-tap-highlight-color: transparent;
 }
 .folder[data-wide] { z-index: 2; }
+@supports (width: calc(tan(atan2(1px, 1px)) * 1px)) { .folder { --s: tan(atan2(100cqw, 391px)); } }
 .folder__stage { position: absolute; top: 0; left: 0; width: 391px; height: 286px; transform: scale(var(--s)); transform-origin: 0 0; }
 .folder__card { position: absolute; inset: 0; transition: transform .9s var(--folder-ease), opacity .6s ease; }
 .folder[data-armed]:not([data-shown]) .folder__card { opacity: 0; transform: translateY(34px) scale(.92); }
@@ -2592,25 +2593,6 @@ input::placeholder { color: var(--color-foreground); }
 @media (hover: hover) and (pointer: fine) {
   .folder__chip:hover { background: var(--color-folder-edge); }
 }
-.folder__pill {
-  position: absolute;
-  right: 14px;
-  bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-6);
-  height: 34px;
-  padding: 0 var(--spacing-10);
-  border-radius: var(--radius-full);
-  background: var(--color-folder-pill);
-}
-.folder__mini { display: grid; place-items: center; width: 22px; height: 22px; overflow: hidden; border-radius: var(--radius-input); }
-.folder__mini[data-format='JPEG'] { background: var(--gradient-tile-jpeg); }
-.folder__mini[data-format='PNG'] { background: var(--color-tile-png); }
-.folder__mini[data-format='SVG'] { background: var(--color-tile-svg-mini); }
-.folder__mini img { display: block; height: 15px; width: auto; }
-.folder__mini[data-format='SVG'] img { height: 17px; }
-
 @media (prefers-reduced-motion: reduce) {
   .folder__card, .folder__tile, .folder__lift, .folder__pocket, .folder__label, .folder__chip { transition: none; }
   .folder[data-wide] .folder__card,
