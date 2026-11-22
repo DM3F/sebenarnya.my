@@ -2214,11 +2214,9 @@ input::placeholder { color: var(--color-foreground); }
 .marquee__set { display: flex; flex: none; gap: var(--marquee-gap); margin: 0; padding: 0 var(--marquee-gap) 0 0; list-style: none; }
 @keyframes marquee-left { to { transform: translateX(-50%); } }
 @keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
-.marquee.is-stopped .marquee__track { animation-play-state: paused; }
 @media (hover: hover) and (pointer: fine) {
   .marquee__rows:hover .marquee__track { animation-play-state: paused; }
 }
-.marquee__bar { display: flex; justify-content: flex-end; margin-top: var(--spacing-12); }
 
 .marquee-card {
   position: relative;
@@ -2357,7 +2355,6 @@ input::placeholder { color: var(--color-foreground); }
   .marquee__track { animation: none; }
   .marquee__row { overflow-x: auto; }
   .marquee__set[aria-hidden='true'] { display: none; }
-  .marquee__bar { display: none; }
   .sphere-dialog[open] { animation: sphere-fade 200ms ease; }
   .about-fn-track span,
   .sphere-node__disc,
@@ -2391,28 +2388,24 @@ input::placeholder { color: var(--color-foreground); }
 
 .logo-kit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-32); padding-top: var(--spacing-72); }
 .logo-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--gap-group); /* inside a card: groups 16 apart, never more than the card padding */
+  gap: var(--gap-group); /* preview → folder, one step inside the card */
   min-width: 0;
   padding: var(--pad-card-lg);
   border-radius: var(--radius-card-lg);
   background: var(--color-muted);
 }
-.logo-card__text { display: flex; flex-direction: column; gap: var(--gap-text); } /* name → description → meta: one text group, 8 apart */
-.logo-card__text p { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); }
-.logo-card__name {
-  margin: 0;
-  font-weight: var(--font-weight-medium);
-}
-.logo-card__text .logo-card__meta { font-size: var(--text-label-sm); line-height: var(--text-label-sm--line-height); font-variant-numeric: tabular-nums; color: var(--color-muted-foreground); font-weight: var(--font-weight-medium); }
-/* Shown at native size or smaller, so the previews stay sharp */
-.logo-card__preview { display: grid; flex: 1; place-items: center; min-height: 200px; }
+/* Preview: the file shown at native size or smaller (stays sharp), centred in the space above the
+   folder. Its height matches the folder's so the card reads as two equal halves. */
+.logo-card__preview { display: grid; flex: 1; place-items: center; min-height: 240px; padding: var(--pad-card); }
 .logo-card__preview img { display: block; max-width: 100%; height: auto; mix-blend-mode: multiply; } /* drops the white ground of the PNGs onto the card */
-/* Desktop: both cards share row lines, so previews and folders align whatever the text length */
+@media (max-width: 600px) { .logo-card__preview { min-height: 160px; } } /* phone: less empty card above the folder */
+/* Desktop: both cards share row lines, so previews and folders align */
 @media (min-width: 901px) {
   .logo-kit-grid { row-gap: 0; }
-  .logo-card { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: var(--gap-group); }
+  .logo-card { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: var(--gap-group); }
 }
 
 /* Logo terms of use (demo copy until MCMC provides the official text) */
@@ -2817,8 +2810,7 @@ div:has(> .split-line) {
 /* Slide and award headlines share the section size but stay light, so they never outrank the H2 */
 .hero-carousel h3,
 .kenali__award-title { font-weight: var(--font-weight-display); }
-.post-section h2,
-.logo-card__name {
+.post-section h2 {
   font-size: var(--text-heading);
   line-height: var(--text-heading--line-height);
   font-weight: var(--text-heading--font-weight);

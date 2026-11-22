@@ -2,7 +2,7 @@ import { logoPage } from '@/data/content';
 import FormatFolder from '@/components/FormatFolder';
 
 // Logo section of Tentang Kami (/about-us/#logo): title, intro, a card per file (preview + the
-// format folder with its downloads), then the terms of use. Header › Tentang Kami › Logo links here.
+// format folder with its downloads, no visible text), then the terms of use. Header › Tentang Kami › Logo links here.
 export default function LogoKit({ headingLevel = 2 }) {
   const Title = `h${headingLevel}`;
   const Name = `h${headingLevel + 1}`;
@@ -18,11 +18,8 @@ export default function LogoKit({ headingLevel = 2 }) {
       <div className="logo-kit-grid">
         {logoPage.items.map((item) => (
           <article className="logo-card" key={item.name}>
-            <div className="logo-card__text">
-              <Name className="logo-card__name">{item.name}</Name>
-              <p>{item.text}</p>
-              <p className="logo-card__meta">{item.meta}</p>
-            </div>
+            {/* Heading kept for screen readers and the page outline; the card shows the file itself */}
+            <Name className="sr-only">{item.name}</Name>
 
             <div className="logo-card__preview">
               <img src={item.src} alt={`${item.name} Sebenarnya.my`} width={item.width} height={item.height} />
