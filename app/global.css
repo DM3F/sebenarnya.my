@@ -2459,11 +2459,10 @@ input::placeholder { color: var(--color-foreground); }
    pop-in on scroll, spread on hover / tap / focus, per-tile lift. Transform and opacity only. */
 .folder-wrap { container-type: inline-size; width: 100%; max-width: 480px; margin-inline: auto; } /* a single wide card never blows the folder up past 480 */
 /* Small folders (phones): the text keeps its real size, so make room — tighter chips, title closer
-   to the chips, and the decorative mini-icon pill goes */
+   to the chips (the mini-icon pill is gone for good) */
 @container (max-width: 340px) {
   .folder .folder__text { gap: var(--gap-text); }
   .folder .folder__chip { padding-inline: var(--spacing-8); }
-  .folder .folder__pill { display: none; }
 }
 .folder {
   --folder-ease: cubic-bezier(.2, .8, .2, 1);
