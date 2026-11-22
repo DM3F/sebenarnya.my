@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
 import SphereGallery from '@/components/SphereGallery';
@@ -103,7 +104,28 @@ function AtomMark() {
   );
 }
 
+// Verdict bars fill once, left to right, the first time the card is half on screen (CSS in
+// global.css › .about-intro__bars). Armed only with JS and motion allowed, so the server HTML,
+// no-JS and reduced motion show the bars full straight away.
+function useFillOnView() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    el.dataset.armed = '';
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      el.dataset.shown = '';
+    }, { threshold: 0.5 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
+}
+
 function Intro() {
+  const barsRef = useFillOnView();
   const counts = VERDICT_BARS.map((id) => ({ id, n: articles.filter((a) => a.status === id).length }));
   const max = Math.max(1, ...counts.map((c) => c.n));
 
@@ -134,7 +156,7 @@ function Intro() {
             <p className="about-intro__stat-title">{intro.verdicts.title}</p>
             <p className="about-intro__stat-text">{intro.verdicts.text}</p>
           </div>
-          <ul className="about-intro__bars" aria-label="Artikel mengikut keputusan">
+          <ul ref={barsRef} className="about-intro__bars" aria-label="Artikel mengikut keputusan">
             {counts.map((c) => (
               <li key={c.id}>
                 <span className="about-intro__bar-label">{articleStatus[c.id]?.label ?? c.id}</span>

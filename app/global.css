@@ -2066,6 +2066,16 @@ input::placeholder { color: var(--color-foreground); }
   border-radius: var(--radius-full);
   background: var(--color-foreground);
 }
+/* Fill once on view (components/AboutUs.js › useFillOnView): each bar is uncovered left to right
+   with clip-path, so the rounded ends keep their shape (scaleX would squash them). Ease-out,
+   --duration-slower, a short uneven stagger so the three read as one motion. */
+.about-intro__bars[data-armed] .about-intro__bar::before {
+  clip-path: inset(0 100% 0 0 round var(--radius-full));
+  transition: clip-path var(--duration-slower) var(--ease-out);
+}
+.about-intro__bars[data-shown] .about-intro__bar::before { clip-path: inset(0 0 0 0 round var(--radius-full)); }
+.about-intro__bars li:nth-child(2) .about-intro__bar::before { transition-delay: calc(var(--duration-fast) / 2); }
+.about-intro__bars li:nth-child(3) .about-intro__bar::before { transition-delay: calc(var(--duration-fast) * .9); }
 .about-intro__bar-n { min-width: 2ch; text-align: right; }
 .about-intro__facts { display: flex; flex-direction: column; align-items: center; gap: var(--gap-group); }
 .about-intro__facts-title { width: auto; margin: 0; text-align: center; font-weight: var(--font-weight-medium); }
