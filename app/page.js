@@ -27,11 +27,11 @@ export default function HomePage() {
         {/* Latest fact-checks */}
         <Latest />
 
-        {/* Tentang ringkas: statement and stats */}
-        <Viewership />
-
         {/* Kenali Sebenarnya.my: channels, verdicts, WSIS award, social previews */}
         <KenaliSebenarnya />
+
+        {/* Tentang ringkas: statement and stats — last, just before the footer */}
+        <Viewership />
 
       </main>
 

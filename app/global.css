@@ -2382,12 +2382,10 @@ input::placeholder { color: var(--color-foreground); }
   height: 100%;
   overflow: hidden;
   border-radius: var(--radius-card);
+  background: var(--color-tile);
   box-shadow: var(--shadow-tile);
   pointer-events: auto;
 }
-.folder__face[data-format='JPEG'] { background: var(--gradient-tile-jpeg); }
-.folder__face[data-format='PNG'] { background: var(--color-tile-png); }
-.folder__face[data-format='SVG'] { background: var(--gradient-tile-svg); }
 .folder__icon { display: block; width: auto; pointer-events: none; }
 .folder__icon[data-format='JPEG'] { height: 77px; }
 .folder__icon[data-format='PNG'] { height: 77px; }
