@@ -45,7 +45,7 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 | Peranan | Warna | Bila dipakai |
 |---|---|---|
 | Aksi utama | Tinta `#000` | Satu butang terisi per skrin (cth. "Salur Kepada Kami", "Semak"). Aksi **tidak pernah merah**. |
-| Fokus / pautan | Violet spark `#3A46F5` | Cincin fokus, pautan teks dalam artikel. Kecil dan jarang. |
+| Fokus / pautan | Tinta `#000` (atas gelap / foto: putih) | Cincin fokus 2px (offset 2) dan sempadan medan semasa fokus; pautan teks = tinta + garis bawah. **Tiada biru/violet** pada fokus atau pautan. |
 | Jenama | Merah Kebenaran `#E8302A` | Logo dan elemen identiti (sfera/atmosfera). Bukan untuk butang, nav, atau ralat biasa. |
 | Verdict — Palsu | titik `#E8302A`, teks `#C8211C` | Hanya pada label verdict. |
 | Verdict — Makluman | titik `#3A46F5`, teks `#2F5FD0` | Hanya pada label verdict. |

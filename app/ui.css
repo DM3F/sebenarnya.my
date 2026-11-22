@@ -38,6 +38,10 @@
 /* Icons: Lucide via components/ui/Icon.js — 1.75px stroke, currentColor */
 .ui-icon { display: inline-block; flex-shrink: 0; vertical-align: middle; }
 
+/* Baseline for anything without its own ring (e.g. <summary>): never the browser's blue.
+   :where() keeps it at zero specificity, so every component rule below still wins. */
+:where(:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+
 /* One focus ring for every control */
 .ui-btn:focus-visible,
 .ui-chip:focus-visible,
@@ -118,6 +122,7 @@
 }
 .ui-btn--ghost { --btn-decoration: underline; }
 .ui-btn--media { --btn-bg: var(--color-background); } /* on photos and dark panels */
+.ui-btn--media:focus-visible { outline-color: var(--focus-ring-color-inverse); } /* an ink ring would vanish on the photo / dark panel around it */
 .ui-btn--link {
   --btn-height: auto;
   --btn-px: 0;
