@@ -229,6 +229,13 @@ export const aboutHero = {
   lead:
     'Dilancarkan oleh MCMC pada 14 Mac 2017, Sebenarnya.my menyemak berita tular, dakwaan dan khabar angin dengan merujuk sumber serta kenyataan rasmi agensi kerajaan. Matlamat kami mudah: membantu rakyat Malaysia semak dahulu, sebelum berkongsi.',
   image: aboutImg('hero-2026.jpg'), // Wonder › About Hero Section (22 Nov 2026), 1600w
+  // Info cards on the right of the hero. `media` is a poster for now: swap it for the Instagram video embed.
+  aifa: {
+    media: aboutImg('berita-aifa.jpg'),
+    caption: 'AIFA ialah chatbot semakan fakta berasaskan AI yang diterajui MCMC dan dilancarkan pada 28 Januari 2025.',
+    title: 'Tanya AIFA, 24 jam sehari',
+    text: 'Hantar dakwaan yang anda terima dan AIFA menyemaknya dengan sumber yang disahkan. Menyokong Bahasa Melayu, Inggeris, Mandarin dan Tamil. Cari AIFA di Sebenarnya.my atau WhatsApp 03-8688 7997.',
+  },
 };
 
 // Statement under the hero (Tentang Kami, section 2): two short lines, one idea.
