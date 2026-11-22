@@ -2357,8 +2357,6 @@ input::placeholder { color: var(--color-foreground); }
 
 @media (max-width: 900px) {
   .about-hero-card { min-height: 560px; padding: var(--spacing-32) var(--spacing-24) var(--spacing-40); }
-  /* No room beside the title: the info cards join the flow between "Ikuti kami" and the title */
-  .about-hero-aifa { position: relative; top: auto; right: auto; width: 100%; max-width: 420px; }
 }
 
 @media (max-width: 700px) {
@@ -2996,10 +2994,11 @@ div:has(> .split-line) {
 
 @media (prefers-reduced-motion: reduce) { .aifa-card__media video { display: none; } .aifa-card__media { background: var(--color-muted-strong) center / cover no-repeat; } }
 
-/* Phones: the hero keeps title + "Ikuti kami" only (AIFA cards hidden); the category chips scroll by
-   swipe, so their arrow buttons go */
+/* Tablets and phones: the About hero keeps title + "Ikuti kami" only (AIFA cards from desktop up) */
+@media (max-width: 1024px) { .about-hero-aifa { display: none; } }
+
+/* Phones: the category chips scroll by swipe, so their arrow buttons go */
 @media (max-width: 600px) {
-  .about-hero-aifa { display: none; }
   .articles-chips .articles-chips__arrow,
   .articles-chips.has-overflow .articles-chips__arrow { display: none; }
 }
