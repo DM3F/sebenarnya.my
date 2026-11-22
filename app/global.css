@@ -2781,7 +2781,9 @@ div:has(> .split-line) {
     gap: var(--spacing-12);
   }
   .kenali__card--photo { min-height: 360px; }
-  .kenali__card--poster { aspect-ratio: 1; } /* square poster fills the card on phones */
+  /* Square poster fills the card on phones. No min-height here: with aspect-ratio it would force
+     the width to 300 + padding and push the page sideways at 320 (the square is tall enough). */
+  .kenali__card--poster { aspect-ratio: 1; min-height: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .kenali__card--photo img { transition: none; } }
 
