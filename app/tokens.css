@@ -166,7 +166,7 @@
   --duration-fast: 150ms;   /* hover, colour, press */
   --duration-base: 250ms;   /* small moves, fades, icon nudge */
   --duration-slow: 450ms;   /* reveals, panel/drawer, flip */
-  --duration-slower: 600ms; /* large reveals, scroll-in sections, photo zoom · the ceiling (design.md: 150–600ms) */
+  --duration-slower: 600ms; /* page-entrance H1 line rise, photo zoom, card flip open · the ceiling (design.md: 150–600ms) */
   --duration-page: 1.2s;    /* route transition only */
   --ease-out: cubic-bezier(.23, 1, .32, 1);         /* default: enter, move, reveal */
   --ease-in-out: cubic-bezier(.645, .045, .355, 1); /* on-screen morphs (menu icon) */

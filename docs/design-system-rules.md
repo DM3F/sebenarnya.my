@@ -154,10 +154,11 @@ headings may use `em` caps (`max-width: 12em`) to balance line breaks.
 default. The logo sits `--avatar-inset` (4px) inside the white ring.
 
 **Motion:** `--duration-fast` 150 hover/colour/press · `base` 250 small moves,
-fades · `slow` 450 reveals, panels, flips · `slower` 700 large scroll-in reveals ·
+fades · `slow` 450 reveals, panels, flips · `slower` 600 the page entrance's H1 line rise, photo zoom (the ceiling) ·
 `page` 1.2s route change only. Easing `--ease-out` by default. Ambient loops
 (marquees, autoplay timers, 2s+) may use raw seconds; hand-tuned sequences
-(the logo folder) carry `ds-allow`.
+(the logo folder) carry `ds-allow`. **One entrance per page, on load only**
+(`components/PageEnter.js`, 100ms between chunks); nothing reveals on scroll.
 
 **Borders:** `--border-width` 1px for cards, panels, menus, fields and dividers ·
 `--border-width-hairline` .5px for small pills and chips. Edge colour

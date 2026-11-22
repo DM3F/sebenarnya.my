@@ -918,33 +918,6 @@ input::placeholder { color: var(--color-foreground); }
   .site-footer__text { font-size: var(--text-body); line-height: var(--text-body--line-height); }
 }
 
-/* Scroll motion (classes added by ScrollMotion.js) */
-@media (prefers-reduced-motion: no-preference) {
-  .motion .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity var(--duration-slower) var(--ease-out), transform var(--duration-slower) var(--ease-out);
-    will-change: opacity, transform;
-  }
-
-  .motion .reveal.in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .motion .reveal.done {
-    transform: none;
-    will-change: auto;
-  }
-
-  /* Section headings */
-
-  /* Bento cards: small scale-up */
-
-  /* Post cards */
-
-}
-
 /* ==========================================================================
    Hero carousel (components/Carousel.js)
    Scoped to .hero-carousel so it doesn't clash with .hero or Bento's .dots.
@@ -2090,10 +2063,6 @@ input::placeholder { color: var(--color-foreground); }
   font-family: var(--font-sans);
   text-wrap: balance;
 }
-.about-subtitle {
-  margin: 0 0 var(--spacing-24);
-  font-weight: var(--font-weight-medium);
-}
 
 /* About intro: label + lead, three cards, facts in numbers --------------- */
 .about-intro { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--side); }
@@ -2434,10 +2403,14 @@ input::placeholder { color: var(--color-foreground); }
    pop-in on scroll, spread on hover / tap / focus, per-tile lift. Transform and opacity only. */
 .folder-wrap { container-type: inline-size; width: 100%; max-width: 480px; margin-inline: auto; } /* a single wide card never blows the folder up past 480 */
 /* Small folders (phones): the text keeps its real size, so make room — tighter chips, title closer
-   to the chips (the mini-icon pill is gone for good) */
+   to the chips. Below 300 the three chips only fit on one line without their download icon (the
+   title already says "Muat turun", and each chip's accessible name names the file). */
 @container (max-width: 340px) {
   .folder .folder__text { gap: var(--gap-text); }
-  .folder .folder__chip { padding-inline: var(--spacing-8); }
+  .folder .folder__chip { padding-inline: var(--spacing-12); }
+}
+@container (max-width: 300px) {
+  .folder .folder__chip svg { display: none; }
 }
 .folder {
   --folder-ease: cubic-bezier(.2, .8, .2, 1);
@@ -2546,18 +2519,22 @@ input::placeholder { color: var(--color-foreground); }
   transform-origin: 0 0;
 }
 .folder__title { margin: 0; font-weight: var(--font-weight-medium); }
-.folder__tags { display: flex; flex-wrap: wrap; gap: var(--space-inline-tight); }
+.folder__tags { display: flex; flex-wrap: wrap; gap: var(--gap-inline); }
+/* Download chips = small buttons (ui-btn--sm): label 16/500, md icon 16, 36 tall, 16 side padding.
+   Under the 20px card title (--text-title) they read as its actions. */
 .folder__chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-4);
-  padding: var(--spacing-4) var(--spacing-12);
+  gap: var(--gap-inline);
+  box-sizing: border-box;
+  height: var(--size-control-sm);
+  padding: 0 var(--space-control-x-sm);
   border: var(--border-width-hairline) solid var(--color-foreground-inverse);
   border-radius: var(--radius-full);
   color: var(--color-folder-chip);
-  font-size: var(--text-label-sm); /* download chips are controls: small label role, not caption */
-  line-height: var(--text-label-sm--line-height);
-  font-weight: var(--text-label-sm--font-weight);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  font-weight: var(--text-label--font-weight);
   text-decoration: none;
   transition: background-color var(--duration-fast) var(--ease-out), scale var(--duration-fast) var(--ease-out);
 }
@@ -2579,14 +2556,6 @@ input::placeholder { color: var(--color-foreground); }
 
 @media (max-width: 600px) {
   .logo-terms { grid-template-columns: 1fr; } /* keeps --pad-card-lg (fluid 32 → 24) like every large card */
-}
-
-/* Line reveal masks (ScrollMotion › SplitText): extend each mask past the line box so
-   ascenders, accents and descenders aren't clipped at tight display leading; the negative
-   margin cancels the padding so layout doesn't move. */
-div:has(> .split-line) {
-  padding-block: .14em .2em;
-  margin-block: -.14em -.2em;
 }
 
 /* Single-message pages: /submit-claim/ landing and 404 (app/not-found.js) */

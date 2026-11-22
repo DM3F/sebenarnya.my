@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import Viewership from '@/components/Viewership';
 import KenaliSebenarnya from '@/components/KenaliSebenarnya';
 import Collaborators from '@/components/Collaborators';
-import ScrollMotion from '@/components/ScrollMotion';
+import PageEnter from '@/components/PageEnter';
 
 export default function HomePage() {
   return (
@@ -38,7 +38,7 @@ export default function HomePage() {
       {/* Footer */}
       <Footer />
 
-      <ScrollMotion />
+      <PageEnter />
     </div>
   );
 }
