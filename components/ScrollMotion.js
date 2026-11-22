@@ -10,7 +10,6 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 // Headings that rise line by line out of a mask as they scroll in (one-time, page-level only:
 // body copy, cards and data stay still). [selector, delay in seconds]
 const lineBlocks = [
-  ['.hero-title', 0.1],
   ['.post-title', 0.1],
   ['.latest-checks__title', 0],
   ['.kenali__title', 0],
@@ -101,6 +100,26 @@ export default function ScrollMotion() {
       });
     });
 
+    // Hero H1: the same rise-out-of-a-mask, done on its two line spans with transform + clip-path.
+    // No SplitText here: it rebuilds the heading's DOM, which would cut React off from the live
+    // FlipWord inside it. Clip and shift move together, so each line is masked to its own box.
+    const heroLines = gsap.utils.toArray('.hero-title > span');
+    const heroTween = heroLines.length
+      ? gsap.fromTo(
+          heroLines,
+          { yPercent: 100, clipPath: 'inset(0% 0% 100% 0%)' },
+          {
+            yPercent: 0,
+            clipPath: 'inset(0% 0% 0% 0%)',
+            duration: 0.9,
+            stagger: 0.08,
+            ease: 'power4.out',
+            delay: 0.1,
+            clearProps: 'transform,clipPath',
+          },
+        )
+      : null;
+
     // Line reveal (same feel as the reference: 100% → 0 inside a per-line mask, power4.out)
     const splits = [];
     lineBlocks.forEach(([selector, delay]) => {
@@ -131,6 +150,7 @@ export default function ScrollMotion() {
       cancelAnimationFrame(frame);
       observer.disconnect();
       splits.forEach((s) => s.revert());
+      heroTween?.kill();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);

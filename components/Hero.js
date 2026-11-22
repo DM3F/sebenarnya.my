@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Chip, ChipRow, SearchField } from '@/components/ui';
 import { keywords, searchArticles } from '@/lib/searchArticles';
+import FlipWord from '@/components/FlipWord';
+
+// The three verdicts the H1 cycles through
+const VERDICTS = ['PALSU', 'BENAR', 'MAKLUMAN'];
 
 // Popular searches under the search bar; each one returns at least one fact-check
 const POPULAR = ['Bantuan tunai', 'RON95', 'Hujan lebat', 'Lesen memandu'];
@@ -32,7 +36,13 @@ export default function Hero() {
         <div className="hero-content container">
           <div className="hero-heading">
             <h1 className="hero-title">
-              <span>Tidak pasti? Jangan kongsi</span> <span>Semak dakwaan, temui kebenaran</span>
+              <span>Tidak pasti? Jangan kongsi</span> <span>
+                Semak{' '}
+                <span className="hero-title__verdict">
+                  dakwaan <FlipWord words={VERDICTS} />
+                  <span className="sr-only">palsu, benar atau makluman</span>
+                </span>
+              </span>
             </h1>
             <p className="hero-lede">
               <span>Portal rujukan rasmi yang disahkan terus oleh kementerian dan agensi.</span>{' '}
