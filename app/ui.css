@@ -610,16 +610,9 @@
   outline-offset: calc(var(--focus-ring-width) * -1);
 }
 
-/* ── Language menu — flag pill trigger + grouped flag list ─────────────── */
+/* ── Language menu — code pill trigger (BM / EN) + short list of codes ─────────────── */
 .ui-lang { position: relative; display: inline-flex; }
-.ui-lang__flag {
-  width: var(--size-icon-lg);
-  height: var(--size-icon-lg);
-  flex-shrink: 0;
-  border-radius: var(--radius-full);
-  object-fit: cover;
-  box-shadow: var(--shadow-subtle-3);
-}
+.ui-lang__code { font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--text-label--font-weight); } /* same label role as the nav links */
 .ui-lang__trigger {
   box-sizing: border-box;
   display: inline-flex;
@@ -651,7 +644,7 @@
   left: 0;
   z-index: 20;
   box-sizing: border-box;
-  min-width: var(--size-menu);
+  min-width: calc(3 * var(--size-control)); /* two short codes: a narrow menu */
   padding: var(--space-inline);
   background: var(--color-background);
   border: var(--border-width) solid var(--color-border);

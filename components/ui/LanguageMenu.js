@@ -5,8 +5,8 @@ import { ChevronDown } from 'lucide-react';
 import Icon from './Icon';
 
 /**
- * LanguageMenu — flag pill that opens a grouped list of languages.
- *   items: [{ value, label, lang, flag }]   flag = image URL (round-cropped)
+ * LanguageMenu — pill showing the language code (BM / EN) that opens a short list of codes.
+ *   items: [{ value, label, lang }]   value = code shown ("BM"), label = full name (accessible name only)
  *   value / onChange: controlled selection; groupLabel: small heading in the menu.
  * Closes on Escape (focus returns to the trigger), outside click, blur and selection.
  */
@@ -50,12 +50,12 @@ export default function LanguageMenu({ items, value, onChange, label = 'Bahasa',
         ref={triggerRef}
         type="button"
         className="ui-lang__trigger"
-        aria-label={`${label}: ${current.label}`}
+        aria-label={`${current.value} — ${label}: ${current.label}`} /* visible code first (WCAG 2.5.3) */
         aria-expanded={open}
         aria-controls={menuId}
         onClick={() => setOpen((o) => !o)}
       >
-        <img className="ui-lang__flag" src={current.flag} alt="" />
+        <span className="ui-lang__code">{current.value}</span>
         <Icon icon={ChevronDown} className="ui-lang__chevron" />
       </button>
       <div id={menuId} className="ui-lang__menu" hidden={!open}>
@@ -67,11 +67,11 @@ export default function LanguageMenu({ items, value, onChange, label = 'Bahasa',
                 type="button"
                 className="ui-lang__item"
                 lang={item.lang}
+                aria-label={`${item.value} — ${item.label}`}
                 aria-pressed={item.value === value}
                 onClick={() => pick(item.value)}
               >
-                <img className="ui-lang__flag" src={item.flag} alt="" />
-                {item.label}
+                {item.value}
               </button>
             </li>
           ))}

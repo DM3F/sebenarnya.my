@@ -507,3 +507,5 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Kad terbuka** (tiada latar/border): foto 16:9 radius `--radius-card` dengan logo agensi di dalamnya (kiri bawah); di bawah foto baris meta `Verdict tint · tarikh · N minit bacaan` (caption 12, smoke) lalu tajuk (peranan title). Hover: foto zoom 1.03.
 - **`Verdict` varian `tint`** (baharu, `app/ui.css`): pill 28px di atas warna verdict 22% atas putih.
 - **Masa baca:** `readingMinutes()` (`lib/articles.js`): perkataan tajuk + lead + penjelasan ÷ 200, minimum 1.
+
+- **Pemilih bahasa (22 Nov 2026):** tiada bendera lagi. Butang memaparkan kod bahasa (`BM` / `EN`, peranan label 16/500) + chevron; menu senarai kod sahaja (lebar 3 × `--size-control`). Nama penuh kekal dalam nama aksesibel ("BM — Bahasa Melayu"). Fail `public/images/flags/` dibuang.

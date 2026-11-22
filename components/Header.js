@@ -8,8 +8,8 @@ import { claimLink, navLinks } from '@/data/content';
 import { withBase } from '@/lib/basePath';
 
 const languages = [
-  { value: 'BM', label: 'Bahasa Melayu', lang: 'ms', flag: withBase('/images/flags/my.svg') },
-  { value: 'EN', label: 'English', lang: 'en', flag: withBase('/images/flags/gb.svg') },
+  { value: 'BM', label: 'Bahasa Melayu', lang: 'ms' },
+  { value: 'EN', label: 'English', lang: 'en' },
 ];
 
 const trim = (path) => (path.length > 1 ? path.replace(/\/$/, '') : path);
