@@ -277,7 +277,7 @@
   --space-inline-tight: var(--spacing-6);
   --space-stack: var(--spacing-8);              /* label↔field, field↔hint */
   --space-page-x: var(--spacing-96);            /* page gutter (design.md §5: 96 desktop) */
-  --space-section: var(--spacing-96);           /* gap between page sections (96 · 64 tablet · 48 phone) */
+  --space-section: clamp(var(--spacing-64), 40.8px + 6.188vw, var(--spacing-120)); /* between page sections · 64 at 375 → 120 at 1280 (≈3× --gap-block) */
   --space-page-top: var(--spacing-40);          /* header → first block on pages without a hero */
   --space-nav-gap: var(--spacing-8);            /* between header nav items / header actions */
   --space-segment: var(--spacing-2);            /* inside segmented controls */
@@ -289,7 +289,7 @@
   --gap-text: var(--spacing-8);     /* inside one text group: eyebrow→title→description→meta */
   --gap-group: var(--spacing-16);   /* between groups inside a card: text↔actions, media↔body */
   --gap-cards: var(--spacing-12);   /* between cards in any grid or row */
-  --gap-block: var(--spacing-40);   /* section heading → its content */
+  --gap-block: clamp(var(--spacing-24), 17.37px + 1.768vw, var(--spacing-40)); /* section heading → its content · 24 → 40 */
 
   /* ── Card size: padding and radius always travel together ─────────────
      sm  card narrower than ~280px (flip card, news card)   16 · radius 20
@@ -324,6 +324,5 @@
 
 /* Page rhythm breakpoints: one gutter and one section gap for every page */
 @media (max-width: 1280px) { :root { --space-page-x: var(--spacing-48); } }
-@media (max-width: 1024px) { :root { --space-section: var(--spacing-64); } }
 @media (max-width: 900px)  { :root { --space-page-x: var(--spacing-24); } }
-@media (max-width: 600px)  { :root { --space-page-x: var(--spacing-16); --space-section: var(--spacing-48); --space-page-top: var(--spacing-24); } }
+@media (max-width: 600px)  { :root { --space-page-x: var(--spacing-16); --space-page-top: var(--spacing-24); } }
