@@ -488,3 +488,10 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 ## Kenali Sebenarnya.my: nama dan kad Juara Dunia (22 Nov 2026)
 - Komponen `components/KenaliSebenarnya.js`, kelas `.kenali` / `.kenali__*` (dulu `HowItWorks` / `.how`). Kawasan grid kini ikut isi: `channels · photo · verdicts · poster · award · social` (dulu `main · story · stat · agencies`).
 - Kad Juara Dunia: eyebrow → "Juara Dunia" (peranan section, 400) → sub "dalam Kepercayaan Digital & Semakan Fakta Awam" (peranan title 20/500, putih) → perenggan penuh (body 16, putih 60%) dengan fakta **33 juta rakyat** dan **lebih 20 agensi persekutuan** dalam `<strong>` putih 500 → butang "Ketahui lebih lanjut".
+
+## Peranan jarak + jenis diluaskan ke modal, borang, menu dan footer (22 Nov 2026)
+- **Borang Lapor (modal):** kad besar: padding `--pad-card` (atas/bawah) × `--pad-card-lg` (sisi); medan `--gap-group` (16) baris dan lajur; tajuk → deskripsi `--gap-text`; zon seret, fail dan "Saluran aduan lain" `--pad-card-sm` + `--radius-media`; paparan "dihantar" `--pad-card-lg`. Telefon: `--pad-card-sm` seluruhnya.
+- **Panel AIFA:** kepala `--pad-card-sm`, avatar ↔ tajuk `--gap-inline`; tajuk panel kini peranan title (20/500) sama seperti tajuk borang Lapor; mesej dan hasil `--gap-cards`, gelembung `--radius-media`; cadangan boleh berbalut (tidak terkeluar panel di telefon).
+- **Pop-up pratonton:** badge guna `--space-badge-x` / `--space-inline-tight`; ruang butang tutup di telefon = `--size-control` + `--gap-inline`.
+- **Menu Kongsi + menu telefon:** ikut peranan menu dropdown: padding `--space-inline`, radius `--radius-menu`, item `--space-field-x` sisi dengan tinggi kawalan.
+- **Footer:** blok `--gap-block` (40), tajuk lajur → senarai `--gap-group` (16), antara pautan `--gap-cards` (12).
