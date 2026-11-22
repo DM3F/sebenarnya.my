@@ -5,8 +5,7 @@ import { heroSlides } from '@/data/content';
 import { articleHref, getArticle } from '@/lib/articles';
 import { withBase } from '@/lib/basePath';
 import { ArrowRight } from 'lucide-react';
-import { PauseFilled, PlayFilled } from '@/components/ui/filledIcons';
-import { Button, IconButton, Verdict } from '@/components/ui';
+import { Button, Verdict } from '@/components/ui';
 
 // Each slide points at an article; it links to that article and falls back to its image.
 // `eyebrow` is "Verdict | Agency" (e.g. "Palsu | KPDN"); the verdict sets the dot colour.
@@ -37,7 +36,7 @@ const wrap = (n) => ((n % COUNT) + COUNT) % COUNT;
  * Hero carousel.
  * Infinite loop: slides are placed around a continuous position, so there is no first or last.
  * Auto-advances every 6s; only the centre slide shows its text.
- * Pause button, dots, drag/swipe with momentum, trackpad and arrow keys.
+ * Dots, drag/swipe with momentum, trackpad and arrow keys.
  * Reduced motion: no autoplay and moves jump instead of gliding.
  */
 export default function Carousel() {
@@ -246,11 +245,6 @@ export default function Carousel() {
     };
   }, [animate, go, step]);
 
-  const togglePlay = () => {
-    if (!playing) step(1);
-    setPlaying(!playing);
-  };
-
   return (
     <section className="hero-carousel" aria-roledescription="carousel" aria-labelledby="hero-carousel-title">
       {/* Outline: H1 (hero) → this H2 → slide H3s, so screen readers don't skip a level */}
@@ -319,14 +313,6 @@ export default function Carousel() {
             </button>
           ))}
         </div>
-        <IconButton
-          variant="secondary"
-          size="icon-lg"
-          icon={playing ? PauseFilled : PlayFilled}
-          label={playing ? 'Jeda slaid' : 'Main slaid'}
-          className="play"
-          onClick={togglePlay}
-        />
       </div>
     </section>
   );

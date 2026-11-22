@@ -711,3 +711,7 @@
   .ui-navlink:active,
   .ui-lang__trigger:active { scale: none; }
 }
+
+/* Dialogs take focus themselves on open (components call dialog.focus()), so no control opens
+   with a ring; Tab moves to the first control and shows the ring as usual. */
+dialog:focus { outline: none; }

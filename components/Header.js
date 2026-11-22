@@ -92,7 +92,14 @@ export default function Header() {
         </div>
 
         {/* Compact menu (<=1100px): dropdown children are listed flat under their group */}
-        <nav id="site-menu" className={open ? 'menu-panel open' : 'menu-panel'} aria-label="Utama">
+        {/* Any link in the compact menu closes it: the claim link opens the form without navigating,
+            and same-page links (#logo) don't change the path */}
+        <nav
+          id="site-menu"
+          className={open ? 'menu-panel open' : 'menu-panel'}
+          aria-label="Utama"
+          onClick={(e) => e.target.closest('a') && setOpen(false)}
+        >
           <ul>
             {navLinks.map((link) =>
               link.children ? (

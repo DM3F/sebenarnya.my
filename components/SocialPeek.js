@@ -26,7 +26,7 @@ export default function SocialPeek({ className = '' }) {
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    if (story && !dialog.open) dialog.showModal();
+    if (story && !dialog.open) { dialog.showModal(); dialog.focus(); } // focus the dialog, not the close button (no ring on open)
     if (!story && dialog.open) dialog.close();
   }, [story]);
 
@@ -69,6 +69,7 @@ export default function SocialPeek({ className = '' }) {
       </ul>
 
       <dialog
+        tabIndex={-1}
         ref={dialogRef}
         className={`peek-modal${social ? ` peek-modal--${social.id}` : ''}`}
         aria-labelledby="peek-title"

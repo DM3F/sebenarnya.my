@@ -68,6 +68,7 @@ export default function ClaimForm() {
     if (!dialog || dialog.open) return;
     if (status === 'sent') reset();
     dialog.showModal();
+    dialog.focus(); // focus the dialog itself, so the close button doesn't open with a focus ring
   };
 
   const close = () => dialogRef.current?.close();
@@ -175,6 +176,7 @@ export default function ClaimForm() {
 
   return (
     <dialog
+        tabIndex={-1}
       ref={dialogRef}
       className="claim-modal"
       aria-labelledby={status === 'sent' ? 'claim-done-title' : 'claim-title'}

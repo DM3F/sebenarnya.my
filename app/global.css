@@ -413,9 +413,6 @@ input::placeholder { color: var(--color-foreground); }
 
 @media (max-width: 600px) {
   .hero-lede { font-size: var(--text-body); line-height: var(--text-body--line-height); }
-  /* Verdict on its own line: PALSU and MAKLUMAN would otherwise wrap the line differently and the page would jump */
-  .hero-title .flip-word { display: grid; justify-content: center; }
-  .hero-title .flip-word__row { justify-self: center; }
   .hero-inner { padding-top: var(--spacing-48); }
   .hero-content { gap: var(--spacing-32); }
 }
@@ -2418,7 +2415,8 @@ input::placeholder { color: var(--color-foreground); }
 .logo-kit__head { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .logo-kit-intro { margin: var(--spacing-24) 0 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
-.logo-kit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-32); padding-top: var(--spacing-72); }
+/* Fluid: two cards side by side while each gets ≥320px, one column below that */
+.logo-kit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--spacing-32); padding-top: var(--spacing-72); }
 .logo-card {
   position: relative;
   display: flex;
@@ -2462,7 +2460,14 @@ input::placeholder { color: var(--color-foreground); }
    Drawn on a 391 × 286 stage (the canvas card) and scaled to the card width by a unitless ratio
    from the container width, so no JS resize is needed. Motion = the pasted IconFolder:
    pop-in on scroll, spread on hover / tap / focus, per-tile lift. Transform and opacity only. */
-.folder-wrap { container-type: inline-size; width: 100%; }
+.folder-wrap { container-type: inline-size; width: 100%; max-width: 480px; margin-inline: auto; } /* a single wide card never blows the folder up past 480 */
+/* Small folders (phones): the text keeps its real size, so make room — tighter chips, title closer
+   to the chips, and the decorative mini-icon pill goes */
+@container (max-width: 340px) {
+  .folder .folder__text { gap: var(--gap-text); }
+  .folder .folder__chip { padding-inline: var(--spacing-8); }
+  .folder .folder__pill { display: none; }
+}
 .folder {
   --folder-ease: cubic-bezier(.2, .8, .2, 1);
   --s: tan(atan2(100cqw, 391px));
@@ -2618,9 +2623,7 @@ input::placeholder { color: var(--color-foreground); }
   .folder[data-wide] .folder__tile { transform: rotate(var(--rot)); }
 }
 
-@media (max-width: 900px) {
-  .logo-kit-grid { grid-template-columns: 1fr; }
-}
+
 @media (max-width: 600px) {
   .logo-terms { grid-template-columns: 1fr; } /* keeps --pad-card-lg (fluid 32 → 24) like every large card */
 }
@@ -3021,3 +3024,17 @@ div:has(> .split-line) {
 }
 
 @media (prefers-reduced-motion: reduce) { .aifa-card__media video { display: none; } .aifa-card__media { background: var(--color-muted-strong) center / cover no-repeat; } }
+
+/* Phones: the hero keeps title + "Ikuti kami" only (AIFA cards hidden); the category chips scroll by
+   swipe, so their arrow buttons go */
+@media (max-width: 600px) {
+  .about-hero-aifa { display: none; }
+  .articles-chips .articles-chips__arrow,
+  .articles-chips.has-overflow .articles-chips__arrow { display: none; }
+}
+
+/* Hero H1: always two lines ("Tidak pasti? Jangan kongsi" / "Semak dakwaan <verdict>"), phones too.
+   Each line is ≈12.3em wide (verdict slot = "makluman"), so below the display size the title scales
+   with the viewport to fit the content width. */
+.hero-title > span { white-space: nowrap; }
+.hero .hero-title { width: fit-content; max-width: 100%; font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 12.8)); }

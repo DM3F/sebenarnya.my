@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { PauseFilled, PlayFilled } from '@/components/ui/filledIcons';
 import FlipCard from './FlipCard';
 import { IconButton } from '@/components/ui';
 import { articles } from '@/data/content';
@@ -53,10 +52,6 @@ export default function Latest() {
   // One card open at a time; hover waits a beat so sweeping across the row doesn't flip every card
   const [open, setOpen] = useState(null);
   // Visible pause control: the row moves on its own (WCAG 2.2.2)
-  const [paused, setPaused] = useState(false);
-  useEffect(() => {
-    st.current.paused = paused;
-  }, [paused]);
   const hoverTimer = useRef(0);
   const hover = (href, on) => {
     clearTimeout(hoverTimer.current);
@@ -235,11 +230,6 @@ export default function Latest() {
         </div>
 
         <div className="latest-checks__controls">
-          <IconButton
-            icon={paused ? PlayFilled : PauseFilled}
-            label={paused ? 'Mainkan baris semakan' : 'Jeda baris semakan'}
-            onClick={() => setPaused((p) => !p)}
-          />
           <IconButton icon={ChevronLeft} label="Semakan sebelumnya" onClick={() => go(-1)} />
           <IconButton icon={ChevronRight} label="Semakan seterusnya" onClick={() => go(1)} />
         </div>

@@ -195,6 +195,7 @@ export default function SphereGallery({ items }) {
     setSelected(item);
     motion.current.open = true;
     dialogRef.current?.showModal();
+    dialogRef.current?.focus(); // no focus ring on the close button at open
     document.documentElement.style.overflow = 'hidden';
   };
   const onClose = () => {
@@ -234,6 +235,7 @@ export default function SphereGallery({ items }) {
       <p className="sphere-hint">Seret untuk memusingkan, pilih foto untuk melihatnya lebih besar.</p>
 
       <dialog
+        tabIndex={-1}
         className="sphere-dialog"
         ref={dialogRef}
         aria-label={selected?.caption}

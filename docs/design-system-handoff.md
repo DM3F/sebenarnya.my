@@ -525,3 +525,12 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Kad AIFA hero Tentang Kami (22 Nov 2026):** gambar diganti video reel AIFA (`public/images/about/aifa-reel.mp4`, 1276×718, 58 s) — `autoplay muted loop playsInline`, poster `aifa-reel-poster.jpg` (juga latar fallback). Seluruh bingkai ialah pautan ke reel Instagram (tab baharu, label "Tonton video AIFA di Instagram"). Gerakan dikurangkan: video disembunyikan, poster dipaparkan.
 
 - **22 Nov 2026:** (1) Kad info AIFA (hero Tentang Kami) kini latar graphite `--color-text-secondary` (#44403B): tajuk putih 10.3:1, teks putih 80% 7.3:1. (2) Header: `min-height: 72px` dibuang — dengan box-sizing content-box ia ditambah di atas padding 16 (header 104 px). Kini tinggi = logo + 16 atas/bawah = 86 px.
+
+- **Pembaikan mobile & lain-lain (22 Nov 2026):**
+  - **Borang Salur Kepada Kami (mobile):** pautan dalam menu kompak kini menutup menu (borang dibuka tanpa navigasi, dan pautan #hash halaman sama tidak menukar laluan, jadi menu dulu kekal terbuka di belakang borang).
+  - **Hero AIFA Tentang Kami:** disembunyikan ≤600px.
+  - **Semua butang jeda dibuang:** karusel hero Utama (`.gctl .play`) dan baris "Semakan fakta terkini". Karusel masih berhenti semasa hover/fokus/seret; gerakan dikurangkan menghentikannya.
+  - **Butang tutup (X) tanpa cincin biru semasa dibuka:** dialog (borang, pratonton sosial, foto sfera) kini memfokus dirinya sendiri (`tabIndex={-1}` + `dialog.focus()`, `dialog:focus { outline: none }`), jadi butang tutup tidak dibuka dengan cincin fokus. Tab masih menunjukkan cincin seperti biasa.
+  - **Kad logo fluid:** grid `auto-fit, minmax(min(100%, 320px), 1fr)` (2 lajur dari ≈700px), folder maks 480px di tengah; folder ≤340px (container query): cip lebih rapat, tajuk → cip `--gap-text`, pil ikon kecil disembunyikan — cip kekal satu baris dalam poket hingga 320px.
+  - **Artikel:** anak panah bar cip kategori disembunyikan ≤600px (leret sahaja).
+  - **H1 Utama sentiasa dua baris** (telefon juga): setiap baris `nowrap`, saiz = `min(--text-display, (100vw − 2 × --side) / 12.8)` (≈12.3em setiap baris), jadi 22.5px @320, 28px @390, 39px @768, 48px desktop. Verdict tidak lagi di baris sendiri di telefon.
