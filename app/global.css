@@ -1023,9 +1023,7 @@ input::placeholder { color: var(--color-foreground); }
   width: min(484px, calc(100% - 2 * var(--spacing-64)));
   transform: translateY(-50%);
 }
-.hero-carousel .ct { transition: opacity .3s var(--ease-out), visibility 0s; }
-.hero-carousel .slide:not(.cur) .ct { opacity: 0; visibility: hidden; transition: opacity .2s ease-out, visibility 0s .2s; }
-@media (prefers-reduced-motion: reduce) { .hero-carousel .ct { transition: none; } }
+/* Text shows on every slide, side ones included (no fade-in on the centre slide) */
 
 .hero-carousel .ey { color: var(--color-foreground-inverse); }
 
