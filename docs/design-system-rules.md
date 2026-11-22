@@ -62,6 +62,12 @@ Fluid roles use `clamp()` inside tokens.css, so there are **no type media
 queries**: components write `font-size: var(--text-heading)` and get the right
 size on every screen. Body, label and small roles are fixed on purpose.
 
+**Font weight — headings vs text:**
+`500` every heading (display H1, section H2, heading, title), intro, labels and
+small text · `400` body, article and stat numbers · `600` verdict only. Headings
+stand apart from body by weight as well as size. Never set a weight on a heading
+by hand; use the role's `--font-weight`.
+
 **Line-height:** only two — `1.2` for every heading, title, intro and stat;
 `1.5` for everything else.
 **Tracking:** `0` everywhere (Manrope is spaced well as drawn). Only UPPERCASE
@@ -82,7 +88,7 @@ Ask "what is the relationship between these two things?", never "16 or 24?".
 | Icon ↔ label, items in a row | `--gap-inline` | 8 | icon + text, chips, paired buttons |
 | Inside one text group | `--gap-text` | 8 | eyebrow → title → description → meta |
 | Between groups inside a card | `--gap-group` | 16 | text ↔ actions, media ↔ body |
-| Between cards | `--gap-cards` | 12 | every card grid and card row |
+| Between cards | `--gap-cards` | 16 → 24 fluid | every card grid and card row |
 | Section heading → content | `--gap-block` | 24 → 40 fluid | "Semakan fakta terkini" → its grid |
 | Between sections | `--space-section` | 64 → 120 fluid | page rhythm; related blocks (hero → carousel → agency logos) take half |
 
@@ -96,7 +102,7 @@ Ask "what is the relationship between these two things?", never "16 or 24?".
 
 Four rules:
 1. **Between groups ≥ 2× inside a group** (8 → 16). The page keeps one ratio on every screen:
-   between sections ≈ 3× heading → content ≈ 10× between cards.
+   between sections ≈ 3× heading → content; between cards < heading → content.
 2. **Inside a card, every gap ≤ the card padding**, so the content belongs to its
    container. A column gutter inside a card equals the card padding.
 3. **Nested radius = outer − inset**: media inset 8px in a 20px card gets 12.

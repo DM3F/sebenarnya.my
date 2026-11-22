@@ -67,8 +67,8 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 
 | Peranan | Desktop / ≤1024 / ≤600 | Weight | Dipakai untuk |
 |---|---|---|---|
-| Display | 48/52 · 40/44 · 32/38 | **400** | H1 halaman sahaja (hero, detail artikel, Tentang Kami). **48px ialah saiz paling besar di laman.** |
-| Section | 36/42 · 32/38 · 28/34 | 500 | H2 seksyen. Tajuk slaid carousel dan banner WSIS guna saiz ini dengan weight 400 supaya tidak mengatasi H2. |
+| Display | 32 → 48 (fluid) | **500** | H1 halaman sahaja (hero, detail artikel, Tentang Kami). **48px ialah saiz paling besar di laman.** |
+| Section | 28 → 36 (fluid) | 500 | H2 seksyen, tajuk slaid carousel dan banner WSIS: semua sama weight dengan Display. |
 | Heading | 24/32 · 22/30 · 20/28 | 500 | Tajuk ciri / sub-tajuk dalam seksyen, tajuk kad besar, tajuk pop-up. |
 | Title | 20/26 · 20/26 · 18/24 | 500 | Tajuk kad. |
 | Angka (statistik) | 48 · 40 · 36, line-height 1.1 | **400** | Semua angka statistik. Unit (juta+, ribu, jam) 0.42em. Angka tabular. |
@@ -80,6 +80,8 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 | Eyebrow | 13/18 | 500 (verdict 600) | UPPERCASE, tracking +0.04em (satu-satunya tracking bukan 0): verdict, eyebrow, heading footer. |
 
 Token peranan ada dalam `app/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (body artikel sahaja, 16 → 18), `--text-body` (16, termasuk Lead), `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi tiga lajur saiz di atas jadi satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
+
+**Font weight:** semua tajuk 500 (Display hero, tajuk seksyen, heading, title) supaya jelas berbeza daripada body 400; angka statistik 400; 600 hanya untuk verdict.
 
 **Line-height & tracking:** semua tajuk 1.2, semua teks lain 1.5. Tracking 0 di mana-mana (Manrope sudah seimbang); kecuali label UPPERCASE kecil (+0.04em).
 
@@ -138,7 +140,7 @@ Bahasa bentuk: **pill untuk apa yang ditekan, kotak membulat lembut untuk apa ya
 - Dalam kumpulan rapat (8–16px), antara kumpulan sekurang-kurangnya 2× lebih jauh. Ruang yang membina struktur, bukan garis.
 - Teks kecil (13–14px) boleh padat; tajuk dan angka besar mesti diberi ruang bernafas di sekeliling.
 - Kad dalam grid: 3–4 sebaris pada desktop, sentiasa sama tinggi. Tiada kad mini 6 sebaris.
-- **Jarak ikut hubungan, bukan nombor:** dalam satu kumpulan teks 8, antara kumpulan dalam kad 16, antara kad 12, tajuk seksyen → kandungan 24 → 40, antara seksyen 64 → 120.
+- **Jarak ikut hubungan, bukan nombor:** dalam satu kumpulan teks 8, antara kumpulan dalam kad 16, antara kad 16 → 24, tajuk seksyen → kandungan 24 → 40, antara seksyen 64 → 120.
 - **Saiz kad menentukan padding + radius serentak:** kecil 16/20, biasa 24/20 (default), besar 32→24/24 (feature, modal). Gap dalam kad tidak pernah lebih besar daripada padding kad. Jadual penuh: `docs/design-system-rules.md` › Spacing & radius roles.
 - Bila ragu: buang satu elemen, bukan kecilkan semua.
 
@@ -178,7 +180,7 @@ Keputusan (21 Nov 2026):
 | # | Perkara | Keputusan | Status implementasi |
 |---|---|---|---|
 | 1 | Keluarga font | **Manrope sahaja.** Buang Inter / `--font-ui`. | ✅ Siap: kod, handoff. |
-| 2 | Display weight | **400** untuk tajuk display (hero, tajuk besar). Heading kekal 500. | ✅ Siap: kod, handoff (`--font-weight-display`). |
+| 2 | Display weight | Semua tajuk **500** (termasuk display); body dan angka statistik 400. | ✅ Siap: kod, handoff (`--font-weight-display`). |
 | 3 | Angka besar | **400** untuk semua angka statistik. | ✅ Siap: kod, handoff (angka statistik guna `--font-weight-display`; kapsyen kekal Light). |
 | 4 | Tanya AIFA | **Biarkan merah buat masa ini** (belum ada idea). | Kekal terbuka di `plan.md`. |
 | 5 | Chart & meter | Garis panduan §4 jadi titik mula bila diperlukan (cth. dashboard CMS). | Belum ada dalam sistem. |

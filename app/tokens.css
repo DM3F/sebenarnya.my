@@ -84,8 +84,8 @@
   /* ── Font weight — every headline (Display & Heading) is medium ───────── */
   --font-weight-light: 300;    /* stat captions only */
   --font-weight-regular: 400;  /* body; display via --font-weight-display */
-  --font-weight-medium: 500;   /* headings (24–36), labels */
-  --font-weight-display: var(--font-weight-regular); /* display titles (48+) and stat numbers — light, editorial (docs/design.md §8) */
+  --font-weight-medium: 500;   /* EVERY heading (H1→card title), labels, small text */
+  --font-weight-display: var(--font-weight-regular); /* stat numbers only */
   --font-weight-semibold: 600; /* verdict */
 
   /* ── Font size ─────────────────────────────────────────────────────────
@@ -195,7 +195,7 @@
      Body, label and small roles stay fixed: reading text should not shrink. */
   --text-display: clamp(var(--text-32), 25.37px + 1.768vw, var(--text-48));  /* page H1 only · 32→48 */
   --text-display--line-height: var(--leading-heading);
-  --text-display--font-weight: var(--font-weight-display);
+  --text-display--font-weight: var(--font-weight-medium);
 
   --text-heading-lg: clamp(var(--text-28), 24.69px + 0.884vw, var(--text-36)); /* section H2 · 28→36 */
   --text-heading-lg--line-height: var(--leading-heading);
@@ -286,7 +286,7 @@
   --gap-inline: var(--spacing-8);   /* icon↔label, chips/buttons in a row */
   --gap-text: var(--spacing-8);     /* inside one text group: eyebrow→title→description→meta */
   --gap-group: var(--spacing-16);   /* between groups inside a card: text↔actions, media↔body */
-  --gap-cards: var(--spacing-12);   /* between cards in any grid or row */
+  --gap-cards: clamp(var(--spacing-16), 12.69px + 0.884vw, var(--spacing-24)); /* between cards in any grid or row · 16 → 24 */
   --gap-block: clamp(var(--spacing-24), 17.37px + 1.768vw, var(--spacing-40)); /* section heading → its content · 24 → 40 */
 
   /* ── Card size: padding and radius always travel together ─────────────

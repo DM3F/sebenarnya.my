@@ -91,7 +91,7 @@ Font: **Manrope** 300/400/500/600 untuk semuanya (`--font-sans`) — kandungan, 
 | Stat/40 Light | 300 | 40 / 44 | -0.02em | angka statistik |
 | Stat/32 Light | 300 | 32 / 36 | 0 | angka kecil (WSIS) |
 
-**Peraturan: semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = 16 / 24 Medium** — tiada label 18px. **Display (48–56) dan angka statistik guna 400** melalui `--font-weight-display` — besar tetapi ringan (`design.md` §3). **Heading (24–36) guna Medium 500.** Regular 400 untuk body; Light 300 hanya untuk kapsyen statistik. Tiada 700+. Pengguna `--font-weight-display`: `.hero-title`, `.hero-carousel h3`, `.wsis-banner__title`, `.post-title`, `.about-hero-text h1`, `.about-title`, `.about-fn-title`, `.viewership-stats dt`, `.about-intro__stat-value`, `.about-intro__facts-row dt`.
+**Peraturan: semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = 16 / 24 Medium** — tiada label 18px. **Semua tajuk guna Medium 500** (Display H1, tajuk seksyen, tajuk slaid carousel, award, heading, title), dibaca daripada `--font-weight` peranannya, tidak pernah ditulis tangan. **Angka statistik guna 400** melalui `--font-weight-display` (kini untuk angka sahaja). Regular 400 untuk body; Light 300 hanya untuk kapsyen statistik. Tiada 700+.
 
 Token: komponen **hanya** guna type role `--text-{display,heading-lg,heading,title,intro,article,body,body-sm,label,label-sm,eyebrow,badge,verdict,caption,stat}` (+ `--line-height`, `--font-weight`, `--letter-spacing`). Role besar fluid dengan `clamp()` (375 → 1280px), tiada media query untuk type. Jadual penuh: `docs/design-system-rules.md` › Type roles. Primitive (`--text-12…48`, `--leading-heading` 1.2, `--leading-body` 1.5; tracking 0 kecuali `--tracking-label` untuk UPPERCASE) hanya dalam tokens.css.
 
@@ -430,7 +430,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - 404 (`app/not-found.js`): header + footer, eyebrow "Ralat 404", tajuk display, dua jalan keluar (Utama filled, Artikel outline). Gaya `.page-notice`.
 
 ## Pembaikan audit MEDIUM (21 Nov 2026)
-- **Tajuk seksyen:** satu peranan untuk semua halaman (`.latest-checks__title`, `.activity__title`, `.about-title`, `.about-fn-title`, `.logo-kit-title`): 36/42, weight 500, rata kiri; telefon 28/34. Display 400 hanya untuk hero. Sub-tajuk dalam seksyen (`.about-subtitle`) 24/32.
+- **Tajuk seksyen:** satu peranan untuk semua halaman (`.latest-checks__title`, `.activity__title`, `.about-title`, `.about-fn-title`, `.logo-kit-title`): 28 → 36 fluid, weight 500, rata kiri. Display H1 juga 500. Sub-tajuk dalam seksyen (`.about-subtitle`) 24/32.
 - **Outline tajuk:** carousel hero ada `<h2 class="sr-only">Semakan fakta pilihan</h2>` supaya slaid H3 tidak melangkau tahap.
 - **Semibold (600)** hanya untuk label verdict (dan wordmark logo). Eyebrow, badge, heading footer, label AIFA, tajuk keputusan AIFA, tajuk borang: 500. `b, strong`: 500 (deklarasi rosak `…semibold)er` dibaiki).
 - **Satu butang filled per skrin:** muat turun Logo/Ikon kini `variant="outline"`. Butang header "Salur Kepada Kami" jadi outline di Utama sahaja (hero "Semak" ialah aksi utama di sana); halaman lain kekal filled.
@@ -494,7 +494,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Panel AIFA:** kepala `--pad-card-sm`, avatar ↔ tajuk `--gap-inline`; tajuk panel kini peranan title (20/500) sama seperti tajuk borang Lapor; mesej dan hasil `--gap-cards`, gelembung `--radius-media`; cadangan boleh berbalut (tidak terkeluar panel di telefon).
 - **Pop-up pratonton:** badge guna `--space-badge-x` / `--space-inline-tight`; ruang butang tutup di telefon = `--size-control` + `--gap-inline`.
 - **Menu Kongsi + menu telefon:** ikut peranan menu dropdown: padding `--space-inline`, radius `--radius-menu`, item `--space-field-x` sisi dengan tinggi kawalan.
-- **Footer:** blok `--gap-block` (24 → 40 fluid), tajuk lajur → senarai `--gap-group` (16), antara pautan `--gap-cards` (12).
+- **Footer:** blok `--gap-block` (24 → 40 fluid), tajuk lajur → senarai `--gap-group` (16), antara pautan `--gap-cards` (16 → 24 fluid).
 
 ## Verdict diseragamkan: Palsu · Makluman · Benar (22 Nov 2026)
 - Hanya tiga verdict wujud: **Palsu** (`palsu`), **Makluman** (`makluman`), **Benar** (`benar`). Label "Penjelasan" ditukar kepada **Benar** di mana-mana (penapis Artikel, kad flip, kad Kenali Sebenarnya.my, badge). Alias `penjelasan` dibuang; jenis yang tidak dikenali jatuh ke `makluman`.
@@ -520,7 +520,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 
 - **22 Nov 2026:** (1) Flip verdict H1: animasi flip kekal 700 ms / sela 40 ms; masa diam (dwell) antara perkataan dipendekkan 2.2 s → 1.2 s. (2) Seksyen "Semakan fakta terkini" kini guna kepala yang sama dengan Kenali Sebenarnya.my dan Berita: tajuk tengah "Semakan fakta terkini" + lead satu baris "Setiap jawapan disahkan terus oleh kementerian dan agensi berkaitan." (`.latest-checks__head`, lead = peranan body, secondary).
 
-- **Kad maklumat AIFA, hero Tentang Kami (22 Nov 2026):** `.about-hero-aifa` diletak `position: absolute` di kanan atas kad hero dengan inset sama seperti blok "Ikuti kami" (atas `--spacing-56`, tepi `--spacing-40`), lebar `min(330px, 34%)`, gap `--spacing-12`. Dua `.aifa-card`: media (latar `--color-card`, padding 8, ruang 16:9 radius `--radius-media` + kapsyen body-sm secondary; kini poster `berita-aifa.jpg`, ganti `<img>` dengan embed video Instagram di `.aifa-card__media`) dan info (latar `--color-muted-strong`, tajuk label 16/500, teks body-sm secondary). Hover angkat 2px; mati di `prefers-reduced-motion`. ≤900px kad masuk aliran biasa antara "Ikuti kami" dan tajuk (maks 420). Teks di `aboutHero.aifa` (`data/content.js`). Tajuk kad ialah `<p>`, bukan `<h2>`, kerana ia datang sebelum `<h1>` dalam DOM.
+- **Kad maklumat AIFA, hero Tentang Kami (22 Nov 2026):** `.about-hero-aifa` diletak `position: absolute` di kanan atas kad hero dengan inset sama seperti blok "Ikuti kami" (atas `--spacing-56`, tepi `--spacing-40`), lebar `min(330px, 34%)`, gap `--spacing-12`. Dua `.aifa-card`: media (latar `--color-card`, padding 8, ruang 16:9 radius `--radius-media` + kapsyen body-sm secondary; kini poster `berita-aifa.jpg`, ganti `<img>` dengan embed video Instagram di `.aifa-card__media`) dan info (latar `--color-muted-strong`, tajuk label 16/500, teks body-sm secondary). Hover angkat 2px; mati di `prefers-reduced-motion`. ≤1024px (tablet + telefon) kad disembunyikan. Teks di `aboutHero.aifa` (`data/content.js`). Tajuk kad ialah `<p>`, bukan `<h2>`, kerana ia datang sebelum `<h1>` dalam DOM.
 
 - **Kad AIFA hero Tentang Kami (22 Nov 2026):** gambar diganti video reel AIFA (`public/images/about/aifa-reel.mp4`, 1276×718, 58 s) — `autoplay muted loop playsInline`, poster `aifa-reel-poster.jpg` (juga latar fallback). Seluruh bingkai ialah pautan ke reel Instagram (tab baharu, label "Tonton video AIFA di Instagram"). Gerakan dikurangkan: video disembunyikan, poster dipaparkan.
 
@@ -528,7 +528,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 
 - **Pembaikan mobile & lain-lain (22 Nov 2026):**
   - **Borang Salur Kepada Kami (mobile):** pautan dalam menu kompak kini menutup menu (borang dibuka tanpa navigasi, dan pautan #hash halaman sama tidak menukar laluan, jadi menu dulu kekal terbuka di belakang borang).
-  - **Hero AIFA Tentang Kami:** disembunyikan ≤600px.
+  - **Hero AIFA Tentang Kami:** disembunyikan ≤1024px (tablet + telefon; dulu ≤600, dan 601–900 masuk aliran).
   - **Semua butang jeda dibuang:** karusel hero Utama (`.gctl .play`) dan baris "Semakan fakta terkini". Karusel masih berhenti semasa hover/fokus/seret; gerakan dikurangkan menghentikannya.
   - **Butang tutup (X) tanpa cincin biru semasa dibuka:** dialog (borang, pratonton sosial, foto sfera) kini memfokus dirinya sendiri (`tabIndex={-1}` + `dialog.focus()`, `dialog:focus { outline: none }`), jadi butang tutup tidak dibuka dengan cincin fokus. Tab masih menunjukkan cincin seperti biasa.
   - **Kad logo fluid:** grid `auto-fit, minmax(min(100%, 320px), 1fr)` (2 lajur dari ≈700px), folder maks 480px di tengah; folder ≤340px (container query): cip lebih rapat, tajuk → cip `--gap-text`, pil ikon kecil disembunyikan — cip kekal satu baris dalam poket hingga 320px.
@@ -538,3 +538,5 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Ritma seksyen fluid (22 Nov 2026):** `--space-section` kini `clamp(64, 40.8px + 6.188vw, 120)` (dulu langkah 96 · 64 · 48) dan `--gap-block` `clamp(24, 17.37px + 1.768vw, 40)` (dulu tetap 40), jadi antara seksyen ≈ 3× tajuk → kandungan pada setiap lebar. Breakpoint `--space-section` ≤1024 / ≤600 dibuang. "Semakan fakta terkini": kepala → kandungan `--gap-block` (dulu 48), rel kad `--gap-cards` (dulu 24). Peraturan mati `.latest` dibuang.
 
 - **Folder format, mudah alih (22 Nov 2026):** pil ikon mini (`.folder__pill`, token `--color-folder-pill`, `--color-tile-svg-mini`) dibuang. Ikon muat turun pada chip kekal Lucide `Download` 14px (`Icon`). Skala pentas (`--s` = lebar kad / 391) kini diukur dengan `ResizeObserver` dalam `FormatFolder.js` dan ditulis sebagai gaya inline; `tan(atan2())` hanya dipakai bila pelayar menyokongnya (`@supports`), dengan sandaran `--s: .85`. Sebelum ini Safari tanpa `tan(atan2())` tidak mengira skala lalu folder terpotong. Nota 455 di atas tentang "nisbah tanpa unit daripada container query" kini hanya laluan sokongan, bukan satu-satunya.
+
+- **Weight tajuk + gap kad (22 Nov 2026):** semua tajuk kini 500 (dulu Display H1, tajuk slaid carousel dan award 400); blok tajuk baca `--text-*--font-weight` peranan, weight tulis tangan dibuang. `--font-weight-display` (400) kini untuk angka statistik sahaja. `--gap-cards` `clamp(16, 12.69px + 0.884vw, 24)` (dulu 12); turut dipakai oleh senarai pautan footer, log AIFA dan statistik viewership.
