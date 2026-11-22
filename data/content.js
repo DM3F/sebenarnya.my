@@ -317,6 +317,7 @@ export const logoPage = {
   items: [
     {
       name: 'Logo',
+      folderTitle: 'Muat turun logo',
       text: 'Logo penuh bersama slogan “Tidak Pasti Jangan Kongsi”.',
       src: withBase('/images/logo/logo.png'),
       width: 356,
@@ -330,6 +331,7 @@ export const logoPage = {
     },
     {
       name: 'Ikon',
+      folderTitle: 'Muat turun ikon',
       text: 'Ikon segi empat untuk ruang kecil seperti gambar profil.',
       src: withBase('/images/logo/icon-download.png'),
       width: 116,

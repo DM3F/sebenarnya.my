@@ -25,7 +25,7 @@ export default function LogoKit({ headingLevel = 2 }) {
               <img src={item.src} alt={`${item.name} Sebenarnya.my`} width={item.width} height={item.height} />
             </div>
 
-            <FormatFolder title={logoPage.formatTitle} subject={item.name} formats={item.formats} />
+            <FormatFolder title={item.folderTitle ?? logoPage.formatTitle} subject={item.name} formats={item.formats} />
           </article>
         ))}
       </div>

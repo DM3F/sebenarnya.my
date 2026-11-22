@@ -2397,11 +2397,10 @@ input::placeholder { color: var(--color-foreground); }
   border-radius: var(--radius-card-lg);
   background: var(--color-muted);
 }
-/* Preview: the file shown at native size or smaller (stays sharp), centred in the space above the
-   folder. Its height matches the folder's so the card reads as two equal halves. */
-.logo-card__preview { display: grid; flex: 1; place-items: center; min-height: 240px; padding: var(--pad-card); }
+/* Preview: the file at native size or smaller (stays sharp), centred above the folder. Sized by the
+   file plus one card step above and below, so the space over the logo matches the space under it. */
+.logo-card__preview { display: grid; flex: 1; place-items: center; padding-block: var(--pad-card); }
 .logo-card__preview img { display: block; max-width: 100%; height: auto; mix-blend-mode: multiply; } /* drops the white ground of the PNGs onto the card */
-@media (max-width: 600px) { .logo-card__preview { min-height: 160px; } } /* phone: less empty card above the folder */
 /* Desktop: both cards share row lines, so previews and folders align */
 @media (min-width: 901px) {
   .logo-kit-grid { row-gap: 0; }
