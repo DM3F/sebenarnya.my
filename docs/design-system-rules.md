@@ -113,11 +113,33 @@ Four rules:
 Exceptions: a full-screen modal on a phone uses `sm` (= the 16px page gutter).
 Hero stages (`.about-hero-card`) are layout, not cards: they use section spacing.
 
+### Layout: breakpoints, layers, reading widths
+
+**Four breakpoints only** (`max-width`, mobile last). Need a change between two of
+them? Use the next one up, never a new number.
+
+| Width | Name | What changes |
+|---|---|---|
+| 1280 | xl | page gutter 96 → 48 |
+| 1100 | lg | nav collapses to the compact header |
+| 900 | md | grids and side-by-side layouts stack to one column |
+| 600 | sm | phone: gutter 16, full-screen sheets, single-column stats |
+
+**Layers** (`z-index`): global stacking uses tokens, lowest to highest:
+`--z-sticky` 10 header · `--z-dropdown` 20 menus · `--z-overlay` 30 scrims ·
+`--z-floating` 40 Tanya AIFA · `--z-skip` 50 skip link. Inside one component,
+plain `-1…5` orders siblings (image under text, badge over image).
+
+**Reading widths:** `--measure-text` (68ch) for any paragraph that runs long;
+`--measure-head` (720px) for a centred section heading and its lead. Short
+headings may use `em` caps (`max-width: 12em`) to balance line breaks.
+
 ## 2. Hard rules (checked by `npm run lint:ds`)
 
 1. No hex/rgb colours outside `tokens.css`.
 2. No palette primitives (`--color-grey-*`, `--color-red`…) in components.
 3. `app/ui.css`: **no raw lengths** (`px`); use roles. Exceptions carry `/* ds-allow: reason */`.
+3c. **Layout:** only the four breakpoints; z-index above 5 must be a `--z-*` layer.
 3b. **Spacing & radius, every file except tokens.css:** no raw `px` in padding, margin or gap, no raw `px` radius, no `--radius-lg` (use `--radius-card-lg`). Optical nudges and overlaps carry `/* ds-allow: reason */`.
 3a. **Type, every file except tokens.css:** only type roles. No `--text-16`/`--leading-*` steps, no raw `font-size` (px, `clamp()`, `calc()`), no `px` line-height, no `fontSize` in JSX, no role that tokens.css does not define. Percent/em tweaks are fine.
 4. Icons: Lucide only, always through `components/ui/Icon.js`.

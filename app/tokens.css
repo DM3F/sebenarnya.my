@@ -320,6 +320,28 @@
     color var(--duration-fast) var(--ease-out);
 }
 
+/* ══ LAYOUT: breakpoints, layers, reading widths ═══════════════════════════
+   Breakpoints (CSS can't read variables inside @media, so these are the only
+   four widths allowed; lint enforces it). Always max-width, mobile last:
+     1280  xl  page gutter 96 → 48
+     1100  lg  nav collapses to the compact header
+      900  md  grids stack, side-by-side becomes one column
+      600  sm  phone: page gutter 16, full-screen sheets
+   Use the next one up, never a new number. ─────────────────────────────── */
+:root {
+  /* Layers — global stacking only. Inside one component, plain 1–5 (and -1)
+     order siblings; anything above 5 must be a layer token. */
+  --z-sticky: 10;    /* sticky header */
+  --z-dropdown: 20;  /* menus, share sheet, language switcher */
+  --z-overlay: 30;   /* scrims behind modals */
+  --z-floating: 40;  /* Tanya AIFA button + panel */
+  --z-skip: 50;      /* skip link: always on top */
+
+  /* Reading widths */
+  --measure-text: 68ch;   /* any paragraph that runs long: ~60–75 characters a line */
+  --measure-head: 720px;  /* centred section heading + its one-line lead */
+}
+
 /* Page rhythm breakpoints: one gutter and one section gap for every page */
 @media (max-width: 1280px) { :root { --space-page-x: var(--spacing-48); } }
 @media (max-width: 900px)  { :root { --space-page-x: var(--spacing-24); } }

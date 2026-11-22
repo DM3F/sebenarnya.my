@@ -152,7 +152,7 @@ input::placeholder { color: var(--color-foreground); }
 /* Header — layout only; controls come from components/ui (app/ui.css) */
 .header {
   position: relative;
-  z-index: 10;
+  z-index: var(--z-sticky);
   color: var(--color-foreground);
   background-color: var(--color-background);
 }
@@ -406,7 +406,7 @@ input::placeholder { color: var(--color-foreground); }
 /* Popular searches (ChipRow) under the search bar */
 .hero-popular { justify-content: center; }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .hero-lede > span { display: inline; }
   .hero-lede { text-wrap: pretty; max-width: 34em; }
 }
@@ -431,15 +431,6 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 .slider::-webkit-scrollbar { display: none; }
-
-@media (max-width: 1600px) {
-  .latest { padding-bottom: 10vh; }
-}
-
-@media (max-width: 1480px) {
-  .latest { padding-bottom: 8vh; }
-
-}
 
 /* Posts (latest from Sebenarnya.my) */
 .posts { margin-bottom: 3vh; }
@@ -507,7 +498,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 .agency:hover {
-  z-index: 50;
+  z-index: 5; /* local: above neighbouring logos */
   transform: translateY(-4px) scale(1.08);
 }
 
@@ -523,7 +514,7 @@ input::placeholder { color: var(--color-foreground); }
   to { transform: translateX(-50%); }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
 
   .agency {
     flex-basis: 68px;
@@ -534,7 +525,7 @@ input::placeholder { color: var(--color-foreground); }
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 
   .agencies { align-items: flex-start; }
   .agencies small { text-align: left; }
@@ -555,13 +546,6 @@ input::placeholder { color: var(--color-foreground); }
   transition: opacity 200ms ease 300ms, transform 300ms var(--ease-out) 300ms;
 }
 
-/* Phone: the row turns into a column; the open card takes 4 parts of the height */
-@media (max-width: 700px) {
-  
-  
-   /* the open card is ~340px tall here */
-}
-
 /* Semakan fakta terkini — components/Latest.js + FlipCard.js */
 .latest-checks {
   --latest-side: var(--space-page-x); /* title and controls inset; the card row bleeds past it */
@@ -578,7 +562,7 @@ input::placeholder { color: var(--color-foreground); }
   color: var(--color-foreground);
 }
 /* Centred title + one-line lead, the same head as Kenali Sebenarnya.my and Berita */
-.latest-checks__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-12); max-width: 720px; margin-inline: auto; text-align: center; }
+.latest-checks__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-12); max-width: var(--measure-head); margin-inline: auto; text-align: center; }
 .latest-checks__title { text-wrap: balance; }
 .latest-checks__lead { margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
@@ -1078,7 +1062,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 /* Phones: portrait card, text on the image at the bottom, inside the card */
-@media (max-width: 700px) {
+@media (max-width: 600px) {
   .hero-carousel { --w: calc(100vw - 2 * var(--spacing-16)); }
   .hero-carousel .slide { height: min(520px, calc(var(--w) * 1.25)); }
   .hero-carousel .slide.hs.wd img { left: 0; width: 100%; }
@@ -1237,7 +1221,7 @@ input::placeholder { color: var(--color-foreground); }
   max-height: 48px;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 900px) {
   .viewership-inner { grid-template-columns: 1fr; gap: var(--spacing-24); }
 }
 @media (max-width: 600px) {
@@ -1507,7 +1491,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 .post-subtitle {
-  max-width: 640px;
+  max-width: var(--measure-text);
   margin: 0 0 var(--spacing-24);
   color: var(--color-text-secondary);
 }
@@ -1538,7 +1522,7 @@ input::placeholder { color: var(--color-foreground); }
 .share { position: relative; }
 .share-menu {
   position: absolute;
-  z-index: 20;
+  z-index: var(--z-dropdown);
   top: calc(100% + var(--spacing-8));
   left: 50%;
   display: flex;
@@ -1601,7 +1585,7 @@ input::placeholder { color: var(--color-foreground); }
   position: fixed;
   right: var(--spacing-24);
   bottom: var(--spacing-24);
-  z-index: 1000;
+  z-index: var(--z-floating);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -1769,7 +1753,7 @@ input::placeholder { color: var(--color-foreground); }
   opacity: .6;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .aifa { right: 16px; bottom: 16px; }
   .aifa-panel { width: calc(100vw - 32px); height: calc(100dvh - 104px); }
   .aifa-toggle { height: 52px; }
@@ -2359,11 +2343,6 @@ input::placeholder { color: var(--color-foreground); }
   .about-hero-card { min-height: 560px; padding: var(--spacing-32) var(--spacing-24) var(--spacing-40); }
 }
 
-@media (max-width: 700px) {
-  
-  
-}
-
 @media (max-width: 600px) {
   .about-hero { padding: var(--spacing-8) var(--spacing-12); }
   .about-hero-card { min-height: 520px; }
@@ -2444,7 +2423,7 @@ input::placeholder { color: var(--color-foreground); }
   line-height: var(--text-body--line-height);
   color: var(--color-foreground);
 }
-.logo-terms__body { max-width: 72ch; }
+.logo-terms__body { max-width: var(--measure-text); }
 .logo-terms__body p { margin: 0; text-wrap: pretty; }
 .logo-terms__title { margin: 0; color: inherit; }
 .logo-terms__list { display: grid; gap: var(--spacing-8); margin: var(--spacing-16) 0; padding-left: var(--spacing-20); }
@@ -2643,7 +2622,7 @@ div:has(> .split-line) {
    3-column bento: tall photo in the middle, stat card spanning two rows on the right.
    Cards sit on taupe (elevation by tone, no shadow); one ink card carries the number. */
 .kenali { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--space-page-x); }
-.kenali__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-12); max-width: 720px; margin-inline: auto; text-align: center; }
+.kenali__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-12); max-width: var(--measure-head); margin-inline: auto; text-align: center; }
 .kenali__title { margin: 0; text-wrap: balance; }
 .kenali__lead { margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
@@ -2781,7 +2760,7 @@ div:has(> .split-line) {
 .kenali__card--poster img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .kenali__card--poster { min-height: 300px; } /* room for the square poster to stay legible (≈276px) */
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .kenali__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
@@ -2980,7 +2959,7 @@ div:has(> .split-line) {
 /* Two classes so it beats .ui-btn { position: relative } from ui.css */
 .peek-modal .peek-modal__close { position: absolute; top: var(--spacing-16); right: var(--spacing-16); z-index: 1; }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .peek-modal { width: calc(100vw - 2 * var(--spacing-16)); max-height: calc(100dvh - 2 * var(--spacing-16)); }
   .peek-modal__inner { grid-template-columns: minmax(0, 1fr); gap: var(--pad-card-lg); padding: var(--pad-card-lg); }
   .peek-modal__body { padding-right: calc(var(--size-control) + var(--gap-inline)); }

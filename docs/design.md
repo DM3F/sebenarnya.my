@@ -143,6 +143,7 @@ Bahasa bentuk: **pill untuk apa yang ditekan, kotak membulat lembut untuk apa ya
 - **Jarak ikut hubungan, bukan nombor:** dalam satu kumpulan teks 8, antara kumpulan dalam kad 16, antara kad 16 → 24, tajuk seksyen → kandungan 24 → 40, antara seksyen 64 → 120.
 - **Saiz kad menentukan padding + radius serentak:** kecil 16/20, biasa 24/20 (default), besar 32→24/24 (feature, modal). Gap dalam kad tidak pernah lebih besar daripada padding kad. Jadual penuh: `docs/design-system-rules.md` › Spacing & radius roles.
 - Bila ragu: buang satu elemen, bukan kecilkan semua.
+- **Empat breakpoint sahaja:** 1280 · 1100 · 900 · 600. Lebar baca perenggan maksimum 68ch; kepala seksyen berpusat 720px.
 
 ---
 

@@ -119,6 +119,18 @@ const rules = [
     test: (l, p) => !isTokens(p) && isCss(p) && /var\(--radius-lg\)/.test(code(l)),
   },
   {
+    id: 'breakpoint',
+    why: 'Off-system breakpoint; use max-width 1280 / 1100 / 900 / 600 (min-width = those + 1).',
+    test: (l, p) => isCss(p) && /@media/.test(l)
+      && [...code(l).matchAll(/(max|min)-width:\s*(\d+)px/g)].some(([, k, n]) =>
+        !(k === 'max' ? [1280, 1100, 900, 600] : [1281, 1101, 901, 601]).includes(Number(n))),
+  },
+  {
+    id: 'z-index',
+    why: 'Global z-index must be a layer token (--z-sticky/dropdown/overlay/floating/skip); plain numbers only -1…5 inside a component.',
+    test: (l, p) => !isTokens(p) && isCss(p) && /z-index:\s*(\d{2,}|[6-9]|-[2-9]|-\d{2,})\b/.test(code(l)),
+  },
+  {
     id: 'rem',
     why: 'rem breaks inside the extension and with the 62.5% root; use px tokens.',
     test: (l, p) => isCss(p) && /\d(\.\d+)?rem\b/.test(code(l)),
