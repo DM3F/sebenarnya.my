@@ -1,12 +1,12 @@
 import { ArrowRight, Globe, MessageSquareText, Smartphone, Trophy } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
-import Verdict from '@/components/ui/Verdict';
+import CountUp from '@/components/CountUp';
 import { Button } from '@/components/ui';
 import { withBase } from '@/lib/basePath';
 import SocialPeek from '@/components/SocialPeek';
 
 // "Kenali Sebenarnya.my": a 3-column bento about the service.
-// Desktop areas: channels | photo (3 rows) | verdicts
+// Desktop areas: channels | photo (3 rows) | visitors
 //                poster   | photo          | award "Juara Dunia" (2 rows)
 //                social   | photo          | award
 
@@ -38,13 +38,20 @@ export default function KenaliSebenarnya() {
           <figcaption className="kenali__pill">Tanya sebelum kongsi.</figcaption>
         </figure>
 
-        <article className="kenali__card kenali__card--verdicts">
-          <h3 className="kenali__card-title">Tiga jawapan yang jelas</h3>
-          <ul className="kenali__verdicts">
-            <li><Verdict type="palsu" /></li>
-            <li><Verdict type="makluman" /></li>
-            <li><Verdict type="benar" /></li>
-          </ul>
+        <article className="kenali__card kenali__card--visitors">
+          <h3 className="kenali__card-title kenali__visitors-title">
+            Lebih <CountUp value={130} /> pengunjung setiap hari
+          </h3>
+          <div className="kenali__visitors-foot">
+            <ul className="kenali__avatars" aria-hidden="true">
+              {[1, 2, 3, 4].map((n) => (
+                <li key={n}>
+                  <img src={withBase(`/images/avatars/visitor-${n}.webp`)} alt="" width="40" height="40" loading="lazy" />
+                </li>
+              ))}
+            </ul>
+            <p className="kenali__visitors-text">menyemak fakta bersama kami</p>
+          </div>
         </article>
 
         <figure className="kenali__card kenali__card--poster">

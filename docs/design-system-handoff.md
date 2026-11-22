@@ -270,7 +270,7 @@ Border-top 1px `--color-border`, padding 96 atas / 32 bawah, sisi 96 (48 ≤1280
 ### Halaman Tentang Kami ✅
 - **Hero:** kad foto `--radius-lg`, padding 56/40/64, tinggi min(755px, 85svh). Atas: "Ikuti kami" 36/42 + 4 butang sosial 48 bulat (`--color-card`, ikon jenama 24). Bawah: tajuk 48/52 + lead 24/32, putih.
 - **Empat fungsi:** tajuk 56 rata kanan. Kiri: kad pilihan 560×440 `--color-muted-strong` (36/42, nombor `/01` tnum, teks 18/28) + butang ‹ › 44 + bar kemajuan 3px (ibu jari 25%, gelongsor .45s `--ease-in-out`). Kanan: 3 kad kecil `--color-muted` (24/32, 16/24) — klik untuk pilih. Kandungan masuk .32s `--ease` (opacity + 6px + blur 2px), kad kecil berperingkat 40ms. Reduced motion: pudar sahaja.
-- **Berita dan Galeri (kemas kini 21 Nov, mengikut kanvas):** kepala di tengah (tajuk bahagian + intro, gap 8). Carousel seperti Empat fungsi: kad berita besar 480 lebar × 488 tinggi (imej + tag + tajuk heading), kawalan (panah, jeda, trek kemajuan `--n` = bilangan berita), kad kecil kanan (butang; imej 43/24, tag, tajuk 14) dan satu perenggan `aboutNews.lead`. Autoplay 5s kongsi hook `useCarousel` dengan Empat fungsi (jeda semasa hover/fokus, butang jeda, reduced-motion). Di bawahnya sfera foto; tajuk "Galeri" kini `sr-only`. Saiz tajuk/intro ikut tangga jenis tapak (36/18), bukan 48/24 pada kanvas.
+- **Berita dan Galeri (kemas kini 22 Nov, marquee):** kepala di tengah (tajuk bahagian + intro). Dua baris foto berita (`aboutNews.marquee`, data demo + foto janaan AI) bergerak berlawanan arah ~28px/s: baris atas ke kiri, bawah ke kanan, gelung tanpa lompatan (dua set sama, `translateX(-50%)`). Kad lebar 529×340 (foto + tag + tajuk 20px) dan kad sempit 166×340 (foto + tag), jarak 10px, jejari `--radius-card`, kaki gelap `--gradient-scrim-bottom` supaya teks putih ≥ 4.5:1. Berhenti semasa hover/fokus dan dengan butang jeda (WCAG 2.2.2); dengan reduced motion baris tidak bergerak dan boleh digulung tangan. Tinggi kad 340 / 280 (≤1100) / 220 (≤600). Di bawahnya sfera foto; tajuk "Galeri" `sr-only`.
 - **Logo:** `LogoKit headingLevel={2}` — gaya sama dengan page `/logo` (tajuk 36/42, pratonton 475 muted, butang `Button` filled).
 
 ### Halaman detail artikel ✅
@@ -486,7 +486,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Angka:** komponen `components/CountUp.js` dipakai di Utama (statistik) dan Tentang Kami (fakta + "20+"): kira dari 0 bila masuk viewport (2s ease-out expo), lebar dikunci dan angka tabular hanya semasa mengira; selepas itu angka proporsional + `--text-stat--letter-spacing` (−0.02em) supaya "1,016" tidak renggang. Reduced motion: terus nilai akhir.
 
 ## Kenali Sebenarnya.my: nama dan kad Juara Dunia (22 Nov 2026)
-- Komponen `components/KenaliSebenarnya.js`, kelas `.kenali` / `.kenali__*` (dulu `HowItWorks` / `.how`). Kawasan grid kini ikut isi: `channels · photo · verdicts · poster · award · social` (dulu `main · story · stat · agencies`).
+- Komponen `components/KenaliSebenarnya.js`, kelas `.kenali` / `.kenali__*` (dulu `HowItWorks` / `.how`). Kawasan grid kini ikut isi: `channels · photo · visitors · poster · award · social` (dulu `main · story · stat · agencies`).
 - Kad Juara Dunia: eyebrow → "Juara Dunia" (peranan section, 400) → sub "dalam Kepercayaan Digital & Semakan Fakta Awam" (peranan title 20/500, putih) → perenggan penuh (body 16, putih 60%) dengan fakta **33 juta rakyat** dan **lebih 20 agensi persekutuan** dalam `<strong>` putih 500 → butang "Ketahui lebih lanjut".
 
 ## Peranan jarak + jenis diluaskan ke modal, borang, menu dan footer (22 Nov 2026)
@@ -509,3 +509,5 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Masa baca:** `readingMinutes()` (`lib/articles.js`): perkataan tajuk + lead + penjelasan ÷ 200, minimum 1.
 
 - **Pemilih bahasa (22 Nov 2026):** tiada bendera lagi. Butang memaparkan kod bahasa (`BM` / `EN`, peranan label 16/500) + chevron; menu senarai kod sahaja, tanpa tajuk "Bahasa" (lebar 3 × `--size-control`). Nama penuh kekal dalam nama aksesibel ("BM — Bahasa Melayu"). Fail `public/images/flags/` dibuang.
+
+- **Kad pengunjung, Kenali Sebenarnya.my (22 Nov 2026):** menggantikan kad "Tiga jawapan yang jelas" (`.kenali__card--visitors`, kawasan grid `visitors`). Tajuk "Lebih 130 pengunjung setiap hari" (peranan title, nombor guna `CountUp`). Di bawah, dipin ke dasar kad seperti ikon kad saluran: empat avatar bulat bertindih (`--size-control` 44, tindih 12, gelang 2px warna kad) + "menyemak fakta bersama kami" (body-sm, secondary). Avatar dipotong daripada foto karusel sedia ada → `public/images/avatars/visitor-1…4.webp` (96 × 96, hiasan, `alt=""`).

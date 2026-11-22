@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 import { PauseFilled, PlayFilled } from '@/components/ui/filledIcons';
 import { Badge, IconButton } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
@@ -22,7 +21,6 @@ function StatValue({ text }) {
   );
 }
 
-const AUTOPLAY_MS = 5000; // Empat fungsi: time on each function
 
 // Tentang Kami: Hero, About, Empat fungsi,
 // Berita dan Galeri, Logo
@@ -143,59 +141,53 @@ function Intro() {
   );
 }
 
-// Shared by Empat fungsi and Berita: one item is featured, the rest follow as small cards.
-// Autoplay holds while hovered or focused, while the tab is hidden, never runs with reduced
-// motion, and has a visible pause control (WCAG 2.2.2). A manual pick restarts the timer.
-function useCarousel(count) {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false); // hover / focus hold
-  const [stopped, setStopped] = useState(false); // visible pause control
-  const [dir, setDir] = useState(1); // 1 = forward (content enters from the right), -1 = back
-  const move = (n) => {
-    setDir(n < 0 ? -1 : 1);
-    setActive((a) => (a + n + count) % count);
-  };
-  const pick = (i) => {
-    setDir(1); // picking a card from the queue always reads as "forward"
-    setActive(i);
-  };
-
-  useEffect(() => {
-    if (paused || stopped || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const id = setTimeout(() => {
-      if (!document.hidden) {
-        setDir(1);
-        setActive((a) => (a + 1) % count);
-      }
-    }, AUTOPLAY_MS);
-    return () => clearTimeout(id);
-  }, [active, paused, stopped, count]);
-
-  const rest = Array.from({ length: count - 1 }, (_, k) => (active + k + 1) % count);
-  const holdProps = {
-    onMouseEnter: () => setPaused(true),
-    onMouseLeave: () => setPaused(false),
-    onFocus: () => setPaused(true),
-    onBlur: (e) => !e.currentTarget.contains(e.relatedTarget) && setPaused(false),
-  };
-  return { active, setActive: pick, move, dir, paused, stopped, setStopped, rest, holdProps };
-}
-
-// Berita dan Galeri: the selected news item is shown large, the others follow as small cards
-// (same carousel as Empat fungsi); the photo sphere sits below.
-function NewsGallery() {
-  const { news, gallery } = aboutNews;
-  const { active, setActive, move, dir, paused, stopped, setStopped, rest, holdProps } = useCarousel(news.length);
-  const feature = news[active];
+// Berita dan Galeri: two rows of news photos drifting in opposite directions (top row left, bottom
+// row right), then the photo sphere. Each row renders its cards twice so the loop is seamless; the
+// copy is hidden from assistive tech. Hover or keyboard focus pauses it, and so does the visible
+// pause button (WCAG 2.2.2). With reduced motion the rows stop and scroll by hand instead.
+function NewsMarquee({ rows }) {
+  const [stopped, setStopped] = useState(false);
 
   return (
-    <section
-      className={`about-news${paused ? ' is-paused' : ''}`}
-      id="berita-galeri"
-      aria-labelledby="about-news-title"
-      data-dir={dir < 0 ? 'back' : 'forward'}
-      {...holdProps}
-    >
+    <div className={`marquee${stopped ? ' is-stopped' : ''}`}>
+      <div className="marquee__rows">
+        {rows.map((row, r) => (
+          <div className="marquee__row" data-dir={r % 2 === 0 ? 'left' : 'right'} key={r}>
+            <div className="marquee__track">
+              {[0, 1].map((copy) => (
+                <ul className="marquee__set" key={copy} aria-hidden={copy === 1 ? 'true' : undefined} aria-label={copy === 0 ? `Berita, baris ${r + 1}` : undefined}>
+                  {row.map((n) => (
+                    <li className={`marquee-card marquee-card--${n.title ? 'wide' : 'narrow'}`} key={n.image}>
+                      <img src={n.image} alt={copy === 0 ? n.alt : ''} loading="lazy" draggable="false" />
+                      <div className="marquee-card__body">
+                        <Badge className="marquee-card__tag">{n.tag}</Badge>
+                        {n.title && <p className="marquee-card__title">{n.title}</p>}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="marquee__bar">
+        <IconButton
+          icon={stopped ? PlayFilled : PauseFilled}
+          label={stopped ? 'Mainkan berita' : 'Jeda berita'}
+          onClick={() => setStopped((v) => !v)}
+        />
+      </div>
+    </div>
+  );
+}
+
+// Berita dan Galeri: the marquee of news, then the photo sphere
+function NewsGallery() {
+  const { marquee, gallery } = aboutNews;
+
+  return (
+    <section className="about-news" id="berita-galeri" aria-labelledby="about-news-title">
       <div className="about-news__head">
         <h2 className="about-title" id="about-news-title">
           {aboutNews.title}
@@ -203,58 +195,7 @@ function NewsGallery() {
         <p className="about-news-intro">{aboutNews.intro}</p>
       </div>
 
-      <div className="news-body">
-        <div className="news-main">
-          <article className="news-feature" aria-live={paused || stopped ? 'polite' : 'off'}>
-            <div className="news-media" key={`m${active}`}>
-              <img src={feature.image} alt={feature.alt} style={feature.focus ? { objectPosition: feature.focus } : undefined} />
-            </div>
-            <div className="news-feature__body" key={`b${active}`}>
-              <Badge className="news-tag">{feature.tag}</Badge>
-              <h3>{feature.title}</h3>
-            </div>
-          </article>
-
-          <div className="about-fn-controls">
-            <div className="about-fn-arrows">
-              <IconButton icon={ChevronLeft} label="Berita sebelumnya" onClick={() => move(-1)} />
-              <IconButton icon={ChevronRight} label="Berita seterusnya" onClick={() => move(1)} />
-              <IconButton
-                icon={stopped ? PlayFilled : PauseFilled}
-                label={stopped ? 'Mainkan berita' : 'Jeda berita'}
-                onClick={() => setStopped((v) => !v)}
-              />
-            </div>
-            <div className="about-fn-track" style={{ '--n': news.length }} aria-hidden="true">
-              <span style={{ transform: `translateX(${active * 100}%)` }} />
-            </div>
-          </div>
-        </div>
-
-        <div className="news-side">
-          <div className="news-cards">
-            {rest.map((i, k) => (
-              <button
-                type="button"
-                className="news-card"
-                key={`${active}-${i}`} // remount so the content eases in after each change
-                style={{ '--i': k }}
-                onClick={() => setActive(i)}
-                aria-label={`Pilih berita: ${news[i].title}`}
-              >
-                <span className="news-media" style={{ aspectRatio: news[i].ratio }}>
-                  <img src={news[i].image} alt="" loading="lazy" />
-                </span>
-                <span className="news-card__body">
-                  <Badge className="news-tag">{news[i].tag}</Badge>
-                  <span className="news-card__title">{news[i].title}</span>
-                </span>
-              </button>
-            ))}
-          </div>
-          <p className="news-lead">{aboutNews.lead}</p>
-        </div>
-      </div>
+      <NewsMarquee rows={marquee} />
 
       <h3 className="sr-only">{aboutNews.galleryTitle}</h3>
       <SphereGallery items={gallery} />

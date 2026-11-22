@@ -2163,7 +2163,7 @@ input::placeholder { color: var(--color-foreground); }
   from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
 }
 
-/* Berita dan Galeri: carousel like Empat fungsi (feature + small cards), then the photo sphere */
+/* Berita dan Galeri: two-row news marquee, then the photo sphere */
 .about-news { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--side); }
 .about-news__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-8); text-align: center; }
 .about-news__head .about-title { margin: 0; }
@@ -2172,69 +2172,54 @@ input::placeholder { color: var(--color-foreground); }
   color: var(--color-text-secondary);
   text-wrap: balance;
 }
-.news-body { display: flex; align-items: flex-start; gap: var(--spacing-24); }
-.news-main { display: flex; flex: 0 0 480px; flex-direction: column; gap: var(--spacing-28); }
-.news-feature,
-.news-card {
+/* Marquee: two rows drift in opposite directions at ~28px/s (the Framer feel). Each track holds two
+   identical sets, so moving it by exactly one set (-50%) loops without a jump. Duration = one set's
+   width ÷ speed, so it is set per breakpoint with the card height. */
+.marquee { --card-h: 340px; --marquee-duration: 77s; --marquee-gap: 10px; }
+.marquee__rows { display: flex; flex-direction: column; gap: var(--marquee-gap); }
+.marquee__row { overflow: hidden; border-radius: var(--radius-card); }
+.marquee__track {
   display: flex;
-  min-width: 0;
-  flex-direction: column;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-card);
+  width: max-content;
+  animation: marquee-left var(--marquee-duration) linear infinite;
+  will-change: transform;
 }
-.news-feature { height: 488px; }
-.news-media { display: block; flex: 1; min-height: 0; overflow: hidden; background: var(--color-muted); }
-.news-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* WSIS poster is a lettered graphic: whole, on white paper, in the small cards */
-.news-card .news-media img[src*="wsis"] { object-fit: contain; }
-.news-card .news-media:has(img[src*="wsis"]) { background: var(--color-card); }
-.news-feature__body { padding: var(--pad-card); }
-.news-tag { margin-bottom: var(--spacing-16); }
-.news-feature__body h3 {
-  margin: 0;
-  font-size: var(--text-heading);
-  line-height: var(--text-heading--line-height);
-  font-weight: var(--font-weight-medium);
-  text-wrap: balance;
-}
-
-.news-side { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: var(--spacing-40); }
-.news-cards { display: flex; align-items: flex-start; gap: var(--gap-cards); }
-.news-card {
-  flex: 1 1 0;
-  padding: 0;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: transform .16s var(--ease-out), border-color .2s ease;
-}
-.news-card:active { transform: scale(.98); }
-.news-card:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
-.news-card .news-media { flex: none; }
-.news-card__body { display: flex; flex-direction: column; align-items: flex-start; padding: var(--pad-card-sm); }
-.news-card__title { font-size: var(--text-label-sm); line-height: var(--text-label-sm--line-height); font-weight: var(--font-weight-medium); text-wrap: balance; }
-.news-lead { max-width: 848px; margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); text-wrap: pretty; }
-
-/* Content eases in on every change, like Empat fungsi */
-/* Queue moves right → left: the next story slides into the big (active) slot from the right and
-   every small card shifts one slot left, in order. Only content moves; card sizes never change.
-   Going back reverses the direction. 380ms strong ease-out, short stagger along the row. */
-.news-media,
-.news-feature__body,
-.news-card > span { animation: news-in .38s var(--ease-out) both; }
-.news-feature__body { animation-delay: .04s; }
-.news-card > span { animation-delay: calc(.06s + var(--i, 0) * .05s); }
-.about-news[data-dir='back'] .news-media,
-.about-news[data-dir='back'] .news-feature__body,
-.about-news[data-dir='back'] .news-card > span { animation-name: news-in-back; }
-@keyframes news-in { from { opacity: 0; transform: translateX(var(--spacing-40)); } }
-@keyframes news-in-back { from { opacity: 0; transform: translateX(calc(-1 * var(--spacing-40))); } }
+.marquee__row[data-dir='right'] .marquee__track { animation-name: marquee-right; }
+.marquee__set { display: flex; flex: none; gap: var(--marquee-gap); margin: 0; padding: 0 var(--marquee-gap) 0 0; list-style: none; }
+@keyframes marquee-left { to { transform: translateX(-50%); } }
+@keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.marquee.is-stopped .marquee__track { animation-play-state: paused; }
 @media (hover: hover) and (pointer: fine) {
-  .news-card:hover { border-color: var(--color-border-strong); }
+  .marquee__rows:hover .marquee__track { animation-play-state: paused; }
 }
+.marquee__bar { display: flex; justify-content: flex-end; margin-top: var(--spacing-12); }
+
+.marquee-card {
+  position: relative;
+  flex: none;
+  height: var(--card-h);
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--color-muted);
+}
+.marquee-card--wide { aspect-ratio: 529 / 340; }
+.marquee-card--narrow { aspect-ratio: 166 / 340; }
+.marquee-card img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; }
+/* Dark foot so white text stays readable on any photo (≥ 4.5:1) */
+.marquee-card__body {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-text);
+  padding: var(--pad-card);
+  background: var(--gradient-scrim-bottom);
+  color: var(--color-foreground-inverse);
+}
+.marquee-card--narrow .marquee-card__body { padding: var(--pad-card-sm); }
+.marquee-card__tag { background: var(--color-surface-overlay); color: var(--color-foreground); }
+.marquee-card__title { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--font-weight-medium); text-wrap: balance; }
 
 /* Galeri — photos on a 3D sphere (components/SphereGallery.js). Node positions come from JS. */
 .sphere-gallery { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-16); }
@@ -2322,10 +2307,7 @@ input::placeholder { color: var(--color-foreground); }
   
   
   
-  .news-body { flex-direction: column; }
-  .news-main { flex-basis: auto; width: 100%; }
-  .news-feature { height: 440px; }
-  .news-side { width: 100%; }
+  .marquee { --card-h: 280px; --marquee-duration: 63s; }
 }
 
 @media (max-width: 900px) {
@@ -2335,28 +2317,24 @@ input::placeholder { color: var(--color-foreground); }
 @media (max-width: 700px) {
   
   
-  /* Phone: only the active (big) card shows; autoplay keeps looping, controls stay for pause */
-  .news-cards { display: none; }
 }
 
 @media (max-width: 600px) {
   .about-hero { padding: var(--spacing-8) var(--spacing-12); }
   .about-hero-card { min-height: 520px; }
   
-  .news-feature { height: 380px; }
+  .marquee { --card-h: 220px; --marquee-duration: 50s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .news-media,
-  .news-feature__body,
-  .news-card > span,
-  .about-news[data-dir] .news-media,
-  .about-news[data-dir] .news-feature__body,
-  .about-news[data-dir] .news-card > span { animation: about-fn-fade .2s ease both; } /* fade only, no slide */
+  /* Marquee: no drift; the rows scroll by hand, and the duplicate set is dropped */
+  .marquee__track { animation: none; }
+  .marquee__row { overflow-x: auto; }
+  .marquee__set[aria-hidden='true'] { display: none; }
+  .marquee__bar { display: none; }
   .sphere-dialog[open] { animation: sphere-fade 200ms ease; }
   .about-fn-track span,
   .sphere-node__disc,
-  .news-card,
   .about-hero-follow a { transition: none; }
 }
 @keyframes about-fn-fade { from { opacity: 0; } }
@@ -2633,7 +2611,7 @@ div:has(> .split-line) {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(3, minmax(220px, auto));
   grid-template-areas:
-    "channels photo  verdicts"
+    "channels photo  visitors"
     "poster   photo  award"
     "social   photo  award";
   gap: var(--gap-cards);
@@ -2642,7 +2620,7 @@ div:has(> .split-line) {
 }
 .kenali__card--channels { grid-area: channels; }
 .kenali__card--photo { grid-area: photo; }
-.kenali__card--verdicts { grid-area: verdicts; }
+.kenali__card--visitors { grid-area: visitors; }
 .kenali__card--poster { grid-area: poster; }
 .kenali__card--award { grid-area: award; }
 .kenali__card--social { grid-area: social; }
@@ -2682,8 +2660,21 @@ div:has(> .split-line) {
   color: var(--color-foreground);
 }
 
-/* Verdicts: the four labels, dot + word (colour never alone) */
-.kenali__verdicts { display: flex; flex-wrap: wrap; gap: var(--spacing-8); margin: auto 0 0; padding: var(--spacing-16) 0 0; list-style: none; }
+/* Visitors: daily count up top, overlapping faces + one quiet line pinned to the bottom
+   (same top/bottom rhythm as the channels card beside it) */
+.kenali__visitors-title { display: block; max-width: 14em; text-wrap: balance; }
+.kenali__visitors-foot { display: flex; align-items: center; gap: var(--gap-group); margin-top: auto; padding-top: var(--gap-group); }
+.kenali__avatars { display: flex; flex: none; margin: 0; padding: 0; list-style: none; }
+.kenali__avatars li + li { margin-left: calc(-1 * var(--spacing-12)); }
+.kenali__avatars img {
+  display: block;
+  width: var(--size-control);
+  height: var(--size-control);
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  box-shadow: 0 0 0 calc(2 * var(--border-width)) var(--color-muted); /* ring in the card colour separates the faces */
+}
+.kenali__visitors-text { margin: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-text-secondary); text-wrap: balance; }
 
 /* Photo cards: full bleed, slow zoom on hover (design.md §4) */
 .kenali__card--photo { padding: 0; background: var(--color-muted-strong); }
@@ -2756,7 +2747,7 @@ div:has(> .split-line) {
     grid-auto-rows: minmax(200px, auto);
     grid-template-areas:
       "photo    channels"
-      "photo    verdicts"
+      "photo    visitors"
       "poster   award"
       "social   award";
   }
@@ -2766,7 +2757,7 @@ div:has(> .split-line) {
   .kenali__grid {
     grid-template-columns: minmax(0, 1fr);
     grid-auto-rows: auto;
-    grid-template-areas: "channels" "photo" "verdicts" "poster" "award" "social";
+    grid-template-areas: "channels" "photo" "visitors" "poster" "award" "social";
     gap: var(--spacing-12);
   }
   .kenali__card--photo { min-height: 360px; }
