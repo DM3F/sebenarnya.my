@@ -232,6 +232,9 @@ export const aboutHero = {
   // Info cards on the right of the hero. `media` is a poster for now: swap it for the Instagram video embed.
   aifa: {
     media: aboutImg('berita-aifa.jpg'),
+    video: aboutImg('aifa-reel.mp4'),
+    poster: aboutImg('aifa-reel-poster.jpg'),
+    reel: 'https://www.instagram.com/reel/DNCUauizeUu/',
     caption: 'AIFA ialah chatbot semakan fakta berasaskan AI yang diterajui MCMC dan dilancarkan pada 28 Januari 2025.',
     title: 'Tanya AIFA, 24 jam sehari',
     text: 'Hantar dakwaan yang anda terima dan AIFA menyemaknya dengan sumber yang disahkan. Menyokong Bahasa Melayu, Inggeris, Mandarin dan Tamil. Cari AIFA di Sebenarnya.my atau WhatsApp 03-8688 7997.',

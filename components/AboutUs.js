@@ -59,9 +59,18 @@ function Hero() {
 
         <div className="about-hero-aifa">
           <article className="aifa-card aifa-card--media">
-            <div className="aifa-card__media">
-              <img src={hero.aifa.media} alt="" loading="lazy" />
-            </div>
+            {/* Muted, looping reel (autoplay needs muted + playsInline); the poster shows until it plays
+                or if the video can't load. The whole frame opens the reel on Instagram. */}
+            <a
+              className="aifa-card__media"
+              href={hero.aifa.reel}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Tonton video AIFA di Instagram (tab baharu)"
+              style={{ backgroundImage: `url(${hero.aifa.poster})` }} /* reduced motion hides the video and shows this */
+            >
+              <video src={hero.aifa.video} poster={hero.aifa.poster} autoPlay muted loop playsInline preload="metadata" aria-hidden="true" />
+            </a>
             <p>{hero.aifa.caption}</p>
           </article>
           <article className="aifa-card aifa-card--info">
