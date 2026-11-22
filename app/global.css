@@ -2691,25 +2691,26 @@ input::placeholder { color: var(--color-foreground); }
 .logo-card {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-block);
+  gap: var(--gap-group); /* inside a card: groups 16 apart, never more than the card padding */
   min-width: 0;
   padding: var(--pad-card-lg);
   border-radius: var(--radius-card-lg);
   background: var(--color-muted);
 }
-.logo-card__text p { margin: var(--spacing-6) 0 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); }
+.logo-card__text { display: flex; flex-direction: column; gap: var(--gap-text); } /* name → description → meta: one text group, 8 apart */
+.logo-card__text p { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); }
 .logo-card__name {
   margin: 0;
   font-weight: var(--font-weight-medium);
 }
-.logo-card__text .logo-card__meta { margin-top: var(--spacing-10); font-size: var(--text-label-sm); line-height: var(--text-label-sm--line-height); font-variant-numeric: tabular-nums; color: var(--color-muted-foreground); font-weight: var(--font-weight-medium); }
+.logo-card__text .logo-card__meta { font-size: var(--text-label-sm); line-height: var(--text-label-sm--line-height); font-variant-numeric: tabular-nums; color: var(--color-muted-foreground); font-weight: var(--font-weight-medium); }
 /* Shown at native size or smaller, so the previews stay sharp */
 .logo-card__preview { display: grid; flex: 1; place-items: center; min-height: 200px; }
 .logo-card__preview img { display: block; max-width: 100%; height: auto; mix-blend-mode: multiply; } /* drops the white ground of the PNGs onto the card */
 /* Desktop: both cards share row lines, so previews and folders align whatever the text length */
 @media (min-width: 901px) {
   .logo-kit-grid { row-gap: 0; }
-  .logo-card { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: var(--gap-block); }
+  .logo-card { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: var(--gap-group); }
 }
 
 /* Logo terms of use (demo copy until MCMC provides the official text) */
@@ -2838,8 +2839,9 @@ input::placeholder { color: var(--color-foreground); }
   border: .5px solid var(--color-foreground-inverse);
   border-radius: var(--radius-full);
   color: var(--color-accent);
-  font-size: var(--text-caption);
-  line-height: calc(20 / 12); /* 20px on 12px text */
+  font-size: var(--text-label-sm); /* download chips are controls: small label role, not caption */
+  line-height: var(--text-label-sm--line-height);
+  font-weight: var(--text-label-sm--font-weight);
   text-decoration: none;
   transition: background-color var(--duration-fast) var(--ease-out), scale var(--duration-fast) var(--ease-out);
 }
@@ -2881,8 +2883,7 @@ input::placeholder { color: var(--color-foreground); }
   .logo-kit-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .logo-card { gap: var(--gap-block);}
-  .logo-terms { grid-template-columns: 1fr; padding: var(--spacing-20); }
+  .logo-terms { grid-template-columns: 1fr; } /* keeps --pad-card-lg (fluid 32 → 24) like every large card */
 }
 
 /* Line reveal masks (ScrollMotion › SplitText): extend each mask past the line box so
