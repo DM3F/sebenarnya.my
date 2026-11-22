@@ -2523,8 +2523,21 @@ input::placeholder { color: var(--color-foreground); }
 .folder__pocket { position: absolute; bottom: 0; left: 0; width: 381.64px; height: 180px; transition: transform .6s var(--folder-ease); }
 .folder[data-wide] .folder__pocket { transform: translateY(6px); }
 .folder__pocket-shape { position: absolute; top: 0; left: 0; width: 390px; height: 180px; overflow: visible; fill: var(--color-folder-front); stroke: var(--color-folder-edge); stroke-width: 2; }
-.folder__title { position: absolute; top: 34px; left: 18px; margin: 0; font-weight: var(--font-weight-medium); }
-.folder__tags { position: absolute; top: 74px; right: 18px; left: 18px; display: flex; flex-wrap: wrap; gap: var(--spacing-6); }
+/* Title + chips: placed in stage units (34 / 18 from the pocket corner), then scaled back by 1/--s so
+   their size, gaps and padding are real type and spacing roles, not stretched with the drawing */
+.folder__text {
+  position: absolute;
+  top: 34px;
+  left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-group);
+  width: calc((391px - 36px) * var(--s)); /* the pocket's inner width, in real px */
+  transform: scale(calc(1 / var(--s)));
+  transform-origin: 0 0;
+}
+.folder__title { margin: 0; font-weight: var(--font-weight-medium); }
+.folder__tags { display: flex; flex-wrap: wrap; gap: var(--space-inline-tight); }
 .folder__chip {
   display: inline-flex;
   align-items: center;

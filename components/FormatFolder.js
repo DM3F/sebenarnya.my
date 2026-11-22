@@ -119,24 +119,27 @@ export default function FormatFolder({ title, subject, formats }) {
                 <path d="M0 24A24 24 0 0 1 24 0L176 0C201.3 0 196.7 24 222 24L396 24A24 24 0 0 1 420 48L420 156A24 24 0 0 1 396 180L24 180A24 24 0 0 1 0 156Z" />
               </svg>
 
-              <p className="folder__title">{title}</p>
+              {/* Text is counter-scaled out of the stage scale, so it renders at the type roles (title / label-sm) at any card width */}
+              <div className="folder__text">
+                <p className="folder__title">{title}</p>
 
-              <div className="folder__tags">
-                {formats.map((f) => (
-                  <a
-                    key={f.label}
-                    className="folder__chip"
-                    data-active={hi === f.label || undefined}
-                    href={f.file}
-                    download={f.filename}
-                    aria-label={`Muat turun ${subject} (${f.label})`}
-                    onPointerEnter={mouse(() => setHi(f.label))}
-                    onPointerLeave={() => setHi((h) => (h === f.label ? null : h))}
-                  >
-                    {f.label}
-                    <Icon icon={Download} size={11} strokeWidth={1.25} />
-                  </a>
-                ))}
+                <div className="folder__tags">
+                  {formats.map((f) => (
+                    <a
+                      key={f.label}
+                      className="folder__chip"
+                      data-active={hi === f.label || undefined}
+                      href={f.file}
+                      download={f.filename}
+                      aria-label={`Muat turun ${subject} (${f.label})`}
+                      onPointerEnter={mouse(() => setHi(f.label))}
+                      onPointerLeave={() => setHi((h) => (h === f.label ? null : h))}
+                    >
+                      {f.label}
+                      <Icon icon={Download} size={14} />
+                    </a>
+                  ))}
+                </div>
               </div>
 
               <div className="folder__pill" aria-hidden="true">
