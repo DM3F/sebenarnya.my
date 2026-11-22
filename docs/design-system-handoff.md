@@ -486,7 +486,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Angka:** komponen `components/CountUp.js` dipakai di Utama (statistik) dan Tentang Kami (fakta + "20+"): kira dari 0 bila masuk viewport (2s ease-out expo), lebar dikunci dan angka tabular hanya semasa mengira; selepas itu angka proporsional + `--text-stat--letter-spacing` (−0.02em) supaya "1,016" tidak renggang. Reduced motion: terus nilai akhir.
 
 ## Kenali Sebenarnya.my: nama dan kad Juara Dunia (22 Nov 2026)
-- Komponen `components/KenaliSebenarnya.js`, kelas `.kenali` / `.kenali__*` (dulu `HowItWorks` / `.how`). Kawasan grid kini ikut isi: `channels · photo · verdicts · poster · award · social` (dulu `main · story · stat · agencies`).
+- Komponen `components/KenaliSebenarnya.js`, kelas `.kenali` / `.kenali__*` (dulu `HowItWorks` / `.how`). Kawasan grid kini ikut isi: `channels · photo · visitors · poster · award · social` (dulu `main · story · stat · agencies`).
 - Kad Juara Dunia: eyebrow → "Juara Dunia" (peranan section, 400) → sub "dalam Kepercayaan Digital & Semakan Fakta Awam" (peranan title 20/500, putih) → perenggan penuh (body 16, putih 60%) dengan fakta **33 juta rakyat** dan **lebih 20 agensi persekutuan** dalam `<strong>` putih 500 → butang "Ketahui lebih lanjut".
 
 ## Peranan jarak + jenis diluaskan ke modal, borang, menu dan footer (22 Nov 2026)
@@ -509,3 +509,5 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Masa baca:** `readingMinutes()` (`lib/articles.js`): perkataan tajuk + lead + penjelasan ÷ 200, minimum 1.
 
 - **Pemilih bahasa (22 Nov 2026):** tiada bendera lagi. Butang memaparkan kod bahasa (`BM` / `EN`, peranan label 16/500) + chevron; menu senarai kod sahaja, tanpa tajuk "Bahasa" (lebar 3 × `--size-control`). Nama penuh kekal dalam nama aksesibel ("BM — Bahasa Melayu"). Fail `public/images/flags/` dibuang.
+
+- **Kad pengunjung, Kenali Sebenarnya.my (22 Nov 2026):** menggantikan kad "Tiga jawapan yang jelas" (`.kenali__card--visitors`, kawasan grid `visitors`). Tajuk "Lebih 130 pengunjung setiap hari" (peranan title, nombor guna `CountUp`). Di bawah, dipin ke dasar kad seperti ikon kad saluran: empat avatar bulat bertindih (`--size-control` 44, tindih 12, gelang 2px warna kad) + "menyemak fakta bersama kami" (body-sm, secondary). Avatar dipotong daripada foto karusel sedia ada → `public/images/avatars/visitor-1…4.webp` (96 × 96, hiasan, `alt=""`).

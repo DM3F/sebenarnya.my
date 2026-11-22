@@ -38,7 +38,7 @@ const blocks = [
   ['.kenali__lead', 0.08],
   ['.kenali__card--channels', 0.06],
   ['.kenali__card--photo', 0.12],
-  ['.kenali__card--verdicts', 0.18],
+  ['.kenali__card--visitors', 0.18],
   ['.kenali__card--poster', 0.22],
   ['.kenali__card--award', 0.27],
   ['.kenali__card--social', 0.3],

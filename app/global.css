@@ -2633,7 +2633,7 @@ div:has(> .split-line) {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(3, minmax(220px, auto));
   grid-template-areas:
-    "channels photo  verdicts"
+    "channels photo  visitors"
     "poster   photo  award"
     "social   photo  award";
   gap: var(--gap-cards);
@@ -2642,7 +2642,7 @@ div:has(> .split-line) {
 }
 .kenali__card--channels { grid-area: channels; }
 .kenali__card--photo { grid-area: photo; }
-.kenali__card--verdicts { grid-area: verdicts; }
+.kenali__card--visitors { grid-area: visitors; }
 .kenali__card--poster { grid-area: poster; }
 .kenali__card--award { grid-area: award; }
 .kenali__card--social { grid-area: social; }
@@ -2682,8 +2682,21 @@ div:has(> .split-line) {
   color: var(--color-foreground);
 }
 
-/* Verdicts: the four labels, dot + word (colour never alone) */
-.kenali__verdicts { display: flex; flex-wrap: wrap; gap: var(--spacing-8); margin: auto 0 0; padding: var(--spacing-16) 0 0; list-style: none; }
+/* Visitors: daily count up top, overlapping faces + one quiet line pinned to the bottom
+   (same top/bottom rhythm as the channels card beside it) */
+.kenali__visitors-title { display: block; max-width: 14em; text-wrap: balance; }
+.kenali__visitors-foot { display: flex; align-items: center; gap: var(--gap-group); margin-top: auto; padding-top: var(--gap-group); }
+.kenali__avatars { display: flex; flex: none; margin: 0; padding: 0; list-style: none; }
+.kenali__avatars li + li { margin-left: calc(-1 * var(--spacing-12)); }
+.kenali__avatars img {
+  display: block;
+  width: var(--size-control);
+  height: var(--size-control);
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  box-shadow: 0 0 0 calc(2 * var(--border-width)) var(--color-muted); /* ring in the card colour separates the faces */
+}
+.kenali__visitors-text { margin: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-text-secondary); text-wrap: balance; }
 
 /* Photo cards: full bleed, slow zoom on hover (design.md §4) */
 .kenali__card--photo { padding: 0; background: var(--color-muted-strong); }
@@ -2756,7 +2769,7 @@ div:has(> .split-line) {
     grid-auto-rows: minmax(200px, auto);
     grid-template-areas:
       "photo    channels"
-      "photo    verdicts"
+      "photo    visitors"
       "poster   award"
       "social   award";
   }
@@ -2766,7 +2779,7 @@ div:has(> .split-line) {
   .kenali__grid {
     grid-template-columns: minmax(0, 1fr);
     grid-auto-rows: auto;
-    grid-template-areas: "channels" "photo" "verdicts" "poster" "award" "social";
+    grid-template-areas: "channels" "photo" "visitors" "poster" "award" "social";
     gap: var(--spacing-12);
   }
   .kenali__card--photo { min-height: 360px; }
