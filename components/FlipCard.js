@@ -35,11 +35,22 @@ export default function FlipCard({ post, flipped, onHover, onToggle }) {
     onToggle();
   };
 
-  // Keyboard users: move focus to the side that is now showing
+  // Keyboard users: move focus to the side that is now showing. That face stays visibility: hidden
+  // until the half-way point of the turn (global.css › .flip-face), and a hidden element can't take
+  // focus, so wait for it to become visible (instant under reduced motion; give up after ~1s).
   useEffect(() => {
     if (!byKeyboard.current) return;
     byKeyboard.current = false;
-    (flipped ? readRef : frontBtnRef).current?.focus();
+    const target = (flipped ? readRef : frontBtnRef).current;
+    if (!target) return;
+    let frame;
+    let tries = 60;
+    const focusWhenVisible = () => {
+      if (getComputedStyle(target).visibility === 'visible') target.focus();
+      else if (tries-- > 0) frame = requestAnimationFrame(focusWhenVisible);
+    };
+    focusWhenVisible();
+    return () => cancelAnimationFrame(frame);
   }, [flipped]);
 
   return (
