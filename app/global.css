@@ -367,11 +367,10 @@ input::placeholder { color: var(--color-foreground); }
   text-wrap: balance;
 }
 
-/* Rotating verdict in the H1 (components/FlipWord.js): semibold so it reads as the answer */
+/* Rotating verdict in the H1 (components/FlipWord.js): same weight as the rest of the line */
 .hero-title__verdict { white-space: nowrap; } /* "dakwaan" + verdict never split across lines */
 .flip-word {
   display: inline-grid; /* row + ghost words share one cell → slot = widest word */
-  font-weight: var(--font-weight-semibold);
 }
 .flip-word > * { grid-area: 1 / 1; }
 .flip-word__ghost { visibility: hidden; white-space: pre; }
