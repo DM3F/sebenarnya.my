@@ -72,7 +72,7 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 | Heading | 24/32 · 22/30 · 20/28 | 500 | Tajuk ciri / sub-tajuk dalam seksyen, tajuk kad besar, tajuk pop-up. |
 | Title | 20/26 · 20/26 · 18/24 | 500 | Tajuk kad. |
 | Angka (statistik) | 48 · 40 · 36, line-height 1.1 | **400** | Semua angka statistik. Unit (juta+, ribu, jam) 0.42em. Angka tabular. |
-| Lead | 16/24 | 400 | Perenggan pengenalan di bawah tajuk. Sama saiz dengan Body; dibezakan dengan warna Smoke dan ruang. |
+| Lead | 16/24 | 400 | Perenggan pengenalan di bawah tajuk. Sama saiz dengan Body; dibezakan dengan warna Graphite (bukan tinta) dan ruang. |
 | Article | 16 → 18 (fluid) | 400 | Body dalam lajur bacaan artikel sahaja. |
 | Body | 16/24 | 400 | Teks badan (`body` = 16). Graphite. Lebar baris maks ±68 aksara. |
 | Label (butang, nav, chip) | 16/24 | 500 | Sentence case. |

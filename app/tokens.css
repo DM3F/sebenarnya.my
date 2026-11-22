@@ -55,7 +55,9 @@
   --color-primary-hover: var(--color-grey-25);
   --color-primary-foreground: var(--color-white);
   --color-foreground-inverse: var(--color-white);  /* text on dark/media */
-  --color-muted-foreground-inverse: color-mix(in srgb, var(--color-white) 60%, transparent); /* dimmed text on dark: ≈7:1 on black */
+  --color-text-secondary-inverse: color-mix(in srgb, var(--color-white) 80%, transparent);  /* body text on dark: graphite's twin · ≈7.3:1 on graphite */
+  --color-muted-foreground-inverse: color-mix(in srgb, var(--color-white) 60%, transparent); /* dimmed text on dark: smoke's twin · ≈7:1 on black */
+  --color-surface-inverse: var(--color-grey-25);  /* dark card on a light page (graphite) */
   --color-selected: var(--color-grey-41);
   --color-ring: var(--color-blue);                 /* focus */
   --color-link: var(--color-blue);
@@ -151,6 +153,7 @@
      Colours of the folder card and its file-type tiles; the tiles keep their own palette. */
   --color-folder-back: var(--color-border);
   --color-folder-front: rgb(71 67 64 / .95);
+  --color-folder-chip: var(--color-grey-95);   /* chip text on the dark pocket */
   --color-folder-edge: color-mix(in srgb, var(--color-foreground-inverse) 15%, transparent);
   --color-folder-glow: color-mix(in srgb, var(--color-foreground-inverse) 10%, transparent);
   --color-folder-label: rgb(0 0 0 / .55);
@@ -163,7 +166,7 @@
   --duration-fast: 150ms;   /* hover, colour, press */
   --duration-base: 250ms;   /* small moves, fades, icon nudge */
   --duration-slow: 450ms;   /* reveals, panel/drawer, flip */
-  --duration-slower: 700ms; /* large reveals, scroll-in sections */
+  --duration-slower: 600ms; /* large reveals, scroll-in sections, photo zoom · the ceiling (design.md: 150–600ms) */
   --duration-page: 1.2s;    /* route transition only */
   --ease-out: cubic-bezier(.23, 1, .32, 1);         /* default: enter, move, reveal */
   --ease-in-out: cubic-bezier(.645, .045, .355, 1); /* on-screen morphs (menu icon) */

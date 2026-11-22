@@ -385,7 +385,6 @@ input::placeholder { color: var(--color-foreground); }
   font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
-  font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
 }
 
@@ -733,13 +732,14 @@ input::placeholder { color: var(--color-foreground); }
   font-weight: var(--font-weight-medium);
   color: var(--color-foreground);
 }
-.fc-avatar--sm { width: var(--size-avatar-sm); height: var(--size-avatar-sm); box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); }
+.fc-avatar--sm { width: var(--size-avatar-sm); height: var(--size-avatar-sm); box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); outline: var(--border-width) solid transparent; } /* forced-colors drops the shadow but draws the transparent outline; outline takes no space */
 
 @media (hover: hover) and (pointer: fine) {
   .fc:hover .fc-photo { transform: scale(1.03); }
 }
 
 /* Back */
+.fc-back .fc-verdict { --verdict-agency: var(--color-muted-foreground); } /* "· MCMC" reads as meta */
 .fc-back {
   justify-content: space-between;
   padding: var(--spacing-24);
@@ -1159,8 +1159,7 @@ input::placeholder { color: var(--color-foreground); }
   font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
-  font-weight: var(--font-weight-light);
-  color: var(--color-foreground);
+  color: var(--color-muted-foreground); /* caption under a number: smoke, as on Tentang Kami */
   text-wrap: balance; /* the four captions break into two even lines */
 }
 
@@ -1220,7 +1219,7 @@ input::placeholder { color: var(--color-foreground); }
   max-height: 48px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .viewership-inner { grid-template-columns: 1fr; gap: var(--spacing-24); }
 }
 @media (max-width: 600px) {
@@ -2068,10 +2067,10 @@ input::placeholder { color: var(--color-foreground); }
 .aifa-card__media video,
 .aifa-card__media iframe { display: block; width: 100%; height: 100%; border: 0; object-fit: cover; }
 .aifa-card--media p { padding: var(--spacing-4) var(--spacing-8) var(--spacing-8); font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); }
-/* Graphite card (#44403B): white title 10.4:1, body in white 80% ≈ 7.3:1 (AA for small text) */
-.aifa-card--info { padding: var(--spacing-16) var(--spacing-16) var(--spacing-20); background: var(--color-text-secondary); color: var(--color-foreground-inverse); }
+/* Graphite card (#44403B): white title 10.4:1, body in --color-text-secondary-inverse ≈ 7.3:1 (AA for small text) */
+.aifa-card--info { padding: var(--spacing-16) var(--spacing-16) var(--spacing-20); background: var(--color-surface-inverse); color: var(--color-foreground-inverse); }
 .aifa-card--info .aifa-card__title { font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--text-label--font-weight); }
-.aifa-card--info p:not(.aifa-card__title) { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: color-mix(in srgb, var(--color-foreground-inverse) 80%, transparent); }
+.aifa-card--info p:not(.aifa-card__title) { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-text-secondary-inverse); }
 .about-hero-text h1 {
   max-width: 12em; /* design: 462px at 40px — the title breaks into 2–3 short lines */
   margin: 0;
@@ -2113,7 +2112,7 @@ input::placeholder { color: var(--color-foreground); }
 .about-intro__lead {
   flex: 0 1 700px;
   margin: 0;
-  color: var(--color-foreground);
+  color: var(--color-text-secondary);
   text-wrap: pretty;
 }
 .about-intro__cards { display: flex; gap: var(--gap-cards); height: 340px; }
@@ -2152,6 +2151,7 @@ input::placeholder { color: var(--color-foreground); }
 .about-intro__bars li {
   display: flex; align-items: center; gap: var(--spacing-16);
   font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); font-variant-numeric: tabular-nums;
+  color: var(--color-muted-foreground); /* chart labels: smoke (design.md §4) */
 }
 .about-intro__bar-label { flex-shrink: 0; width: 90px; }
 .about-intro__bar { flex: 1 1 0; height: 12px; border-radius: var(--radius-full); background: var(--color-hairline); }
@@ -2253,6 +2253,7 @@ input::placeholder { color: var(--color-foreground); }
 .sphere-gallery { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-16); }
 .sphere-stage {
   position: relative;
+  isolation: isolate; /* nodes carry inline z-index ≈1000: keep them inside the stage, under the AIFA button */
   width: 100%;
   max-width: 960px;
   aspect-ratio: 1;
@@ -2420,13 +2421,12 @@ input::placeholder { color: var(--color-foreground); }
   background: var(--color-muted);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
-  color: var(--color-foreground);
+  color: var(--color-text-secondary); /* body copy graphite; the title is ink */
 }
 .logo-terms__body { max-width: var(--measure-text); }
 .logo-terms__body p { margin: 0; text-wrap: pretty; }
-.logo-terms__title { margin: 0; color: inherit; }
+.logo-terms__title { margin: 0; color: var(--color-foreground); }
 .logo-terms__list { display: grid; gap: var(--spacing-8); margin: var(--spacing-16) 0; padding-left: var(--spacing-20); }
-.logo-terms__note { color: var(--color-text-secondary); }
 
 /* ── Format folder (components/FormatFolder.js) ────────────────────────────
    Drawn on a 391 × 286 stage (the canvas card) and scaled to the card width by a unitless ratio
@@ -2554,7 +2554,7 @@ input::placeholder { color: var(--color-foreground); }
   padding: var(--spacing-4) var(--spacing-12);
   border: var(--border-width-hairline) solid var(--color-foreground-inverse);
   border-radius: var(--radius-full);
-  color: var(--color-accent);
+  color: var(--color-folder-chip);
   font-size: var(--text-label-sm); /* download chips are controls: small label role, not caption */
   line-height: var(--text-label-sm--line-height);
   font-weight: var(--text-label-sm--font-weight);
