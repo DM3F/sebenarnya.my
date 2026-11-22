@@ -15,32 +15,23 @@
 }
 
 /* Page transition (components/PageTransition.js runs document.startViewTransition).
-   Centre clip reveal: the old page holds still underneath; the new page opens from the centre
-   as a rounded window while settling from 1.4× to 1×, then its corners square off. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-::view-transition-old(root) { z-index: 1; }
-::view-transition-new(root) {
-  z-index: 2;
-  animation: page-reveal var(--duration-page) var(--ease-page) both;
+   Old page drifts up and dims; new page wipes in from the bottom. */
+::view-transition-old(root) {
+  animation: page-out var(--duration-page) var(--ease-page) both;
 }
 
-@keyframes page-reveal {
-  0% {
-    clip-path: inset(50% 50% 50% 50% round var(--radius-card-lg));
-    transform: scale(1.4);
-  }
-  78% {
-    clip-path: inset(0 0 0 0 round var(--radius-card-lg));
-    transform: scale(1);
-  }
-  100% {
-    clip-path: inset(0 0 0 0 round 0);
-    transform: scale(1);
-  }
+::view-transition-new(root) {
+  animation: page-in var(--duration-page) var(--ease-page) both;
+}
+
+@keyframes page-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: .4; transform: translateY(-35%); }
+}
+
+@keyframes page-in {
+  from { clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%); }
+  to { clip-path: polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
