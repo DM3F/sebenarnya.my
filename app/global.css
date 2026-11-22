@@ -370,41 +370,24 @@ input::placeholder { color: var(--color-foreground); }
 /* Rotating verdict in the H1 (components/FlipWord.js): semibold so it reads as the answer */
 .hero-title__verdict { white-space: nowrap; } /* "dakwaan" + verdict never split across lines */
 .flip-word {
-  position: relative;
-  display: inline-flex;
-  font-weight: var(--font-weight-semibold);
-  perspective: 800px; /* ds-allow: 3D depth, not spacing */
-  perspective-origin: center;
-  vertical-align: baseline;
-}
-.flip-word__char {
-  position: relative;
   display: inline-block;
-  height: 1lh;
-  transform-style: preserve-3d;
-  transform: translateZ(-0.5lh) rotateX(0deg);
+  font-weight: var(--font-weight-semibold);
 }
-.flip-word__face {
-  display: block;
-  width: 100%;
-  text-align: center;
-  backface-visibility: hidden;
-  transform: translateZ(0.5lh);
-}
-.flip-word__face--next {
-  position: absolute;
-  inset: 0 auto auto 0;
-  transform: rotateX(-90deg) translateZ(0.5lh);
-}
-.flip-word__measure {
-  position: absolute;
-  top: 0;
-  left: 0;
-  visibility: hidden;
+/* New word, in the layout; the old word lies over it while it rolls away */
+.flip-word__row,
+.flip-word__out {
+  display: inline-flex;
   white-space: pre;
-  pointer-events: none;
+  perspective: 800px; /* ds-allow: 3D depth for the letter cubes, not spacing */
+  perspective-origin: center;
 }
-.flip-word__measure > span { display: block; }
+.flip-word__row { position: relative; }
+.flip-word__out { position: absolute; top: 0; left: 0; pointer-events: none; }
+.flip-word__char {
+  display: inline-block;
+  backface-visibility: hidden;
+  transform-origin: center;
+}
 
 .hero-lede {
   font-family: var(--font-sans);

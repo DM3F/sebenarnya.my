@@ -1,121 +1,126 @@
 'use client';
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 /**
- * FlipWord: a word that keeps flipping to the next one, letter by letter.
- * 3D stagger flip (after Originkit "3D Stagger Flip"), rebuilt on the Web Animations API, no extra library.
- * - Each letter is a tiny cube: the current letter is on the front face, the next letter on the top face.
- *   The cube turns 90° on X, one letter after another (stagger), revealing the next word.
- * - Each letter box also eases its width from the old letter to the new one, so words of different
- *   length (PALSU → MAKLUMAN) grow and shrink smoothly and a centred line never jumps.
+ * FlipWord: a word that keeps flipping to the next one, letter by letter (3D stagger flip,
+ * after Originkit "3D Stagger Flip"), on the Web Animations API with no extra library.
+ *
+ * Transform-only, so it stays on the compositor:
+ * - The new word goes into the layout once, at the start of the flip. Its letters roll in from
+ *   below (rotateX −90° → 0) while the old word, laid over it, rolls away (0 → 90°), one letter
+ *   after another, like the faces of small cubes.
+ * - The width change would make the centred line jump, so the line (and, on phones where the word
+ *   has its own line, the word) is FLIP-translated back to where it was and glides to its new place
+ *   over the whole flip.
  * - Holds each word, pauses while the tab is hidden or the word is off screen.
  * - Reduced motion: the word changes in place, no flip.
  * - Decorative: aria-hidden; the parent gives screen readers the full text.
  */
-const REST = 'translateZ(-0.5lh) rotateX(0deg)';
-const FLIPPED = 'translateZ(-0.5lh) rotateX(90deg)';
-const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'; // strong ease-out, settles like a damped spring
+const DEPTH = '0.55em'; // half the line box: the cube's radius
+const OUT = [
+  { transform: `translateZ(-${DEPTH}) rotateX(0deg) translateZ(${DEPTH})` },
+  { transform: `translateZ(-${DEPTH}) rotateX(90deg) translateZ(${DEPTH})` },
+];
+const IN = [
+  { transform: `translateZ(-${DEPTH}) rotateX(-90deg) translateZ(${DEPTH})` },
+  { transform: `translateZ(-${DEPTH}) rotateX(0deg) translateZ(${DEPTH})` },
+];
+const EASE = 'cubic-bezier(0.2, 0, 0, 1)'; // spring stand-in, no bounce
 
-export default function FlipWord({ words, hold = 2200, duration = 640, stagger = 55, className = '' }) {
+// Viewport x of the first text in an element (where a centred line starts)
+const textLeft = (el) => {
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => (n.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP),
+  });
+  const node = walker.nextNode();
+  if (!node) return el.getBoundingClientRect().left;
+  const range = document.createRange();
+  range.selectNodeContents(node);
+  return range.getBoundingClientRect().left;
+};
+
+export default function FlipWord({ words, hold = 2200, duration = 700, stagger = 40, className = '' }) {
   const [index, setIndex] = useState(0);
-  const [widths, setWidths] = useState(null); // { WORD: [px per letter] }
+  const [leaving, setLeaving] = useState(null); // word rolling away during a flip
   const rootRef = useRef(null);
-  const measureRef = useRef(null);
-  const boxesRef = useRef([]);
-  const animsRef = useRef([]);
+  const rowRef = useRef(null);
+  const outRef = useRef(null);
+  const before = useRef(null); // positions measured just before the flip renders
+  const anims = useRef([]);
 
-  const current = words[index];
-  const next = words[(index + 1) % words.length];
-  const count = Math.max(current.length, next.length);
+  const word = words[index];
 
-  // Measure every letter of every word in the live font (fluid size, so again on resize / font load)
-  const measure = useCallback(() => {
-    const box = measureRef.current;
-    if (!box) return;
-    const out = {};
-    for (const word of box.children) {
-      out[word.dataset.word] = [...word.children].map((c) => c.getBoundingClientRect().width);
-    }
-    // Only store real changes: a new object would restart the timer below
-    setWidths((prev) => (JSON.stringify(prev) === JSON.stringify(out) ? prev : out));
-  }, []);
-
+  // Flip start: the new word is laid out, nothing painted yet. Play letters + FLIP the line.
   useLayoutEffect(() => {
-    measure();
-    document.fonts?.ready.then(measure);
-    addEventListener('resize', measure); // font size is fluid (clamp on vw)
-    return () => removeEventListener('resize', measure);
-  }, [measure]);
+    if (leaving === null || !before.current) return;
+    const row = rowRef.current;
+    const line = rootRef.current.closest('[data-flip-line]') ?? rootRef.current.parentElement;
+    const lineDx = before.current.text - textLeft(line);
+    const rowDx = before.current.row - row.getBoundingClientRect().left - lineDx;
+    const total = duration + stagger * (Math.max(word.length, leaving.length) - 1);
+    const slide = (dx) => [{ transform: `translateX(${dx}px)` }, { transform: 'translateX(0)' }];
 
-  // New word on the front faces: drop the finished animations so the cubes sit back at rest
+    const list = [];
+    if (lineDx) list.push(line.animate(slide(lineDx), { duration: total, easing: EASE }));
+    if (rowDx) list.push(row.animate(slide(rowDx), { duration: total, easing: EASE }));
+    [...outRef.current.children].forEach((el, k) =>
+      list.push(el.animate(OUT, { duration, delay: k * stagger, easing: EASE, fill: 'forwards' }))
+    );
+    [...row.querySelectorAll(':scope > .flip-word__char')].forEach((el, k) =>
+      list.push(el.animate(IN, { duration, delay: k * stagger, easing: EASE, fill: 'backwards' }))
+    );
+    anims.current = list;
+
+    let live = true;
+    Promise.all(list.map((a) => a.finished))
+      .then(() => live && setLeaving(null))
+      .catch(() => {});
+    return () => { live = false; };
+  }, [leaving, word, duration, stagger]);
+
+  // Flip done: drop the old word and its held animations
   useLayoutEffect(() => {
-    animsRef.current.forEach((a) => a.cancel());
-    animsRef.current = [];
-  }, [index]);
+    if (leaving !== null) return;
+    anims.current.forEach((a) => a.cancel());
+    anims.current = [];
+  }, [leaving]);
 
+  // Timer: hold, then flip to the next word
   useEffect(() => {
     const root = rootRef.current;
-    if (!root || words.length < 2) return;
+    if (!root || words.length < 2 || leaving !== null) return;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let visible = true;
     let timer;
-    let cancelled = false;
-
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; });
     io.observe(root);
 
     const flip = () => {
-      if (cancelled) return;
       if (document.hidden || !visible) { timer = setTimeout(flip, 600); return; }
-      if (reduce || !widths) { setIndex((i) => (i + 1) % words.length); return; }
-
-      const from = widths[current] ?? [];
-      const to = widths[next] ?? [];
-      animsRef.current = boxesRef.current.slice(0, count).map((el, k) =>
-        el.animate(
-          [
-            { transform: REST, width: `${from[k] ?? 0}px` },
-            { transform: FLIPPED, width: `${to[k] ?? 0}px` },
-          ],
-          { duration, delay: k * stagger, easing: EASE, fill: 'forwards' }
-        )
-      );
-      Promise.all(animsRef.current.map((a) => a.finished))
-        .then(() => !cancelled && setIndex((i) => (i + 1) % words.length))
-        .catch(() => {});
+      const nextIndex = (index + 1) % words.length;
+      if (reduce) { setIndex(nextIndex); return; }
+      const line = root.closest('[data-flip-line]') ?? root.parentElement;
+      before.current = { text: textLeft(line), row: rowRef.current.getBoundingClientRect().left };
+      setLeaving(word);
+      setIndex(nextIndex);
     };
 
     timer = setTimeout(flip, hold);
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-      io.disconnect();
-    };
-  }, [index, widths, current, next, count, words.length, hold, duration, stagger]);
-
-  const restWidths = widths?.[current];
+    return () => { clearTimeout(timer); io.disconnect(); };
+  }, [index, leaving, word, words.length, hold]);
 
   return (
     <span ref={rootRef} className={`flip-word ${className}`.trim()} aria-hidden="true">
-      {Array.from({ length: count }, (_, k) => (
-        <span
-          key={k}
-          ref={(el) => { boxesRef.current[k] = el; }}
-          className="flip-word__char"
-          style={restWidths ? { width: `${restWidths[k] ?? 0}px` } : undefined}
-        >
-          <span className="flip-word__face">{current[k] ?? '\u00a0'}</span>
-          <span className="flip-word__face flip-word__face--next">{next[k] ?? ''}</span>
-        </span>
-      ))}
-      {/* Off-screen ruler: one row per word, one span per letter */}
-      <span ref={measureRef} className="flip-word__measure">
-        {words.map((w) => (
-          <span key={w} data-word={w}>
-            {[...w].map((c, k) => <span key={k}>{c}</span>)}
-          </span>
+      <span ref={rowRef} className="flip-word__row">
+        {[...word].map((c, k) => (
+          <span key={`${index}-${k}`} className="flip-word__char">{c}</span>
         ))}
+        <span ref={outRef} className="flip-word__out">
+          {leaving !== null && [...leaving].map((c, k) => (
+            <span key={k} className="flip-word__char">{c}</span>
+          ))}
+        </span>
       </span>
     </span>
   );
