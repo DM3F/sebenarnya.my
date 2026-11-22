@@ -33,13 +33,13 @@ Decision guide:
 
 | Family | Tokens |
 |---|---|
-| Colour | `--color-background · foreground · card · muted · muted-strong · accent · secondary(-hover/-foreground) · primary(-hover/-foreground) · input · border · border-strong · ring · link · destructive · disabled(-foreground) · surface-overlay · brand · verdict-{palsu,makluman,benar}(-dot)` (three verdicts only: Palsu, Makluman, Benar) |
+| Colour | `--color-background · foreground · card · muted · muted-strong · accent · secondary(-hover/-foreground) · primary(-hover/-foreground) · input · border · border-strong · ring · link · destructive · disabled(-foreground) · surface-overlay · surface-media · scrim · brand · verdict-{palsu,makluman,benar}(-dot)` (three verdicts only: Palsu, Makluman, Benar) |
 | Type roles | `--text-display · heading-lg · heading · title · intro · article · body · body-sm · label · label-sm · eyebrow · badge · verdict · caption · stat`, each with `--line-height`, and where it applies `--font-weight` / `--letter-spacing` (Tailwind v4 shape: `--text-label--line-height`) |
 | Size | `--size-control-sm (36) · control (44) · control-lg (48) · control-xl (56) · hit-area · badge · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu` |
 | Space roles | Content: `--gap-inline · gap-text · gap-group · gap-cards · gap-block`, cards: `--pad-card-sm · pad-card · pad-card-lg`; controls: `--space-control-x(-sm) · field-x · badge-x/-y · inline-tight · stack · segment`; page: `--space-page-x · section · page-top` |
 | Shape | `--radius-control (pill) · field (8) · menu · menu-item · media (12) · card (20) · card-lg (24)` |
 | Focus & effects | `--border-width · focus-ring-width · focus-ring-offset · focus-ring-color · blur-overlay · press-scale · transition-colors · shadow-*` |
-| Motion | `--duration-fast/base/slow · ease-out/in-out/emphasized` |
+| Motion | `--duration-fast/base/slow/slower · ease-out/in-out/emphasized` |
 
 ### Type roles (the only way to size text)
 
@@ -113,6 +113,27 @@ Four rules:
 Exceptions: a full-screen modal on a phone uses `sm` (= the 16px page gutter).
 Hero stages (`.about-hero-card`) are layout, not cards: they use section spacing.
 
+**`--spacing-*` steps vs roles (lint `group-gap-primitive`):** a gap that separates
+groups or blocks — 16px or more — always takes a role (`--gap-group`, `--gap-cards`,
+`--gap-block`, `--space-section`), so changing a relationship changes it everywhere.
+A `--spacing-*` step is only for geometry inside one component: gaps of 12px or less,
+control padding, offsets. Don't add breakpoint overrides for a role (it is already
+fluid). The rare exception (header chrome, carousel dot hit areas) carries `ds-allow`.
+
+### Overlays: one menu, one modal
+
+- **Menu** (`.ui-menu`, `app/ui.css`): nav dropdown, language and Kongsi menus share one
+  surface — `--color-background`, 1px `--color-border`, `--radius-menu`, `--space-inline`
+  padding, `--shadow-float` — and one 150ms pop-in (opacity + scale .96) from the trigger
+  edge. A menu adds `.ui-menu` and sets only its width and `transform-origin`.
+- **Modal** (`.ui-modal`): every `<dialog>` opened with `showModal()` (claim form, social
+  peek, sphere photo). `--color-card` surface, `--radius-card-lg`, `--shadow-overlay`,
+  backdrop `--color-scrim` (ink 60%), 250ms opacity + scale .96 in and .98 out (transitions,
+  so a fast close reverses mid-way). Reduced motion: fade only. The AIFA panel is not modal
+  but uses the same shadow and pop.
+- Bases are written `:where(.ui-menu)` / `:where(.ui-modal)` (no specificity) because
+  `ui.css` loads after `global.css`; component classes override them freely.
+
 ### Layout: breakpoints, layers, reading widths
 
 **Four breakpoints only** (`max-width`, mobile last). Need a change between two of
@@ -154,8 +175,9 @@ headings may use `em` caps (`max-width: 12em`) to balance line breaks.
 default. The logo sits `--avatar-inset` (4px) inside the white ring.
 
 **Motion:** `--duration-fast` 150 hover/colour/press · `base` 250 small moves,
-fades · `slow` 450 reveals, panels, flips · `slower` 600 the page entrance's H1 line rise, photo zoom (the ceiling) ·
-`page` 1.2s route change only. Easing `--ease-out` by default. Ambient loops
+fades, **every menu, modal and the AIFA panel** · `slow` 450 reveals, flips · `slower` 600 the page entrance's H1 line rise, photo zoom (the ceiling).
+A route change is the browser's own crossfade at `base` (navigation is the most frequent action).
+Easing `--ease-out` by default. Ambient loops
 (marquees, autoplay timers, 2s+) may use raw seconds; hand-tuned sequences
 (the logo folder) carry `ds-allow`. **One entrance per page, on load only**
 (`components/PageEnter.js`, 100ms between chunks); nothing reveals on scroll.

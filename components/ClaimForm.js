@@ -178,7 +178,7 @@ export default function ClaimForm() {
     <dialog
         tabIndex={-1}
       ref={dialogRef}
-      className="claim-modal"
+      className="ui-modal claim-modal"
       aria-labelledby={status === 'sent' ? 'claim-done-title' : 'claim-title'}
       aria-describedby={status === 'sent' ? undefined : 'claim-desc'}
       onPointerDown={onPointerDown}

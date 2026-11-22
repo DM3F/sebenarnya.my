@@ -58,7 +58,7 @@ export default function LanguageMenu({ items, value, onChange, label = 'Bahasa',
         <span className="ui-lang__code">{current.value}</span>
         <Icon icon={ChevronDown} className="ui-lang__chevron" />
       </button>
-      <div id={menuId} className="ui-lang__menu" hidden={!open}>
+      <div id={menuId} className="ui-menu ui-lang__menu" hidden={!open}>
         {groupLabel && <p className="ui-lang__group">{groupLabel}</p>}
         <ul>
           {items.map((item) => (

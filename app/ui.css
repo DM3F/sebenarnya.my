@@ -568,13 +568,15 @@
 }
 .ui-dropdown__trigger[aria-expanded='true'] .ui-dropdown__chevron { transform: rotate(180deg); }
 .ui-dropdown__trigger[aria-expanded='true']:not([data-current]) { background: var(--color-accent); }
-.ui-dropdown__menu {
+/* ── Menu surface — every pop-up list (nav dropdown, language, Kongsi) ────
+   One surface, one shadow, one pop-in from the trigger edge. Components add
+   .ui-menu to their list and only set width and transform-origin. */
+:where(.ui-menu) {
   position: absolute;
   top: calc(100% + var(--space-inline));
   left: 0;
   z-index: var(--z-dropdown);
   box-sizing: border-box;
-  min-width: var(--size-menu);
   margin: 0;
   padding: var(--space-inline);
   list-style: none;
@@ -582,9 +584,14 @@
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius-menu);
   box-shadow: var(--shadow-float);
+  transform-origin: top left;
+  transition: opacity var(--duration-fast) var(--ease-out), scale var(--duration-fast) var(--ease-out);
 }
-.ui-dropdown--end .ui-dropdown__menu { left: auto; right: 0; }
-.ui-dropdown__menu[hidden] { display: none; }
+@starting-style { .ui-menu { opacity: 0; scale: .96; } }
+.ui-menu[hidden] { display: none; }
+
+.ui-dropdown__menu { min-width: var(--size-menu); }
+.ui-dropdown--end .ui-dropdown__menu { left: auto; right: 0; transform-origin: top right; }
 .ui-dropdown__item {
   box-sizing: border-box;
   display: flex;
@@ -645,24 +652,8 @@
 }
 .ui-lang__chevron { transition: transform var(--duration-fast) var(--ease-out); }
 .ui-lang__trigger[aria-expanded='true'] .ui-lang__chevron { transform: rotate(180deg); }
-.ui-lang__menu {
-  position: absolute;
-  top: calc(100% + var(--space-inline));
-  left: 0;
-  z-index: var(--z-dropdown);
-  box-sizing: border-box;
-  min-width: calc(3 * var(--size-control)); /* two short codes: a narrow menu */
-  padding: var(--space-inline);
-  background: var(--color-background);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-menu);
-  box-shadow: var(--shadow-float);
-  transform-origin: top left;
-  transition: opacity var(--duration-fast) var(--ease-out), scale var(--duration-fast) var(--ease-out);
-}
-@starting-style { .ui-lang__menu { opacity: 0; scale: .96; } }
+.ui-lang__menu { min-width: calc(3 * var(--size-control)); } /* two short codes: a narrow menu */
 .ui-lang--end .ui-lang__menu { left: auto; right: 0; transform-origin: top right; }
-.ui-lang__menu[hidden] { display: none; }
 .ui-lang__menu ul { margin: 0; padding: 0; list-style: none; }
 .ui-lang__group {
   margin: 0;
@@ -711,13 +702,46 @@
   .ui-dropdown__chevron,
   .ui-lang__trigger,
   .ui-lang__chevron,
-  .ui-lang__menu,
   .ui-btn__icon-end { transition: none; }
+  /* Menus and modals keep the fade, drop the scale */
+  .ui-menu { transition: opacity var(--duration-fast) var(--ease-out); }
+  @starting-style { .ui-menu { scale: 1; } }
+  .ui-modal { scale: 1 !important; }
+  @starting-style { .ui-modal[open] { scale: 1; } }
   .ui-btn:active:not(:disabled, [aria-disabled='true']),
   .ui-chip:active,
   .ui-navlink:active,
   .ui-lang__trigger:active { scale: none; }
 }
+
+/* ── Modal — every <dialog> opened with showModal() (claim form, social peek, photo) ──
+   Scrim, shadow and one 250ms pop that also plays on close (transitions, so a fast
+   close mid-open reverses from where it is). Components add .ui-modal and set size. */
+:where(.ui-modal) {
+  box-sizing: border-box;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-card-lg);
+  color: var(--color-foreground);
+  background: var(--color-card);
+  box-shadow: var(--shadow-overlay);
+  opacity: 1;
+  scale: 1;
+  transition: opacity var(--duration-base) var(--ease-out), scale var(--duration-base) var(--ease-out),
+    overlay var(--duration-base) allow-discrete, display var(--duration-base) allow-discrete;
+}
+:where(.ui-modal)::backdrop {
+  background: var(--color-scrim);
+  opacity: 1;
+  transition: opacity var(--duration-base) var(--ease-out), overlay var(--duration-base) allow-discrete, display var(--duration-base) allow-discrete;
+}
+@starting-style {
+  .ui-modal[open] { opacity: 0; scale: .96; }
+  .ui-modal[open]::backdrop { opacity: 0; }
+}
+.ui-modal:not([open]) { opacity: 0; scale: .98; }
+.ui-modal:not([open])::backdrop { opacity: 0; }
 
 /* Dialogs take focus themselves on open (components call dialog.focus()), so no control opens
    with a ring; Tab moves to the first control and shows the ring as usual. */

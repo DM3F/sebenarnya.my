@@ -66,7 +66,7 @@ export default function ShareButton({ title }) {
       </Button>
 
       {open && (
-        <div className="share-menu">
+        <div className="ui-menu share-menu">
           {TARGETS.map((t) => (
             <a key={t.label} className="ui-dropdown__item" href={fill(t.href)} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
               {t.label}

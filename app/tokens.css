@@ -74,6 +74,8 @@
   --color-disabled: var(--color-muted-strong);
   --color-disabled-foreground: var(--color-muted-foreground);
   --color-surface-overlay: color-mix(in srgb, var(--color-card) 90%, transparent); /* pills over photos */
+  --color-surface-media: var(--color-black);       /* behind photos and video, dark feature stages */
+  --color-scrim: color-mix(in srgb, var(--color-foreground) 60%, transparent); /* backdrop behind every modal */
 
   /* Verdict: word colour (tone="single") + dot colour */
   --color-verdict-palsu: var(--color-red-dark);
@@ -148,6 +150,7 @@
   --shadow-subtle-2: inset 0 0 0 .5px rgba(0, 0, 0, .075);
   --shadow-subtle-3: inset 0 0 0 .5px rgba(0, 0, 0, .10);
   --shadow-float: 0 0 0 .5px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12); /* floating only */
+  --shadow-overlay: 0 0 0 .5px rgba(0, 0, 0, .2), 0 24px 64px rgba(0, 0, 0, .2); /* modals and the AIFA panel: above a scrim */
 
   /* ── Format folder (components/FormatFolder.js, Logo section) ───────────
      Colours of the folder card and its file-type tiles; the tiles keep their own palette. */
@@ -167,11 +170,9 @@
   --duration-base: 250ms;   /* small moves, fades, icon nudge */
   --duration-slow: 450ms;   /* reveals, panel/drawer, flip */
   --duration-slower: 600ms; /* page-entrance H1 line rise, photo zoom, card flip open · the ceiling (design.md: 150–600ms) */
-  --duration-page: 1.2s;    /* route transition only */
   --ease-out: cubic-bezier(.23, 1, .32, 1);         /* default: enter, move, reveal */
   --ease-in-out: cubic-bezier(.645, .045, .355, 1); /* on-screen morphs (menu icon) */
   --ease-emphasized: cubic-bezier(.2, 0, 0, 1);     /* tiny nudges (CTA arrow) */
-  --ease-page: cubic-bezier(.87, 0, .13, 1);        /* route transition only */
 
   /* ── Media scrims (text on photos: hero carousel, FlipCard) ───────────── */
   --gradient-scrim-media: linear-gradient(90deg, rgb(0 0 0 / .78) 0%, rgb(0 0 0 / .45) 45%, rgb(0 0 0 / .05) 85%);

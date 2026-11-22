@@ -71,7 +71,7 @@ export default function SocialPeek({ className = '' }) {
       <dialog
         tabIndex={-1}
         ref={dialogRef}
-        className={`peek-modal${social ? ` peek-modal--${social.id}` : ''}`}
+        className={`ui-modal peek-modal${social ? ` peek-modal--${social.id}` : ''}`}
         aria-labelledby="peek-title"
         onClick={(e) => e.target === e.currentTarget && dialogRef.current.close()}
       >
