@@ -103,6 +103,22 @@ const rules = [
     test: (l, p) => !isCss(p) && /fontSize\s*:/.test(code(l)),
   },
   {
+    id: 'raw-spacing',
+    why: 'Raw px in padding/margin/gap; use a spacing role (--gap-*, --pad-card*, --space-*) or a --spacing-* step.',
+    test: (l, p) => !isTokens(p) && isCss(p)
+      && /(?:^|[\s{;])(padding|margin|gap|row-gap|column-gap)(-[a-z-]+)?\s*:[^;]*\b[1-9]\d*(\.\d+)?px/.test(code(l)),
+  },
+  {
+    id: 'raw-radius',
+    why: 'Raw px border-radius; use --radius-card / --radius-card-lg / --radius-media / --radius-control.',
+    test: (l, p) => !isTokens(p) && isCss(p) && /border-radius:[^;]*\b[1-9]\d*(\.\d+)?px/.test(code(l)),
+  },
+  {
+    id: 'card-radius-primitive',
+    why: 'Use --radius-card-lg for large cards, not the --radius-lg step.',
+    test: (l, p) => !isTokens(p) && isCss(p) && /var\(--radius-lg\)/.test(code(l)),
+  },
+  {
     id: 'rem',
     why: 'rem breaks inside the extension and with the 62.5% root; use px tokens.',
     test: (l, p) => isCss(p) && /\d(\.\d+)?rem\b/.test(code(l)),

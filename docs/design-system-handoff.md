@@ -97,6 +97,8 @@ Token: komponen **hanya** guna type role `--text-{display,heading-lg,heading,tit
 
 Mobile (<600px, `--breakpoint-type`): Display → `--text-38`/`--leading-42`, Heading/36 → `--text-30`/`--leading-36`, Heading/32 → `--text-28`/`--leading-34` (tukar dalam media query komponen). Body kekal 400, max 68ch.
 
+> **Peraturan kini (ganti senarai di bawah):** komponen guna role jarak `--gap-inline/text/group/cards/block` dan saiz kad `--pad-card-sm/-/lg` + `--radius-card` / `--radius-card-lg`. Lihat `docs/design-system-rules.md` › Spacing & radius roles.
+
 ### 2.4 Spacing (4px base) — `--spacing-*`
 `2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 72, 96, 120`
 - 8: gap pill berpasangan/chip · 12: gutter grid · 16: inset, margin mobile · 20: padding sisi pill · 24: title→body panel · 32: padding kad · 40: bawah header section · 64: padding stage · 96: hero top.

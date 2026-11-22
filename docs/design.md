@@ -139,6 +139,8 @@ Bahasa bentuk: **pill untuk apa yang ditekan, kotak membulat lembut untuk apa ya
 - Dalam kumpulan rapat (8–16px), antara kumpulan sekurang-kurangnya 2× lebih jauh. Ruang yang membina struktur, bukan garis.
 - Teks kecil (13–14px) boleh padat; tajuk dan angka besar mesti diberi ruang bernafas di sekeliling.
 - Kad dalam grid: 3–4 sebaris pada desktop, sentiasa sama tinggi. Tiada kad mini 6 sebaris.
+- **Jarak ikut hubungan, bukan nombor:** dalam satu kumpulan teks 8, antara kumpulan dalam kad 16, antara kad 12, tajuk seksyen → kandungan 40.
+- **Saiz kad menentukan padding + radius serentak:** kecil 16/20, biasa 24/20 (default), besar 32→24/24 (feature, modal). Gap dalam kad tidak pernah lebih besar daripada padding kad. Jadual penuh: `docs/design-system-rules.md` › Spacing & radius roles.
 - Bila ragu: buang satu elemen, bukan kecilkan semua.
 
 ---

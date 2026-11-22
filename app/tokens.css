@@ -274,7 +274,7 @@
   --space-field-x: var(--spacing-16);           /* input / chip side padding */
   --space-badge-x: var(--spacing-12);
   --space-badge-y: var(--spacing-4);
-  --space-inline: var(--spacing-8);             /* icon↔label, paired controls */
+  --space-inline: var(--gap-inline);            /* alias of --gap-inline (kept for ui.css) */
   --space-inline-tight: var(--spacing-6);
   --space-stack: var(--spacing-8);              /* label↔field, field↔hint */
   --space-page-x: var(--spacing-96);            /* page gutter (design.md §5: 96 desktop) */
@@ -282,6 +282,25 @@
   --space-page-top: var(--spacing-40);          /* header → first block on pages without a hero */
   --space-nav-gap: var(--spacing-8);            /* between header nav items / header actions */
   --space-segment: var(--spacing-2);            /* inside segmented controls */
+
+  /* ── Content spacing: pick by RELATIONSHIP, not by number ───────────────
+     Rule 1: gap between groups ≥ 2× gap inside a group (8 → 16).
+     Rule 2: inside a card, every gap ≤ the card's padding.             */
+  --gap-inline: var(--spacing-8);   /* icon↔label, chips/buttons in a row */
+  --gap-text: var(--spacing-8);     /* inside one text group: eyebrow→title→description→meta */
+  --gap-group: var(--spacing-16);   /* between groups inside a card: text↔actions, media↔body */
+  --gap-cards: var(--spacing-12);   /* between cards in any grid or row */
+  --gap-block: var(--spacing-40);   /* section heading → its content */
+
+  /* ── Card size: padding and radius always travel together ─────────────
+     sm  card narrower than ~280px (flip card, news card)   16 · radius 20
+     md  DEFAULT, any card in a grid                         24 · radius 20
+     lg  feature card, modal, panel, ≥ half the row         32→24 · radius 24
+     A full-screen modal on a phone uses sm (= the 16px page gutter). */
+  --pad-card-sm: var(--spacing-16);
+  --pad-card: var(--spacing-24);
+  --pad-card-lg: clamp(var(--spacing-24), 20.69px + 0.884vw, var(--spacing-32)); /* 24 at 375 → 32 at 1280 */
+  --radius-card-lg: var(--radius-lg);
 
   /* ══ 2. SEMANTIC — shape, borders, focus, effects ═══════════════════════ */
   --radius-control: var(--radius-full);         /* every button, chip, tab, search */
