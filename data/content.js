@@ -256,37 +256,29 @@ export const aboutIntro = {
   ],
 };
 
-// News and gallery. News `ratio` = image aspect ratio; gallery = 3D sphere (SphereGallery.js), `caption` is the photo's accessible name.
+// News and gallery. News = two marquee rows; gallery = 3D sphere (SphereGallery.js), `caption` is the photo's accessible name.
 export const aboutNews = {
   title: 'Berita dan Galeri',
   intro: 'Ikuti perkembangan terkini, pengiktirafan dan aktiviti Sebenarnya.my bersama masyarakat.',
-  lead: 'Semua yang anda perlukan untuk menyemak kesahihan maklumat — daripada kenyataan rasmi agensi hingga saluran untuk melaporkan dakwaan yang meragukan.',
-  news: [
-    {
-      tag: 'Anugerah',
-      title: 'Sebenarnya.my diiktiraf di Anugerah WSIS PBB, Geneva',
-      text: 'Pengiktirafan antarabangsa tertinggi dalam kepercayaan digital dan semakan fakta awam, bersama lebih 20 agensi persekutuan.',
-      image: aboutImg('berita-wsis.webp'),
-      alt: 'Poster Anugerah WSIS 2026 di Geneva',
-      ratio: '1 / 1',
-      focus: '0% 34%', // crop of the large card: keeps the trophy in view
-    },
-    {
-      tag: 'Inisiatif',
-      title: 'AIFA bantu orang ramai menyemak fakta dengan lebih pantas',
-      text: 'Pembantu AIFA menjawab soalan tentang dakwaan tular dan memandu pengguna kepada semakan rasmi.',
-      image: aboutImg('berita-aifa.jpg'),
-      alt: 'Wanita memegang telefon pintar',
-      ratio: '43 / 24',
-    },
-    {
-      tag: 'Program',
-      title: 'Program celik maklumat bersama warga emas',
-      text: 'Sesi bersemuka membimbing warga emas mengenal pasti mesej palsu sebelum dikongsi dalam kumpulan keluarga.',
-      image: aboutImg('berita-warga-emas.jpg'),
-      alt: 'Warga emas belajar menggunakan tablet bersama seorang wanita',
-      ratio: '43 / 24',
-    },
+  // DEMO copy and AI-generated photos: replace with real MCMC news before launch. Cards with a `title` are
+  // the wide ones; the rest are narrow photo cards. Row 1 drifts left, row 2 right (NewsMarquee in AboutUs.js).
+  marquee: [
+    [
+      { tag: 'Kempen', title: 'Kempen kesedaran penipuan dalam talian sampai ke setiap negeri', image: aboutImg('news-penipuan.jpg'), alt: 'Wanita menyemak mesej mencurigakan pada telefon pintar di kafe' },
+      { tag: 'Semakan', image: aboutImg('news-telefon.jpg'), alt: 'Tangan memegang telefon pintar dengan tanda semak pengesahan' },
+      { tag: 'Infrastruktur', title: 'Capaian jalur lebar kini sampai ke lebih banyak kampung', image: aboutImg('news-jalur-lebar.jpg'), alt: 'Juruteknik memasang peralatan jalur lebar di menara berhampiran kampung' },
+      { tag: 'Penyiaran', image: aboutImg('news-penyiaran.jpg'), alt: 'Penyampai radio bercakap di hadapan mikrofon di studio' },
+      { tag: 'Semakan fakta', title: 'Semak dahulu sebelum berkongsi: panduan kenal berita palsu', image: aboutImg('news-semakan-fakta.jpg'), alt: 'Dua pegawai membandingkan artikel tular dengan dokumen rasmi' },
+      { tag: 'Pendidikan', image: aboutImg('news-sekolah.jpg'), alt: 'Pelajar sekolah menggunakan komputer riba dalam bengkel keselamatan digital' },
+    ],
+    [
+      { tag: 'Komuniti', image: aboutImg('news-keluarga.jpg'), alt: 'Sebuah keluarga melihat telefon pintar bersama-sama di ruang tamu' },
+      { tag: 'Literasi digital', title: 'Program celik digital bersama warga emas diteruskan', image: aboutImg('news-celik-digital.jpg'), alt: 'Warga emas belajar menggunakan tablet bersama seorang sukarelawan' },
+      { tag: 'Teknologi', image: aboutImg('news-gentian.jpg'), alt: 'Gentian optik bercahaya biru dalam jarak dekat' },
+      { tag: 'Keselamatan siber', title: 'Kenali ciri mesej penipuan yang menyamar sebagai agensi', image: aboutImg('news-siber.jpg'), alt: 'Komputer riba dan telefon memaparkan amaran pancingan data' },
+      { tag: 'Kenyataan media', image: aboutImg('news-sidang-media.jpg'), alt: 'Podium sidang media dengan beberapa mikrofon dan wartawan' },
+      { tag: '5G', title: 'Liputan 5G diperluas ke pusat bandar dan kawasan industri', image: aboutImg('news-5g.jpg'), alt: 'Garis langit Kuala Lumpur pada waktu senja dengan jaluran cahaya rangkaian' },
+    ],
   ],
   galleryTitle: 'Galeri',
   gallery: [
