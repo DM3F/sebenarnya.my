@@ -2622,7 +2622,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 /* Award: the one ink surface in the section. Short copy only: eyebrow, headline,
-   one line of context, then the action (the full story lives on Tentang Kami). */
+   one line of context; no button (the full story lives on Tentang Kami). */
 .kenali__card--award { justify-content: space-between; gap: var(--gap-group); background: var(--color-primary); color: var(--color-primary-foreground); }
 .kenali__award-eyebrow {
   display: inline-flex;
@@ -2647,7 +2647,6 @@ input::placeholder { color: var(--color-foreground); }
   text-wrap: pretty;
 }
 .kenali__award-text strong { font-weight: var(--font-weight-medium); color: var(--color-foreground-inverse); } /* the two facts read first */
-.kenali__award-cta { margin-top: calc(var(--gap-group) - var(--gap-text)); }
 
 /* Poster: square artwork shown whole on white with a hairline edge (never cropped) */
 .kenali__card--poster {
