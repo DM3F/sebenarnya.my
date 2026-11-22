@@ -1149,7 +1149,6 @@ input::placeholder { color: var(--color-foreground); }
   font-family: var(--font-sans);
   font-weight: var(--font-weight-display);
   color: var(--color-foreground);
-  font-variant-numeric: tabular-nums;
 }
 
 .viewership-stats dt small {
@@ -1167,12 +1166,10 @@ input::placeholder { color: var(--color-foreground); }
   text-wrap: balance; /* the four captions break into two even lines */
 }
 
-/* Width is locked by JS (--count-w) so the layout doesn't jump while counting */
-.count {
-  display: inline-block;
-  min-width: var(--count-w, auto);
-  font-variant-numeric: tabular-nums;
-}
+/* CountUp: width locked by JS (--count-w) and tabular figures only while counting, so nothing
+   jumps; the settled number uses proportional figures, which read tighter at display size. */
+.count { display: inline-block; font-variant-numeric: proportional-nums; }
+.count.is-counting { min-width: var(--count-w, auto); font-variant-numeric: tabular-nums; }
 
 /* Agency logos: label + endless ticker */
 .partners-inner {
@@ -2214,11 +2211,19 @@ input::placeholder { color: var(--color-foreground); }
 .news-lead { max-width: 848px; margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); text-wrap: pretty; }
 
 /* Content eases in on every change, like Empat fungsi */
+/* Queue moves right → left: the next story slides into the big (active) slot from the right and
+   every small card shifts one slot left, in order. Only content moves; card sizes never change.
+   Going back reverses the direction. 380ms strong ease-out, short stagger along the row. */
 .news-media,
 .news-feature__body,
-.news-card > span { animation: about-fn-in .32s var(--ease-out) both; }
+.news-card > span { animation: news-in .38s var(--ease-out) both; }
 .news-feature__body { animation-delay: .04s; }
-.news-card > span { animation-delay: calc(.06s + var(--i, 0) * .04s); }
+.news-card > span { animation-delay: calc(.06s + var(--i, 0) * .05s); }
+.about-news[data-dir='back'] .news-media,
+.about-news[data-dir='back'] .news-feature__body,
+.about-news[data-dir='back'] .news-card > span { animation-name: news-in-back; }
+@keyframes news-in { from { opacity: 0; transform: translateX(var(--spacing-40)); } }
+@keyframes news-in-back { from { opacity: 0; transform: translateX(calc(-1 * var(--spacing-40))); } }
 @media (hover: hover) and (pointer: fine) {
   .news-card:hover { border-color: var(--color-border-strong); }
 }
@@ -2322,8 +2327,8 @@ input::placeholder { color: var(--color-foreground); }
 @media (max-width: 700px) {
   
   
-  .news-cards { flex-direction: column; }
-  .news-card { flex: none; }
+  /* Phone: only the active (big) card shows; autoplay keeps looping, controls stay for pause */
+  .news-cards { display: none; }
 }
 
 @media (max-width: 600px) {
@@ -2336,7 +2341,10 @@ input::placeholder { color: var(--color-foreground); }
 @media (prefers-reduced-motion: reduce) {
   .news-media,
   .news-feature__body,
-  .news-card > span { animation: about-fn-fade .2s ease both; }
+  .news-card > span,
+  .about-news[data-dir] .news-media,
+  .about-news[data-dir] .news-feature__body,
+  .about-news[data-dir] .news-card > span { animation: about-fn-fade .2s ease both; } /* fade only, no slide */
   .sphere-dialog[open] { animation: sphere-fade 200ms ease; }
   .about-fn-track span,
   .sphere-node__disc,
@@ -2820,7 +2828,7 @@ div:has(> .split-line) {
   font-size: var(--text-stat);
   line-height: var(--text-stat--line-height);
   font-weight: var(--font-weight-display);
-  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--text-stat--letter-spacing);
 }
 .partners-label,
 .site-footer__heading {

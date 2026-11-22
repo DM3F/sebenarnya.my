@@ -252,6 +252,7 @@
   --text-stat: clamp(var(--text-36), 31.03px + 1.326vw, var(--text-48));      /* statistic numbers · 36→48 */
   --text-stat--line-height: var(--leading-heading);
   --text-stat--font-weight: var(--font-weight-display);
+  --text-stat--letter-spacing: -0.02em; /* display-size figures sit tighter (better-typography: ≥24px → −0.01…−0.02em) */
 
   /* ══ 2. SEMANTIC — sizes ════════════════════════════════════════════════ */
   --size-control-sm: 36px;                      /* dense rows; hit area stays 44 */

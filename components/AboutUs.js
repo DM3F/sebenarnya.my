@@ -6,8 +6,21 @@ import { PauseFilled, PlayFilled } from '@/components/ui/filledIcons';
 import { Badge, IconButton } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
 import SphereGallery from '@/components/SphereGallery';
+import CountUp from '@/components/CountUp';
 import { withBase } from '@/lib/basePath';
 import { aboutHero as hero, aboutIntro as intro, aboutNews, articleStatus, articles, socialLinks } from '@/data/content';
+
+// "275 juta+" → <CountUp 275/> juta+ ; "1,016" keeps its thousands separator
+function StatValue({ text }) {
+  const m = /^([\d,]+)(.*)$/.exec(text);
+  if (!m) return text;
+  return (
+    <>
+      <CountUp value={Number(m[1].replace(/,/g, ''))} sep={m[1].includes(',')} />
+      {m[2]}
+    </>
+  );
+}
 
 const AUTOPLAY_MS = 5000; // Empat fungsi: time on each function
 
@@ -99,7 +112,7 @@ function Intro() {
 
         <div className="about-intro__card about-intro__card--stats">
           <div className="about-intro__stat">
-            <p className="about-intro__stat-value">{intro.verdicts.value}</p>
+            <p className="about-intro__stat-value"><StatValue text={intro.verdicts.value} /></p>
             <p className="about-intro__stat-title">{intro.verdicts.title}</p>
             <p className="about-intro__stat-text">{intro.verdicts.text}</p>
           </div>
@@ -120,7 +133,7 @@ function Intro() {
         <dl className="about-intro__facts-row">
           {intro.facts.map((f) => (
             <div key={f.label}>
-              <dt>{f.value}</dt>
+              <dt><StatValue text={f.value} /></dt>
               <dd>{f.label}</dd>
             </div>
           ))}
@@ -137,12 +150,23 @@ function useCarousel(count) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false); // hover / focus hold
   const [stopped, setStopped] = useState(false); // visible pause control
-  const move = (n) => setActive((a) => (a + n + count) % count);
+  const [dir, setDir] = useState(1); // 1 = forward (content enters from the right), -1 = back
+  const move = (n) => {
+    setDir(n < 0 ? -1 : 1);
+    setActive((a) => (a + n + count) % count);
+  };
+  const pick = (i) => {
+    setDir(1); // picking a card from the queue always reads as "forward"
+    setActive(i);
+  };
 
   useEffect(() => {
     if (paused || stopped || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const id = setTimeout(() => {
-      if (!document.hidden) setActive((a) => (a + 1) % count);
+      if (!document.hidden) {
+        setDir(1);
+        setActive((a) => (a + 1) % count);
+      }
     }, AUTOPLAY_MS);
     return () => clearTimeout(id);
   }, [active, paused, stopped, count]);
@@ -154,18 +178,24 @@ function useCarousel(count) {
     onFocus: () => setPaused(true),
     onBlur: (e) => !e.currentTarget.contains(e.relatedTarget) && setPaused(false),
   };
-  return { active, setActive, move, paused, stopped, setStopped, rest, holdProps };
+  return { active, setActive: pick, move, dir, paused, stopped, setStopped, rest, holdProps };
 }
 
 // Berita dan Galeri: the selected news item is shown large, the others follow as small cards
 // (same carousel as Empat fungsi); the photo sphere sits below.
 function NewsGallery() {
   const { news, gallery } = aboutNews;
-  const { active, setActive, move, paused, stopped, setStopped, rest, holdProps } = useCarousel(news.length);
+  const { active, setActive, move, dir, paused, stopped, setStopped, rest, holdProps } = useCarousel(news.length);
   const feature = news[active];
 
   return (
-    <section className={`about-news${paused ? ' is-paused' : ''}`} id="berita-galeri" aria-labelledby="about-news-title" {...holdProps}>
+    <section
+      className={`about-news${paused ? ' is-paused' : ''}`}
+      id="berita-galeri"
+      aria-labelledby="about-news-title"
+      data-dir={dir < 0 ? 'back' : 'forward'}
+      {...holdProps}
+    >
       <div className="about-news__head">
         <h2 className="about-title" id="about-news-title">
           {aboutNews.title}
