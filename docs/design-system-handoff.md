@@ -576,3 +576,8 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
   - **Motion:** transisi route 1.2s → crossfade 250ms; hover logo agensi dan kad AIFA kini hanya untuk tetikus (`hover: hover`); titik carousel tidak lagi menganimasi `width` (snap; bar isi menunjukkan kemajuan).
   - **Kod mati:** `gsap` dibuang dari `package.json`, blok `@media` kosong, `--fade`, komen tanpa peraturan.
   - **Verdict H1 telefon di tengah optik:** ≤600px baris verdict sendiri, jadi `.typewriter__row` kini `justify-self: center` + `margin-inline-start: .12em` (separuh daripada kursor dan jaraknya), supaya huruf "palsu", "benar" dan "makluman" tepat di paksi tengah H1 (diukur 0.0px pada 320/390/600). Desktop tidak berubah (verdict mengikut "Semak dakwaan").
+
+- **Urutan Utama + jubin folder logo (23 Nov 2026):**
+  - **Utama:** seksyen "Pusat semakan fakta MCMC sejak 2017" (`Viewership`) kini paling bawah, selepas Kenali Sebenarnya.my dan tepat sebelum footer. Ritma kekal 120 (1440) / 65 (390) antara setiap seksyen.
+  - **Folder format (Logo):** jubin JPEG/PNG/SVG kini semua putih (`--color-tile` = `--color-card`); warna datang daripada ikon fail. Token `--gradient-tile-jpeg`, `--color-tile-png`, `--gradient-tile-svg` dibuang. `--shadow-tile` dilembutkan untuk jubin putih (garis .5px 8% + 0 12px 32px 14%).
+  - **H1 hero Tentang Kami** disemak: guna peranan `--text-display` sama seperti H1 Utama dan artikel (48 / 39 / 32 px pada 1440 / 768 / 390, 500, 1.2); lead 16/24 400 seperti lead lain. Konsisten.

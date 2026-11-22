@@ -153,17 +153,15 @@
   --shadow-overlay: 0 0 0 .5px rgba(0, 0, 0, .2), 0 24px 64px rgba(0, 0, 0, .2); /* modals and the AIFA panel: above a scrim */
 
   /* ── Format folder (components/FormatFolder.js, Logo section) ───────────
-     Colours of the folder card and its file-type tiles; the tiles keep their own palette. */
+     Colours of the folder card and its file-type tiles (all white). */
   --color-folder-back: var(--color-border);
   --color-folder-front: rgb(71 67 64 / .95);
   --color-folder-chip: var(--color-grey-95);   /* chip text on the dark pocket */
   --color-folder-edge: color-mix(in srgb, var(--color-foreground-inverse) 15%, transparent);
   --color-folder-glow: color-mix(in srgb, var(--color-foreground-inverse) 10%, transparent);
   --color-folder-label: rgb(0 0 0 / .55);
-  --gradient-tile-jpeg: linear-gradient(135deg, #2c2c2c, #141414);
-  --color-tile-png: #7b2e19;
-  --gradient-tile-svg: linear-gradient(135deg, #1a1a7a, #00005b);
-  --shadow-tile: 0 18px 40px rgb(0 0 0 / .55), 0 0 0 1px rgb(255 255 255 / .14);
+  --color-tile: var(--color-card);             /* every file-type tile: white, the icon carries the colour */
+  --shadow-tile: 0 0 0 .5px rgb(0 0 0 / .08), 0 12px 32px rgb(0 0 0 / .14); /* soft lift for a white tile */
 
   /* ── Motion (docs/design.md §6: purposeful, ease-out, 150–600ms) ────────── */
   --duration-fast: 150ms;   /* hover, colour, press */
