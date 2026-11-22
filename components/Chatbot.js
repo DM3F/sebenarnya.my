@@ -18,10 +18,10 @@ export const AIFA_HREF = '/aifa/';
 
 const GREETING = {
   from: 'bot',
-  text: 'Hai, saya AIFA. Tanya saya tentang mesej atau dakwaan yang anda terima, dan saya akan carikan semakan fakta berkaitan di Sebenarnya.my.',
+  text: 'Hai, saya AIFA. Tanya saya tentang mesej atau dakwaan yang anda terima, dan saya akan mencari semakan fakta berkaitan di Sebenarnya.my.',
 };
 
-const SUGGESTIONS = ['Bantuan tunai WhatsApp', 'Amaran hujan lebat', 'Bagaimana nak salurkan dakwaan?'];
+const SUGGESTIONS = ['Bantuan tunai WhatsApp', 'Amaran hujan lebat', 'Bagaimana hendak menyalurkan dakwaan?'];
 
 const DISCLAIMER = 'AIFA membantu anda mencari maklumat yang telah diterbitkan. AIFA bukan penentu muktamad sama ada sesuatu dakwaan itu benar.';
 
@@ -34,7 +34,7 @@ function getReply(input) {
     return { text: 'Hai! Taip beberapa kata kunci daripada mesej atau dakwaan yang ingin anda semak.' };
   }
 
-  if (has(text, ['submit', 'report', 'lapor', 'hantar', 'aduan'])) {
+  if (has(text, ['submit', 'report', 'lapor', 'hantar', 'aduan', 'salur'])) {
     return {
       text: 'Jika anda tidak menjumpai semakan fakta, salurkan dakwaan itu kepada pasukan kami untuk disemak.',
       links: [{ label: 'Salur Kepada Kami', href: '/submit-claim/' }],
@@ -48,7 +48,7 @@ function getReply(input) {
   const found = rankArticles(input);
   if (found.length) {
     return {
-      text: found.length === 1 ? 'Saya jumpa satu semakan fakta berkaitan:' : `Saya jumpa ${found.length} semakan fakta berkaitan:`,
+      text: found.length === 1 ? 'Saya menemui satu semakan fakta berkaitan:' : `Saya menemui ${found.length} semakan fakta berkaitan:`,
       articles: found,
     };
   }

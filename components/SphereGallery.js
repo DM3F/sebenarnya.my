@@ -231,7 +231,7 @@ export default function SphereGallery({ items }) {
           </button>
         ))}
       </div>
-      <p className="sphere-hint">Seret untuk memutar, pilih foto untuk membesarkan.</p>
+      <p className="sphere-hint">Seret untuk memusingkan, pilih foto untuk melihatnya lebih besar.</p>
 
       <dialog
         className="sphere-dialog"

@@ -13,12 +13,10 @@ const lineBlocks = [
   ['.hero-title', 0.1],
   ['.post-title', 0.1],
   ['.latest-checks__title', 0],
-  ['.activity__title', 0],
   ['.how__title', 0],
   ['.viewership-kicker', 0],
   ['.viewership-lead', 0.1],
   ['.about-title', 0],
-  ['.about-fn-title', 0],
   ['.about-subtitle', 0],
   ['.logo-kit-title', 0],
 ];
@@ -45,7 +43,6 @@ const blocks = [
   ['.how__card--award', 0.27],
   ['.how__card--agencies', 0.3],
   // Aktiviti media sosial
-  ['.social-gallery', 0.08],
   // Home: Tentang ringkas
   ['.viewership-inner', 0],
   ['.partners-inner', 0.08],

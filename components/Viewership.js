@@ -66,7 +66,7 @@ export default function Viewership() {
               kenyataan rasmi agensi kerajaan, supaya maklumat yang sampai kepada anda tepat, jelas dan boleh dipercayai.
             </p>
           </div>
-          <Button href={withBase('/about-us/')}>Semak Tentang Kami</Button>
+          <Button href={withBase('/about-us/')}>Ketahui tentang kami</Button>
         </div>
 
         <dl className="viewership-stats">

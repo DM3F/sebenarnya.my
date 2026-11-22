@@ -19,8 +19,8 @@ const DATE_OPTIONS = [
 
 // Result order. Titles compare in Malay so A–Z follows the alphabet, ignoring case.
 const SORT_OPTIONS = [
-  { id: 'newest', label: 'Terbaru dahulu', compare: (a, b) => b.date.localeCompare(a.date) },
-  { id: 'oldest', label: 'Terlama dahulu', compare: (a, b) => a.date.localeCompare(b.date) },
+  { id: 'newest', label: 'Terkini dahulu', compare: (a, b) => b.date.localeCompare(a.date) },
+  { id: 'oldest', label: 'Terawal dahulu', compare: (a, b) => a.date.localeCompare(b.date) },
   { id: 'az', label: 'Tajuk A–Z', compare: (a, b) => a.title.localeCompare(b.title, 'ms', { sensitivity: 'base' }) },
   { id: 'za', label: 'Tajuk Z–A', compare: (a, b) => b.title.localeCompare(a.title, 'ms', { sensitivity: 'base' }) },
 ];

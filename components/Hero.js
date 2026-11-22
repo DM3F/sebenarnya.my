@@ -32,7 +32,7 @@ export default function Hero() {
         <div className="hero-content container">
           <div className="hero-heading">
             <h1 className="hero-title">
-              <span>Tidak pasti? Jangan kongsi</span> <span>Semak dakwaan, Temukan kebenaran</span>
+              <span>Tidak pasti? Jangan kongsi</span> <span>Semak dakwaan, temui kebenaran</span>
             </h1>
             <p className="hero-lede">
               <span>Portal rujukan rasmi yang disahkan terus oleh kementerian dan agensi.</span>{' '}

@@ -53,7 +53,7 @@ export const claimLink = { label: 'Salur Kepada Kami', href: '/submit-claim/' };
 export const stories = [
   {
     platform: 'instagram',
-    title: 'Haa sebelum share, tanya AIFA dulu!',
+    title: 'Sebelum kongsi, tanya AIFA dahulu',
     summary: 'WhatsApp AIFA di 03-8688 7997 atau layari Sebenarnya.my. AIFA akan semak dan jawab guna sumber yang sahih.',
     date: '7 Ogo 2025',
     href: 'https://www.instagram.com/reel/DNCUauizeUu/',
@@ -253,31 +253,6 @@ export const aboutIntro = {
     { value: '1,016', label: 'Artikel semakan' },
     { value: '200 ribu', label: 'Mesej diproses Aifa' },
     { value: '20+', label: 'Agensi rakan' },
-  ],
-};
-
-// Four functions: the selected one is shown large, the other three as small cards.
-export const whatWeDo = {
-  title: 'Empat fungsi utama kami',
-  intro:
-    'Semua yang anda perlukan untuk menyemak kesahihan maklumat — daripada kenyataan rasmi agensi hingga saluran untuk melaporkan dakwaan yang meragukan.',
-  items: [
-    {
-      title: 'Maklumat sahih',
-      text: 'Dapatkan maklumat sahih dan maklum balas rasmi terus daripada agensi kerajaan yang berkaitan.',
-    },
-    {
-      title: 'Berita terkini',
-      text: 'Ikuti berita dan perkembangan terkini tentang isu yang sedang tular dan hangat diperkatakan.',
-    },
-    {
-      title: 'Semak dakwaan',
-      text: 'Semak kesahihan dakwaan, berita tular dan khabar angin sebelum ia dikongsi lebih jauh.',
-    },
-    {
-      title: 'Salurkan maklumat',
-      text: 'Salurkan maklumat yang anda ragui kepada kami, dan pasukan Sebenarnya.my akan menyemaknya.',
-    },
   ],
 };
 
