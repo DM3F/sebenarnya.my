@@ -585,12 +585,10 @@ input::placeholder { color: var(--color-foreground); }
   font-weight: var(--font-weight-medium);
   color: var(--color-foreground);
 }
-/* Two balanced lines (22 + 22 characters); on narrow screens they flow and balance */
-.latest-checks__title > span { display: block; }
-@media (max-width: 600px) {
-  .latest-checks__title { text-wrap: balance; }
-  .latest-checks__title > span { display: inline; }
-}
+/* Centred title + one-line lead, the same head as Kenali Sebenarnya.my and Berita */
+.latest-checks__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-12); max-width: 720px; margin-inline: auto; text-align: center; }
+.latest-checks__title { text-wrap: balance; }
+.latest-checks__lead { margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
 .latest-checks__carousel {
   display: flex;
@@ -2852,6 +2850,7 @@ div:has(> .split-line) {
 .about-intro__lead,
 .about-news-intro,
 .kenali__lead,
+.latest-checks__lead,
 .logo-kit-intro,
 .post-subtitle,
 .post-lead {
