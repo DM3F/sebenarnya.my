@@ -2987,3 +2987,11 @@ div:has(> .split-line) {
    with the viewport to fit the content width. */
 .hero-title > span { white-space: nowrap; }
 .hero .hero-title { width: fit-content; max-width: 100%; font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 12.8)); }
+
+/* Phones: the H1 stays at the display size (32+, above the 28px H2) and its lines may wrap to
+   3–4 lines. Only "dakwaan <verdict>" never splits (.hero-title__verdict, nowrap); that group is
+   ≈9.2em wide, so the size is capped at content width / 9.6 and the group always fits (30px at 320). */
+@media (max-width: 600px) {
+  .hero-title > span { white-space: normal; }
+  .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 9.6)); }
+}
