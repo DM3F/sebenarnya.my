@@ -440,7 +440,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - **Galeri sfera:** kawasan tekan halimunan ≥ 24 px pada skrin (`--node-hit` dari JS, `.sphere-node::after`).
 
 ## Seksyen "Cara Sebenarnya.my membantu" (Utama, sebelum Aktiviti media sosial)
-`components/HowItWorks.js`, gaya `.how*` dalam `app/global.css`. Grid bento 3 kolum (`grid-template-areas`):
+`components/KenaliSebenarnya.js`, gaya `.kenali*` (dulu `HowItWorks.js` / `.how*`) dalam `app/global.css`. Grid bento 3 kolum (`grid-template-areas`):
 saluran | foto tinggi (3 baris) | empat verdict · cerita foto | foto | stat "24 jam" (2 baris) · agensi | foto | stat.
 Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (telefon 12), padding kad 32 (telefon 24), radius `--radius-card`.
 - Kad baca: latar taupe `--color-muted`, tanpa bayang. Satu kad tinta (stat) dengan angka besar weight 400 + unit separuh saiz (sama skala dengan statistik viewership).
@@ -484,3 +484,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Berita, desktop:** kad besar kiri = berita aktif; kad kecil kanan = giliran seterusnya. Bila maju (autoplay 5s / ›), kandungan berita seterusnya masuk ke kad besar dari kanan dan setiap kad kecil beralih satu slot ke kiri (`news-in`: translateX 40px → 0 + opacity, 380ms `--ease-out`, stagger 50ms). ‹ membalikkan arah (`data-dir="back"`). Saiz kad tidak berubah (480×488 besar). Reduced motion: pudar sahaja.
 - **Berita, telefon (≤700):** hanya kad besar dipaparkan; autoplay berulang tanpa henti (WCAG 2.2.2: butang jeda kekal).
 - **Angka:** komponen `components/CountUp.js` dipakai di Utama (statistik) dan Tentang Kami (fakta + "20+"): kira dari 0 bila masuk viewport (2s ease-out expo), lebar dikunci dan angka tabular hanya semasa mengira; selepas itu angka proporsional + `--text-stat--letter-spacing` (−0.02em) supaya "1,016" tidak renggang. Reduced motion: terus nilai akhir.
+
+## Kenali Sebenarnya.my: nama dan kad Juara Dunia (22 Nov 2026)
+- Komponen `components/KenaliSebenarnya.js`, kelas `.kenali` / `.kenali__*` (dulu `HowItWorks` / `.how`). Kawasan grid kini ikut isi: `channels · photo · verdicts · poster · award · social` (dulu `main · story · stat · agencies`).
+- Kad Juara Dunia: eyebrow → "Juara Dunia" (peranan section, 400) → sub "dalam Kepercayaan Digital & Semakan Fakta Awam" (peranan title 20/500, putih) → perenggan penuh (body 16, putih 60%) dengan fakta **33 juta rakyat** dan **lebih 20 agensi persekutuan** dalam `<strong>` putih 500 → butang "Ketahui lebih lanjut".

@@ -2612,34 +2612,34 @@ div:has(> .split-line) {
 .hero + .hero-carousel { margin-top: calc(-1 * var(--space-section) / 2); }
 .hero-carousel + .partners { margin-top: calc(-1 * var(--space-section) / 2); }
 
-/* ── Cara Sebenarnya.my membantu (components/HowItWorks.js) ─────────────────
+/* ── Kenali Sebenarnya.my (components/KenaliSebenarnya.js) ─────────────────
    3-column bento: tall photo in the middle, stat card spanning two rows on the right.
    Cards sit on taupe (elevation by tone, no shadow); one ink card carries the number. */
-.how { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--space-page-x); }
-.how__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-12); max-width: 720px; margin-inline: auto; text-align: center; }
-.how__title { margin: 0; text-wrap: balance; }
-.how__lead { margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
+.kenali { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--space-page-x); }
+.kenali__head { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-12); max-width: 720px; margin-inline: auto; text-align: center; }
+.kenali__title { margin: 0; text-wrap: balance; }
+.kenali__lead { margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
-.how__grid {
+.kenali__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(3, minmax(220px, auto));
   grid-template-areas:
-    "channels main verdicts"
-    "story    main stat"
-    "agencies main stat";
+    "channels photo  verdicts"
+    "poster   photo  award"
+    "social   photo  award";
   gap: var(--gap-cards);
   margin: 0;
   padding: 0;
 }
-.how__card--channels { grid-area: channels; }
-.how__card--main { grid-area: main; }
-.how__card--verdicts { grid-area: verdicts; }
-.how__card--story { grid-area: story; }
-.how__card--award { grid-area: stat; }
-.how__card--agencies { grid-area: agencies; }
+.kenali__card--channels { grid-area: channels; }
+.kenali__card--photo { grid-area: photo; }
+.kenali__card--verdicts { grid-area: verdicts; }
+.kenali__card--poster { grid-area: poster; }
+.kenali__card--award { grid-area: award; }
+.kenali__card--social { grid-area: social; }
 
-.how__card {
+.kenali__card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -2652,19 +2652,19 @@ div:has(> .split-line) {
   background: var(--color-muted);
   color: var(--color-foreground);
 }
-.how__card-title {
+.kenali__card-title {
   display: flex;
   align-items: center;
   gap: var(--space-inline);
   margin: 0;
   font-weight: var(--font-weight-medium);
 }
-.how__title-icon { color: var(--color-muted-foreground); }
-.how__card-text { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); max-width: 36ch; }
+.kenali__title-icon { color: var(--color-muted-foreground); }
+.kenali__card-text { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); max-width: 36ch; }
 
 /* Channels: three quiet icon discs */
-.how__icons { display: flex; gap: var(--spacing-12); margin: auto 0 0; padding: var(--spacing-16) 0 0; list-style: none; }
-.how__icons li {
+.kenali__icons { display: flex; gap: var(--spacing-12); margin: auto 0 0; padding: var(--spacing-16) 0 0; list-style: none; }
+.kenali__icons li {
   display: grid;
   place-items: center;
   width: var(--spacing-48);
@@ -2675,11 +2675,11 @@ div:has(> .split-line) {
 }
 
 /* Verdicts: the four labels, dot + word (colour never alone) */
-.how__verdicts { display: flex; flex-wrap: wrap; gap: var(--spacing-8); margin: auto 0 0; padding: var(--spacing-16) 0 0; list-style: none; }
+.kenali__verdicts { display: flex; flex-wrap: wrap; gap: var(--spacing-8); margin: auto 0 0; padding: var(--spacing-16) 0 0; list-style: none; }
 
 /* Photo cards: full bleed, slow zoom on hover (design.md §4) */
-.how__card--photo { padding: 0; background: var(--color-muted-strong); }
-.how__card--photo img {
+.kenali__card--photo { padding: 0; background: var(--color-muted-strong); }
+.kenali__card--photo img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -2688,9 +2688,9 @@ div:has(> .split-line) {
   transition: scale .6s var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  .how__card--photo:hover img { scale: 1.03; }
+  .kenali__card--photo:hover img { scale: 1.03; }
 }
-.how__pill {
+.kenali__pill {
   position: absolute;
   top: var(--spacing-24);
   left: var(--spacing-24);
@@ -2704,8 +2704,8 @@ div:has(> .split-line) {
 
 /* Award: the one ink surface in the section. Short copy only: eyebrow, headline,
    one line of context, then the action (the full story lives on Tentang Kami). */
-.how__card--award { justify-content: space-between; gap: var(--gap-group); background: var(--color-primary); color: var(--color-primary-foreground); }
-.how__award-eyebrow {
+.kenali__card--award { justify-content: space-between; gap: var(--gap-group); background: var(--color-primary); color: var(--color-primary-foreground); }
+.kenali__award-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-8);
@@ -2717,46 +2717,54 @@ div:has(> .split-line) {
   text-transform: uppercase;
   color: var(--color-muted-foreground-inverse);
 }
-.how__award-body { display: flex; flex-direction: column; align-items: flex-start; gap: var(--spacing-12); }
-.how__award-title { margin: 0; text-wrap: balance; }
-.how__award-text { margin: 0; max-width: 26ch; color: var(--color-muted-foreground-inverse); text-wrap: pretty; }
-.how__award-cta { margin-top: var(--spacing-12); }
+.kenali__award-body { display: flex; flex-direction: column; align-items: flex-start; gap: var(--spacing-12); }
+.kenali__award-title { margin: 0; text-wrap: balance; }
+.kenali__award-sub { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--font-weight-medium); text-wrap: balance; } /* title role: one step above the paragraph */
+.kenali__award-text {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  color: var(--color-muted-foreground-inverse);
+  text-wrap: pretty;
+}
+.kenali__award-text strong { font-weight: var(--font-weight-medium); color: var(--color-foreground-inverse); } /* the two facts read first */
+.kenali__award-cta { margin-top: var(--spacing-12); }
 
 /* Poster: square artwork shown whole on white with a hairline edge (never cropped) */
-.how__card--poster {
+.kenali__card--poster {
   display: grid;
   place-items: center;
   padding: var(--pad-card-sm);
   background: var(--color-card);
   box-shadow: inset 0 0 0 var(--border-width) var(--color-border);
 }
-.how__card--poster img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.how__card--story.how__card--poster { min-height: 300px; } /* room for the square poster to stay legible (≈276px) */
+.kenali__card--poster img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.kenali__card--poster { min-height: 300px; } /* room for the square poster to stay legible (≈276px) */
 
 @media (max-width: 1024px) {
-  .how__grid {
+  .kenali__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
     grid-auto-rows: minmax(200px, auto);
     grid-template-areas:
-      "main     channels"
-      "main     verdicts"
-      "story    stat"
-      "agencies stat";
+      "photo    channels"
+      "photo    verdicts"
+      "poster   award"
+      "social   award";
   }
 }
 @media (max-width: 600px) {
-  .how { gap: var(--spacing-32); }
-  .how__grid {
+  .kenali { gap: var(--spacing-32); }
+  .kenali__grid {
     grid-template-columns: minmax(0, 1fr);
     grid-auto-rows: auto;
-    grid-template-areas: "channels" "main" "verdicts" "story" "stat" "agencies";
+    grid-template-areas: "channels" "photo" "verdicts" "poster" "award" "social";
     gap: var(--spacing-12);
   }
-  .how__card--main { min-height: 360px; }
-  .how__card--story { aspect-ratio: 1; } /* square poster fills the card on phones */
+  .kenali__card--photo { min-height: 360px; }
+  .kenali__card--poster { aspect-ratio: 1; } /* square poster fills the card on phones */
 }
-@media (prefers-reduced-motion: reduce) { .how__card--photo img { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .kenali__card--photo img { transition: none; } }
 
 /* ═══ Type roles ═══════════════════════════════════════════════════════════
    One hierarchy for every page (tokens.css › SEMANTIC typography roles; 48px ceiling, hero H1 only).
@@ -2769,21 +2777,21 @@ div:has(> .split-line) {
   font-weight: var(--font-weight-display);
 }
 .latest-checks__title,
-.how__title,
+.kenali__title,
 .about-title,
 .logo-kit-title,
 .hero-carousel h3,
-.how__award-title {
+.kenali__award-title {
   font-size: var(--text-heading-lg);
   line-height: var(--text-heading-lg--line-height);
 }
 .latest-checks__title,
-.how__title,
+.kenali__title,
 .about-title,
 .logo-kit-title { font-weight: var(--font-weight-medium); }
 /* Slide and award headlines share the section size but stay light, so they never outrank the H2 */
 .hero-carousel h3,
-.how__award-title { font-weight: var(--font-weight-display); }
+.kenali__award-title { font-weight: var(--font-weight-display); }
 .post-section h2,
 .logo-card__name {
   font-size: var(--text-heading);
@@ -2804,18 +2812,17 @@ div:has(> .split-line) {
 .claim-done h3,
 .about-intro__facts-title,
 .folder__title,
-.how__card-title,
+.kenali__card-title,
 .logo-terms__title {
   font-size: var(--text-title);
   line-height: var(--text-title--line-height);
   font-weight: var(--font-weight-medium);
 }
-.how__award-text,
 .viewership-lead,
 .about-hero-text p,
 .about-intro__lead,
 .about-news-intro,
-.how__lead,
+.kenali__lead,
 .logo-kit-intro,
 .post-subtitle,
 .post-lead {
