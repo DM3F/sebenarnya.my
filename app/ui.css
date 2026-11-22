@@ -26,14 +26,16 @@
 }
 
 /* Skip link — first focusable element (WCAG 2.4.1) */
-.ui-skip-link {
+/* Two classes: the link is also a .ui-btn, whose later `position: relative` would otherwise win and
+   leave a hidden, control-tall block in the flow above the header */
+.ui-btn.ui-skip-link {
   position: fixed;
   top: var(--space-stack);
   left: var(--space-stack);
   z-index: var(--z-skip);
   transform: translateY(-200%);
 }
-.ui-skip-link:focus-visible { transform: none; }
+.ui-btn.ui-skip-link:focus-visible { transform: none; }
 
 /* Icons: Lucide via components/ui/Icon.js — 1.75px stroke, currentColor */
 .ui-icon { display: inline-block; flex-shrink: 0; vertical-align: middle; }
