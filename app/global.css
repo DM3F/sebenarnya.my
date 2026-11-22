@@ -358,7 +358,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 /* Rotating verdict in the H1 (components/FlipWord.js): same weight as the rest of the line */
-.hero-title__verdict { white-space: nowrap; } /* "dakwaan" + verdict never split across lines */
+.hero-title__part { white-space: nowrap; } /* "Tidak pasti?", "Jangan kongsi", "Semak dakwaan" never break inside */
 .flip-word {
   display: inline-grid; /* row + ghost words share one cell → slot = widest word */
 }
@@ -2983,16 +2983,19 @@ div:has(> .split-line) {
   .articles-chips.has-overflow .articles-chips__arrow { display: none; }
 }
 
-/* Hero H1: always two lines ("Tidak pasti? Jangan kongsi" / "Semak dakwaan <verdict>"), phones too.
+/* Hero H1: two lines above 600 ("Tidak pasti? Jangan kongsi" / "Semak dakwaan <verdict>").
    Each line is ≈12.3em wide (verdict slot = "makluman"), so below the display size the title scales
    with the viewport to fit the content width. */
 .hero-title > span { white-space: nowrap; }
 .hero .hero-title { width: fit-content; max-width: 100%; font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 12.8)); }
 
-/* Phones: the H1 stays at the display size (32+, above the 28px H2) and its lines may wrap to
-   3–4 lines. Only "dakwaan <verdict>" never splits (.hero-title__verdict, nowrap); that group is
-   ≈9.2em wide, so the size is capped at content width / 9.6 and the group always fits (30px at 320). */
+/* Phones: four lines, "Tidak pasti?" / "Jangan kongsi" / "Semak dakwaan" / <verdict>. Each part is a
+   block that never breaks inside; the verdict sits centred on its own line and FlipWord glides it to
+   the new centre as the word changes length. The widest line is ≈7.5em, so the display size (32+,
+   above the 28px H2) is capped at content width / 7.8 and every line fits (32px from 320 up). */
 @media (max-width: 600px) {
-  .hero-title > span { white-space: normal; }
-  .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 9.6)); }
+  .hero-title__part { display: block; }
+  .hero-title .flip-word { display: grid; justify-content: center; }
+  .hero-title .flip-word__row { justify-self: center; }
+  .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 7.8)); }
 }

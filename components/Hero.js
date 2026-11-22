@@ -36,12 +36,15 @@ export default function Hero() {
         <div className="hero-content container">
           <div className="hero-heading">
             <h1 className="hero-title">
-              <span>Tidak pasti? Jangan kongsi</span> <span data-flip-line>
-                Semak{' '}
-                <span className="hero-title__verdict">
-                  dakwaan <FlipWord words={VERDICTS} />
-                  <span className="sr-only">palsu, benar atau makluman</span>
-                </span>
+              {/* Two lines on wide screens; on phones each part is its own line (four in all) */}
+              <span>
+                <span className="hero-title__part">Tidak pasti?</span>{' '}
+                <span className="hero-title__part">Jangan kongsi</span>
+              </span>{' '}
+              <span data-flip-line>
+                <span className="hero-title__part">Semak dakwaan</span>{' '}
+                <FlipWord words={VERDICTS} />
+                <span className="sr-only">palsu, benar atau makluman</span>
               </span>
             </h1>
             <p className="hero-lede">

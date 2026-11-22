@@ -269,7 +269,6 @@
   --size-avatar-sm: 32px;    /* on cards and images */
   --size-avatar: 40px;       /* default: flip card, chat */
   --avatar-inset: var(--spacing-4);
-  --size-icon-xl: 20px;
   --size-dot: 8px;                              /* verdict / status dot */
   --size-textarea: 120px;
   --size-menu: 220px;                           /* dropdown min width */
