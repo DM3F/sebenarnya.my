@@ -636,7 +636,17 @@ input::placeholder { color: var(--color-foreground); }
   border-radius: var(--radius-card);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  /* backface-visibility alone is not enough on iOS Safari: children with their own layer (the
+     absolute + z-index verdict/title block, the agency avatar, the flip button) ignore it and show
+     through the other face, mirrored. So the face turned away is also hidden outright, switched
+     when the card is edge-on (90°), so there is nothing to cut: closing uses a symmetric curve, so
+     90° is at half its duration; opening uses the strong ease-out, which passes 90° at 13% of its
+     duration (solved from the curve: 79ms of 600). */
+  transition: visibility 0s linear calc(var(--duration-slow) / 2);
 }
+.flip-card.flipped .flip-face { transition-delay: calc(var(--duration-slower) * .13); }
+.flip-card:not(.flipped) .fc-back,
+.flip-card.flipped .fc-front { visibility: hidden; }
 
 /* Invisible button over the whole front, for keyboard users */
 .flip-toggle {
@@ -652,7 +662,7 @@ input::placeholder { color: var(--color-foreground); }
 .flip-toggle:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 
 @media (prefers-reduced-motion: reduce) {
-  .flip-inner, .flip-card.flipped .flip-inner, .flip-card { transition: none; }
+  .flip-inner, .flip-card.flipped .flip-inner, .flip-card, .flip-face, .flip-card.flipped .flip-face { transition: none; }
   .flip-card.flipped { transform: none; }
 }
 
