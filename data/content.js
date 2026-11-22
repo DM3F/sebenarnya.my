@@ -228,7 +228,7 @@ export const aboutHero = {
   title: 'Portal semakan fakta rasmi Malaysia, sejak 2017.',
   lead:
     'Dilancarkan oleh MCMC pada 14 Mac 2017, Sebenarnya.my menyemak berita tular, dakwaan dan khabar angin dengan merujuk sumber serta kenyataan rasmi agensi kerajaan. Matlamat kami mudah: membantu rakyat Malaysia semak dahulu, sebelum berkongsi.',
-  image: aboutImg('hero.jpg'),
+  image: aboutImg('hero-2026.jpg'), // Wonder › About Hero Section (22 Nov 2026), 1600w
 };
 
 // Statement under the hero (Tentang Kami, section 2): two short lines, one idea.

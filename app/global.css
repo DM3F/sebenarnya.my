@@ -2002,9 +2002,21 @@ input::placeholder { color: var(--color-foreground); }
   background: var(--color-black);
   color: var(--color-foreground-inverse);
 }
-.about-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.about-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.66); } /* = the design's 34% black layer, keeps white text readable */
 .about-hero-follow,
-.about-hero-text { position: relative; display: flex; flex-direction: column; gap: var(--spacing-12); }
+.about-hero-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--spacing-12); }
+/* Scrim rising from the bottom, behind the title and lead only. Measured on the real pixels at
+   1440 and 390: brightest point under the lead ≥ 6.9:1, under the title ≥ 3.4:1 (large text). */
+.about-hero-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+    color-mix(in srgb, var(--color-black) 60%, transparent) 0%,
+    color-mix(in srgb, var(--color-black) 40%, transparent) 40%,
+    transparent 65%);
+  pointer-events: none;
+}
 .about-hero-follow p {
   margin: 0;
   font-size: var(--text-label);
@@ -2026,12 +2038,13 @@ input::placeholder { color: var(--color-foreground); }
 .about-hero-follow svg { width: 24px; height: 24px; fill: currentColor; }
 .about-hero-follow a:focus-visible { outline: 2px solid var(--color-foreground-inverse); outline-offset: 3px; }
 .about-hero-text h1 {
+  max-width: 12em; /* design: 462px at 40px — the title breaks into 2–3 short lines */
   margin: 0;
   font-weight: var(--font-weight-display);
   text-wrap: balance;
 }
 .about-hero-text p {
-  max-width: 1390px;
+  max-width: 47em; /* design: ~845px of lead text */
   margin: 0;
   text-wrap: pretty;
 }
