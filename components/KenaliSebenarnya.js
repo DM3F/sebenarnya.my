@@ -1,7 +1,6 @@
-import { ArrowRight, Globe, MessageSquareText, Smartphone, Trophy } from 'lucide-react';
+import { Globe, MessageSquareText, Smartphone, Trophy } from 'lucide-react';
 import Icon from '@/components/ui/Icon';
 import CountUp from '@/components/CountUp';
-import { Button } from '@/components/ui';
 import { withBase } from '@/lib/basePath';
 import SocialPeek from '@/components/SocialPeek';
 
@@ -76,9 +75,6 @@ export default function KenaliSebenarnya() {
               meraih penghormatan antarabangsa tertinggi di Anugerah WSIS PBB di Geneva — diiktiraf sebagai perisai utama
               Malaysia yang melindungi <strong>33 juta rakyat</strong> bersama <strong>lebih 20 agensi persekutuan</strong>.
             </p>
-            <Button variant="media" href={withBase('/about-us/#berita-galeri')} iconEnd={ArrowRight} className="kenali__award-cta">
-              Ketahui lebih lanjut
-            </Button>
           </div>
         </article>
 
