@@ -39,7 +39,7 @@ const textLeft = (el) => {
   return range.getBoundingClientRect().left;
 };
 
-export default function FlipWord({ words, hold = 2200, duration = 420, stagger = 24, className = '' }) {
+export default function FlipWord({ words, hold = 1200, duration = 700, stagger = 40, className = '' }) {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(null); // word rolling away during a flip
   const rootRef = useRef(null);
