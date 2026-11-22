@@ -1907,8 +1907,8 @@ input::placeholder { color: var(--color-foreground); }
 .about-hero-follow,
 .about-hero-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--gap-text); }
 .about-hero-text { gap: var(--gap-group); } /* display H1 → lede: same 16 as the home hero (big titles get room) */
-/* Scrim rising from the bottom, behind the title and lead only. Measured on the real pixels at
-   1440 and 390: brightest point under the lead ≥ 6.9:1, under the title ≥ 3.4:1 (large text). */
+/* Scrim rising from the bottom, behind the title and lead only. Lead is white 80% (graphite's
+   twin); measured on the real pixels, brightest point under the lead ≥ 4.5:1 from 320 to 1440. */
 .about-hero-card::after {
   content: '';
   position: absolute;
@@ -1918,6 +1918,16 @@ input::placeholder { color: var(--color-foreground); }
     color-mix(in srgb, var(--color-foreground) 40%, transparent) 40%,
     transparent 65%);
   pointer-events: none;
+}
+/* Phones: the lead wraps to more lines and climbs into the light part of the photo, so the scrim
+   is a little stronger and taller (lead in white 80% stays ≥ 4.5:1 down to 320) */
+@media (max-width: 600px) {
+  .about-hero-card::after {
+    background: linear-gradient(to top,
+      color-mix(in srgb, var(--color-foreground) 70%, transparent) 0%,
+      color-mix(in srgb, var(--color-foreground) 50%, transparent) 50%,
+      transparent 80%);
+  }
 }
 .about-hero-follow p {
   margin: 0;
@@ -1979,6 +1989,7 @@ input::placeholder { color: var(--color-foreground); }
 .about-hero-text p {
   max-width: 47em; /* design: ~845px of lead text */
   margin: 0;
+  color: var(--color-text-secondary-inverse); /* lead on dark: graphite's twin (white 80%), so title > lead like every other page */
   text-wrap: pretty;
 }
 
@@ -2058,7 +2069,7 @@ input::placeholder { color: var(--color-foreground); }
 .about-intro__bar-n { min-width: 2ch; text-align: right; }
 .about-intro__facts { display: flex; flex-direction: column; align-items: center; gap: var(--gap-group); }
 .about-intro__facts-title { width: auto; margin: 0; text-align: center; font-weight: var(--font-weight-medium); }
-.about-intro__facts-row { display: flex; justify-content: space-around; width: 100%; margin: 0; }
+.about-intro__facts-row { display: flex; flex-direction: column; align-items: center; gap: var(--gap-block); width: 100%; margin: 0; } /* one fact per row, on every screen */
 .about-intro__facts-row > div { display: flex; flex-direction: column; align-items: center; gap: var(--gap-text); }
 .about-intro__facts-row dt { font-weight: var(--font-weight-display); }
 .about-intro__facts-row dd { margin: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); }
@@ -2067,7 +2078,6 @@ input::placeholder { color: var(--color-foreground); }
   .about-intro__lead { flex: none; }
   .about-intro__cards { flex-direction: column; height: auto; }
   .about-intro__card { flex: none; min-height: 240px; }
-  .about-intro__facts-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-block) var(--gap-group); }
 }
 
 .about-fn-controls { display: flex; align-items: center; gap: var(--gap-block); }
@@ -2195,7 +2205,8 @@ input::placeholder { color: var(--color-foreground); }
 .sphere-node__disc img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .sphere-node:active .sphere-node__disc { transform: scale(.97); }
 .sphere-node:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
-.sphere-hint { margin: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); }
+.sphere-hint { margin: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); text-align: center; }
+@media (max-width: 600px) { .sphere-hint span { display: block; } } /* phones: "Seret untuk memusingkan," / "pilih foto untuk melihatnya lebih besar." */
 
 /* Photo dialog: image only, no text box */
 .sphere-dialog {

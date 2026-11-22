@@ -232,7 +232,10 @@ export default function SphereGallery({ items }) {
           </button>
         ))}
       </div>
-      <p className="sphere-hint">Seret untuk memusingkan, pilih foto untuk melihatnya lebih besar.</p>
+      {/* One line on wide screens; on phones each part is its own line */}
+      <p className="sphere-hint">
+        <span>Seret untuk memusingkan,</span> <span>pilih foto untuk melihatnya lebih besar.</span>
+      </p>
 
       <dialog
         tabIndex={-1}
