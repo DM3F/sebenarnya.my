@@ -353,7 +353,7 @@ input::placeholder { color: var(--color-foreground); }
 
 .hero-title {
   font-family: var(--font-sans);
-  font-weight: var(--font-weight-display);
+  font-weight: var(--text-display--font-weight);
   text-wrap: balance;
 }
 
@@ -575,7 +575,6 @@ input::placeholder { color: var(--color-foreground); }
 .latest-checks__title {
   margin: 0;
   font-family: var(--font-sans);
-  font-weight: var(--font-weight-medium);
   color: var(--color-foreground);
 }
 /* Centred title + one-line lead, the same head as Kenali Sebenarnya.my and Berita */
@@ -1046,7 +1045,7 @@ input::placeholder { color: var(--color-foreground); }
 .hero-carousel h3 {
   margin: 0;
   font-family: var(--font-sans);
-  font-weight: var(--font-weight-display);
+  font-weight: var(--text-heading-lg--font-weight);
 }
 .hero-carousel .ct p {
   max-width: 400px;
@@ -1503,7 +1502,7 @@ input::placeholder { color: var(--color-foreground); }
 .post-title {
   max-width: 820px;
   margin: 0 0 var(--spacing-16);
-  font-weight: var(--font-weight-display);
+  font-weight: var(--text-display--font-weight);
   text-wrap: balance;
 }
 
@@ -2093,7 +2092,7 @@ input::placeholder { color: var(--color-foreground); }
 .about-hero-text h1 {
   max-width: 12em; /* design: 462px at 40px — the title breaks into 2–3 short lines */
   margin: 0;
-  font-weight: var(--font-weight-display);
+  font-weight: var(--text-display--font-weight);
   text-wrap: balance;
 }
 .about-hero-text p {
@@ -2817,7 +2816,7 @@ div:has(> .split-line) {
 .about-hero-text h1 {
   font-size: var(--text-display);
   line-height: var(--text-display--line-height);
-  font-weight: var(--font-weight-display);
+  font-weight: var(--text-display--font-weight);
 }
 .latest-checks__title,
 .kenali__title,
@@ -2827,14 +2826,8 @@ div:has(> .split-line) {
 .kenali__award-title {
   font-size: var(--text-heading-lg);
   line-height: var(--text-heading-lg--line-height);
+  font-weight: var(--text-heading-lg--font-weight); /* same weight as the hero H1 */
 }
-.latest-checks__title,
-.kenali__title,
-.about-title,
-.logo-kit-title { font-weight: var(--font-weight-medium); }
-/* Slide and award headlines share the section size but stay light, so they never outrank the H2 */
-.hero-carousel h3,
-.kenali__award-title { font-weight: var(--font-weight-display); }
 .post-section h2 {
   font-size: var(--text-heading);
   line-height: var(--text-heading--line-height);
