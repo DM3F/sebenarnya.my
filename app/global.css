@@ -1587,15 +1587,20 @@ input::placeholder { color: var(--color-foreground); }
 .claim-close { align-self: flex-start; }
 
 /* Body */
+/* flex-basis auto, not `flex: 1` (0%): the dialog's height is auto (capped by max-height), and
+   Safari resolves a 0% basis to 0 there, collapsing the whole form under the header.
+   With auto the body takes its content height, then shrinks to the cap and .claim-scroll scrolls. */
 .claim-form-body {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
 }
 
 .claim-scroll {
   display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
   flex-direction: column;
   gap: var(--gap-group);
   padding: var(--pad-card) var(--pad-card-lg) 0;
