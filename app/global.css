@@ -112,12 +112,6 @@ input::placeholder { color: var(--color-foreground); }
   padding-left: var(--side);
 }
 
-/* Shared: big section titles
-   (.section-label.big-title = small section heading at big-title size, e.g. "Latest fact-checks") */
-
-/* Shared: post card */
-.card { will-change: transform; }
-
 /* Header — layout only; controls come from components/ui (app/ui.css) */
 .header {
   position: relative;
@@ -384,135 +378,6 @@ input::placeholder { color: var(--color-foreground); }
   .hero-inner { padding-top: var(--spacing-48); }
 }
 
-/* The slider runs edge to edge; its padding lines the first card up with the page container */
-.slider {
-  --edge: calc(max(0px, (100% - var(--max-width) - 2 * var(--side)) / 2) + var(--side));
-  display: flex;
-  overflow-x: auto;
-  margin-top: -3px; /* ds-allow: aligns the slider track to the thumb */
-  padding: 3px var(--edge) 0; /* ds-allow: thumb overhang */
-  scroll-padding: 0 var(--edge);
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-}
-
-.slider::-webkit-scrollbar { display: none; }
-
-/* Posts (latest from Sebenarnya.my) */
-.posts { margin-bottom: 3vh; }
-
-@keyframes slideUp {
-  from { transform: translateY(40px); }
-  to { transform: translateY(0); }
-}
-
-/* Posts: auto-sliding agency logos */
-.agencies {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 100%;
-  max-width: 360px;
-  line-height: 0;
-  text-align: right;
-}
-
-.agencies small {
-  display: block;
-  margin-top: 1.2vh;
-  font-size: var(--text-body-sm);
-  line-height: 1;
-  white-space: nowrap;
-  text-align: right;
-  opacity: .8;
-}
-
-.agency-viewport {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  max-width: 330px;
-  padding: var(--spacing-6) 0;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
-}
-
-.agency-track {
-  display: flex;
-  align-items: center;
-  width: max-content;
-  animation: agencySlide 24s linear infinite;
-  will-change: transform;
-}
-
-.agency-viewport:hover .agency-track { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) { .agency-track { animation: none; } }
-
-.agency {
-  position: relative;
-  overflow: hidden;
-  flex: 0 0 76px;
-  width: 76px;
-  height: 76px;
-  margin-right: -22px; /* ds-allow: logos overlap by design */
-  border: 5px solid var(--color-background); /* ds-allow: gap ring that separates overlapping logos */
-  border-radius: var(--radius-full);
-  background-color: var(--color-background);
-  box-shadow: -2px 0 6px rgba(0, 0, 0, .05);
-  transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .agency:hover {
-    z-index: 5; /* local: above neighbouring logos */
-    transform: translateY(-4px) scale(1.08);
-  }
-}
-
-.agency img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: var(--radius-full);
-}
-
-@keyframes agencySlide {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@media (max-width: 1100px) {
-  .agency {
-    flex-basis: 68px;
-    width: 68px;
-    height: 68px;
-    margin-right: -20px; /* ds-allow: logos overlap by design */
-    border-width: 4px;
-  }
-}
-
-@media (max-width: 900px) {
-  .agencies { align-items: flex-start; }
-  .agencies small { text-align: left; }
-}
-
-/* Social media gallery (components/Stories.js) — elastic accordion, no slider.
-   Open card = 4 parts of the row{ display: flex; gap: var(--spacing-8); height: 560px; }
-
- /* ds-allow: platform brand colour */
-
-/* Folded: platform icon in the centre; shrinks away fast on open{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 48px;
-  height: 48px;
-  transform: translate(-50%, -50%);
-  transition: opacity var(--duration-fast) var(--ease-out) var(--duration-base), transform var(--duration-base) var(--ease-out) var(--duration-base);
-}
-
 /* Semakan fakta terkini — components/Latest.js + FlipCard.js */
 .latest-checks {
   --latest-side: var(--space-page-x); /* title and controls inset; the card row bleeds past it */
@@ -642,15 +507,6 @@ input::placeholder { color: var(--color-foreground); }
 .fc, .fc *, .fc *::before, .fc *::after { box-sizing: border-box; }
 /* Both faces are exactly 480 tall, so the card never changes height when it flips */
 .fc .flip-face { height: 480px; }
-
-.fc-dot {
-  width: 8px;
-  height: 8px;
-  flex-shrink: 0;
-  border-radius: var(--radius-full);
-  background: var(--dot);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dot) 18%, transparent);
-}
 
 /* Front */
 .fc-front { background: var(--color-surface-media); color: var(--color-foreground-inverse); }
@@ -1257,9 +1113,6 @@ input::placeholder { color: var(--color-foreground); }
 .card-link:focus-visible { outline: none; }
 
 .articles-card:focus-within { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--spacing-8); border-radius: var(--radius-card); }
-
-/* Verdict pill over photos */
-.verdict-tag { position: absolute; z-index: 1; top: var(--spacing-12); left: var(--spacing-12); pointer-events: none; }
 
 /* Agency avatar (logo or monogram) */
 .agency-avatar {
@@ -2096,24 +1949,6 @@ input::placeholder { color: var(--color-foreground); }
   .about-intro__card { flex: none; min-height: 240px; }
 }
 
-.about-fn-controls { display: flex; align-items: center; gap: var(--gap-block); }
-.about-fn-arrows { display: flex; gap: var(--gap-inline); }
-
-/* Progress: a quarter-width thumb slides to the selected function */
-.about-fn-track { flex: 1; height: 4px; overflow: hidden; border-radius: var(--radius-full); background: var(--color-muted-strong); }
-.about-fn-track span {
-  display: block;
-  width: calc(100% / var(--n, 4));
-  height: 100%;
-  border-radius: inherit;
-  background: var(--color-foreground);
-  transition: transform var(--duration-slow) var(--ease-in-out);
-}
-
-@keyframes about-fn-in {
-  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
-}
-
 /* Berita dan Galeri: two-row news marquee, then the photo sphere */
 .about-news { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--side); }
 .about-news__head { display: flex; flex-direction: column; align-items: center; gap: var(--gap-text); text-align: center; }
@@ -2265,13 +2100,11 @@ input::placeholder { color: var(--color-foreground); }
   .marquee__track { animation: none; }
   .marquee__row { overflow-x: auto; }
   .marquee__set[aria-hidden='true'] { display: none; }
-  .about-fn-track span,
   .sphere-node__disc,
   .about-hero-follow a,
   .aifa-card { transition: none; }
   .aifa-card:hover { transform: none; }
 }
-@keyframes about-fn-fade { from { opacity: 0; } }
 
 /* ==========================================================================
    About us: How it works (components/AboutUs.js)
@@ -2571,7 +2404,6 @@ input::placeholder { color: var(--color-foreground); }
   margin: 0;
   font-weight: var(--font-weight-medium);
 }
-.kenali__title-icon { color: var(--color-muted-foreground); }
 .kenali__card-text { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); max-width: 36ch; }
 
 /* Channels: three quiet icon discs */

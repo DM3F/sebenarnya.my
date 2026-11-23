@@ -47,7 +47,7 @@ const latest = [...articles]
 export default function Latest() {
   const viewRef = useRef(null);
   const railRef = useRef(null);
-  const st = useRef({ x: 0, v: 0, nudge: 0, setW: 0, step: 0, hover: false, focus: false, open: false, paused: false, drag: null, moved: false, reduce: false });
+  const st = useRef({ x: 0, v: 0, nudge: 0, setW: 0, step: 0, hover: false, focus: false, open: false, drag: null, moved: false, reduce: false });
 
   // One card open at a time; hover waits a beat so sweeping across the row doesn't flip every card
   const [open, setOpen] = useState(null);
@@ -104,7 +104,7 @@ export default function Latest() {
     const tick = (now) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      const running = !s.hover && !s.focus && !s.open && !s.drag && !s.reduce && !s.paused;
+      const running = !s.hover && !s.focus && !s.open && !s.drag && !s.reduce;
       const target = running ? -SPEED : 0;
       s.v += (target - s.v) * Math.min(1, dt * EASE_RATE);
       if (Math.abs(s.v) < 0.05 && !running) s.v = 0;

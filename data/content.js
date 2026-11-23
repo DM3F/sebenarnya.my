@@ -301,21 +301,6 @@ export const aboutNews = {
   ],
 };
 
-// How it works (components/AboutUs.js).
-// `cta.href` opens the claim form pop-up (see components/ClaimForm.js).
-export const howItWorks = {
-  title: 'Bagaimana kami menyemak fakta',
-  intro: 'Daripada laporan anda sehingga hasil semakan diterbitkan, inilah enam langkah yang kami lalui.',
-  steps: [
-    { title: 'Terima laporan', text: 'Anda hantar dakwaan, pautan atau tangkapan skrin.' },
-    { title: 'Analisis awal', text: 'AI menyaring dan mengelaskan maklumat.' },
-    { title: 'Semakan agensi', text: 'Agensi berkaitan menyiasat laporan.' },
-    { title: 'Pengesahan', text: 'Agensi mengesahkan hasil siasatan.' },
-    { title: 'Penerbitan', text: 'Hasil yang diluluskan diterbitkan di Sebenarnya.my.' },
-    { title: 'Penyebaran', text: 'Hasil semakan dikongsi untuk membendung berita palsu.' },
-  ],
-};
-
 /* Logo page (app/logo, components/LogoKit.js) */
 // `src` is the preview, `file` is what gets downloaded, `filename` is the name it saves as.
 // icon.png is really a WebP file, so the icon downloads from icon-download.png (a true PNG copy).

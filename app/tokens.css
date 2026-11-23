@@ -26,7 +26,6 @@
   --color-grey-95: #f5f3f1;   /* warm taupe */
   --color-grey-91: #ebe8e4;   /* stone */
   --color-grey-82: #d7d2cc;   /* pill edge */
-  --color-grey-62: #a59f97;   /* ash — decorative only, never text */
   --color-grey-50: #878179;   /* field edge (3:1) */
   --color-grey-43: #6f6a63;   /* smoke */
   --color-grey-41: #6b6a68;
@@ -36,8 +35,6 @@
   --color-red-dark: #c8211c;
   --color-blue: #3a46f5;      /* spark: Makluman verdict dot, AIFA avatar only — never focus or links */
   --color-azure: #2f5fd0;
-  --color-orange: #e08a00;
-  --color-orange-dark: #a35a00;
   --color-green: #1fa463;
   --color-green-dark: #137a49;
 
@@ -58,7 +55,6 @@
   --color-text-secondary-inverse: color-mix(in srgb, var(--color-white) 80%, transparent);  /* body text on dark: graphite's twin · ≈7.3:1 on graphite */
   --color-muted-foreground-inverse: color-mix(in srgb, var(--color-white) 60%, transparent); /* dimmed text on dark: smoke's twin · ≈7:1 on black */
   --color-surface-inverse: var(--color-grey-25);  /* dark card on a light page (graphite) */
-  --color-selected: var(--color-grey-41);
   --color-ring: var(--color-foreground);           /* focus: ink ring (on dark/photo surfaces --focus-ring-color-inverse) */
   --color-link: var(--color-foreground);           /* links are ink + underline, like every other text */
   --color-destructive: var(--color-red-dark);      /* error text */
@@ -86,7 +82,6 @@
   --color-verdict-benar-dot: var(--color-green);
 
   /* ── Font weight — every headline (Display & Heading) is medium ───────── */
-  --font-weight-light: 300;    /* stat captions only */
   --font-weight-regular: 400;  /* body; display via --font-weight-display */
   --font-weight-medium: 500;   /* EVERY heading (H1→card title), labels, small text */
   --font-weight-display: var(--font-weight-regular); /* stat numbers only */
@@ -146,9 +141,6 @@
   --radius-full: 9999px; /* every button, tab, chip, search */
 
   /* ── Shadow — elevation comes from tone, not shadow ───────────────────── */
-  --shadow-subtle: 0 0 0 .5px rgba(0, 0, 0, .125), 0 1px 1px rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .04);
-  --shadow-subtle-2: inset 0 0 0 .5px rgba(0, 0, 0, .075);
-  --shadow-subtle-3: inset 0 0 0 .5px rgba(0, 0, 0, .10);
   --shadow-float: 0 0 0 .5px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12); /* floating only */
   --shadow-overlay: 0 0 0 .5px rgba(0, 0, 0, .2), 0 24px 64px rgba(0, 0, 0, .2); /* modals and the AIFA panel: above a scrim */
 
@@ -177,17 +169,10 @@
   --gradient-scrim-media-wide: linear-gradient(90deg, var(--color-black) 0%, var(--color-black) 26%, rgb(0 0 0 / .7) 42%, rgb(0 0 0 / .1) 62%, transparent 75%);
   --gradient-scrim-bottom: linear-gradient(0deg, rgb(0 0 0 / .8) 0%, rgb(0 0 0 / .55) 45%, transparent 100%);
   --gradient-scrim-bottom-short: linear-gradient(0deg, rgb(0 0 0 / .85) 0%, rgb(0 0 0 / .55) 45%, transparent 75%); /* mobile hero slides */
-  --gradient-scrim-card: linear-gradient(0deg, rgb(0 0 0 / .92) 0%, rgb(0 0 0 / .8) 40%, rgb(0 0 0 / .35) 70%, transparent 90%); /* social cards: text over busy photos */
   --gradient-scrim-top: linear-gradient(180deg, rgb(0 0 0 / .35), transparent);
 
-  /* ── Container ─────────────────────────────────────────────────────────── */
-  --container-page: 1280px;
-  --container-rail: 1180px;
-
-  /* ── Breakpoint (reference; media queries cannot read variables) ───────── */
-  --breakpoint-type: 600px;   /* mobile type scale below this */
-  --breakpoint-stack: 900px;
-  --breakpoint-nav: 1100px;   /* compact header below this */
+  /* ── Breakpoints (media queries cannot read variables, so they are written as numbers):
+        600 phone (one column, phone type) · 900 tablet (stacked layouts) · 1100 compact header ── */
 
   /* ══ 2. SEMANTIC — typography roles ═════════════════════════════════════
      Tailwind v4 shape: --text-<role>, --text-<role>--line-height, …
@@ -264,8 +249,6 @@
   --size-icon-sm: 14px;      /* sm: inside badges and 12–13px meta */
   --size-icon: 16px;         /* md (default): next to a label, inside buttons */
   --size-icon-lg: 20px;      /* lg: field and search icons, icon-only list items */
-  --size-icon-xl: 24px;      /* xl: icon-only buttons (close, chat toggle), status marks */
-  --size-icon-display: 40px; /* display: empty states, upload drop zones */
 
   /* Avatars (agency logos, AIFA). The logo sits --avatar-inset inside the ring. */
   --size-avatar-sm: 32px;    /* on cards and images */

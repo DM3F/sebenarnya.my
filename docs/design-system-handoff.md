@@ -37,7 +37,7 @@ Rujukan awal: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork")
 ✅ **Satu set nama token** untuk situs, CMS dashboard dan browser extension (namespace Tailwind v4 + warna semantik gaya shadcn). Sumber tunggal: `app/tokens.css` (boleh ditampal terus ke `@theme` Tailwind). Tiga lapis: primitive → semantic → component; peraturan di [`design-system-rules.md`](design-system-rules.md).
 
 ### 2.1 Palette (primitive — JANGAN guna dalam komponen)
-`--color-white #FFFFFF` · `--color-grey-99 #FDFCFC` (eggshell) · `--color-grey-95 #F5F3F1` (warm taupe) · `--color-grey-91 #EBE8E4` (stone) · `--color-grey-82 #D7D2CC` (pill edge) · `--color-grey-62 #A59F97` (ash, hiasan sahaja) · `--color-grey-50 #878179` (field edge) · `--color-grey-43 #6F6A63` (smoke) · `--color-grey-41 #6B6A68` · `--color-grey-25 #44403B` (graphite) · `--color-black #000` · `--color-red #E8302A` · `--color-red-dark #C8211C` · `--color-blue #3A46F5` · `--color-azure #2F5FD0` · `--color-orange #E08A00` · `--color-orange-dark #A35A00` · `--color-green #1FA463` · `--color-green-dark #137A49`
+`--color-white #FFFFFF` · `--color-grey-99 #FDFCFC` (eggshell) · `--color-grey-95 #F5F3F1` (warm taupe) · `--color-grey-91 #EBE8E4` (stone) · `--color-grey-82 #D7D2CC` (pill edge) · `--color-grey-50 #878179` (field edge) · `--color-grey-43 #6F6A63` (smoke) · `--color-grey-41 #6B6A68` · `--color-grey-25 #44403B` (graphite) · `--color-black #000` · `--color-red #E8302A` · `--color-red-dark #C8211C` · `--color-blue #3A46F5` · `--color-azure #2F5FD0` · `--color-green #1FA463` · `--color-green-dark #137A49`
 
 ### 2.2 Semantic colours (guna INI)
 | Token | Nilai | Guna |
@@ -54,7 +54,6 @@ Rujukan awal: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork")
 | `--color-border-strong` | grey-50 | border field, button outline |
 | `--color-primary` / `-hover` / `-foreground` | black / grey-25 / white | aksi utama |
 | `--color-foreground-inverse` | white | teks atas gelap/media |
-| `--color-selected` | grey-41 | |
 | `--color-ring` | blue | fokus |
 | `--color-link` | blue | pautan |
 | `--color-destructive` | red-dark | teks ralat, field tidak sah |
@@ -95,7 +94,7 @@ Font: **Manrope** 300/400/500/600 untuk semuanya (`--font-sans`) — kandungan, 
 
 Token: komponen **hanya** guna type role `--text-{display,heading-lg,heading,title,intro,article,body,body-sm,label,label-sm,eyebrow,badge,verdict,caption,stat}` (+ `--line-height`, `--font-weight`, `--letter-spacing`). Role besar fluid dengan `clamp()` (375 → 1280px), tiada media query untuk type. Jadual penuh: `docs/design-system-rules.md` › Type roles. Primitive (`--text-12…48`, `--leading-heading` 1.2, `--leading-body` 1.5; tracking 0 kecuali `--tracking-label` untuk UPPERCASE) hanya dalam tokens.css.
 
-Mobile (<600px, `--breakpoint-type`): Display → `--text-38`/`--leading-42`, Heading/36 → `--text-30`/`--leading-36`, Heading/32 → `--text-28`/`--leading-34` (tukar dalam media query komponen). Body kekal 400, max 68ch.
+Mobile (<600px): Display → `--text-38`/`--leading-42`, Heading/36 → `--text-30`/`--leading-36`, Heading/32 → `--text-28`/`--leading-34` (tukar dalam media query komponen). Body kekal 400, max 68ch.
 
 > **Peraturan kini (ganti senarai di bawah):** komponen guna role jarak `--gap-inline/text/group/cards/block` dan saiz kad `--pad-card-sm/-/lg` + `--radius-card` / `--radius-card-lg`. Lihat `docs/design-system-rules.md` › Spacing & radius roles.
 
@@ -117,9 +116,6 @@ Seksyen **tidak** ada padding atas/bawah sendiri; jarak datang dari `.main`. Kum
 
 ### 2.6 Effects
 ```css
---shadow-subtle: 0 0 0 .5px rgba(0,0,0,.125), 0 1px 1px rgba(0,0,0,.04), 0 2px 4px rgba(0,0,0,.04);
---shadow-subtle-2: inset 0 0 0 .5px rgba(0,0,0,.075);
---shadow-subtle-3: inset 0 0 0 .5px rgba(0,0,0,.10);
 --shadow-float: 0 0 0 .5px rgba(0,0,0,.2), 0 8px 24px rgba(0,0,0,.12); /* Tanya AIFA sahaja */
 ```
 Elevation datang dari tona (Eggshell → Warm Taupe → Stone), bukan shadow.
@@ -134,12 +130,12 @@ import { Icon } from '@/components/ui';
 ```
 - Garis **1.75px pada semua saiz** (`absoluteStrokeWidth`), warna `currentColor` (ikut token teks), `aria-hidden` — nama boleh-capai datang dari kawalan.
 - Saiz: 16 dalam button/label/kad · 18–20 kawalan (search, tutup, anak panah carousel) · 24 butang terapung (Tanya AIFA) · 28–40 ilustrasi status (borang).
-- Dipakai: ArrowLeft, ArrowRight, ArrowUpRight, ChevronDown/Left/Right, Search, X, MessageSquareText, Flag, Check, Link, CloudUpload, Share, Download, Calendar, Play, Pause (diisi: `PlayFilled`/`PauseFilled` dari `components/ui/filledIcons`, fill currentColor).
+- Dipakai: ArrowLeft, ArrowRight, ArrowUpRight, ChevronDown/Left/Right, Search, X, MessageSquareText, Flag, Check, Link, CloudUpload, Share, Download, Calendar, Play (butang jeda dan `filledIcons` dibuang 22 Nov 2026).
 - **Pengecualian:** logo jenama (Facebook, Instagram, Threads, X, TikTok) bukan dalam Lucide → kekal SVG jenama (`data/content.js`).
 - Jangan guna glyph teks (↗ → ‹ ›), SVG tulis tangan atau set ikon lain. Jangan override `stroke-width` dalam CSS.
 
 ### 2.7 Layout
-Page max 1280 `--container-page`, rails 1180 `--container-rail` (artwork frame 1624 = 81px side padding), rails 1180, side 32 / 16. Editorial grid 12 kolum, gap 12 (heading span 7, copy col 9–12). Breakpoints: `--breakpoint-nav` 1100 · `--breakpoint-stack` 900 · `--breakpoint-type` 600 (rujukan; media query tak boleh baca variable).
+Page max `--max-width`, sisi `--space-page-x` (96 → 48 ≤1280 → 24 ≤900 → 16 ≤600). Editorial grid 12 kolum, gap 12 (heading span 7, copy col 9–12). Breakpoints (nombor dalam media query; tiada token kerana media query tak boleh baca variable): 1100 header kompak · 900 susun atur bertindan · 600 telefon.
 
 ---
 
@@ -354,7 +350,7 @@ Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma 
 - **Artikel** (`components/Articles.js`): baris kartu utama + senarai sisi dibuang; semua hasil dalam grid kartu 4 kolom. Chip kategori hanya `Semua` + empat keputusan (Palsu, Penjelasan, Waspada, Makluman). Tajuk kartu kini `box-sizing: border-box` supaya padding kanan 12 dihormati.
 - **Detail artikel**: kolum bacaan `.post-body` 514px, 18/28.
 - **Tentang Kami › About** (`.about-intro`, data `aboutIntro`): pill label 14 Medium berbingkai `--color-border`; lead 24/32 lebar 700. Tiga kartu tinggi 340, gap 12, `--radius-card`: (1) `--color-primary` dengan teks 24 Medium + bahagian `--color-muted-foreground` dan penunjuk status (suis hiasan, `--color-link`); (2) `--color-muted-strong` dengan pill 16/24 Medium; (3) `--color-muted` dengan angka 40 Light + bar putus-putus keputusan (dikira daripada `articles`). Baris fakta: judul 20 Medium tengah, angka 40 Light, label 14 `--color-muted-foreground`. ≤1100 kartu menindan, fakta 2×2.
-- Bahagian "Bagaimana kami menyemak fakta" dibuang daripada halaman kerana tiada dalam canvas (data `howItWorks` dikekalkan).
+- Bahagian "Bagaimana kami menyemak fakta" dibuang daripada halaman kerana tiada dalam canvas (data `howItWorks` kemudian dibuang, 23 Nov 2026).
 - **Mobile fixes**: `.about-intro__lead` `flex: none` ≤1100 (flex-basis 700 jadi tinggi dalam kolum); `.about-fn-card` `flex: none` ≤700 (kad kecil Empat fungsi runtuh ke 48px); `.articles-card` `box-sizing: border-box` (kad melimpah 28px daripada slot grid).
 - **Hero carousel**: teks hanya pada slaid tengah (slaid sisi: gambar sahaja, fade .2s keluar / .3s masuk); pembilang `03 / 05` 14px tnum dalam pill hitam 60% di kanan bawah slaid aktif (disembunyikan ≤600). Slaid RON95 guna foto pam minyak.
 
@@ -596,3 +592,14 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **"Ikuti kami" fluid (23 Nov 2026):** bulatan media sosial `--follow-disc: clamp(--size-control-sm 36, 29.5px + 1.55vw, --size-control-lg 48)` — 36 @≤390, 41 @768, 48 @≥1200; ikon = separuh bulatan (18 → 24). `::before` membesarkan kawasan sentuh kembali ke 44 (`--size-hit-area`). Senarai boleh `wrap`.
 
 - **Statistik Utama, pusat optik (23 Nov 2026):** angka + keterangan dalam setiap kad `.viewership-stat` kini di tengah (mendatar dan menegak), `text-align: center`. Padding bawah = `--pad-card` + 24, jadi kumpulan teks duduk 12px di atas pusat geometri (≈5% tinggi kad), iaitu pusat optik. Kad foto: satu lapisan rata 60% hitam ke atas seluruh foto (tiada jalur/gradient); diukur pada piksel sebenar: angka ≥ 6.06:1, keterangan ≥ 5.82:1 (1280 dan 390). 50% hanya memberi 4.0:1, jadi 60% ialah minimum yang lulus AA.
+
+
+## Pembersihan untuk handover (23 Nov 2026)
+Diaudit dengan skrip (token ditakrif vs `var()` dirujuk; kelas CSS vs token `className` sebenar dalam JS, termasuk awalan dinamik seperti `ui-btn--${variant}`; `@keyframes` vs `animation`; aset `public/` vs laluan dalam kod).
+- **Token dibuang (tiada pengguna):** `--color-grey-62`, `--color-orange`, `--color-orange-dark`, `--color-selected`, `--font-weight-light`, `--shadow-subtle(-2/-3)`, `--gradient-scrim-card`, `--container-page`, `--container-rail`, `--size-icon-xl`, `--size-icon-display`, `--breakpoint-*` (diganti komen rujukan dalam `tokens.css`: 600 · 900 · 1100).
+- **Token dikekalkan walaupun belum dirujuk:** sub-token peranan tipografi (`--text-*--font-weight`, `--text-eyebrow--letter-spacing`) supaya setiap peranan lengkap; `--color-brand`, `--spacing-28` (langkah skala), `--z-overlay` (skala z).
+- **CSS mati dibuang:** slider/posts/agencies lama (`.slider`, `.posts`, `.agencies`, `.agency*`, `@keyframes slideUp/agencySlide`), sisa galeri media sosial (dua komen tidak tertutup yang menelan peraturan), fungsi Tentang Kami (`.about-fn-*`, `@keyframes about-fn-in/fade`), `.card`, `.fc-dot`, `.verdict-tag`, `.kenali__title-icon`, komen `.section-label.big-title`.
+- **JS/data dibuang:** `components/ui/filledIcons.js` (tiada butang jeda lagi), eksport `howItWorks`, bendera `paused` dalam `Latest.js`.
+- **Aset dibuang (≈5.9 MB):** 7 foto `posts/sebenarnya-*` tidak dirujuk, `about/hero.jpg`, `about/berita-wsis.webp`, `carousel/hero-ktmb|str|lesen.jpg`, 6 potret `carousel/human-*.jpg` (avatar pengunjung sudah dipotong ke `images/avatars/`), `bento/gold-award-medal.webp`, `public/fonts/inter/` (Manrope sahaja, via `next/font`).
+- **Pustaka UI dikekalkan walaupun tidak dipakai di laman** (untuk CMS + sambungan pelayar): `Tabs`, `ButtonGroup`, varian `Button` `link` / `icon-sm` / `icon-lg`, `Badge` `lg`, `Verdict` `single`.
+- Selepas pembersihan: `lint:ds` bersih, build lulus, tiada imej yang dirujuk hilang dalam `out/`, pendakap CSS seimbang.
