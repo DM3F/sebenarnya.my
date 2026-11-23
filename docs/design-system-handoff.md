@@ -591,7 +591,7 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 
 - **"Ikuti kami" fluid (23 Nov 2026):** bulatan media sosial `--follow-disc: clamp(--size-control-sm 36, 29.5px + 1.55vw, --size-control-lg 48)` — 36 @≤390, 41 @768, 48 @≥1200; ikon = separuh bulatan (18 → 24). `::before` membesarkan kawasan sentuh kembali ke 44 (`--size-hit-area`). Senarai boleh `wrap`.
 
-- **Statistik Utama, pusat optik (23 Nov 2026):** angka + keterangan dalam setiap kad `.viewership-stat` kini di tengah (mendatar dan menegak), `text-align: center`. Padding bawah = `--pad-card` + 24, jadi kumpulan teks duduk 12px di atas pusat geometri (≈5% tinggi kad), iaitu pusat optik. Kad foto: satu lapisan rata **50%** hitam (tiada jalur/gradient; 60% terlalu gelap) + halo lembut pada huruf sahaja (`text-shadow` 12px 70% + 4px 55%). Diukur pada latar 4px di sekeliling huruf, piksel paling terang: angka ≥ 5.64:1, keterangan ≥ 4.72:1 (1280 dan 390); p95 ≈ 7.7:1.
+- **Statistik Utama, pusat optik (23 Nov 2026):** angka + keterangan dalam setiap kad `.viewership-stat` kini di tengah (mendatar dan menegak), `text-align: center`. Padding bawah = `--pad-card` + 24, jadi kumpulan teks duduk 12px di atas pusat geometri (≈5% tinggi kad), iaitu pusat optik. Kad foto: satu lapisan rata **35%** hitam (atas permintaan; 50–60% terlalu gelap) + halo pada huruf sahaja (`text-shadow` 16px 80% + 6px 70% + 2px 50%). Diukur pada latar 4px di sekeliling huruf: p95 ≈ 5.3–6.1:1 (angka dan keterangan). Piksel paling terang: angka ≥ 4.0:1 (lulus AA teks besar 3:1); keterangan 3.9:1 desktop / 3.05:1 telefon — **di bawah AA 4.5:1 pada titik paling terang foto**. Jika perlu lulus penuh: 50% lapisan (≥4.72:1).
 
 
 ## Pembersihan untuk handover (23 Nov 2026)

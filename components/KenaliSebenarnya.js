@@ -80,7 +80,7 @@ export default function KenaliSebenarnya() {
 
         <article className="kenali__card kenali__card--social">
           <h3 className="kenali__card-title">Ikuti kami di media sosial</h3>
-          <p className="kenali__card-text">Tekan logo untuk menonton petikan hantaran terkini kami.</p>
+          <p className="kenali__card-text">Klik logo untuk melihat perkongsian terkini kami.</p>
           <SocialPeek className="kenali__social" />
         </article>
       </div>
