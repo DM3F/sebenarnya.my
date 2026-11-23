@@ -617,3 +617,14 @@ Masalah: di telefon butang, search, chip dan badge terasa terlalu besar dan tida
 - **Kawalan bersarang diterbitkan:** butang "Semak" = `search − 2 × (inset 4 + border)`; tab = `track − 2 × (segment + border)`; bulatan ikon `.fc-read` = `lg − 2 × 6`.
 - **`global.css` kini guna token:** `.menu-toggle` md, `.fc-read` lg, `.social-peek__logo` + `.kenali__icons` lg, titik carousel lg, `.aifa-toggle` xl (override 52px telefon dibuang), `.aifa-links a` sm, `.folder__chip` sm dengan Label/14, `.post-back` hit-area.
 - Diukur pada runtime (Chrome headless, 375 / 1280): Button 40 / 44, Chip 40 / 44, search Home 48 / 56 (butang 38 / 46), search Artikel 40 / 44, Select 40 / 44, Verdict pill 32, overlay/tint 24, Badge 24, `.fc-read` 44 / 48, logo sosial 44 / 48. `::after` setiap kawalan 40px = 44.
+
+## Audit ukuran hardcode + lint diperluas (23 Nov 2026)
+
+- **Press:** semua `:active` kini `var(--press-scale)` (.97); dahulu .94 / .95 / .96 / .97 bercampur (`.fc-read`, `.aifa-toggle`, `.about-hero-follow`, `.sphere-node`, `.social-peek__logo`, `.ui-navlink`, `.ui-lang__trigger`).
+- **Disc ikon borang aduan:** `.claim-icon` dan `.claim-file-icon` = `--size-control` (40→44; override 38px telefon dibuang), `.claim-done-icon` = `--size-control-xl` (48→56), bulat `--radius-full`.
+- **Titik:** taip AIFA dan titik carousel = `--size-dot` (8); titik aktif = 4 × dot.
+- **Menu:** Kongsi `--size-menu` (220, dahulu 180); panel nav ringkas `--size-menu-lg` (260, token baharu).
+- **Token baharu:** `--color-hairline-strong` (cincin logo kecil atas foto), `--radius-tail` (sudut bubble chat), `--underline-offset` (4) + `--underline-thickness` (1) untuk setiap garis bawah (footer, "Semua artikel", borang, `Button` link/ghost).
+- **Breakpoint:** `@media (min-width: 901px)` pada Logo kit ditukar ke asas desktop + `@media (max-width: 900px)`; render sama (grid/subgrid ≥901, flex ≤900).
+- **`lint:ds` baharu:** `raw-colour-fn`, `press-scale`, `control-size` (32–56px), `dot-size`, `underline`, `breakpoint-direction`; `raw-radius` kini baca juga `border-*-*-radius`. Diuji pada commit sebelum ini: 26 temuan, kini bersih.
+- **Sengaja tidak diubah:** geometri ilustrasi FormatFolder, saiz flip card / slaid hero / marquee, lebar bacaan (400–1500px) dan ukuran panel AIFA / modal aduan: perlu keputusan reka bentuk (skala measure + knob panel) dahulu.

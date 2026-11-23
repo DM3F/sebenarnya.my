@@ -92,8 +92,8 @@
   line-height: var(--text-label--line-height);
   font-weight: var(--text-label--font-weight);
   text-decoration: var(--btn-decoration);
-  text-decoration-thickness: var(--border-width);
-  text-underline-offset: var(--spacing-4);
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
@@ -583,7 +583,7 @@
 @media (hover: hover) and (pointer: fine) {
   .ui-navlink:hover { background: var(--color-accent); }
 }
-.ui-navlink:active { background: var(--color-accent); scale: .97; }
+.ui-navlink:active { background: var(--color-accent); scale: var(--press-scale); }
 .ui-navlink[aria-current='page'],
 .ui-dropdown__trigger[data-current] { font-weight: var(--font-weight-medium); }
 
@@ -674,7 +674,7 @@
 @media (hover: hover) and (pointer: fine) {
   .ui-lang__trigger:hover { background: var(--color-secondary-hover); }
 }
-.ui-lang__trigger:active { scale: .97; }
+.ui-lang__trigger:active { scale: var(--press-scale); }
 .ui-lang__trigger[aria-expanded='true'] { background: var(--color-secondary-hover); border-color: var(--color-border-strong); }
 .ui-lang__trigger:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);

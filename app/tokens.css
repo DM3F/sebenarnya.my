@@ -62,6 +62,7 @@
   --color-brand-strong: var(--color-red-dark);
   --color-brand-spark: var(--color-blue);          /* decorative spark */
   --color-hairline: rgba(0, 0, 0, .05);
+  --color-hairline-strong: rgba(0, 0, 0, .08); /* edge that lifts a small logo off a photo */
   --color-input: var(--color-border-strong);       /* field + outline-button edge (3:1) */
   --color-secondary: var(--color-muted);           /* secondary button / chip fill */
   --color-secondary-hover: var(--color-muted-strong);
@@ -264,7 +265,8 @@
   --avatar-inset: var(--spacing-4);
   --size-dot: 8px;                              /* verdict / status dot */
   --size-textarea: 120px;
-  --size-menu: 220px;                           /* dropdown min width */
+  --size-menu: 220px;                           /* dropdown min width (nav, Kongsi) */
+  --size-menu-lg: 260px;                        /* compact nav panel (≤1100) */
 
   /* ══ 2. SEMANTIC — spacing roles ════════════════════════════════════════ */
   /* Control side padding follows the control scale (fluid 375 → 1280) */
@@ -309,9 +311,12 @@
   --radius-menu: var(--radius-md);
   --radius-menu-item: var(--radius-input);
   --radius-media: var(--radius-md);             /* thumbnails, inner media */
+  --radius-tail: var(--radius-sm);              /* chat bubble corner on the speaker's side */
 
   --border-width: 1px;          /* cards, panels, menus, fields, dividers */
   --border-width-hairline: .5px; /* small pills and chips (Figma "pill edge") */
+  --underline-thickness: var(--border-width);   /* every text underline */
+  --underline-offset: var(--spacing-4);         /* every text underline */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --focus-ring-color: var(--color-ring);

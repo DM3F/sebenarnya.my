@@ -35,10 +35,10 @@ Decision guide:
 |---|---|
 | Colour | `--color-background · foreground · card · muted · muted-strong · accent · secondary(-hover/-foreground) · primary(-hover/-foreground) · input · border · border-strong · ring · link · destructive · disabled(-foreground) · surface-overlay · surface-media · scrim · brand · verdict-{palsu,makluman,benar}(-dot)` (three verdicts only: Palsu, Makluman, Benar) |
 | Type roles | `--text-display · heading-lg · heading · title · intro · article · body · body-sm · label · label-sm · eyebrow · badge · verdict · caption · stat`, each with `--line-height`, and where it applies `--font-weight` / `--letter-spacing` (Tailwind v4 shape: `--text-label--line-height`) |
-| Size | `--size-control-sm · control · control-lg · control-xl` (fluid control scale, below) `· hit-area (44) · badge-sm (20) · badge (24) · badge-lg (32) · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu` |
+| Size | `--size-control-sm · control · control-lg · control-xl` (fluid control scale, below) `· hit-area (44) · badge-sm (20) · badge (24) · badge-lg (32) · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu (220) · menu-lg (260)` |
 | Space roles | Content: `--gap-inline · gap-text · gap-group · gap-cards · gap-block`, cards: `--pad-card-sm · pad-card · pad-card-lg`; controls: `--space-control-x-sm · control-x · control-x-lg` (fluid) `· field-x · badge-x-sm/-x/-x-lg · inline-tight · stack · segment`; page: `--space-page-x · section · page-top` |
-| Shape | `--radius-control (pill) · field (8) · menu · menu-item · media (12) · card (20) · card-lg (24)` |
-| Focus & effects | `--border-width · focus-ring-width · focus-ring-offset · focus-ring-color · blur-overlay · press-scale · transition-colors · shadow-*` |
+| Shape | `--radius-control (pill) · field (8) · menu · menu-item · media (12) · card (20) · card-lg (24) · tail (4, chat bubble corner)` |
+| Focus & effects | `--border-width · underline-thickness · underline-offset · focus-ring-width · focus-ring-offset · focus-ring-color · blur-overlay · press-scale · transition-colors · shadow-*` |
 | Motion | `--duration-fast/base/slow/slower · ease-out/in-out/emphasized` |
 
 ### Type roles (the only way to size text)
@@ -214,7 +214,7 @@ Easing `--ease-out` by default. Ambient loops
 2. No palette primitives (`--color-grey-*`, `--color-red`…) in components.
 3. `app/ui.css`: **no raw lengths** (`px`); use roles. Exceptions carry `/* ds-allow: reason */`.
 3d. **Details:** focus rings, motion and border widths only from tokens; `<Icon>` sizes by name.
-3c. **Layout:** only the four breakpoints; z-index above 5 must be a `--z-*` layer.
+3c. **Layout:** only the four breakpoints, `max-width` only (no `min-width` media queries); z-index above 5 must be a `--z-*` layer.
 3b. **Spacing & radius, every file except tokens.css:** no raw `px` in padding, margin or gap, no raw `px` radius, no `--radius-lg` (use `--radius-card-lg`). Optical nudges and overlaps carry `/* ds-allow: reason */`.
 3a. **Type, every file except tokens.css:** only type roles. No `--text-16`/`--leading-*` steps, no raw `font-size` (px, `clamp()`, `calc()`), no `px` line-height, no `fontSize` in JSX, no role that tokens.css does not define. Percent/em tweaks are fine.
 4. Icons: Lucide only, always through `components/ui/Icon.js`.
@@ -222,6 +222,10 @@ Easing `--ease-out` by default. Ambient loops
 6. Font weights only from `--font-weight-*`; nothing above 600.
 7. Manrope only (`--font-sans`).
 8. No `transition: all`.
+9. No `rgb()` / `rgba()` / `hsl()` outside `tokens.css` (masks excepted).
+10. Press feedback on `:active` is `var(--press-scale)`, never a number.
+11. A 32–56px `width`/`height`/`min-*` is a control, disc or tile: use `--size-control-*`, `--size-avatar*` or `--size-badge*` (`max-*` caps on images are fine). A 4–10px dot uses `--size-dot`.
+12. Underlines use `--underline-offset` and `--underline-thickness`.
 
 Run it before every commit; it exits 1 on failure.
 

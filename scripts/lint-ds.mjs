@@ -50,6 +50,11 @@ const rules = [
     test: (l, p) => !isTokens(p) && isCss(p) && /#[0-9a-fA-F]{3,8}\b/.test(code(l)) && !/mask-image|--fade-/.test(l),
   },
   {
+    id: 'raw-colour-fn',
+    why: 'Colour written as rgb()/rgba()/hsl() outside tokens.css; use a semantic token (gradients and masks live in tokens.css too).',
+    test: (l, p) => !isTokens(p) && isCss(p) && /\b(rgba?|hsla?)\(/.test(code(l)) && !/mask-image|--fade-/.test(l),
+  },
+  {
     id: 'palette-primitive',
     why: 'Palette primitive used directly; use a semantic token (--color-foreground, --color-border…).',
     test: (l, p) => !isTokens(p) && /var\(--color-(grey-\d+|red|red-dark|blue|azure|orange|orange-dark|green|green-dark|white|black)\)/.test(code(l)),
@@ -117,7 +122,7 @@ const rules = [
   {
     id: 'raw-radius',
     why: 'Raw px border-radius; use --radius-card / --radius-card-lg / --radius-media / --radius-control.',
-    test: (l, p) => !isTokens(p) && isCss(p) && /border-radius:[^;]*\b[1-9]\d*(\.\d+)?px/.test(code(l)),
+    test: (l, p) => !isTokens(p) && isCss(p) && /border(-(top|bottom|start|end)-(left|right|start|end))?-radius:[^;]*\b[1-9]\d*(\.\d+)?px/.test(code(l)),
   },
   {
     id: 'card-radius-primitive',
@@ -126,10 +131,35 @@ const rules = [
   },
   {
     id: 'breakpoint',
-    why: 'Off-system breakpoint; use max-width 1280 / 1100 / 900 / 600 (min-width = those + 1).',
+    why: 'Off-system breakpoint; use max-width 1280 / 1100 / 900 / 600.',
     test: (l, p) => isCss(p) && /@media/.test(l)
       && [...code(l).matchAll(/(max|min)-width:\s*(\d+)px/g)].some(([, k, n]) =>
         !(k === 'max' ? [1280, 1100, 900, 600] : [1281, 1101, 901, 601]).includes(Number(n))),
+  },
+  {
+    id: 'press-scale',
+    why: 'Press feedback is one value: scale var(--press-scale) on :active, never a number.',
+    test: (l, p) => !isTokens(p) && isCss(p) && /:active/.test(code(l)) && /scale(\s*:\s*|\(\s*)\.?\d/.test(code(l)),
+  },
+  {
+    id: 'control-size',
+    why: 'A 32–56px box is a control, disc or tile: take a --size-control-* / --size-avatar* / --size-badge* token, not px. (max-* caps on images are fine.)',
+    test: (l, p) => !isTokens(p) && isCss(p) && /(?:^|[\s{;])(min-)?(width|height)\s*:\s*(3[2-9]|4\d|5[0-6])px\b/.test(code(l)),
+  },
+  {
+    id: 'dot-size',
+    why: 'A 4–10px dot takes var(--size-dot).',
+    test: (l, p) => !isTokens(p) && isCss(p) && /(?:^|[\s{;])(width|height)\s*:\s*([4-9]|10)px\b/.test(code(l)),
+  },
+  {
+    id: 'underline',
+    why: 'Underlines use var(--underline-offset) and var(--underline-thickness).',
+    test: (l, p) => !isTokens(p) && isCss(p) && /(text-underline-offset|text-decoration-thickness)\s*:\s*\d*\.?\d+px/.test(code(l)),
+  },
+  {
+    id: 'breakpoint-direction',
+    why: 'Breakpoints are max-width only, mobile last (docs/design-system-rules.md › Layout); min-width media queries are not part of the system.',
+    test: (l, p) => isCss(p) && /@media[^{]*\(min-width:/.test(code(l)),
   },
   {
     id: 'z-index',
