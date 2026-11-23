@@ -590,3 +590,5 @@ Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (t
 - **Bar verdict "Agensi rakan" (Tentang Kami) mengisi sekali bila kelihatan (23 Nov 2026):** `useFillOnView` dalam `AboutUs.js` (IntersectionObserver, 50% kelihatan, sekali sahaja). Setiap bar Palsu / Benar / Makluman didedahkan kiri → kanan dengan `clip-path: inset(0 100% 0 0 round …)` → `inset(0)` (hujung bulat kekal; `scaleX` akan memampatkannya), `--duration-slower` `--ease-out`, stagger tidak sekata 0 / 75 / 135ms. Tiada gerakan berterusan: data yang dibaca tidak patut bergerak. Tanpa JS dan `prefers-reduced-motion`: bar penuh serta-merta. Diuji 1440 / 390.
 
 - **Kad Juara Dunia (Kenali Sebenarnya.my, Utama), 23 Nov 2026:** butang "Ketahui lebih lanjut" dibuang; kad kini eyebrow, tajuk, subtajuk dan teks sahaja. `.kenali__award-cta` dan import `Button` / `ArrowRight` yang tidak dipakai turut dibuang.
+
+- **Fakta dalam angka (23 Nov 2026):** satu lajur (satu fakta sebaris) hanya untuk telefon ≤600px. Desktop: satu baris `space-around`; tablet ≤1100px: grid 2 × 2.
