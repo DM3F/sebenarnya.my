@@ -1084,15 +1084,8 @@ input::placeholder { color: var(--color-foreground); }
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  /* Light 20% wash over the whole photo, plus a band of scrim across the middle where the text
-     now sits (optical centre). Measured on the real pixels: see handoff doc. */
-  background:
-    linear-gradient(to bottom,
-      transparent 5%,
-      color-mix(in srgb, var(--color-foreground) 55%, transparent) 30%,
-      color-mix(in srgb, var(--color-foreground) 55%, transparent) 65%,
-      transparent 95%),
-    color-mix(in srgb, var(--color-foreground) 20%, transparent);
+  /* One even overlay over the whole photo (no bands). Measured on the real pixels: see handoff doc. */
+  background: color-mix(in srgb, var(--color-foreground) 60%, transparent);
 }
 .viewership-stats .viewership-stat--image dt,
 .viewership-stats .viewership-stat--image dd { color: inherit; } /* must outrank .viewership-stats dt / dd below */
