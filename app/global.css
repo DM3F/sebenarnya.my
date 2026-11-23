@@ -1935,19 +1935,24 @@ input::placeholder { color: var(--color-foreground); }
   line-height: var(--text-label--line-height);
   font-weight: var(--text-label--font-weight);
 }
-.about-hero-follow ul { display: flex; gap: var(--gap-inline); margin: 0; padding: 0; list-style: none; }
+/* Fluid discs: 36 on phones → 48 from ≈1200px (icon = half the disc), so the row stays quiet on
+   small screens; a ::before pads the hit area back to 44 */
+.about-hero-follow { --follow-disc: clamp(var(--size-control-sm), 29.5px + 1.55vw, var(--size-control-lg)); /* ds-allow: fluid size between two size tokens */ }
+.about-hero-follow ul { display: flex; flex-wrap: wrap; gap: var(--gap-inline); margin: 0; padding: 0; list-style: none; }
 .about-hero-follow a {
+  position: relative;
   display: grid;
   place-items: center;
-  width: var(--spacing-48);
-  height: var(--spacing-48);
+  width: var(--follow-disc);
+  height: var(--follow-disc);
   border-radius: var(--radius-full);
   background: var(--color-card);
   color: var(--color-foreground);
   transition: transform var(--duration-fast) var(--ease-out);
 }
 .about-hero-follow a:active { transform: scale(.94); }
-.about-hero-follow svg { width: 24px; height: 24px; fill: currentColor; }
+.about-hero-follow a::before { content: ''; position: absolute; inset: min(0px, (var(--follow-disc) - var(--size-hit-area)) / 2); } /* ≥44 touch target */
+.about-hero-follow svg { width: calc(var(--follow-disc) / 2); height: calc(var(--follow-disc) / 2); fill: currentColor; }
 .about-hero-follow a:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color-inverse); outline-offset: var(--focus-ring-offset); }
 /* Info cards: absolute on the right, same top and right inset as "Ikuti kami" has top and left (the card padding) */
 .about-hero-aifa {
