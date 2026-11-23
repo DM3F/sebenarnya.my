@@ -34,8 +34,8 @@ export default async function ArticlePage({ params }) {
 
       <main className="main" id="main" tabIndex={-1}>
         <ArticleDetail article={article} />
-        {/* More fact-checks under the article, same section as the home page */}
-        <Latest />
+        {/* More fact-checks with the same verdict, same carousel as the home page */}
+        <Latest key={article.slug} status={article.status} exclude={article.slug} />
       </main>
 
       <Footer />

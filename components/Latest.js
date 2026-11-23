@@ -4,10 +4,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import FlipCard from './FlipCard';
 import { IconButton } from '@/components/ui';
-import { articles } from '@/data/content';
+import { articles, articleStatus } from '@/data/content';
 import { agencyInitials, articleHref } from '@/lib/articles';
 
 const COUNT = 12; // newest fact-checks in the loop; every one has its own photo
+const MIN_RING = 8; // a short list is repeated up to this many cards so the ring fills wide screens
 const SPEED = 36; // px per second while gliding
 const EASE_RATE = 5; // how quickly the glide speeds up / slows down (1/s)
 const NUDGE_TAU = 0.12; // seconds; prev/next buttons glide one card with this time constant
@@ -18,24 +19,38 @@ const HOVER_CLOSE_DELAY = 140; // ms grace after leaving, so moving to the next 
 
 const dateFmt = new Intl.DateTimeFormat('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' });
 
-// Newest fact-checks, shaped for the fact-check card
-const latest = [...articles]
-  .sort((a, b) => b.date.localeCompare(a.date))
-  .slice(0, COUNT)
-  .map((a) => ({
-    title: a.title,
-    summary: a.lead,
-    image: a.image,
-    alt: a.alt,
-    status: a.status,
-    agency: { ...a.agency, short: a.agency.name.split(' (')[0], initials: agencyInitials(a.agency.name) },
-    date: a.date,
-    dateLabel: dateFmt.format(new Date(`${a.date}T00:00:00`)),
-    href: articleHref(a),
-  }));
+const DEFAULT_HEAD = {
+  title: 'Semakan fakta terkini',
+  lead: 'Setiap jawapan disahkan terus oleh kementerian dan agensi berkaitan.',
+};
+
+// Newest fact-checks, shaped for the fact-check card.
+// `status` keeps one verdict only; `exclude` drops the article being read.
+function pickLatest(status, exclude) {
+  const list = articles
+    .filter((a) => (!status || a.status === status) && a.slug !== exclude)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, COUNT)
+    .map((a) => ({
+      title: a.title,
+      summary: a.lead,
+      image: a.image,
+      alt: a.alt,
+      status: a.status,
+      agency: { ...a.agency, short: a.agency.name.split(' (')[0], initials: agencyInitials(a.agency.name) },
+      date: a.date,
+      dateLabel: dateFmt.format(new Date(`${a.date}T00:00:00`)),
+      href: articleHref(a),
+    }));
+  if (!list.length) return [];
+  // Repeat whole rounds so the ring never shows a gap; each copy gets its own id
+  const rounds = Math.ceil(MIN_RING / list.length);
+  return Array.from({ length: rounds }, (_, r) => list.map((p) => ({ ...p, id: `${p.href}#${r}` }))).flat();
+}
 
 /**
- * "Semakan fakta terkini".
+ * "Semakan fakta terkini" on the home page. Under an article (`status` + `exclude`)
+ * it shows only fact-checks with the same verdict, headed by `articleStatus[status].related`.
  * An endless, slowly gliding row of FactCheckCards: the cards sit on a ring and the
  * one that leaves on the left re-enters on the right, so the row never ends and never
  * shows a duplicate.
@@ -44,7 +59,9 @@ const latest = [...articles]
  *   while being dragged, and always under prefers-reduced-motion.
  * - Prev/next glide exactly one card; touch and pen can drag the row.
  */
-export default function Latest() {
+export default function Latest({ status, exclude }) {
+  const [latest] = useState(() => pickLatest(status, exclude));
+  const head = (status && articleStatus[status]?.related) || DEFAULT_HEAD;
   const viewRef = useRef(null);
   const railRef = useRef(null);
   const st = useRef({ x: 0, v: 0, nudge: 0, setW: 0, step: 0, hover: false, focus: false, open: false, drag: null, moved: false, reduce: false });
@@ -53,10 +70,10 @@ export default function Latest() {
   const [open, setOpen] = useState(null);
   // Visible pause control: the row moves on its own (WCAG 2.2.2)
   const hoverTimer = useRef(0);
-  const hover = (href, on) => {
+  const hover = (id, on) => {
     clearTimeout(hoverTimer.current);
     hoverTimer.current = setTimeout(
-      () => setOpen((cur) => (on ? href : cur === href ? null : cur)),
+      () => setOpen((cur) => (on ? id : cur === id ? null : cur)),
       on ? HOVER_OPEN_DELAY : HOVER_CLOSE_DELAY
     );
   };
@@ -84,6 +101,7 @@ export default function Latest() {
   const measure = useCallback(() => {
     const cards = railRef.current.children;
     const s = st.current;
+    if (cards.length < 2) return;
     s.step = cards[1].offsetLeft - cards[0].offsetLeft;
     s.setW = s.step * cards.length;
     paint();
@@ -200,19 +218,19 @@ export default function Latest() {
 
   const card = (post) => (
     <FlipCard
-      key={post.href}
+      key={post.id}
       post={post}
-      flipped={open === post.href}
-      onHover={(on) => hover(post.href, on)}
-      onToggle={() => setOpen((cur) => (cur === post.href ? null : post.href))}
+      flipped={open === post.id}
+      onHover={(on) => hover(post.id, on)}
+      onToggle={() => setOpen((cur) => (cur === post.id ? null : post.id))}
     />
   );
 
   return (
     <section className="latest-checks" aria-labelledby="latest-checks-title">
       <div className="latest-checks__head">
-        <h2 id="latest-checks-title" className="latest-checks__title">Semakan fakta terkini</h2>
-        <p className="latest-checks__lead">Setiap jawapan disahkan terus oleh kementerian dan agensi berkaitan.</p>
+        <h2 id="latest-checks-title" className="latest-checks__title">{head.title}</h2>
+        <p className="latest-checks__lead">{head.lead}</p>
       </div>
 
       <div className="latest-checks__carousel">

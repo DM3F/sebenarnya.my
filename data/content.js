@@ -394,10 +394,29 @@ export const articleCategories = [
 
 // Tag shown on each card
 // Verdict labels; colours come from the --color-verdict-* tokens (components/ui/Verdict.js)
+// `related` = heading + lead of the same-verdict carousel under an article (components/Latest.js)
 export const articleStatus = {
-  palsu: { label: 'Palsu' },
-  makluman: { label: 'Makluman' },
-  benar: { label: 'Benar' },
+  palsu: {
+    label: 'Palsu',
+    related: {
+      title: 'Dakwaan palsu lain',
+      lead: 'Dakwaan lain yang disahkan palsu oleh kementerian dan agensi berkaitan.',
+    },
+  },
+  makluman: {
+    label: 'Makluman',
+    related: {
+      title: 'Makluman lain',
+      lead: 'Makluman rasmi lain daripada kementerian dan agensi berkaitan.',
+    },
+  },
+  benar: {
+    label: 'Benar',
+    related: {
+      title: 'Fakta benar lain',
+      lead: 'Dakwaan lain yang disahkan benar oleh kementerian dan agensi berkaitan.',
+    },
+  },
 };
 
 const agencyLogo = (name) => withBase(`/images/authors/agency-${name}.webp`);
