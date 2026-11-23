@@ -3,9 +3,12 @@
  *   href:    renders a link
  *   pressed: makes it a toggle (aria-pressed); selected = ink fill
  *   dot:     verdict key (palsu | makluman | benar) for a filter dot
+ *   size:    sm · md (default) · lg — same heights as Button
  */
-export default function Chip({ href, pressed, dot, className = '', children, ...props }) {
-  const cls = ['ui-chip', dot && `ui-chip--${dot}`, className].filter(Boolean).join(' ');
+export default function Chip({ href, pressed, dot, size = 'md', className = '', children, ...props }) {
+  const cls = ['ui-chip', size !== 'md' && size !== 'default' && `ui-chip--${size}`, dot && `ui-chip--${dot}`, className]
+    .filter(Boolean)
+    .join(' ');
   const content = (
     <>
       {dot && <span className="ui-chip__dot" aria-hidden="true" />}

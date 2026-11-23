@@ -180,8 +180,8 @@ input::placeholder { color: var(--color-foreground); }
   position: relative;
   display: none;
   flex: none;
-  width: var(--spacing-44);
-  height: var(--spacing-44);
+  width: var(--size-control); /* md control, like the header buttons beside it */
+  height: var(--size-control);
   margin: 0;
   padding: 0 var(--spacing-10);
   border: 0;
@@ -625,8 +625,8 @@ input::placeholder { color: var(--color-foreground); }
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-12);
-  height: var(--spacing-48);
-  padding: var(--spacing-6) var(--spacing-6) var(--spacing-6) var(--spacing-20);
+  height: var(--size-control-lg); /* lg control */
+  padding: var(--spacing-6) var(--spacing-6) var(--spacing-6) var(--space-control-x);
   border-radius: var(--radius-full);
   background: var(--color-primary);
   color: var(--color-primary-foreground);
@@ -640,12 +640,12 @@ input::placeholder { color: var(--color-foreground); }
 }
 .fc-read:active { scale: .96; }
 .fc-read:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
-/* Concentric: 36px circle + 6px inset = the 48px pill's 24px radius */
+/* Concentric: circle = the lg pill minus a 6px inset on each side, at every width */
 .fc-read-icon {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: calc(var(--size-control-lg) - 2 * var(--spacing-6));
+  height: calc(var(--size-control-lg) - 2 * var(--spacing-6));
   flex-shrink: 0;
   border-radius: var(--radius-full);
   background: var(--color-card);
@@ -847,7 +847,7 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Dots + pause */
 .hero-carousel .gctl { display: flex; justify-content: center; align-items: center; gap: var(--gap-inline); margin-top: var(--gap-group); }
-.hero-carousel .dots { display: flex; align-items: center; gap: var(--spacing-16); /* ds-allow: keeps the 24px dot hit areas from overlapping */ height: 48px; padding: 0 var(--spacing-20); border-radius: var(--radius-full); background: var(--color-muted); }
+.hero-carousel .dots { display: flex; align-items: center; gap: var(--spacing-16); /* ds-allow: keeps the 24px dot hit areas from overlapping */ height: var(--size-control-lg); padding: 0 var(--spacing-20); border-radius: var(--radius-full); background: var(--color-muted); }
 .hero-carousel .dots button { position: relative; width: 8px; height: 8px; padding: 0; border: 0; border-radius: var(--radius-full); background: var(--color-border-strong); cursor: pointer; } /* width snaps: animating it relayouts every frame; the fill bar shows progress */
 /* Invisible 24×44 hit area for the 8px dots (WCAG 2.5.8); gap 16 keeps them from overlapping */
 .hero-carousel .dots button::before { content: ""; position: absolute; inset: -18px -8px; }
@@ -1262,7 +1262,7 @@ input::placeholder { color: var(--color-foreground); }
   align-self: flex-start;
   align-items: center;
   gap: var(--gap-inline);
-  min-height: var(--spacing-44);
+  min-height: var(--size-hit-area);
   margin-bottom: var(--gap-block);
   font-size: var(--text-label);
   line-height: var(--text-label--line-height);
@@ -1380,7 +1380,7 @@ input::placeholder { color: var(--color-foreground); }
   display: inline-flex;
   align-items: center;
   gap: var(--gap-inline);
-  height: 56px;
+  height: var(--size-control-xl); /* xl control, like the primary search: 48 → 56 */
   padding: 0 var(--space-control-x) 0 calc(var(--space-control-x) - var(--spacing-2)); /* icon side 2px less (optical) */
   border: none;
   border-radius: var(--radius-full);
@@ -1400,7 +1400,7 @@ input::placeholder { color: var(--color-foreground); }
 .aifa-toggle:active { scale: .97; }
 @media (prefers-reduced-motion: reduce) { .aifa-toggle:active { scale: none; } }
 .aifa-toggle:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
-.aifa.open .aifa-toggle { width: 56px; padding: 0; justify-content: center; }
+.aifa.open .aifa-toggle { width: var(--size-control-xl); padding: 0; justify-content: center; }
 
 .aifa-panel {
   display: flex;
@@ -1488,7 +1488,7 @@ input::placeholder { color: var(--color-foreground); }
 
 .aifa-links { display: flex; flex-wrap: wrap; gap: var(--gap-inline); margin-top: var(--gap-text); }
 
-.aifa-links a { min-height: 36px; padding: var(--spacing-6) var(--spacing-12); border: var(--border-width-hairline) solid var(--color-border); border-radius: var(--radius-full); color: var(--color-foreground); background: var(--color-background); font-family: var(--font-sans); font-size: var(--text-body-sm); text-decoration: none; }
+.aifa-links a { min-height: var(--size-control-sm); padding: var(--spacing-6) var(--spacing-12); border: var(--border-width-hairline) solid var(--color-border); border-radius: var(--radius-full); color: var(--color-foreground); background: var(--color-background); font-family: var(--font-sans); font-size: var(--text-body-sm); text-decoration: none; }
 
 .aifa-links a:hover { border-color: var(--color-link); color: var(--color-link); }
 
@@ -1534,8 +1534,6 @@ input::placeholder { color: var(--color-foreground); }
 @media (max-width: 600px) {
   .aifa { right: 16px; bottom: 16px; }
   .aifa-panel { width: calc(100vw - 32px); height: calc(100dvh - 104px); }
-  .aifa-toggle { height: 52px; }
-  .aifa.open .aifa-toggle { width: 52px; }
    /* 16px stops iOS zooming in on focus */
 }
 
@@ -2294,7 +2292,7 @@ input::placeholder { color: var(--color-foreground); }
 }
 .folder__title { margin: 0; font-weight: var(--font-weight-medium); }
 .folder__tags { display: flex; flex-wrap: wrap; gap: var(--gap-inline); }
-/* Download chips = small buttons (ui-btn--sm): label 16/500, md icon 16, 36 tall, 16 side padding.
+/* Download chips = small buttons (ui-btn--sm): label-sm 14/500, md icon 16, sm control height and padding.
    Under the 20px card title (--text-title) they read as its actions. */
 .folder__chip {
   display: inline-flex;
@@ -2306,8 +2304,8 @@ input::placeholder { color: var(--color-foreground); }
   border: var(--border-width-hairline) solid var(--color-foreground-inverse);
   border-radius: var(--radius-full);
   color: var(--color-folder-chip);
-  font-size: var(--text-label);
-  line-height: var(--text-label--line-height);
+  font-size: var(--text-label-sm);
+  line-height: var(--text-label-sm--line-height);
   font-weight: var(--text-label--font-weight);
   text-decoration: none;
   transition: background-color var(--duration-fast) var(--ease-out), scale var(--duration-fast) var(--ease-out);
@@ -2414,8 +2412,8 @@ input::placeholder { color: var(--color-foreground); }
 .kenali__icons li {
   display: grid;
   place-items: center;
-  width: var(--spacing-48);
-  height: var(--spacing-48);
+  width: var(--size-control-lg); /* same disc as .social-peek__logo */
+  height: var(--size-control-lg);
   border-radius: var(--radius-full);
   background: var(--color-background);
   color: var(--color-foreground);
@@ -2607,8 +2605,8 @@ input::placeholder { color: var(--color-foreground); }
 .social-peek__logo {
   display: grid;
   place-items: center;
-  width: var(--spacing-48);
-  height: var(--spacing-48);
+  width: var(--size-control-lg); /* lg icon control */
+  height: var(--size-control-lg);
   padding: 0;
   border: 0;
   border-radius: var(--radius-full);
@@ -2645,8 +2643,8 @@ input::placeholder { color: var(--color-foreground); }
   display: inline-flex;
   align-items: center;
   gap: var(--space-inline-tight);
-  min-height: var(--spacing-32);
-  padding: 0 var(--space-badge-x);
+  min-height: var(--size-badge-lg); /* lg badge */
+  padding: 0 var(--space-badge-x-lg);
   border-radius: var(--radius-full);
   background: var(--color-muted);
   font-size: var(--text-label-sm);

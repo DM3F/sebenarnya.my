@@ -35,8 +35,8 @@ Decision guide:
 |---|---|
 | Colour | `--color-background · foreground · card · muted · muted-strong · accent · secondary(-hover/-foreground) · primary(-hover/-foreground) · input · border · border-strong · ring · link · destructive · disabled(-foreground) · surface-overlay · surface-media · scrim · brand · verdict-{palsu,makluman,benar}(-dot)` (three verdicts only: Palsu, Makluman, Benar) |
 | Type roles | `--text-display · heading-lg · heading · title · intro · article · body · body-sm · label · label-sm · eyebrow · badge · verdict · caption · stat`, each with `--line-height`, and where it applies `--font-weight` / `--letter-spacing` (Tailwind v4 shape: `--text-label--line-height`) |
-| Size | `--size-control-sm (36) · control (44) · control-lg (48) · control-xl (56) · hit-area · badge · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu` |
-| Space roles | Content: `--gap-inline · gap-text · gap-group · gap-cards · gap-block`, cards: `--pad-card-sm · pad-card · pad-card-lg`; controls: `--space-control-x(-sm) · field-x · badge-x/-y · inline-tight · stack · segment`; page: `--space-page-x · section · page-top` |
+| Size | `--size-control-sm · control · control-lg · control-xl` (fluid control scale, below) `· hit-area (44) · badge-sm (20) · badge (24) · badge-lg (32) · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu` |
+| Space roles | Content: `--gap-inline · gap-text · gap-group · gap-cards · gap-block`, cards: `--pad-card-sm · pad-card · pad-card-lg`; controls: `--space-control-x-sm · control-x · control-x-lg` (fluid) `· field-x · badge-x-sm/-x/-x-lg · inline-tight · stack · segment`; page: `--space-page-x · section · page-top` |
 | Shape | `--radius-control (pill) · field (8) · menu · menu-item · media (12) · card (20) · card-lg (24)` |
 | Focus & effects | `--border-width · focus-ring-width · focus-ring-offset · focus-ring-color · blur-overlay · press-scale · transition-colors · shadow-*` |
 | Motion | `--duration-fast/base/slow/slower · ease-out/in-out/emphasized` |
@@ -78,6 +78,28 @@ article body (16 → 18), meta (14) and one intro statement per page. A lead
 under a title is still `body` — set it apart with colour (`--color-text-secondary`)
 and spacing, not size.
 To change a size, edit the role in tokens.css — never the component.
+
+### Control scale: sm · md · lg (· xl)
+
+Every interactive control takes its height from one scale. Each step is **fluid**
+from 375px to 1280px wide (same formula as the type roles), so a phone gets compact
+controls and a desktop keeps the full size, with no breakpoints.
+
+| Size | Token | Height (375 → 1280) | Side padding | Label | Use |
+|---|---|---|---|---|---|
+| `sm` | `--size-control-sm` | 32 → 36 | `--space-control-x-sm` 12 → 16 | `label-sm` 14 | dense rows, inline actions (remove file, download chips) |
+| `md` (default) | `--size-control` | 40 → 44 | `--space-control-x` 16 → 20 | `label` 16 | every button, chip, tab, field, nav link, menu item |
+| `lg` | `--size-control-lg` | 44 → 48 | `--space-control-x-lg` 20 → 24 | `label` 16 | a page's main action, carousel controls, icon discs |
+| `xl` | `--size-control-xl` | 48 → 56 | — | — | the primary search and the floating AIFA button only |
+
+- **Touch target stays 44.** `.ui-btn` and `.ui-chip` grow an invisible `::after`
+  to `--size-hit-area` whenever they draw shorter (sm everywhere, md on a phone).
+  A hand-built control below 44 adds the same pseudo-element.
+- **Badges are not controls.** `Badge` and `Verdict` use the fixed badge scale:
+  `sm` 20 (12px text) · `md` 24 (default, 13px) · `lg` 32 (14px, the Verdict pill).
+- **Nested controls are derived, never set by hand:** the search button is
+  `search height − 2 × (inset + border)`; a tab is `track − 2 × (segment + border)`.
+- Never write a control height in px in `global.css`; take a `--size-control-*` token.
 
 ### Spacing & radius roles (pick by relationship, not by number)
 
@@ -209,14 +231,14 @@ Import from `@/components/ui`. API mirrors shadcn/ui (variant + size props).
 
 | Need | Component | Notes |
 |---|---|---|
-| Any action | `Button` | `variant`: filled · outline · secondary · ghost · media · link. `size`: default · sm · icon · icon-sm · icon-lg. `icon` / `iconEnd` take a Lucide component. `href` renders a link (`as={Link}` for next/link). One filled button per view. |
+| Any action | `Button` | `variant`: filled · outline · secondary · ghost · media · link. `size`: sm · md (default) · lg · icon-sm · icon · icon-lg. `icon` / `iconEnd` take a Lucide component. `href` renders a link (`as={Link}` for next/link). One filled button per view. |
 | Icon-only action | `IconButton` | `label` is required (becomes `aria-label`). Default variant outline. |
-| Suggestion / filter | `Chip`, `ChipRow` | `pressed` makes it a toggle (`aria-pressed`). `dot="palsu"` adds a verdict dot. |
-| Static label | `Badge` | variant muted · outline · media; size default · lg. Not clickable. |
-| Verdict | `Verdict` | Always dot + word (+ agency). variant pill · overlay (on photos) · plain (inherits colour). tone default · single. |
+| Suggestion / filter | `Chip`, `ChipRow` | `size`: sm · md (default) · lg. `pressed` makes it a toggle (`aria-pressed`). `dot="palsu"` adds a verdict dot. |
+| Static label | `Badge` | variant muted · outline · media; size sm (20) · md (24, default) · lg (32). Not clickable. |
+| Verdict | `Verdict` | Always dot + word (+ agency). variant pill (lg badge 32) · overlay (on photos, 24) · tint (24) · plain (inherits colour). tone default · single. |
 | Segmented / language | `Tabs` | `mode="tabs"` (tablist, arrow keys) or `mode="toggle"` (aria-pressed). |
-| Search | `SearchField` | size default (56 + "Semak") · sm (44). `buttonLabel={null}` for live filtering. |
-| Form | `Field` + `Input` / `Textarea` / `Select` | Field wires id, `aria-invalid`, `aria-describedby`. `pill` for toolbar fields. |
+| Search | `SearchField` | size lg (default, xl 48 → 56 + "Semak") · md (44 → 48) · sm (40 → 44). `buttonLabel={null}` for live filtering. |
+| Form | `Field` + `Input` / `Textarea` / `Select` | Field wires id, `aria-invalid`, `aria-describedby`. `pill` for toolbar fields. `size` sm · md (default) · lg on Input and Select. |
 | Navigation | `NavLink`, `DropdownMenu` | `current` sets `aria-current="page"`. |
 | Icon | `Icon` | 1.75px stroke, `currentColor`, `aria-hidden`. |
 
@@ -228,7 +250,7 @@ design needs a new look, add a variant in `ui.css` first.
 
 - Native `<button>` / `<a href>` only. Icon-only controls need a Malay `aria-label`.
 - Focus: `:focus-visible` ring from the focus tokens; never remove it.
-- Touch target ≥ 44px; 36px controls extend their hit area (`::after`).
+- Touch target ≥ 44px; any control drawn shorter (sm, md on a phone) extends its hit area (`::after`).
 - Verdict colour never alone: dot + word + agency.
 - Anything that moves on its own for more than 5s has a visible pause control and stops under `prefers-reduced-motion`.
 - Skip link "Langkau ke kandungan" is the first focusable element; each page has one `<main id="main">`.

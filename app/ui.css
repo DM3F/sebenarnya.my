@@ -56,7 +56,8 @@
 
 /* ── Button ────────────────────────────────────────────────────────────────
    variant: filled (default) · outline · secondary · ghost · media · link
-   size:    default · sm · icon · icon-sm · icon-lg
+   size:    sm · md (default) · lg · icon-sm · icon · icon-lg
+            heights come from the fluid control scale (tokens.css): sm 32→36 · md 40→44 · lg 44→48
    ------------------------------------------------------------------------- */
 .ui-btn {
   --btn-height: var(--size-control);
@@ -68,6 +69,7 @@
   --btn-fg-hover: var(--btn-fg);
   --btn-border: transparent;
   --btn-icon: var(--size-icon);
+  --btn-text: var(--text-label);
   --btn-decoration: none;
 
   position: relative;
@@ -86,7 +88,7 @@
   box-shadow: inset 0 0 0 var(--border-width) var(--btn-border); /* border without changing height */
   color: var(--btn-fg);
   font-family: var(--font-sans);
-  font-size: var(--text-label);
+  font-size: var(--btn-text);
   line-height: var(--text-label--line-height);
   font-weight: var(--text-label--font-weight);
   text-decoration: var(--btn-decoration);
@@ -133,21 +135,26 @@
   --btn-decoration: underline;
 }
 
-/* Sizes */
-.ui-btn--sm { --btn-height: var(--size-control-sm); --btn-px: var(--space-control-x-sm); }
+/* Sizes — md is the base above */
+.ui-btn--sm { --btn-height: var(--size-control-sm); --btn-px: var(--space-control-x-sm); --btn-text: var(--text-label-sm); }
+.ui-btn--lg { --btn-height: var(--size-control-lg); --btn-px: var(--space-control-x-lg); }
 .ui-btn--icon,
 .ui-btn--icon-sm,
 .ui-btn--icon-lg { --btn-px: 0; --btn-width: var(--btn-height); --btn-decoration: none; }
 .ui-btn--icon-sm { --btn-height: var(--size-control-sm); }
 .ui-btn--icon-lg { --btn-height: var(--size-control-lg); --btn-icon: var(--size-icon-lg); }
 
-/* Small controls keep the full touch target */
-.ui-btn--sm::after,
-.ui-btn--icon-sm::after {
+/* Touch target: any control drawn shorter than --size-hit-area (sm everywhere, md on a phone)
+   grows an invisible ::after to the full hit area; a taller control gets inset 0. Auto-height
+   (link) buttons resolve to an invalid inset and draw nothing. */
+.ui-btn::after,
+.ui-chip::after {
   content: "";
   position: absolute;
-  inset: calc((var(--size-control-sm) - var(--size-hit-area)) / 2);
+  inset: min(0px, calc((var(--ctl-height) - var(--size-hit-area)) / 2)); /* ds-allow: 0 floor for min() */
 }
+.ui-btn { --ctl-height: var(--btn-height); }
+.ui-chip { --ctl-height: var(--chip-height); }
 
 /* Unavailable */
 .ui-btn:disabled,
@@ -165,6 +172,7 @@
 
 /* ── Chip / toggle chip ────────────────────────────────────────────────────
    Taupe pill (design.md §4); `aria-pressed="true"` = selected (ink).
+   size: sm · md (default) · lg — same heights as Button
    ------------------------------------------------------------------------- */
 .ui-chip {
   --chip-height: var(--size-control);
@@ -173,7 +181,9 @@
   --chip-bg-hover: var(--color-secondary-hover);
   --chip-fg: var(--color-secondary-foreground);
   --chip-dot: currentColor;
+  --chip-text: var(--text-label);
 
+  position: relative;
   box-sizing: border-box;
   display: inline-flex;
   flex-shrink: 0;
@@ -187,7 +197,7 @@
   background: var(--chip-bg);
   color: var(--chip-fg);
   font-family: var(--font-sans);
-  font-size: var(--text-label);
+  font-size: var(--chip-text);
   line-height: var(--text-label--line-height);
   font-weight: var(--text-label--font-weight);
   text-decoration: none;
@@ -197,6 +207,8 @@
   transition: var(--transition-colors), scale var(--duration-fast) var(--ease-out);
 }
 .ui-chip:active { scale: var(--press-scale); }
+.ui-chip--sm { --chip-height: var(--size-control-sm); --chip-px: var(--space-control-x-sm); --chip-text: var(--text-label-sm); }
+.ui-chip--lg { --chip-height: var(--size-control-lg); --chip-px: var(--space-control-x); }
 .ui-chip[aria-pressed='true'] {
   --chip-bg: var(--color-primary);
   --chip-bg-hover: var(--color-primary-hover);
@@ -225,12 +237,13 @@
 }
 
 /* ── Badge — non-interactive label ─────────────────────────────────────────
-   variant: muted (default) · outline · media      size: default · lg
+   variant: muted (default) · outline · media      size: sm 20 · md 24 (default) · lg 32
+   Badges are text, not targets: fixed heights, no hit area.
    ------------------------------------------------------------------------- */
 .ui-badge {
   --badge-height: var(--size-badge);
   --badge-px: var(--space-badge-x);
-  --badge-py: var(--space-badge-y);
+  --badge-icon: var(--size-icon-sm);
   --badge-bg: var(--color-muted);
   --badge-fg: var(--color-foreground);
   --badge-border: transparent;
@@ -243,7 +256,7 @@
   align-self: flex-start;
   gap: var(--space-inline-tight);
   min-height: var(--badge-height);
-  padding: var(--badge-py) var(--badge-px);
+  padding: 0 var(--badge-px);
   border-radius: var(--radius-control);
   background: var(--badge-bg);
   box-shadow: inset 0 0 0 var(--border-width) var(--badge-border);
@@ -254,25 +267,33 @@
   font-weight: var(--text-badge--font-weight);
   white-space: nowrap;
 }
-.ui-badge .ui-icon { width: var(--size-icon-sm); height: var(--size-icon-sm); }
+.ui-badge .ui-icon { width: var(--badge-icon); height: var(--badge-icon); }
 .ui-badge--outline { --badge-bg: var(--color-background); --badge-border: var(--color-border); }
 .ui-badge--media {
   --badge-bg: var(--color-surface-overlay);
   backdrop-filter: blur(var(--blur-overlay));
   -webkit-backdrop-filter: blur(var(--blur-overlay));
 }
+.ui-badge--sm {
+  --badge-height: var(--size-badge-sm);
+  --badge-px: var(--space-badge-x-sm);
+  --badge-text: var(--text-caption);
+  --badge-leading: var(--text-caption--line-height);
+  --badge-icon: var(--size-icon-sm);
+}
 .ui-badge--lg {
-  --badge-height: var(--size-control);
-  --badge-px: var(--space-field-x);
-  --badge-py: var(--space-inline);
+  --badge-height: var(--size-badge-lg);
+  --badge-px: var(--space-badge-x-lg);
   --badge-text: var(--text-body-sm);
   --badge-leading: var(--text-body-sm--line-height);
+  --badge-icon: var(--size-icon);
 }
 
 /* ── Tabs / segmented / language switcher ─────────────────────────────────
    Selected lifts to white with a fine edge — no colour, no extra weight.
    ------------------------------------------------------------------------- */
 .ui-tabs {
+  --tabs-height: var(--size-control); /* the whole track is one control tall, like a button */
   --tabs-bg: var(--color-background);
   --tabs-border: var(--color-muted-strong);
 
@@ -293,9 +314,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--size-control);
-  min-height: var(--size-control);
-  padding: 0 var(--space-badge-x);
+  --tab-height: calc(var(--tabs-height) - 2 * (var(--space-segment) + var(--border-width)));
+  min-width: var(--tab-height);
+  min-height: var(--tab-height);
+  padding: 0 var(--space-badge-x-lg);
   background: var(--tab-bg);
   border: var(--border-width) solid var(--tab-border);
   border-radius: var(--radius-control);
@@ -322,8 +344,8 @@
 .ui-verdict {
   --verdict-dot: var(--color-verdict-benar-dot);
   --verdict-text: var(--color-verdict-benar);
-  --verdict-height: var(--size-control);
-  --verdict-pad: var(--space-inline) var(--space-field-x) var(--space-inline) var(--space-badge-x);
+  --verdict-height: var(--size-badge-lg); /* lg badge: a label, not a control */
+  --verdict-pad: 0 var(--space-badge-x-lg) 0 var(--space-badge-x);
   --verdict-gap: var(--space-inline);
   --verdict-bg: var(--color-background);
   --verdict-border: var(--color-border);
@@ -369,7 +391,7 @@
 .ui-verdict--single { --verdict-word: var(--verdict-text); }
 .ui-verdict--overlay {
   --verdict-height: var(--size-badge);
-  --verdict-pad: var(--space-badge-y) var(--spacing-10) var(--space-badge-y) var(--space-inline);
+  --verdict-pad: 0 var(--space-badge-x) 0 var(--space-badge-x-sm);
   --verdict-gap: var(--space-inline-tight);
   --verdict-bg: var(--color-surface-overlay);
   --verdict-border: transparent;
@@ -380,7 +402,7 @@
 /* Tint: compact pill on a pale wash of the verdict colour (article cards, outside the photo) */
 .ui-verdict--tint {
   --verdict-height: var(--size-badge);
-  --verdict-pad: var(--space-badge-y) var(--spacing-10) var(--space-badge-y) var(--space-inline);
+  --verdict-pad: 0 var(--space-badge-x) 0 var(--space-badge-x-sm);
   --verdict-gap: var(--space-inline-tight);
   --verdict-bg: color-mix(in srgb, var(--verdict-dot) 22%, var(--color-card));
   --verdict-border: transparent;
@@ -442,6 +464,10 @@
   line-height: var(--text-body--line-height);
   transition: var(--transition-colors);
 }
+.ui-input--sm,
+.ui-select--sm .ui-select__control { --field-height: var(--size-control-sm); }
+.ui-input--lg,
+.ui-select--lg .ui-select__control { --field-height: var(--size-control-lg); }
 .ui-textarea { --field-height: var(--size-textarea); padding-block: var(--spacing-10); resize: vertical; }
 .ui-input::placeholder,
 .ui-textarea::placeholder { color: var(--color-muted-foreground); opacity: 1; }
@@ -489,11 +515,13 @@
 }
 
 /* ── Search field (primary task) ──────────────────────────────────────────
-   size: default (56, with submit) · sm (44, toolbar)
+   size: lg (default, xl control 48→56, with submit) · md (44→48) · sm (40→44, toolbar)
+   The submit button sits --search-inset inside the field on every side.
    ------------------------------------------------------------------------- */
 .ui-search {
   --search-height: var(--size-control-xl);
-  --search-pad: 0 var(--spacing-6) 0 var(--space-control-x);
+  --search-inset: var(--spacing-4);
+  --search-pad: 0 var(--search-inset) 0 var(--space-control-x);
   --search-border: var(--color-input);
   --search-ring: transparent;
 
@@ -511,6 +539,8 @@
 }
 .ui-search:focus-within { --search-border: var(--focus-ring-color); --search-ring: var(--focus-ring-color); }
 .ui-search[data-invalid] { --search-border: var(--color-destructive); }
+.ui-search .ui-btn { --btn-height: calc(var(--search-height) - 2 * (var(--search-inset) + var(--border-width))); }
+.ui-search--md { --search-height: var(--size-control-lg); }
 .ui-search--sm { --search-height: var(--size-control); --search-pad: 0 var(--space-field-x); gap: var(--spacing-10); }
 .ui-search__icon { width: var(--size-icon-lg); height: var(--size-icon-lg); flex-shrink: 0; color: var(--color-muted-foreground); }
 .ui-search__input {

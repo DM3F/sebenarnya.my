@@ -239,12 +239,20 @@
   --text-stat--letter-spacing: -0.02em; /* display-size figures sit tighter (better-typography: ≥24px → −0.01…−0.02em) */
 
   /* ══ 2. SEMANTIC — sizes ════════════════════════════════════════════════ */
-  --size-control-sm: 36px;                      /* dense rows; hit area stays 44 */
-  --size-control: var(--spacing-44);            /* buttons, chips, tabs, fields */
-  --size-control-lg: var(--spacing-48);         /* carousel controls */
-  --size-control-xl: var(--spacing-56);         /* primary search */
+  /* Control scale — one set of heights for every button, chip, tab, field and search.
+     sm · md (default) · lg · xl, each FLUID from the phone size at 375px to the desktop
+     size at 1280px (same formula as the type roles), so a phone gets compact controls and
+     a desktop keeps the full size, with no breakpoints. Anything below 44 keeps a 44px
+     touch target through its ::after (app/ui.css). */
+  --size-control-sm: clamp(var(--spacing-32), 30.34px + 0.442vw, 36px);            /* sm · 32 → 36 · dense rows, inline actions */
+  --size-control: clamp(var(--spacing-40), 38.34px + 0.442vw, var(--spacing-44));  /* md · 40 → 44 · default button, chip, tab, field */
+  --size-control-lg: clamp(var(--spacing-44), 42.34px + 0.442vw, var(--spacing-48)); /* lg · 44 → 48 · carousel controls, a page's main action */
+  --size-control-xl: clamp(var(--spacing-48), 44.69px + 0.884vw, var(--spacing-56)); /* xl · 48 → 56 · the primary search only */
   --size-hit-area: var(--spacing-44);           /* minimum touch target */
-  --size-badge: 28px;
+  /* Badge scale (non-interactive pills: Badge, Verdict) — fixed, they are text, not targets */
+  --size-badge-sm: var(--spacing-20);           /* sm · 12px caption text */
+  --size-badge: var(--spacing-24);              /* md (default) · 13px badge text */
+  --size-badge-lg: var(--spacing-32);           /* lg · 14px text, Verdict pill */
   /* Icons: five sizes, named in <Icon size="…"> too. Pick by job, not by eye. */
   --size-icon-sm: 14px;      /* sm: inside badges and 12–13px meta */
   --size-icon: 16px;         /* md (default): next to a label, inside buttons */
@@ -259,11 +267,14 @@
   --size-menu: 220px;                           /* dropdown min width */
 
   /* ══ 2. SEMANTIC — spacing roles ════════════════════════════════════════ */
-  --space-control-x: var(--spacing-20);         /* button side padding */
-  --space-control-x-sm: var(--spacing-16);
+  /* Control side padding follows the control scale (fluid 375 → 1280) */
+  --space-control-x-sm: clamp(var(--spacing-12), 10.34px + 0.442vw, var(--spacing-16)); /* sm · 12 → 16 */
+  --space-control-x: clamp(var(--spacing-16), 14.34px + 0.442vw, var(--spacing-20));    /* md · 16 → 20 */
+  --space-control-x-lg: clamp(var(--spacing-20), 18.34px + 0.442vw, var(--spacing-24)); /* lg · 20 → 24 */
   --space-field-x: var(--spacing-16);           /* input / chip side padding */
-  --space-badge-x: var(--spacing-12);
-  --space-badge-y: var(--spacing-4);
+  --space-badge-x-sm: var(--spacing-8);
+  --space-badge-x: var(--spacing-10);
+  --space-badge-x-lg: var(--spacing-12);
   --space-inline: var(--gap-inline);            /* alias of --gap-inline (kept for ui.css) */
   --space-inline-tight: var(--spacing-6);
   --space-stack: var(--spacing-8);              /* label↔field, field↔hint */

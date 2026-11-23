@@ -63,7 +63,7 @@ Rujukan awal: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork")
 | `--color-verdict-{palsu,makluman,benar}` | red-dark / azure / green-dark | perkataan verdict (tone single) |
 | `--color-verdict-*-dot` | red / orange / blue / green | titik verdict |
 
-Saiz kawalan guna spacing: tinggi `--spacing-44` (min sasaran sentuh), search `--spacing-56`, padding sisi `--spacing-20`, radius `--radius-full`.
+Saiz kawalan ikut **skala kawalan fluid** (375 → 1280px): `sm` `--size-control-sm` 32→36 · `md` `--size-control` 40→44 (lalai) · `lg` `--size-control-lg` 44→48 · `xl` `--size-control-xl` 48→56 (search utama + Tanya AIFA sahaja). Padding sisi `--space-control-x-sm/-x/-x-lg` 12→16 · 16→20 · 20→24. Sasaran sentuh kekal 44 (`::after`). Radius `--radius-full`.
 (Mode dark belum wajib.)
 
 ### 2.3 Typography
@@ -200,25 +200,26 @@ Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3
 Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Sudah dipasang: **Header** dan **Hero** (lihat di bawah). Komponen lain belum.
 
 ### Button
-- Asas: `height 44px; min-height 44px; padding 10px 20px; radius pill; Label/16; gap 8px` (ikon 16px).
+- Asas (`md`): `height --size-control` (40 telefon → 44 desktop); `padding 0 --space-control-x` (16→20); radius pill; Label/16; gap 8px (ikon 16px).
+- Saiz: `sm` 32→36, padding 12→16, Label/14 · `md` (lalai) · `lg` 44→48, padding 20→24 · `icon-sm` / `icon` / `icon-lg` segi empat sama dengan tinggi masing-masing. Di bawah 44px, `::after` halimunan kekalkan sasaran sentuh 44.
 - `filled`: bg `--color-primary`, text `--color-primary-foreground`; hover bg `--color-primary-hover`.
 - `outline`: bg `--color-background`, border `.5px solid --color-border-strong`; hover bg `--color-muted`.
 - `ghost`: bg `--color-background`, text underline; hover bg `--color-muted`.
 - `focus` (semua): `border: 2px solid --color-ring`.
 - `disabled`: bg `--color-muted-strong`, border `.5px --color-border-strong`, text `--color-muted-foreground`.
-- Pasangan button: gap 8px. Props: `variant`, `size?`, `icon?`, `href?`.
+- Pasangan button: gap 8px. Props: `variant`, `size?` (sm · md · lg · icon-sm · icon · icon-lg), `icon?`, `href?`.
 
 ### Chip
-`height 44 (padding 9.5px 12px + border .5px); radius pill; bg --color-background; border .5px --color-border; Label/16`. Hover `--color-muted`. Didahului label "Popular:" Body/14 Smoke.
+Tinggi sama dengan Button: `sm` 32→36 (Label/14) · `md` 40→44 (lalai) · `lg` 44→48; radius pill; bg `--color-secondary`; Label/16. Hover `--color-secondary-hover`. Didahului label "Popular:" Body/14 Smoke.
 
 ### Tabs/Segmented
-Container `padding 3px; gap 2px; radius pill; bg --color-background; border .5px --color-border`. Item = Chip; item terpilih bg `--color-card` + border `.5px --color-border`.
+Container setinggi satu kawalan `md` (`--tabs-height`), `padding 2px; gap 2px; radius pill`. Tab = `track − 2 × (2 + border)`, jadi seluruh kawalan sama tinggi dengan Button di sebelahnya. Item terpilih bg `--color-card` + border `--color-border`.
 
 ### Field/Search
-`height 56; padding 0 6px 0 20px; radius pill; bg --color-background; border 1px --color-border-strong; gap 12`. Ikon carian 18px Smoke, placeholder Body/16 Smoke, Button filled "Semak" di kanan. Focus: `border 2px --color-ring` + `box-shadow 0 0 0 1.5px --color-ring`. Label atas: 14 Medium Ink.
+Saiz: `lg` (lalai, `--size-control-xl` 48→56) · `md` (44→48) · `sm` (40→44, toolbar). `padding 0 4px 0 --space-control-x; radius pill; bg --color-background; border 1px --color-border-strong; gap 12`. Ikon carian 18px Smoke, placeholder Body/16 Smoke, Button filled "Semak" di kanan, tingginya = `search − 2 × (4 + border)` (38 telefon → 46 desktop), jadi jarak 4px sama di atas, bawah dan kanan. Focus: `border 2px --color-ring` + `box-shadow 0 0 0 1.5px --color-ring`. Label atas: 14 Medium Ink.
 
 ### Verdict
-`min-height 44; padding 8px; gap 8; radius pill; bg --color-background`. Dot 8px (warna dot) + halo `0 0 0 3px <dot> @18%` + perkataan Verdict/13 + agensi Body/13 Smoke (`· KPDN`).
+Skala badge, bukan kawalan: `pill` (lalai) = badge `lg` 32, padding `0 12 0 10`; `overlay` / `tint` = badge `md` 24, padding `0 10 0 8`. Gap 8; radius pill; bg `--color-background`. Dot 8px (warna dot) + halo `0 0 0 3px <dot> @18%` + perkataan Verdict/13 + agensi Body/13 Smoke (`· KPDN`).
 - `tone="default"`: perkataan Ink.
 - `tone="single"`: perkataan guna warna text verdict.
 - Selalu dot + perkataan + agensi (WCAG 1.4.1). Varian: `palsu | makluman | benar` sahaja (label: Palsu, Makluman, Benar).
@@ -604,3 +605,15 @@ Diaudit dengan skrip (token ditakrif vs `var()` dirujuk; kelas CSS vs token `cla
 - **Aset dibuang (≈5.9 MB):** 7 foto `posts/sebenarnya-*` tidak dirujuk, `about/hero.jpg`, `about/berita-wsis.webp`, `carousel/hero-ktmb|str|lesen.jpg`, 6 potret `carousel/human-*.jpg` (avatar pengunjung sudah dipotong ke `images/avatars/`), `bento/gold-award-medal.webp`, `public/fonts/inter/` (Manrope sahaja, via `next/font`).
 - **Pustaka UI dikekalkan walaupun tidak dipakai di laman** (untuk CMS + sambungan pelayar): `Tabs`, `ButtonGroup`, varian `Button` `link` / `icon-sm` / `icon-lg`, `Badge` `lg`, `Verdict` `single`.
 - Selepas pembersihan: `lint:ds` bersih, build lulus, tiada imej yang dirujuk hilang dalam `out/`, pendakap CSS seimbang.
+
+## Skala saiz komponen sm · md · lg (23 Nov 2026, rujukan shadcn/ui + elevenlabs.io)
+
+Masalah: di telefon butang, search, chip dan badge terasa terlalu besar dan tidak konsisten (Button 44, search 56, Verdict 44, Tabs 50, Badge 28/44, dan `global.css` menulis 44/48/52/56 secara manual).
+
+- **Satu skala kawalan fluid** dalam `tokens.css`: `sm` 32→36 · `md` 40→44 · `lg` 44→48 · `xl` 48→56, dari 375px ke 1280px dengan `clamp()` (formula sama dengan peranan taip). Desktop kekal seperti dahulu; telefon 4–8px lebih padat. Padding sisi ikut skala (`--space-control-x-sm/-x/-x-lg`).
+- **Sasaran sentuh 44 kekal:** `.ui-btn::after` dan `.ui-chip::after` membesar ke `--size-hit-area` apabila kawalan lebih pendek.
+- **Skala badge (tetap, bukan sasaran):** `--size-badge-sm` 20 · `--size-badge` 24 · `--size-badge-lg` 32. `Badge` size sm/md/lg; `Verdict` pill = lg 32, overlay/tint = md 24. `.peek-modal__badge` = badge lg.
+- **API:** `Button` size sm · md · **lg (baharu)** · icon-sm · icon · icon-lg. `Chip` size sm · md · lg (baharu). `Badge` sm · md · lg (lg dahulu 44, kini 32). `SearchField` lg (lalai) · **md (baharu)** · sm. `Input` / `Select` size sm · md · lg (baharu). `'default'` masih diterima sebagai md.
+- **Kawalan bersarang diterbitkan:** butang "Semak" = `search − 2 × (inset 4 + border)`; tab = `track − 2 × (segment + border)`; bulatan ikon `.fc-read` = `lg − 2 × 6`.
+- **`global.css` kini guna token:** `.menu-toggle` md, `.fc-read` lg, `.social-peek__logo` + `.kenali__icons` lg, titik carousel lg, `.aifa-toggle` xl (override 52px telefon dibuang), `.aifa-links a` sm, `.folder__chip` sm dengan Label/14, `.post-back` hit-area.
+- Diukur pada runtime (Chrome headless, 375 / 1280): Button 40 / 44, Chip 40 / 44, search Home 48 / 56 (butang 38 / 46), search Artikel 40 / 44, Select 40 / 44, Verdict pill 32, overlay/tint 24, Badge 24, `.fc-read` 44 / 48, logo sosial 44 / 48. `::after` setiap kawalan 40px = 44.
