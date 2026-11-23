@@ -48,9 +48,13 @@ export function Field({ label, required, hint, error, hideLabel = false, classNa
   );
 }
 
-/** Input — `pill` for toolbar/search-style fields, `icon` for a leading Lucide icon. */
-export function Input({ pill = false, icon, className = '', ...props }) {
-  const input = <input className={`ui-input${pill ? ' ui-input--pill' : ''} ${className}`.trim()} {...props} />;
+const fieldSize = (base, size) => (size === 'sm' || size === 'lg' ? ` ${base}--${size}` : '');
+
+/** Input — `pill` for toolbar/search-style fields, `icon` for a leading Lucide icon, `size` sm · md (default) · lg. */
+export function Input({ pill = false, icon, size = 'md', className = '', ...props }) {
+  const input = (
+    <input className={`ui-input${pill ? ' ui-input--pill' : ''}${fieldSize('ui-input', size)} ${className}`.trim()} {...props} />
+  );
   if (!icon) return input;
   return (
     <span className="ui-input-wrap">
@@ -64,10 +68,10 @@ export function Textarea({ className = '', ...props }) {
   return <textarea className={`ui-textarea ${className}`.trim()} {...props} />;
 }
 
-/** Select — native <select> with the system chevron replaced by Lucide. */
-export function Select({ pill = false, className = '', children, ...props }) {
+/** Select — native <select> with the system chevron replaced by Lucide. `size` sm · md (default) · lg. */
+export function Select({ pill = false, size = 'md', className = '', children, ...props }) {
   return (
-    <span className={`ui-select${pill ? ' ui-select--pill' : ''} ${className}`.trim()}>
+    <span className={`ui-select${pill ? ' ui-select--pill' : ''}${fieldSize('ui-select', size)} ${className}`.trim()}>
       <select className="ui-select__control" {...props}>
         {children}
       </select>
