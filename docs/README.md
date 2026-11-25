@@ -18,6 +18,7 @@ code wins and the document gets fixed.
 | File | What it holds |
 |---|---|
 | `app/tokens.css` | Every value: palette (primitive), roles (semantic), type, size, spacing, radius, motion, z-index. Plain CSS custom properties, Tailwind v4 names, no framework. |
+| `app/base.css` | Element defaults every product needs under `ui.css`: body type and colour, headings, links, form controls that inherit the font. No layout, no root font size. |
 | `app/ui.css` | The component styles (`.ui-btn`, `.ui-chip`, `.ui-field`, `.ui-menu`, `.ui-modal`…), written only with semantic tokens. |
 | `components/ui/` | React components (Button, IconButton, Chip, Badge, Verdict, Tabs, SearchField, Field/Input/Textarea/Select, NavLink, DropdownMenu, LanguageMenu, Icon). No Next.js imports. |
 | `scripts/lint-ds.mjs` | `npm run lint:ds`: the rules as a check (no hex, no raw px, type roles only, Lucide only…). |
@@ -36,15 +37,14 @@ code wins and the document gets fixed.
 The system is not a package yet (roadmap step 3). Until then a product copies a
 **pinned commit** of these files and records that commit hash in its own README:
 
-1. `app/tokens.css`, then `app/ui.css`, loaded in that order.
-2. The base rules at the top of `app/global.css` (`body` font and colour, the
-   `button` / `input` / `select` / `textarea` reset). `ui.css` relies on them;
-   they move into their own `base.css` in step 3.
-3. `components/ui/` if the product uses React. `lucide-react` is the only icon set.
-4. Manrope. The website loads it with `next/font` as `--font-manrope`; elsewhere,
+1. `app/tokens.css`, `app/base.css`, then the product's own CSS, then
+   `app/ui.css`, loaded in that order. These three files are the whole system;
+   `app/global.css` is the website's page CSS and is never copied.
+2. `components/ui/` if the product uses React. `lucide-react` is the only icon set.
+3. Manrope. The website loads it with `next/font` as `--font-manrope`; elsewhere,
    load Manrope (400 · 500 · 600) under the family name `Manrope`, the fallback in
    `--font-sans`.
-5. `scripts/lint-ds.mjs`, run in that product's CI.
+4. `scripts/lint-ds.mjs`, run in that product's CI.
 
 Do not edit the copied files inside the product. A change goes into this repo
 first (see *Changing the system*), then every product updates its copy.

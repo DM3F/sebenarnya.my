@@ -7,7 +7,7 @@ system in other products (CMS dashboard, browser extension) is in
 the code** so the system stays easy to update. Website page notes and history are
 in [`website-changelog.md`](website-changelog.md) (not a spec).
 
-**Source of truth:** the code (`app/tokens.css`, `app/ui.css`, `components/ui/`)
+**Source of truth:** the code (`app/tokens.css`, `app/base.css`, `app/ui.css`, `components/ui/`)
 and these docs. The Paper file is no longer a reference — its canvas does not
 match the current design, so never copy values or layouts from it.
 
