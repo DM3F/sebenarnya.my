@@ -166,6 +166,7 @@ Urutan dipersetujui. Butiran jurang per produk: [`README.md`](README.md) › Kno
 - [x] 1. Kemas dokumen: kontradiksi `design.md` dibetulkan (fokus violet → tinta, tinggi 44 → skala kawalan, jadual tipografi ikut `tokens.css`, tajuk 500), `design-system-handoff.md` → `website-changelog.md` (sejarah web, bukan spec), `README.md` netral produk.
 - [x] 2. Halaman style guide `/design-system`: semua token dan komponen dirender daripada kod sebenar (noindex, tiada pautan dalam nav).
 - [x] 3a. `app/base.css`: lalai elemen (body, tajuk, pautan, kawalan borang) dikeluarkan daripada `global.css`, jadi `tokens.css` + `base.css` + `ui.css` boleh berdiri sendiri. Disahkan: 0 perbezaan computed style pada 5,683 elemen (4 halaman).
+- [x] 3b. Peranan bentuk: kontrol pill di `global.css` (9) dan `.ui-lang__trigger` kini `--radius-control`; badge (`.ui-badge`, `.ui-verdict` + 4 pil foto) guna token baharu `--radius-badge`; `--radius-full` hanya untuk bulatan; `--radius-media` diterbitkan daripada `--radius-card` − 8. Satu baris dalam `tokens.css` kini mengubah setiap kawalan, badge atau kad. Disahkan: 0 perbezaan computed style pada laman web.
 - [ ] 3. Ekstrak pakej `design-system` (tokens, base, ui, React, fonts, lint); laman web guna dahulu. `lint:ds` dalam CI + tangkapan skrin `/design-system` sebagai ujian regresi visual.
 - [ ] 4. Mode `compact` (dashboard), mode scoped (extension, Shadow DOM + saiz tetap), fon Manrope dibundel.
 - [ ] 5. Mode dark (selepas keputusan di atas).

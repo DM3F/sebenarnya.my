@@ -306,11 +306,15 @@
   --radius-card-lg: var(--radius-lg);
 
   /* ══ 2. SEMANTIC — shape, borders, focus, effects ═══════════════════════ */
-  --radius-control: var(--radius-full);         /* every button, chip, tab, search */
+  /* Shape roles. Change one line here to reshape that role in every product.
+     control = anything you press · badge = non-interactive pill labels ·
+     --radius-full stays for true circles only (avatars, dots, round icons, progress tracks). */
+  --radius-control: var(--radius-full);         /* every button, chip, tab, search, icon button, carousel control */
+  --radius-badge: var(--radius-full);           /* Badge, Verdict and other static pill labels */
   --radius-field: var(--radius-input);          /* rectangular inputs */
   --radius-menu: var(--radius-md);
   --radius-menu-item: var(--radius-input);
-  --radius-media: var(--radius-md);             /* thumbnails, inner media */
+  --radius-media: calc(var(--radius-card) - var(--spacing-8)); /* media inset 8px in a card: nested radius = card − inset (20 − 8 = 12) */
   --radius-tail: var(--radius-sm);              /* chat bubble corner on the speaker's side */
 
   --border-width: 1px;          /* cards, panels, menus, fields, dividers */

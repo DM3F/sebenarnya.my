@@ -129,7 +129,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   margin: 0;
   padding: 0 var(--spacing-10);
   border: 0;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: transparent;
   cursor: pointer;
 }
@@ -571,7 +571,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   gap: var(--spacing-12);
   height: var(--size-control-lg); /* lg control */
   padding: var(--spacing-6) var(--spacing-6) var(--spacing-6) var(--space-control-x);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: var(--color-primary);
   color: var(--color-primary-foreground);
   font-family: var(--font-sans);
@@ -791,7 +791,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 
 /* Dots + pause */
 .hero-carousel .gctl { display: flex; justify-content: center; align-items: center; gap: var(--gap-inline); margin-top: var(--gap-group); }
-.hero-carousel .dots { display: flex; align-items: center; gap: var(--spacing-16); /* ds-allow: keeps the 24px dot hit areas from overlapping */ height: var(--size-control-lg); padding: 0 var(--spacing-20); border-radius: var(--radius-full); background: var(--color-muted); }
+.hero-carousel .dots { display: flex; align-items: center; gap: var(--spacing-16); /* ds-allow: keeps the 24px dot hit areas from overlapping */ height: var(--size-control-lg); padding: 0 var(--spacing-20); border-radius: var(--radius-control); background: var(--color-muted); }
 .hero-carousel .dots button { position: relative; width: var(--size-dot); height: var(--size-dot); padding: 0; border: 0; border-radius: var(--radius-full); background: var(--color-border-strong); cursor: pointer; } /* width snaps: animating it relayouts every frame; the fill bar shows progress */
 /* Invisible 24×44 hit area for the 8px dots (WCAG 2.5.8); gap 16 keeps them from overlapping */
 .hero-carousel .dots button::before { content: ""; position: absolute; inset: -18px -8px; }
@@ -1327,7 +1327,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   height: var(--size-control-xl); /* xl control, like the primary search: 48 → 56 */
   padding: 0 var(--space-control-x) 0 calc(var(--space-control-x) - var(--spacing-2)); /* icon side 2px less (optical) */
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   color: var(--color-foreground-inverse);
   background: var(--color-brand-strong);
   box-shadow: var(--shadow-float); /* neutral elevation: it floats, but no red glow */
@@ -1432,7 +1432,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 
 .aifa-links { display: flex; flex-wrap: wrap; gap: var(--gap-inline); margin-top: var(--gap-text); }
 
-.aifa-links a { min-height: var(--size-control-sm); padding: var(--spacing-6) var(--spacing-12); border: var(--border-width-hairline) solid var(--color-border); border-radius: var(--radius-full); color: var(--color-foreground); background: var(--color-background); font-family: var(--font-sans); font-size: var(--text-body-sm); text-decoration: none; }
+.aifa-links a { min-height: var(--size-control-sm); padding: var(--spacing-6) var(--spacing-12); border: var(--border-width-hairline) solid var(--color-border); border-radius: var(--radius-control); color: var(--color-foreground); background: var(--color-background); font-family: var(--font-sans); font-size: var(--text-body-sm); text-decoration: none; }
 
 .aifa-links a:hover { border-color: var(--color-link); color: var(--color-link); }
 
@@ -1746,7 +1746,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   place-items: center;
   width: var(--follow-disc);
   height: var(--follow-disc);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: var(--color-card);
   color: var(--color-foreground);
   transition: transform var(--duration-fast) var(--ease-out);
@@ -1845,7 +1845,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .about-intro__card--pill { display: flex; align-items: center; justify-content: center; background: var(--color-muted-strong) center / cover no-repeat; }
 .about-intro__pill {
   padding: var(--spacing-10) var(--spacing-20);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-badge);
   background: var(--color-background);
   font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--font-weight-medium);
 }
@@ -2208,7 +2208,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   left: 50%;
   margin-bottom: var(--spacing-10);
   padding: var(--spacing-4) var(--spacing-10);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-badge);
   background: var(--color-folder-label);
   -webkit-backdrop-filter: blur(var(--blur-overlay));
   backdrop-filter: blur(var(--blur-overlay));
@@ -2252,7 +2252,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   height: var(--size-control-sm);
   padding: 0 var(--space-control-x-sm);
   border: var(--border-width-hairline) solid var(--color-foreground-inverse);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   color: var(--color-folder-chip);
   font-size: var(--text-label-sm);
   line-height: var(--text-label-sm--line-height);
@@ -2364,7 +2364,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   place-items: center;
   width: var(--size-control-lg); /* same disc as .social-peek__logo */
   height: var(--size-control-lg);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: var(--color-background);
   color: var(--color-foreground);
 }
@@ -2403,7 +2403,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   top: var(--spacing-24);
   left: var(--spacing-24);
   padding: var(--spacing-8) var(--spacing-16);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-badge);
   background: var(--color-surface-overlay);
   font-size: var(--text-label);
   line-height: var(--text-label--line-height);
@@ -2559,7 +2559,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   height: var(--size-control-lg);
   padding: 0;
   border: 0;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: var(--color-background);
   color: var(--color-foreground);
   cursor: pointer;
@@ -2595,7 +2595,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   gap: var(--space-inline-tight);
   min-height: var(--size-badge-lg); /* lg badge */
   padding: 0 var(--space-badge-x-lg);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-badge);
   background: var(--color-muted);
   font-size: var(--text-label-sm);
   line-height: var(--text-label-sm--line-height);
