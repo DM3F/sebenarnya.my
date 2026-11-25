@@ -1,11 +1,11 @@
 # Sebenarnya.my — Design System Plan
 
-Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** setiap kali satu item siap (sama seperti `docs/design-system-handoff.md`).
+Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** setiap kali satu item siap (catatan halaman web: `docs/website-changelog.md`).
 
 > **Sumber kebenaran:** kod dalam repo ini (`app/tokens.css`, `app/ui.css`, `components/ui/`) bersama [`design.md`](design.md) dan [`design-system-rules.md`](design-system-rules.md). Fail Paper `sebenarnya.my` **bukan lagi rujukan**: kanvasnya tidak sama dengan design semasa. Jangan salin nilai atau susun atur daripada Paper.
-- Spec penuh: [`design-system-handoff.md`](design-system-handoff.md).
+- Spec penuh: [`design-system-rules.md`](design-system-rules.md) · peta dokumen: [`README.md`](README.md) · sejarah web: [`website-changelog.md`](website-changelog.md).
 - Branch: `endahbyu`.
-- Skop: **laman web Sebenarnya.my sahaja** (Next.js 16, CSS biasa). CMS dashboard dan browser extension di luar skop tugasan ini (dibuang dari plan, 21 Nov 2026).
+- Skop: laman web Sebenarnya.my (Next.js 16, CSS biasa). Sejak 25 Nov 2026 design system juga disediakan untuk **CMS dashboard** dan **browser extension**: lihat *Handover ke produk lain* di bawah dan [`README.md`](README.md).
 
 **Peraturan tetap**
 - Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`.
@@ -158,3 +158,14 @@ grep -rn 'transition: all' app design-system
 - [?] Mode dark: bila
 - [ ] **Logo SVG** — user akan hantar fail SVG rasmi (logo + ikon). Bila sampai: letak dalam `public/images/logo/`, tambah pilihan muat turun SVG di samping PNG (`logoPage.items` dalam `data/content.js`, `components/LogoKit.js`).
 - [ ] **Terma penggunaan logo** — teks sekarang ialah DEMO (`logoPage.terms`). Ganti dengan teks rasmi MCMC sebelum lancar.
+
+## Handover ke produk lain (25 Nov 2026)
+
+Urutan dipersetujui. Butiran jurang per produk: [`README.md`](README.md) › Known gaps.
+
+- [x] 1. Kemas dokumen: kontradiksi `design.md` dibetulkan (fokus violet → tinta, tinggi 44 → skala kawalan, jadual tipografi ikut `tokens.css`, tajuk 500), `design-system-handoff.md` → `website-changelog.md` (sejarah web, bukan spec), `README.md` netral produk.
+- [x] 2. Halaman style guide `/design-system`: semua token dan komponen dirender daripada kod sebenar (noindex, tiada pautan dalam nav).
+- [ ] 3. Ekstrak pakej `design-system` (tokens, base, ui, React, fonts, lint); laman web guna dahulu. `lint:ds` dalam CI + tangkapan skrin `/design-system` sebagai ujian regresi visual.
+- [ ] 4. Mode `compact` (dashboard), mode scoped (extension, Shadow DOM + saiz tetap), fon Manrope dibundel.
+- [ ] 5. Mode dark (selepas keputusan di atas).
+- [ ] 6. Pilihan: Figma variables, text styles dan komponen dijana daripada kod.

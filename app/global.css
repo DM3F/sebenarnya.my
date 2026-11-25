@@ -940,12 +940,12 @@ input::placeholder { color: var(--color-foreground); }
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  /* One even overlay over the whole photo (no bands). Measured on the real pixels: see handoff doc. */
+  /* One even overlay over the whole photo (no bands). Measured on the real pixels: see docs/website-changelog.md. */
   background: color-mix(in srgb, var(--color-foreground) 35%, transparent);
 }
 .viewership-stats .viewership-stat--image dt,
 .viewership-stats .viewership-stat--image dd { color: inherit; } /* must outrank .viewership-stats dt / dd below */
-/* Light overlay keeps the photo bright; a soft halo hugs only the glyphs so white text still reads (measured, see handoff) */
+/* Light overlay keeps the photo bright; a soft halo hugs only the glyphs so white text still reads (measured, see docs/website-changelog.md) */
 .viewership-stat--image dt,
 .viewership-stat--image dd { text-shadow: 0 0 var(--spacing-16) color-mix(in srgb, var(--color-foreground) 80%, transparent), 0 0 var(--spacing-6) color-mix(in srgb, var(--color-foreground) 70%, transparent), 0 0 var(--spacing-2) color-mix(in srgb, var(--color-foreground) 50%, transparent); }
 

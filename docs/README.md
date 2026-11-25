@@ -1,0 +1,89 @@
+# Sebenarnya Design System
+
+One design system for every Sebenarnya product: the public website (this repo),
+the CMS dashboard and the browser extension. Same tokens, same components, same
+rules, so the three products look and behave like one.
+
+**Visual reference:** the `/design-system` page of the website (`npm run dev`, then
+open <http://localhost:3000/design-system/>). It renders every token and every
+component from the real code, so it is always up to date.
+
+---
+
+## Source of truth
+
+The **code** is the source of truth. When a document disagrees with the code, the
+code wins and the document gets fixed.
+
+| File | What it holds |
+|---|---|
+| `app/tokens.css` | Every value: palette (primitive), roles (semantic), type, size, spacing, radius, motion, z-index. Plain CSS custom properties, Tailwind v4 names, no framework. |
+| `app/ui.css` | The component styles (`.ui-btn`, `.ui-chip`, `.ui-field`, `.ui-menu`, `.ui-modal`…), written only with semantic tokens. |
+| `components/ui/` | React components (Button, IconButton, Chip, Badge, Verdict, Tabs, SearchField, Field/Input/Textarea/Select, NavLink, DropdownMenu, LanguageMenu, Icon). No Next.js imports. |
+| `scripts/lint-ds.mjs` | `npm run lint:ds`: the rules as a check (no hex, no raw px, type roles only, Lucide only…). |
+
+## Documents
+
+| Document | Read it when | Language |
+|---|---|---|
+| [`design.md`](design.md) | You need the *feel*: identity, palette meaning, type voice, density, motion dials, do/don't. | Bahasa Melayu |
+| [`design-system-rules.md`](design-system-rules.md) | You write UI code: token tiers, type roles, control scale, spacing roles, components, lint rules, accessibility. **The technical spec.** | English |
+| [`plan.md`](plan.md) | You want the open decisions and the roadmap. | Bahasa Melayu |
+| [`website-changelog.md`](website-changelog.md) | You work on a specific website page. Page notes and history only, **not a spec** (many old values). | Bahasa Melayu |
+
+## Using it in another product (today)
+
+The system is not a package yet (roadmap step 3). Until then a product copies a
+**pinned commit** of these files and records that commit hash in its own README:
+
+1. `app/tokens.css`, then `app/ui.css`, loaded in that order.
+2. The base rules at the top of `app/global.css` (`body` font and colour, the
+   `button` / `input` / `select` / `textarea` reset). `ui.css` relies on them;
+   they move into their own `base.css` in step 3.
+3. `components/ui/` if the product uses React. `lucide-react` is the only icon set.
+4. Manrope. The website loads it with `next/font` as `--font-manrope`; elsewhere,
+   load Manrope (400 · 500 · 600) under the family name `Manrope`, the fallback in
+   `--font-sans`.
+5. `scripts/lint-ds.mjs`, run in that product's CI.
+
+Do not edit the copied files inside the product. A change goes into this repo
+first (see *Changing the system*), then every product updates its copy.
+
+### Known gaps per product
+
+| Product | Gap | Roadmap step |
+|---|---|---|
+| All | Not a versioned package: copies drift. | 3 |
+| All | No dark mode (`plan.md` decision still open). | 5 |
+| CMS dashboard | One density only ("lapang", made for the public site). Needs a compact mode: tighter controls and gaps, tables, sidebar, dense forms. Charts and meters exist only as guidelines (`design.md` §4). | 4 |
+| Browser extension | Tokens sit on `:root` and base rules hit bare elements, so a content script would clash with the host page. Needs a scoped mode (Shadow DOM, tokens on `:host`). | 4 |
+| Browser extension | Fluid sizes use `vw`: inside a content script that is the *host page* width, not the panel. Needs fixed sizes in the scoped mode. | 4 |
+| Browser extension | Manrope must ship inside the extension (CSP blocks font CDNs). | 4 |
+
+Already safe for other products: every size is `px` (no `rem`, so a different
+root font size changes nothing), components use only semantic tokens, and
+`components/ui/` has no Next.js imports (`href` renders a plain `<a>`; pass
+`as={Link}` for a router link).
+
+## Changing the system
+
+1. Check `design-system-rules.md` §5: can an existing component or variant do it?
+2. Change a value at the right tier: primitive (whole brand), semantic (a role
+   everywhere) or component knob (one component). Never in a product's own CSS.
+3. Run `npm run lint:ds` and `npm run build`, then check `/design-system`.
+4. Update `design-system-rules.md` if a token or component API changed.
+5. One owner approves changes to tokens and components; products propose new
+   variants by pull request to this repo, never by overriding styles locally.
+
+## Roadmap
+
+1. ✅ Tidy the docs: fix contradictions in `design.md`, split website history
+   from the spec, add this README.
+2. ✅ `/design-system` style guide page: every token and component, live.
+3. Extract a `design-system` package in this repo (tokens, base, ui, React,
+   fonts, lint); the website consumes it first. `lint:ds` in CI and screenshots
+   of `/design-system` as a visual regression check.
+4. Compact mode (dashboard), scoped mode (extension), bundled fonts.
+5. Dark mode, after the decision in `plan.md`.
+6. Optional: Figma variables, text styles and components generated from the code,
+   when a designer needs them. The code stays the source of truth.

@@ -1,9 +1,11 @@
 # Design system rules — Sebenarnya.my
 
 Rules for anyone (people or coding agents) writing UI in this repo. Taste and
-visual direction live in [`design.md`](design.md); exact component specs in
-[`design-system-handoff.md`](design-system-handoff.md). This file says **how to
-write the code** so the system stays easy to update.
+visual direction live in [`design.md`](design.md); the doc map and how to use the
+system in other products (CMS dashboard, browser extension) is in
+[`README.md`](README.md). This file is the technical spec: it says **how to write
+the code** so the system stays easy to update. Website page notes and history are
+in [`website-changelog.md`](website-changelog.md) (not a spec).
 
 **Source of truth:** the code (`app/tokens.css`, `app/ui.css`, `components/ui/`)
 and these docs. The Paper file is no longer a reference — its canvas does not
@@ -266,4 +268,4 @@ design needs a new look, add a variant in `ui.css` first.
 2. Need a new look? Add a variant (knob reassignment) in `ui.css`.
 3. Need a new value? Add a semantic token in `tokens.css` (and a primitive only if the raw value is new).
 4. Run `npm run lint:ds` and `npm run build`.
-5. Update this file and `design-system-handoff.md` if the API changed.
+5. Update this file (and `README.md` if the file layout changed) when the API changes. Website-only notes go in `website-changelog.md`.

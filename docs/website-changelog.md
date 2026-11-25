@@ -1,13 +1,14 @@
-# Sebenarnya.my — Design System Handoff
+# Sebenarnya.my website — catatan implementasi & sejarah
 
-Untuk: agent coding (Claude Code) yang akan implement design system baru ke repo `DM3F/sebenarnya.my` (branch `endahbyu`).
-Rujukan awal: Figma `wxC95N2gmMWvBOWU1K7Nsy` (page "Design system" & "aratwork").
-
-> **Sumber kebenaran:** kod dalam repo ini (`app/tokens.css`, `app/ui.css`, `components/ui/`) bersama [`design.md`](design.md) dan [`design-system-rules.md`](design-system-rules.md). Fail Paper `sebenarnya.my` **bukan lagi rujukan**: kanvasnya tidak sama dengan design semasa. Jangan salin nilai atau susun atur daripada Paper.
-
-> Checklist kemajuan: [`plan.md`](plan.md) — kemas kini bersama fail ini setiap commit.
-
-> Baca `AGENTS.md` dulu. Next.js dalam repo ni versi 16 — semak `node_modules/next/dist/docs/` sebelum ubah API/konvensyen.
+> **Bukan spesifikasi design system.** Fail ini ialah log kerja **laman web** sebenarnya.my: keputusan per halaman, ukuran seksyen, dan sejarah perubahan sejak Nov 2026. Banyak nilai di bawah sudah **usang** (cth. `--color-ring` biru, override tipe mobile, `--radius-lg`) dan disimpan hanya sebagai sejarah.
+>
+> Untuk design system (dipakai juga oleh CMS dashboard dan browser extension), baca:
+> - [`README.md`](README.md) — peta dokumen dan cara guna di produk lain
+> - [`design.md`](design.md) — rasa visual
+> - [`design-system-rules.md`](design-system-rules.md) — token, komponen, lint
+> - `app/tokens.css`, `app/ui.css`, `components/ui/` — **sumber kebenaran**; jika fail ini bercanggah dengan kod, kod yang betul.
+>
+> Rujukan awal (sejarah sahaja): Figma `wxC95N2gmMWvBOWU1K7Nsy`. Fail Paper `sebenarnya.my` bukan lagi rujukan.
 
 ---
 
