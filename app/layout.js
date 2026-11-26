@@ -1,6 +1,8 @@
-import './tokens.css';
+// The design system (design-system/, the package the CMS and extension install), then the website's own CSS
+import '../design-system/tokens.css';
+import '../design-system/base.css';
 import './global.css';
-import './ui.css';
+import '../design-system/ui.css';
 import { Manrope } from 'next/font/google';
 import Chatbot from '@/components/Chatbot';
 import PageTransition from '@/components/PageTransition';

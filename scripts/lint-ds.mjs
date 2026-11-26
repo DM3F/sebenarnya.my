@@ -2,18 +2,23 @@
 /**
  * Design-system consistency check (docs/plan.md › Fasa 9).
  * Usage:
- *   npm run lint:ds
+ *   npm run lint:ds                      (this repo)
+ *   npx sebenarnya-lint-ds [dir …]       (any product: defaults to app components lib src pages)
  * Exits 1 when any rule finds a problem, so it can run in CI.
  *
  * Allowed exceptions are marked in the source with a comment on the same line:
  *   /* ds-allow: <reason> *\/   or   // ds-allow: <reason>
  */
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, relative, sep } from 'node:path';
+import { dirname, join, relative, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = process.cwd();
-const SOURCE_DIRS = ['app', 'components', 'lib', 'design-system'].filter((d) => existsSync(join(ROOT, d)));
-const SKIP_DIRS = new Set(['node_modules', '.next', 'out', '.git']);
+const ARGS = process.argv.slice(2);
+const SOURCE_DIRS = (ARGS.length ? ARGS : ['app', 'components', 'lib', 'design-system', 'src', 'pages']).filter((d) => existsSync(join(ROOT, d)));
+// In a product, tokens.css ships next to this script's folder (node_modules/@sebenarnya/design-system)
+const PACKAGE_TOKENS = join(dirname(fileURLToPath(import.meta.url)), '..', 'tokens.css');
+const SKIP_DIRS = new Set(['node_modules', '.next', 'out', '.git', 'dist']);
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -32,13 +37,14 @@ const files = SOURCE_DIRS.flatMap((d) => walk(join(ROOT, d))).map((f) => ({
 
 // Every custom property defined in tokens.css (for the unknown-role check)
 const TOKENS = new Set(
-  files.filter((f) => /(^|\/)tokens\.css$/.test(f.path))
-    .flatMap((f) => [...f.lines.join('\n').matchAll(/--([\w-]+)\s*:/g)].map((m) => m[1])),
+  [...files.filter((f) => /(^|\/)tokens\.css$/.test(f.path)).map((f) => f.lines.join('\n')),
+    ...(existsSync(PACKAGE_TOKENS) ? [readFileSync(PACKAGE_TOKENS, 'utf8')] : [])]
+    .flatMap((css) => [...css.matchAll(/--([\w-]+)\s*:/g)].map((m) => m[1])),
 );
 
 const isTokens = (p) => /(^|\/)tokens\.css$/.test(p);
 const isCss = (p) => p.endsWith('.css');
-const isIconWrapper = (p) => /components\/ui\/Icon\.js$/.test(p);
+const isIconWrapper = (p) => /(components\/ui|design-system\/react|react)\/Icon\.js$/.test(p);
 
 // Strip comments (rough, per line) so rules don't fire on documentation
 const code = (line) => line.replace(/\/\*.*?\*\//g, '').replace(/(^|[^:])\/\/.*$/, '$1');
@@ -67,14 +73,14 @@ const rules = [
   },
   {
     id: 'icon-wrapper',
-    why: 'Lucide icon rendered without <Icon>; use components/ui/Icon.js (1.75px, aria-hidden).',
+    why: 'Lucide icon rendered without <Icon>; use the design system Icon component (1.75px, aria-hidden).',
     // A JSX tag that starts with a Lucide-style PascalCase name imported from lucide-react
     test: (l, p, file) => !isIconWrapper(p) && file.lucide.size > 0 && [...file.lucide].some((n) => new RegExp(`<${n}[\\s/>]`).test(l)),
   },
   {
     id: 'ui-raw-length',
-    why: 'components/ui layer (app/ui.css) takes no raw lengths; use a semantic token (--size-*, --space-*, --radius-*).',
-    test: (l, p) => /(^|\/)app\/ui\.css$/.test(p) && /(^|[^\w-])\d*\.?\d+px\b/.test(code(l)),
+    why: 'Component layer (ui.css) takes no raw lengths; use a semantic token (--size-*, --space-*, --radius-*).',
+    test: (l, p) => /(^|\/)ui\.css$/.test(p) && /(^|[^\w-])\d*\.?\d+px\b/.test(code(l)),
   },
   {
     id: 'type-primitive',
@@ -209,6 +215,11 @@ const rules = [
       const m = code(l).match(/font-family:\s*([^;}]+)/);
       return (m && !/^(var\(--font-sans\)|inherit)\s*$/.test(m[1].trim())) || /['"]Inter['"]/.test(l);
     },
+  },
+  {
+    id: 'tw-arbitrary',
+    why: 'Tailwind arbitrary value with a raw colour or length (bg-[#…], p-[13px], text-[15px]); use a preset class that reads a token.',
+    test: (l, p) => !isCss(p) && /(?:^|[\s"'`:])[\w-]+-\[[^\]]*(?:#[0-9a-fA-F]{3,8}|\d+(?:\.\d+)?(?:px|rem)|rgba?\(|hsla?\()[^\]]*\]/.test(code(l)),
   },
   {
     id: 'transition-all',

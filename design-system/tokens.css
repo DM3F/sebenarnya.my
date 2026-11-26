@@ -9,14 +9,16 @@
                    --spacing-44). Never used by components/ui.
      2. SEMANTIC   roles (--color-primary, --text-label, --size-control,
                    --radius-control, --focus-ring-*). Components use these.
-     3. COMPONENT  per-component knobs defined in app/ui.css (--btn-bg,
+     3. COMPONENT  per-component knobs defined in ui.css (--btn-bg,
                    --chip-height…). Variants only reassign these.
    Rules for agents and contributors: docs/design-system-rules.md
    ========================================================================== */
 
 :root {
   /* ── Fonts (loaded in app/layout.js via next/font) ───────────────────── */
-  --font-sans: var(--font-manrope), 'Manrope', system-ui, sans-serif; /* the only family: content, headings, UI */
+  /* the only family: content, headings, UI. The website sets --font-manrope (next/font); other
+     products load Manrope under its own name, so the var() needs a fallback or the whole list is invalid */
+  --font-sans: var(--font-manrope, 'Manrope'), system-ui, sans-serif;
 
   /* ══ 1. PRIMITIVE ═══════════════════════════════════════════════════════ */
 
@@ -58,6 +60,12 @@
   --color-ring: var(--color-foreground);           /* focus: ink ring (on dark/photo surfaces --focus-ring-color-inverse) */
   --color-link: var(--color-foreground);           /* links are ink + underline, like every other text */
   --color-destructive: var(--color-red-dark);      /* error text */
+  --color-success: var(--color-green-dark);        /* system status in tools (saved, published); never a verdict */
+  /* Charts (design.md §4): monochrome. One series in ink; colour only when it carries meaning */
+  --color-chart: var(--color-foreground);          /* the series: bars, lines, meter fill */
+  --color-chart-area: color-mix(in srgb, var(--color-chart) 10%, transparent); /* wash under a line */
+  --color-chart-grid: var(--color-muted-strong);   /* hairline gridlines, baseline */
+  --color-chart-track: var(--color-muted-strong);  /* meter track */
   --color-brand: var(--color-red);                 /* logo, sphere — never actions */
   --color-brand-strong: var(--color-red-dark);
   --color-brand-spark: var(--color-blue);          /* decorative spark */
@@ -124,6 +132,7 @@
   --spacing-24: 24px;
   --spacing-28: 28px;
   --spacing-32: 32px;
+  --spacing-36: 36px;  /* compact md control */
   --spacing-40: 40px;
   --spacing-44: 44px;  /* control height, min touch target */
   --spacing-48: 48px;
@@ -245,7 +254,7 @@
      sm · md (default) · lg · xl, each FLUID from the phone size at 375px to the desktop
      size at 1280px (same formula as the type roles), so a phone gets compact controls and
      a desktop keeps the full size, with no breakpoints. Anything below 44 keeps a 44px
-     touch target through its ::after (app/ui.css). */
+     touch target through its ::after (ui.css). */
   --size-control-sm: clamp(var(--spacing-32), 30.34px + 0.442vw, 36px);            /* sm · 32 → 36 · dense rows, inline actions */
   --size-control: clamp(var(--spacing-40), 38.34px + 0.442vw, var(--spacing-44));  /* md · 40 → 44 · default button, chip, tab, field */
   --size-control-lg: clamp(var(--spacing-44), 42.34px + 0.442vw, var(--spacing-48)); /* lg · 44 → 48 · carousel controls, a page's main action */
@@ -268,6 +277,19 @@
   --size-textarea: 120px;
   --size-menu: 220px;                           /* dropdown min width (nav, Kongsi) */
   --size-menu-lg: 260px;                        /* compact nav panel (≤1100) */
+  /* Dashboard parts */
+  --size-row: var(--size-control-lg);           /* table row: lg control, so a row of buttons fits */
+  --size-check: var(--size-icon-lg);            /* checkbox and radio box (20) */
+  --size-switch: var(--size-badge);             /* switch track height (24); width = 2 × height − 2 × inset */
+  --size-toast: 360px;                          /* toast width */
+  --size-sidebar: 260px;                        /* dashboard sidebar */
+  --size-dialog-sm: 400px;                      /* confirm dialog: one question, two buttons */
+  --size-dialog: 520px;                         /* default dialog: a short form */
+  --size-dialog-lg: 720px;                      /* dialog with a table or a long form */
+  --size-chart: 200px;                          /* plot height of a bar chart */
+  --size-chart-bar: 24px;                       /* bar thickness cap: never fill the slot */
+  --size-meter: 8px;                            /* meter track thickness (design.md: 4–8) */
+  --size-sparkline: 40px;                       /* sparkline height in a stat */
 
   /* ══ 2. SEMANTIC — spacing roles ════════════════════════════════════════ */
   /* Control side padding follows the control scale (fluid 375 → 1280) */
@@ -307,12 +329,17 @@
   --radius-card-lg: var(--radius-lg);
 
   /* ══ 2. SEMANTIC — shape, borders, focus, effects ═══════════════════════ */
-  --radius-control: var(--radius-full);         /* every button, chip, tab, search */
+  /* Shape roles. Change one line here to reshape that role in every product.
+     control = anything you press · badge = non-interactive pill labels ·
+     --radius-full stays for true circles only (avatars, dots, round icons, progress tracks). */
+  --radius-control: var(--radius-full);         /* every button, chip, tab, search, icon button, carousel control */
+  --radius-badge: var(--radius-full);           /* Badge, Verdict and other static pill labels */
   --radius-field: var(--radius-input);          /* rectangular inputs */
   --radius-menu: var(--radius-md);
   --radius-menu-item: var(--radius-input);
-  --radius-media: var(--radius-md);             /* thumbnails, inner media */
+  --radius-media: calc(var(--radius-card) - var(--spacing-8)); /* media inset 8px in a card: nested radius = card − inset (20 − 8 = 12) */
   --radius-tail: var(--radius-sm);              /* chat bubble corner on the speaker's side */
+  --radius-check: var(--radius-sm);             /* checkbox corners (a radio is a circle) */
 
   --border-width: 1px;          /* cards, panels, menus, fields, dividers */
   --border-width-hairline: .5px; /* small pills and chips (Figma "pill edge") */
@@ -358,3 +385,31 @@
 @media (max-width: 1280px) { :root { --space-page-x: var(--spacing-48); } }
 @media (max-width: 900px)  { :root { --space-page-x: var(--spacing-24); } }
 @media (max-width: 600px)  { :root { --space-page-x: var(--spacing-16); --space-page-top: var(--spacing-24); } }
+
+/* ══ DENSITY: compact ════════════════════════════════════════════════════════
+   For dashboards and dense tools (CMS). Put data-density="compact" on <html> or on the
+   app shell; everything inside picks it up, components unchanged. Only values change:
+   shorter controls, tighter gaps and cards. Type roles stay the same (reading text
+   does not shrink). Sizes are fixed, not fluid: dashboards are desktop-first.
+   Hit area drops to 24px (WCAG 2.2 AA 2.5.8): 44px targets would overlap 36–40px
+   table rows and toolbars. Mouse-first only; keep the default density on touch screens. */
+[data-density='compact'] {
+  --size-control-sm: var(--spacing-32);
+  --size-control: var(--spacing-36);
+  --size-control-lg: var(--spacing-40);
+  --size-control-xl: var(--spacing-44);
+  --size-hit-area: var(--spacing-24);
+  --size-row: var(--spacing-40);
+  --space-control-x-sm: var(--spacing-12);
+  --space-control-x: var(--spacing-16);
+  --space-control-x-lg: var(--spacing-20);
+  --gap-cards: var(--spacing-16);
+  --gap-block: var(--spacing-24);
+  --space-section: var(--spacing-40);
+  --pad-card-sm: var(--spacing-12);
+  --pad-card: var(--spacing-16);
+  --pad-card-lg: var(--spacing-24);
+  --space-page-x: var(--spacing-24);
+  --space-page-top: var(--spacing-24);
+}
+@media (max-width: 600px) { [data-density='compact'] { --space-page-x: var(--spacing-16); } }

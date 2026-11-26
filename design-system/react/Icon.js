@@ -6,7 +6,7 @@
  *   <Icon icon={ArrowRight} />            // md 16px, decorative
  *   <Icon icon={Search} size="lg" />      // 20px
  *
- * Sizes (match --size-icon-* in app/tokens.css; numbers are not allowed):
+ * Sizes (match --size-icon-* in tokens.css; numbers are not allowed):
  *   sm 14 badges, small meta · md 16 next to a label, in buttons (default)
  *   lg 20 fields, search, icon-only list items · xl 24 icon-only buttons, status marks
  *   display 40 empty states, upload zones

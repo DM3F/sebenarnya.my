@@ -1,0 +1,416 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import { Bell, ChartColumn, FileCheck, FileText, Inbox, LayoutDashboard, LogOut, Megaphone, Pencil, Plus, Settings, Trash2, Users } from 'lucide-react';
+import { withBase } from '@/lib/basePath';
+import {
+  Alert, Avatar, Badge, Breadcrumb, Button, Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
+  CardTitle, Checkbox, EmptyState, IconButton, Pagination, RadioGroup, SearchField, Select, Separator, Skeleton,
+  Switch, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Toaster, Tooltip, Verdict, toast,
+  AppShell, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarItem, SidebarFooter, SidebarTrigger,
+  Topbar, PageHeader, PageContent, Dialog, ConfirmDialog, ConfirmDialogHost, confirmDialog, Field, Input,
+  Stat, BarChart, BarList, Meter,
+} from '@/components/ui';
+
+/* Dashboard components on the /design-system page: one demo per component, then the same
+   CMS panel in default and compact density so the difference is visible side by side.
+   Rows are example data, not real fact-checks. */
+
+const ROWS = [
+  { id: 1, title: 'Pautan bantuan tunai melalui WhatsApp', verdict: 'palsu', agency: 'KPDN', views: 18240, date: '2026-11-24', status: 'Diterbitkan' },
+  { id: 2, title: 'Amaran hujan lebat di Pantai Timur', verdict: 'makluman', agency: 'MetMalaysia', views: 9310, date: '2026-11-23', status: 'Diterbitkan' },
+  { id: 3, title: 'Sekolah di Selangor beroperasi seperti biasa', verdict: 'benar', agency: 'KPM', views: 4120, date: '2026-11-22', status: 'Draf' },
+  { id: 4, title: 'Harga RON95 naik minggu depan', verdict: 'palsu', agency: 'KKMM', views: 27650, date: '2026-11-21', status: 'Diterbitkan' },
+  { id: 5, title: 'Lesen memandu tamat tempoh boleh diperbaharui dalam talian', verdict: 'benar', agency: 'JPJ', views: 6480, date: '2026-11-20', status: 'Semakan' },
+];
+const fmtDate = (iso) => new Date(iso).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' });
+const fmtNum = (n) => n.toLocaleString('ms-MY');
+
+function Group({ title, note, children }) {
+  return (
+    <div className="dsg-group">
+      <div className="dsg-group__head">
+        <h3 className="dsg-group__title">{title}</h3>
+        {note && <p className="dsg-group__note">{note}</p>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function Demo({ code, children, wide }) {
+  return (
+    <figure className={`dsg-demo${wide ? ' dsg-demo--wide' : ''}`}>
+      <div className="dsg-demo__stage dsg-demo__stage--column">{children}</div>
+      {code && <figcaption><code className="dsg-code">{code}</code></figcaption>}
+    </figure>
+  );
+}
+
+/* The CMS panel: toolbar, selectable and sortable table, row actions, pagination */
+function ChecksPanel({ header = true }) {
+  const [sort, setSort] = useState({ key: 'date', dir: 'descending' });
+  const [selected, setSelected] = useState(() => new Set([2]));
+  const [page, setPage] = useState(1);
+
+  const rows = useMemo(() => {
+    const out = [...ROWS].sort((a, b) => (a[sort.key] > b[sort.key] ? 1 : -1));
+    return sort.dir === 'descending' ? out.reverse() : out;
+  }, [sort]);
+  const sortBy = (key) => () => setSort((s) => ({ key, dir: s.key === key && s.dir === 'descending' ? 'ascending' : 'descending' }));
+  const sortOf = (key) => (sort.key === key ? sort.dir : 'none');
+  const all = selected.size === ROWS.length;
+  const some = selected.size > 0 && !all;
+  const toggle = (id, on) => setSelected((s) => { const n = new Set(s); if (on) n.add(id); else n.delete(id); return n; });
+
+  return (
+    <Card variant="outline" className="dsg-panel">
+      {header && (
+        <CardHeader>
+          <CardTitle>Semakan fakta</CardTitle>
+          <CardDescription>{selected.size ? `${selected.size} dipilih` : `${ROWS.length} semakan minggu ini`}</CardDescription>
+          <CardAction><Button icon={Plus} size="sm" onClick={() => toast('Draf baharu dibuka')}>Semakan baharu</Button></CardAction>
+        </CardHeader>
+      )}
+      <div className="dsg-toolbar">
+        <SearchField size="sm" hideLabel label="Tapis semakan" placeholder="Tapis tajuk atau agensi…" buttonLabel={null} onSubmit={() => {}} />
+        <Select size="sm" aria-label="Verdict" defaultValue="semua">
+          <option value="semua">Semua verdict</option>
+          <option value="palsu">Palsu</option>
+          <option value="makluman">Makluman</option>
+          <option value="benar">Benar</option>
+        </Select>
+      </div>
+      <Table label="Senarai semakan fakta">
+        <TableHeader>
+          <TableRow>
+            <TableHead check>
+              <Checkbox label="Pilih semua" hideLabel checked={all} indeterminate={some}
+                onCheckedChange={(on) => setSelected(on ? new Set(ROWS.map((r) => r.id)) : new Set())} />
+            </TableHead>
+            <TableHead>Tajuk</TableHead>
+            <TableHead>Verdict</TableHead>
+            <TableHead align="num" sort={sortOf('views')} onSort={sortBy('views')}>Tontonan</TableHead>
+            <TableHead sort={sortOf('date')} onSort={sortBy('date')}>Tarikh</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead><span className="ui-sr-only">Tindakan</span></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rows.map((r) => (
+            <TableRow key={r.id} selected={selected.has(r.id)}>
+              <TableCell check>
+                <Checkbox label={`Pilih: ${r.title}`} hideLabel checked={selected.has(r.id)} onCheckedChange={(on) => toggle(r.id, on)} />
+              </TableCell>
+              <TableCell className="dsg-cell-title">{r.title}</TableCell>
+              <TableCell><Verdict type={r.verdict} variant="plain" agency={r.agency} /></TableCell>
+              <TableCell align="num">{fmtNum(r.views)}</TableCell>
+              <TableCell>{fmtDate(r.date)}</TableCell>
+              <TableCell><Badge variant={r.status === 'Diterbitkan' ? 'muted' : 'outline'} size="sm">{r.status}</Badge></TableCell>
+              <TableCell>
+                <span className="dsg-row-actions">
+                  <Tooltip content="Sunting"><IconButton icon={Pencil} label={`Sunting: ${r.title}`} variant="quiet" size="icon-sm" /></Tooltip>
+                  <Tooltip content="Padam"><IconButton icon={Trash2} label={`Padam: ${r.title}`} variant="quiet" size="icon-sm" /></Tooltip>
+                </span>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <CardFooter className="dsg-panel__footer">
+        <Pagination page={page} pageCount={12} onPageChange={setPage} />
+      </CardFooter>
+    </Card>
+  );
+}
+
+
+function ShellDemo() {
+  const [page, setPage] = useState('semakan');
+  const item = (id, icon, label, count) => (
+    <SidebarItem icon={icon} current={page === id} count={count} onClick={() => setPage(id)}>{label}</SidebarItem>
+  );
+  return (
+    <div className="dsg-shell-frame">
+      <AppShell sidebar={
+        <Sidebar>
+          <SidebarHeader>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="dsg-shell-logo" src={withBase('/images/logo/icon.png')} alt="" />
+            <span className="dsg-shell-product">Sebenarnya CMS</span>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
+              {item('ringkasan', LayoutDashboard, 'Ringkasan')}
+            </SidebarGroup>
+            <SidebarGroup label="Kandungan">
+              {item('semakan', FileCheck, 'Semakan fakta')}
+              {item('aduan', Inbox, 'Aduan masuk', 12)}
+              {item('makluman', Megaphone, 'Makluman agensi')}
+            </SidebarGroup>
+            <SidebarGroup label="Pentadbiran">
+              {item('analitik', ChartColumn, 'Analitik')}
+              {item('pengguna', Users, 'Pengguna')}
+              {item('tetapan', Settings, 'Tetapan')}
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter>
+            <Avatar alt="Nur Aisyah" size="sm" />
+            <span className="dsg-shell-user"><span>Nur Aisyah</span><span className="dsg-shell-role">Penyunting</span></span>
+            <Tooltip content="Log keluar"><IconButton icon={LogOut} label="Log keluar" variant="quiet" size="icon-sm" /></Tooltip>
+          </SidebarFooter>
+        </Sidebar>
+      }>
+        <Topbar actions={
+          <Tooltip content="Pemberitahuan" side="bottom"><IconButton icon={Bell} label="Pemberitahuan" variant="quiet" /></Tooltip>
+        }>
+          <SidebarTrigger />
+          <Breadcrumb items={[{ label: 'Kandungan', href: '#app-shell' }, { label: 'Semakan fakta' }]} />
+        </Topbar>
+        <PageContent as="div" id={undefined}>
+          <PageHeader title="Semakan fakta" description="Semua semakan, draf dan yang menunggu pengesahan agensi."
+            actions={<><Button variant="outline" size="sm">Eksport</Button><Button size="sm" icon={Plus}>Semakan baharu</Button></>} />
+          <ChecksPanel header={false} />
+        </PageContent>
+      </AppShell>
+    </div>
+  );
+}
+
+
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function DialogDemo() {
+  const [del, setDel] = useState(false);
+  const [fail, setFail] = useState(false);
+  const [edit, setEdit] = useState(false);
+  return (
+    <div className="dsg-demos">
+      <Demo code='<ConfirmDialog variant="destructive" onConfirm={async…}>'>
+        <Button variant="outline" icon={Trash2} onClick={() => setDel(true)}>Padam semakan</Button>
+        <ConfirmDialog open={del} onOpenChange={setDel} variant="destructive"
+          title="Padam semakan ini?"
+          description="“Harga RON95 naik minggu depan” dan sejarah suntingannya akan dibuang. Tindakan ini tidak boleh dibatalkan."
+          confirmLabel="Padam" pendingLabel="Memadam…"
+          onConfirm={async () => { await wait(1200); toast({ title: 'Semakan dipadam', variant: 'success' }); }} />
+      </Demo>
+      <Demo code="await confirmDialog({ … })">
+        <Button variant="outline" onClick={async () => {
+          const ok = await confirmDialog({
+            title: 'Terbitkan semakan ini?',
+            description: 'Ia akan kelihatan di laman web dan dihantar kepada pelanggan WhatsApp AIFA.',
+            confirmLabel: 'Terbitkan',
+          });
+          if (ok) toast({ title: 'Semakan diterbitkan', variant: 'success' });
+        }}>Terbitkan</Button>
+      </Demo>
+      <Demo code="onConfirm gagal → ralat dalam dialog">
+        <Button variant="outline" onClick={() => setFail(true)}>Padam (gagal)</Button>
+        <ConfirmDialog open={fail} onOpenChange={setFail} variant="destructive"
+          title="Padam 3 semakan?" description="Semakan yang dipilih akan dibuang."
+          confirmLabel="Padam" pendingLabel="Memadam…"
+          onConfirm={async () => { await wait(1000); throw new Error('Sambungan terputus. Semakan belum dipadam; cuba lagi.'); }} />
+      </Demo>
+      <Demo code='<Dialog title footer>'>
+        <Button variant="outline" icon={Pencil} onClick={() => setEdit(true)}>Sunting tajuk</Button>
+        <Dialog open={edit} onOpenChange={setEdit} title="Sunting tajuk" description="Tajuk ringkas yang menyatakan dakwaan, bukan jawapannya."
+          footer={<><Button variant="outline" onClick={() => setEdit(false)}>Batal</Button><Button onClick={() => { setEdit(false); toast('Tajuk disimpan'); }}>Simpan</Button></>}>
+          <Field label="Tajuk"><Input defaultValue="Pautan bantuan tunai melalui WhatsApp" data-autofocus /></Field>
+          <Field label="Agensi"><Input defaultValue="KPDN" /></Field>
+        </Dialog>
+      </Demo>
+    </div>
+  );
+}
+
+
+// Example figures only
+const DAYS = [42, 38, 51, 47, 63, 29, 24, 55, 61, 58, 72, 66, 31, 27].map((value, i) => ({ label: `${13 + i} Nov`, value }));
+const AGENCIES = [
+  { label: 'KPDN', value: 214 }, { label: 'MOH', value: 168 }, { label: 'MCMC', value: 142 },
+  { label: 'MetMalaysia', value: 97 }, { label: 'JPJ', value: 63 }, { label: 'KPM', value: 41 },
+];
+
+function ChartsDemo() {
+  return (
+    <div className="dsg-charts">
+      <div className="dsg-stats">
+        <Card variant="outline"><Stat label="Semakan diterbitkan" value="664" delta={12.5} deltaLabel="berbanding minggu lepas" trend={DAYS.map((d) => d.value)} /></Card>
+        <Card variant="outline"><Stat label="Aduan masuk" value="1,208" delta={-4} deltaLabel="berbanding minggu lepas" trend={[90, 84, 88, 80, 86, 79, 82, 77]} /></Card>
+        <Card variant="outline"><Stat label="Masa purata menyemak" value="6.2 jam" delta={0} deltaLabel="tiada perubahan" /></Card>
+      </div>
+      <div className="dsg-chart-row">
+        <Card variant="outline">
+          <BarChart title="Semakan diterbitkan sehari" description="14 hari terakhir" data={DAYS} />
+        </Card>
+        <Card variant="outline">
+          <BarList title="Semakan mengikut agensi" data={AGENCIES} />
+        </Card>
+      </div>
+      <Card variant="outline" className="dsg-meters">
+        <Meter label="Aduan dijawab dalam 24 jam" value={82} />
+        <Meter label="Kuota semakan bulan ini" value={664} max={900} valueText="664 / 900" hint="236 lagi sebelum 30 Nov" />
+        <Meter label="Semakan dengan sumber rasmi" value={97} />
+      </Card>
+    </div>
+  );
+}
+
+export default function DesignSystemDashboard() {
+  const [radio, setRadio] = useState('sendiri');
+  const [loading, setLoading] = useState(true);
+
+  return (
+    <section className="dsg-section" id="dashboard" aria-labelledby="dashboard-title">
+      <header className="dsg-section__head">
+        <h2 className="dsg-section__title" id="dashboard-title">Komponen dashboard</h2>
+        <p className="dsg-section__lead">
+          Untuk CMS, extension dan alat dalaman. API ikut shadcn/ui, dibina atas elemen asli dan token kita.
+          Data dalam contoh di bawah ialah contoh sahaja.
+        </p>
+      </header>
+
+      <Group title="Kepadatan: lalai vs compact"
+        note='Panel yang sama. Kanan: data-density="compact" pada bekasnya. Hanya nilai token berubah (kawalan 36px, baris 40px, jarak lebih rapat); komponen tidak berubah. Compact untuk desktop sahaja.'>
+        <div className="dsg-density">
+          <figure className="dsg-density__col">
+            <figcaption><code className="dsg-code">lalai</code></figcaption>
+            <ChecksPanel />
+          </figure>
+          <figure className="dsg-density__col" data-density="compact">
+            <figcaption><code className="dsg-code">data-density=&quot;compact&quot;</code></figcaption>
+            <ChecksPanel />
+          </figure>
+        </div>
+      </Group>
+
+      <Group title="Carta &amp; meter: Stat · BarChart · BarList · Meter"
+        note="Monokrom: satu siri dalam tinta, grid garis rambut, label terus pada nilai terkini sahaja, teks dalam token teks. Arah perubahan dengan tanda, anak panah dan perkataan, bukan merah/hijau. Setiap carta ada nombornya sebagai teks (lajur nilai atau jadual pembaca skrin). Hover lajur untuk nilainya.">
+        <ChartsDemo />
+      </Group>
+
+      <Group title="App shell" note="Kerangka alat (CMS): Sidebar + Topbar + PageContent, compact secara lalai. Produk mengisi menu dan halaman. Pada 900px ke bawah sidebar jadi laci: butang menu membukanya, Escape / scrim / pautan menutupnya, fokus kembali ke butang.">
+        <span id="app-shell" />
+        <ShellDemo />
+      </Group>
+
+      <Group title="Card" note="muted (lalai) untuk kumpulan dalam halaman · outline untuk panel kerja · raised untuk permukaan atas taupe. Saiz kad menentukan padding dan radius.">
+        <div className="dsg-demos">
+          {[['muted', 'Lalai, taupe'], ['outline', 'Panel kerja'], ['raised', 'Atas permukaan taupe']].map(([v, d]) => (
+            <Card key={v} variant={v}>
+              <CardHeader>
+                <CardTitle>Tontonan minggu ini</CardTitle>
+                <CardDescription>{d} · <code className="dsg-code">variant=&quot;{v}&quot;</code></CardDescription>
+              </CardHeader>
+              <CardContent><p className="dsg-stat">66,800</p></CardContent>
+            </Card>
+          ))}
+        </div>
+      </Group>
+
+      <Group title="Pilihan: Checkbox · RadioGroup · Switch"
+        note="Checkbox untuk pilihan yang dihantar dengan borang · Switch untuk tetapan yang berkuat kuasa serta-merta · RadioGroup untuk satu daripada beberapa pilihan yang semuanya kelihatan.">
+        <div className="dsg-demos">
+          <Demo code="<Checkbox label hint indeterminate>">
+            <Checkbox label="Hantar e-mel kepada pengadu" hint="Selepas semakan diterbitkan." defaultChecked />
+            <Checkbox label="Tandakan sebagai keutamaan" />
+            <Checkbox label="Sebahagian dipilih" indeterminate />
+            <Checkbox label="Tidak tersedia" disabled />
+          </Demo>
+          <Demo code='<RadioGroup items value onValueChange>'>
+            <RadioGroup label="Siapa yang menyemak?" value={radio} onValueChange={setRadio}
+              items={[
+                { value: 'sendiri', label: 'Saya sendiri' },
+                { value: 'agensi', label: 'Hantar kepada agensi', hint: 'Agensi menerima pautan semakan.' },
+                { value: 'pasukan', label: 'Pasukan AIFA', disabled: true },
+              ]} />
+          </Demo>
+          <Demo code="<Switch label hint>">
+            <Switch label="Terbitkan secara automatik" hint="Apabila agensi mengesahkan." defaultChecked />
+            <Switch label="Notifikasi WhatsApp" />
+            <Switch label="Mod penyelenggaraan" disabled />
+          </Demo>
+        </div>
+      </Group>
+
+      <Group title="Mesej: Alert · Toast" note="Alert kekal dalam halaman (ralat borang, notis atas jadual). Toast untuk pengesahan ringkas yang hilang sendiri selepas 5 saat.">
+        <div className="dsg-demos">
+          <Demo code='<Alert title>' wide>
+            <Alert title="Semakan ini menunggu pengesahan agensi.">KPDN dijangka memberi maklum balas dalam 24 jam.</Alert>
+            <Alert variant="success" title="Semakan diterbitkan.">Ia kini kelihatan di laman web dan WhatsApp AIFA.</Alert>
+            <Alert variant="destructive" title="Semakan tidak dapat disimpan."
+              action={<Button variant="link" size="sm">Cuba lagi</Button>}>
+              Medan &quot;Sumber rasmi&quot; kosong. Tambah pautan kenyataan agensi.
+            </Alert>
+          </Demo>
+          <Demo code="toast(…) + <Toaster />">
+            <Button variant="outline" onClick={() => toast('Draf disimpan')}>Toast ringkas</Button>
+            <Button variant="outline" onClick={() => toast({ title: 'Semakan diterbitkan', description: 'Pautan bantuan tunai melalui WhatsApp', variant: 'success', action: { label: 'Lihat', onClick: () => {} } })}>Toast dengan tindakan</Button>
+          </Demo>
+        </div>
+      </Group>
+
+      <Group title="Dialog · ConfirmDialog"
+        note="Dialog untuk tugas pendek (sunting). ConfirmDialog untuk keputusan sebelum tindakan penting: tiada butang tutup atau klik scrim, pengguna pilih Batal atau tindakan. Destructive: fokus mula pada Batal, tanda amaran pada ikon, butang tindakan tetap tinta (aksi tidak pernah merah).">
+        <DialogDemo />
+      </Group>
+
+      <Group title="Navigasi: Breadcrumb · Pagination · Tooltip">
+        <div className="dsg-demos">
+          <Demo code="<Breadcrumb items>" wide>
+            <Breadcrumb items={[{ label: 'Papan pemuka', href: '#dashboard' }, { label: 'Semakan fakta', href: '#dashboard' }, { label: 'Pautan bantuan tunai' }]} />
+          </Demo>
+          <Demo code="<Pagination page pageCount>" wide>
+            <Pagination page={6} pageCount={20} onPageChange={() => {}} />
+          </Demo>
+          <Demo code='<Tooltip content><IconButton variant="quiet" /></Tooltip>'>
+            <span className="dsg-row-actions">
+              <Tooltip content="Sunting"><IconButton icon={Pencil} label="Sunting" variant="quiet" /></Tooltip>
+              <Tooltip content="Lihat sumber"><IconButton icon={FileText} label="Lihat sumber" variant="quiet" /></Tooltip>
+              <Tooltip content="Padam"><IconButton icon={Trash2} label="Padam" variant="quiet" /></Tooltip>
+            </span>
+          </Demo>
+        </div>
+      </Group>
+
+      <Group title="Kandungan: Avatar · Skeleton · EmptyState · Separator">
+        <div className="dsg-demos">
+          <Demo code='<Avatar alt fallback size="sm | md">'>
+            <span className="dsg-row-actions">
+              <Avatar alt="Kementerian Perdagangan Dalam Negeri" fallback="KP" />
+              <Avatar alt="Jabatan Pengangkutan Jalan" fallback="JPJ" />
+              <Avatar alt="Nur Aisyah" size="sm" />
+            </span>
+          </Demo>
+          <Demo code='<Skeleton variant="text | circle | block">'>
+            <div className="dsg-skeleton-card" aria-busy={loading}>
+              {loading ? (
+                <>
+                  <span className="dsg-row-actions"><Skeleton variant="circle" width="var(--size-avatar)" /><Skeleton variant="text" width="60%" /></span>
+                  <Skeleton variant="text" width="100%" />
+                  <Skeleton variant="text" width="80%" />
+                </>
+              ) : (
+                <p className="dsg-group__note">Kandungan dimuatkan.</p>
+              )}
+            </div>
+            <Button variant="quiet" size="sm" onClick={() => setLoading((v) => !v)}>{loading ? 'Tamat muat' : 'Muat semula'}</Button>
+          </Demo>
+          <Demo code="<EmptyState icon title description action>" wide>
+            <EmptyState title="Belum ada semakan dalam draf"
+              description="Semakan yang anda mula tetapi belum terbitkan akan muncul di sini."
+              action={<Button icon={Plus}>Semakan baharu</Button>} />
+          </Demo>
+          <Demo code="<Separator />" wide>
+            <p className="dsg-group__note">Kumpulan pertama</p>
+            <Separator />
+            <p className="dsg-group__note">Kumpulan kedua</p>
+          </Demo>
+        </div>
+      </Group>
+
+      <Toaster />
+      <ConfirmDialogHost />
+    </section>
+  );
+}
