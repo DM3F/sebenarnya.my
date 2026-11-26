@@ -278,6 +278,9 @@
   --size-switch: var(--size-badge);             /* switch track height (24); width = 2 × height − 2 × inset */
   --size-toast: 360px;                          /* toast width */
   --size-sidebar: 260px;                        /* dashboard sidebar */
+  --size-dialog-sm: 400px;                      /* confirm dialog: one question, two buttons */
+  --size-dialog: 520px;                         /* default dialog: a short form */
+  --size-dialog-lg: 720px;                      /* dialog with a table or a long form */
 
   /* ══ 2. SEMANTIC — spacing roles ════════════════════════════════════════ */
   /* Control side padding follows the control scale (fluid 375 → 1280) */

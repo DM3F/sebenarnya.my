@@ -283,6 +283,8 @@ Import from `@/components/ui`. API mirrors shadcn/ui (variant + size props).
 | Person or agency | `Avatar` | Initials fallback. sm · md. |
 | Nothing here yet | `EmptyState` | Say what will appear and how to add the first one. |
 | Divider | `Separator` | Decorative by default. |
+| A short task in a window (edit a title) | `Dialog` | Native `<dialog>` on the shared `.ui-modal` surface. `title`, `description`, `footer`, size sm (400) · md (520) · lg (720). Escape, the X or a scrim click close it; `busy` blocks closing while saving. First focus: the control with `data-autofocus`, else the first control. |
+| A decision before an action (padam, terbit) | `ConfirmDialog`, or `await confirmDialog({…})` with `<ConfirmDialogHost />` once | `role="alertdialog"`: no X, no scrim close; Escape = Batal. `onConfirm` may return a promise: the button shows `pendingLabel`, the dialog closes on success and shows the error on failure. `variant="destructive"` adds the warning mark and starts focus on Batal. **The action button is never red** (design.md): say the verb ("Padam", not "Ya"). |
 | Frame of a tool | `AppShell` + `Sidebar` (`SidebarHeader` `SidebarContent` `SidebarGroup` `SidebarItem` `SidebarFooter`) + `Topbar` + `SidebarTrigger` + `PageContent` + `PageHeader` | Compact by default. Sidebar `--size-sidebar`; items take the control shape, current page = muted fill + medium, `count` for numbers to act on. ≤900: drawer (trigger opens; Escape, scrim or a link closes; focus moves in and back; page inert). One `PageHeader` per page: title (`heading` role), one-line description, main actions. |
 
 A page-specific class may position a component (`margin`, `grid-area`,

@@ -8,7 +8,7 @@ import {
   CardTitle, Checkbox, EmptyState, IconButton, Pagination, RadioGroup, SearchField, Select, Separator, Skeleton,
   Switch, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Toaster, Tooltip, Verdict, toast,
   AppShell, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarItem, SidebarFooter, SidebarTrigger,
-  Topbar, PageHeader, PageContent,
+  Topbar, PageHeader, PageContent, Dialog, ConfirmDialog, ConfirmDialogHost, confirmDialog, Field, Input,
 } from '@/components/ui';
 
 /* Dashboard components on the /design-system page: one demo per component, then the same
@@ -176,6 +176,52 @@ function ShellDemo() {
   );
 }
 
+
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function DialogDemo() {
+  const [del, setDel] = useState(false);
+  const [fail, setFail] = useState(false);
+  const [edit, setEdit] = useState(false);
+  return (
+    <div className="dsg-demos">
+      <Demo code='<ConfirmDialog variant="destructive" onConfirm={async…}>'>
+        <Button variant="outline" icon={Trash2} onClick={() => setDel(true)}>Padam semakan</Button>
+        <ConfirmDialog open={del} onOpenChange={setDel} variant="destructive"
+          title="Padam semakan ini?"
+          description="“Harga RON95 naik minggu depan” dan sejarah suntingannya akan dibuang. Tindakan ini tidak boleh dibatalkan."
+          confirmLabel="Padam" pendingLabel="Memadam…"
+          onConfirm={async () => { await wait(1200); toast({ title: 'Semakan dipadam', variant: 'success' }); }} />
+      </Demo>
+      <Demo code="await confirmDialog({ … })">
+        <Button variant="outline" onClick={async () => {
+          const ok = await confirmDialog({
+            title: 'Terbitkan semakan ini?',
+            description: 'Ia akan kelihatan di laman web dan dihantar kepada pelanggan WhatsApp AIFA.',
+            confirmLabel: 'Terbitkan',
+          });
+          if (ok) toast({ title: 'Semakan diterbitkan', variant: 'success' });
+        }}>Terbitkan</Button>
+      </Demo>
+      <Demo code="onConfirm gagal → ralat dalam dialog">
+        <Button variant="outline" onClick={() => setFail(true)}>Padam (gagal)</Button>
+        <ConfirmDialog open={fail} onOpenChange={setFail} variant="destructive"
+          title="Padam 3 semakan?" description="Semakan yang dipilih akan dibuang."
+          confirmLabel="Padam" pendingLabel="Memadam…"
+          onConfirm={async () => { await wait(1000); throw new Error('Sambungan terputus. Semakan belum dipadam; cuba lagi.'); }} />
+      </Demo>
+      <Demo code='<Dialog title footer>'>
+        <Button variant="outline" icon={Pencil} onClick={() => setEdit(true)}>Sunting tajuk</Button>
+        <Dialog open={edit} onOpenChange={setEdit} title="Sunting tajuk" description="Tajuk ringkas yang menyatakan dakwaan, bukan jawapannya."
+          footer={<><Button variant="outline" onClick={() => setEdit(false)}>Batal</Button><Button onClick={() => { setEdit(false); toast('Tajuk disimpan'); }}>Simpan</Button></>}>
+          <Field label="Tajuk"><Input defaultValue="Pautan bantuan tunai melalui WhatsApp" data-autofocus /></Field>
+          <Field label="Agensi"><Input defaultValue="KPDN" /></Field>
+        </Dialog>
+      </Demo>
+    </div>
+  );
+}
+
 export default function DesignSystemDashboard() {
   const [radio, setRadio] = useState('sendiri');
   const [loading, setLoading] = useState(true);
@@ -265,6 +311,11 @@ export default function DesignSystemDashboard() {
         </div>
       </Group>
 
+      <Group title="Dialog · ConfirmDialog"
+        note="Dialog untuk tugas pendek (sunting). ConfirmDialog untuk keputusan sebelum tindakan penting: tiada butang tutup atau klik scrim, pengguna pilih Batal atau tindakan. Destructive: fokus mula pada Batal, tanda amaran pada ikon, butang tindakan tetap tinta (aksi tidak pernah merah).">
+        <DialogDemo />
+      </Group>
+
       <Group title="Navigasi: Breadcrumb · Pagination · Tooltip">
         <div className="dsg-demos">
           <Demo code="<Breadcrumb items>" wide>
@@ -320,6 +371,7 @@ export default function DesignSystemDashboard() {
       </Group>
 
       <Toaster />
+      <ConfirmDialogHost />
     </section>
   );
 }
