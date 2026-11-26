@@ -1098,13 +1098,20 @@ input::placeholder { color: var(--color-foreground); }
   gap: var(--gap-group);
 }
 
-.articles-search { flex: 1 1 360px; min-width: 0; }
+/* Grows to fill the row but stops at the Figma width (822px), so on wide screens the
+   filters and count sit right after it instead of the field stretching edge to edge */
+.articles-search {
+  --articles-search-max: 822px; /* ds-allow: Figma "Search" container width */
+  flex: 1 1 360px;
+  min-width: 0;
+  max-width: var(--articles-search-max);
+}
 
 /* Native <select> styled as a pill, with a Lucide chevron on top */
 .articles-select { flex: none; }
 
 .articles-count {
-  margin: 0 0 0 auto;
+  margin: 0; /* follows the selects (Figma), not pushed to the far edge */
   font-family: var(--font-sans);
   font-size: var(--text-body-sm);
   line-height: var(--text-body-sm--line-height);
