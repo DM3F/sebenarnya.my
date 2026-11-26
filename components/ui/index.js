@@ -29,3 +29,4 @@ export {
   AppShell, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarItem, SidebarFooter, SidebarTrigger,
   Topbar, PageHeader, PageContent,
 } from './AppShell';
+export { Dialog, ConfirmDialog, ConfirmDialogHost, confirmDialog } from './Dialog';

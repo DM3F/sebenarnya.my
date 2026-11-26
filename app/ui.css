@@ -1214,6 +1214,56 @@ dialog:focus { outline: none; }
 .ui-empty__title { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--text-title--font-weight); }
 .ui-empty__description { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); }
 
+/* ── Dialog · ConfirmDialog — on the shared .ui-modal surface (scrim, shadow, pop) ──
+   Width by size, never wider than the screen minus the page gutter on each side. */
+.ui-dialog {
+  --dialog-width: var(--size-dialog);
+
+  width: min(var(--dialog-width), calc(100% - 2 * var(--space-page-x)));
+  max-height: calc(100dvh - 2 * var(--space-page-x));
+  padding: var(--pad-card-lg);
+  overflow-y: auto;
+}
+.ui-dialog[open] { display: flex; flex-direction: column; gap: var(--gap-group); }
+.ui-dialog--sm { --dialog-width: var(--size-dialog-sm); }
+.ui-dialog--lg { --dialog-width: var(--size-dialog-lg); }
+.ui-dialog__header { display: flex; align-items: flex-start; gap: var(--gap-group); }
+.ui-dialog__heading { display: flex; flex-direction: column; gap: var(--gap-text); flex: 1 1 auto; min-width: 0; }
+.ui-dialog__title {
+  margin: 0;
+  font-size: var(--text-heading);
+  line-height: var(--text-heading--line-height);
+  font-weight: var(--text-heading--font-weight);
+}
+.ui-dialog__description { margin: 0; color: var(--color-text-secondary); }
+.ui-dialog__close { margin: calc(-1 * var(--spacing-4)) calc(-1 * var(--spacing-8)) 0 0; }
+.ui-dialog__body { display: flex; flex-direction: column; gap: var(--gap-group); min-width: 0; }
+.ui-dialog__footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--gap-inline); }
+/* Destructive mark: the warning colour sits on the icon only, never on the action */
+.ui-dialog__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--size-control-lg);
+  height: var(--size-control-lg);
+  border-radius: var(--radius-full);
+  background: var(--color-muted);
+  color: var(--color-destructive);
+}
+.ui-dialog__error {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--text-body-sm--line-height);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-destructive);
+}
+@media (max-width: 600px) { /* ds-allow: sm breakpoint; media queries cannot read tokens */
+  .ui-dialog { padding: var(--pad-card); }
+  /* Thumb reach: the action on top, full width */
+  .ui-dialog__footer { flex-direction: column-reverse; }
+  .ui-dialog__footer > .ui-btn { width: 100%; }
+}
+
 /* ── App shell — sidebar + top bar + page, for tools (CMS) ─────────────────
    --shell-height is the viewport by default; a demo frame can set it smaller.
    Desktop: sidebar column always there. ≤900: the sidebar is a drawer over a scrim. */
