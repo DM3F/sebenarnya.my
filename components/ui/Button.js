@@ -8,7 +8,8 @@ const renderIcon = (icon, className) =>
 /**
  * Button — pill control, API modelled on shadcn/ui.
  *
- *   variant: filled (default) · outline · secondary · ghost · media · link
+ *   variant: filled (default) · outline · secondary · ghost · quiet · media · link
+ *            `quiet` = no fill, no underline, tinted on hover: toolbars, pagination, row actions.
  *            `media` = canvas pill for photos and dark panels.
  *   size:    sm · md (default) · lg · icon-sm · icon · icon-lg — fluid heights from the control
  *            scale in tokens.css: sm 32→36 · md 40→44 · lg 44→48 (phone → desktop).

@@ -149,6 +149,17 @@ A `--spacing-*` step is only for geometry inside one component: gaps of 12px or 
 control padding, offsets. Don't add breakpoint overrides for a role (it is already
 fluid). The rare exception (header chrome, carousel dot hit areas) carries `ds-allow`.
 
+### Density: default and compact
+
+`data-density="compact"` on `<html>` or an app shell makes everything inside denser by
+changing token values only (tokens.css › DENSITY): controls sm 32 · md 36 · lg 40 · xl 44,
+table rows 40, card padding 12 · 16 · 24, tighter card and block gaps, page gutter 24.
+Type roles do not change. Sizes are fixed, not fluid. The hit area drops from 44 to 24
+(WCAG 2.2 AA 2.5.8) so targets do not overlap 36–40px rows: **compact is for mouse-first
+desktop tools only** (CMS). The public website and anything used on a phone stay default.
+Never write density-specific CSS in a component; if compact needs a different value, it
+is a token in the DENSITY block.
+
 ### Overlays: one menu, one modal
 
 - **Menu** (`.ui-menu`, `app/ui.css`): nav dropdown, language and Kongsi menus share one
@@ -252,6 +263,26 @@ Import from `@/components/ui`. API mirrors shadcn/ui (variant + size props).
 | Form | `Field` + `Input` / `Textarea` / `Select` | Field wires id, `aria-invalid`, `aria-describedby`. `pill` for toolbar fields. `size` sm · md (default) · lg on Input and Select. |
 | Navigation | `NavLink`, `DropdownMenu` | `current` sets `aria-current="page"`. |
 | Icon | `Icon` | 1.75px stroke, `currentColor`, `aria-hidden`. |
+
+**Dashboard components** (CMS, extension, tools). Native elements, no Radix; API mirrors shadcn/ui.
+
+| Need | Component | Notes |
+|---|---|---|
+| Quiet action (toolbar, pagination, row action) | `Button variant="quiet"` | No fill, no underline, tinted on hover (shadcn's ghost). Our `ghost` keeps its underline. |
+| A surface for one subject | `Card` + `CardHeader` `CardTitle` `CardDescription` `CardAction` `CardContent` `CardFooter` | variant muted (default) · outline (work panels) · raised (on taupe). size sm · md · lg. |
+| Rows of data | `Table` + `TableHeader` `TableBody` `TableFooter` `TableRow` `TableHead` `TableCell` | `label` names the scroll region. `TableHead sort onSort` → sortable (aria-sort). `TableRow selected`. `align="num"` for figures, `check` for the selection column. Row height `--size-row`. |
+| Choice sent with a form | `Checkbox` | `label` always (also when hidden), `hint`, `indeterminate`, `onCheckedChange`. |
+| Setting that applies at once | `Switch` | `role="switch"`. If it needs Save, use Checkbox. |
+| One of a few visible options | `RadioGroup` | `items`, `value`, `onValueChange`, orientation. Over ~5 options: Select. |
+| Pages of a list | `Pagination` | `page`, `pageCount`, `onPageChange` or `href(page)`. |
+| Where this page sits | `Breadcrumb` | `items`; last item is the current page. |
+| Message that stays | `Alert` | default · success · destructive (role="alert"). Colour on the icon and edge only. |
+| Confirmation that goes away | `toast()` + `<Toaster />` once | 5s, pauses on hover/focus, polite. Not for errors the user must act on: use Alert. |
+| Name of an icon-only control | `Tooltip` | Hover after 400ms, focus at once, Escape hides. Never essential information. |
+| Loading | `Skeleton` | text · circle · block. Put `aria-busy` on the loading region. |
+| Person or agency | `Avatar` | Initials fallback. sm · md. |
+| Nothing here yet | `EmptyState` | Say what will appear and how to add the first one. |
+| Divider | `Separator` | Decorative by default. |
 
 A page-specific class may position a component (`margin`, `grid-area`,
 `align-self`). It must not restyle it (colour, height, radius, font). If a

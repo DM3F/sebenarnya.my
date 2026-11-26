@@ -9,6 +9,7 @@ import {
   SearchField, Select, Tabs, Textarea, Verdict,
 } from '@/components/ui';
 import { withBase } from '@/lib/basePath';
+import DesignSystemDashboard from '@/components/DesignSystemDashboard';
 
 /* Living style guide: every swatch, specimen and component below is drawn with the real
    tokens (app/tokens.css), styles (app/ui.css) and components (components/ui/). Values in
@@ -21,6 +22,7 @@ const SECTIONS = [
   ['bentuk', 'Bentuk & kesan'],
   ['ikon', 'Ikon'],
   ['komponen', 'Komponen'],
+  ['dashboard', 'Komponen dashboard'],
   ['gerakan', 'Gerakan'],
   ['susun-atur', 'Susun atur'],
   ['semua-token', 'Semua token'],
@@ -802,6 +804,7 @@ export default function DesignSystemGuide({ tokens }) {
       <Shape tokens={tokens} />
       <Icons />
       <Components vw={vw} />
+      <DesignSystemDashboard />
       <Motion tokens={tokens} />
       <Layout tokens={tokens} vw={vw} />
       <AllTokens tokens={tokens} />
