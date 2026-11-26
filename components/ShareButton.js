@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Check, Share } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Icon } from '@/components/ui';
 import { Button } from '@/components/ui';
 
 // Share links; {url} and {text} are filled in when the menu opens

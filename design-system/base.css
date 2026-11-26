@@ -2,7 +2,7 @@
    Sebenarnya.my — base element defaults
    Shared by every product (website, CMS dashboard, browser extension).
    Load order: tokens.css → base.css → (product CSS) → ui.css
-   app/ui.css relies on these: body type and colour, and form controls that
+   ui.css relies on these: body type and colour, and form controls that
    inherit the font instead of the browser's system UI font.
    No layout, no page styles, no root font-size: every size is a px token, so
    the system works under any root (the website keeps its 62.5% in global.css).

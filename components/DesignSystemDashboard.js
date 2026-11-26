@@ -9,6 +9,7 @@ import {
   Switch, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Toaster, Tooltip, Verdict, toast,
   AppShell, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarItem, SidebarFooter, SidebarTrigger,
   Topbar, PageHeader, PageContent, Dialog, ConfirmDialog, ConfirmDialogHost, confirmDialog, Field, Input,
+  Stat, BarChart, BarList, Meter,
 } from '@/components/ui';
 
 /* Dashboard components on the /design-system page: one demo per component, then the same
@@ -222,6 +223,39 @@ function DialogDemo() {
   );
 }
 
+
+// Example figures only
+const DAYS = [42, 38, 51, 47, 63, 29, 24, 55, 61, 58, 72, 66, 31, 27].map((value, i) => ({ label: `${13 + i} Nov`, value }));
+const AGENCIES = [
+  { label: 'KPDN', value: 214 }, { label: 'MOH', value: 168 }, { label: 'MCMC', value: 142 },
+  { label: 'MetMalaysia', value: 97 }, { label: 'JPJ', value: 63 }, { label: 'KPM', value: 41 },
+];
+
+function ChartsDemo() {
+  return (
+    <div className="dsg-charts">
+      <div className="dsg-stats">
+        <Card variant="outline"><Stat label="Semakan diterbitkan" value="664" delta={12.5} deltaLabel="berbanding minggu lepas" trend={DAYS.map((d) => d.value)} /></Card>
+        <Card variant="outline"><Stat label="Aduan masuk" value="1,208" delta={-4} deltaLabel="berbanding minggu lepas" trend={[90, 84, 88, 80, 86, 79, 82, 77]} /></Card>
+        <Card variant="outline"><Stat label="Masa purata menyemak" value="6.2 jam" delta={0} deltaLabel="tiada perubahan" /></Card>
+      </div>
+      <div className="dsg-chart-row">
+        <Card variant="outline">
+          <BarChart title="Semakan diterbitkan sehari" description="14 hari terakhir" data={DAYS} />
+        </Card>
+        <Card variant="outline">
+          <BarList title="Semakan mengikut agensi" data={AGENCIES} />
+        </Card>
+      </div>
+      <Card variant="outline" className="dsg-meters">
+        <Meter label="Aduan dijawab dalam 24 jam" value={82} />
+        <Meter label="Kuota semakan bulan ini" value={664} max={900} valueText="664 / 900" hint="236 lagi sebelum 30 Nov" />
+        <Meter label="Semakan dengan sumber rasmi" value={97} />
+      </Card>
+    </div>
+  );
+}
+
 export default function DesignSystemDashboard() {
   const [radio, setRadio] = useState('sendiri');
   const [loading, setLoading] = useState(true);
@@ -248,6 +282,11 @@ export default function DesignSystemDashboard() {
             <ChecksPanel />
           </figure>
         </div>
+      </Group>
+
+      <Group title="Carta &amp; meter: Stat · BarChart · BarList · Meter"
+        note="Monokrom: satu siri dalam tinta, grid garis rambut, label terus pada nilai terkini sahaja, teks dalam token teks. Arah perubahan dengan tanda, anak panah dan perkataan, bukan merah/hijau. Setiap carta ada nombornya sebagai teks (lajur nilai atau jadual pembaca skrin). Hover lajur untuk nilainya.">
+        <ChartsDemo />
       </Group>
 
       <Group title="App shell" note="Kerangka alat (CMS): Sidebar + Topbar + PageContent, compact secara lalai. Produk mengisi menu dan halaman. Pada 900px ke bawah sidebar jadi laci: butang menu membukanya, Escape / scrim / pautan menutupnya, fokus kembali ke butang.">

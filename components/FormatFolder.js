@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Download } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Icon } from '@/components/ui';
 import { withBase } from '@/lib/basePath';
 
 /**

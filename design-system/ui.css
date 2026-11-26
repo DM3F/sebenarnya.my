@@ -1214,6 +1214,127 @@ dialog:focus { outline: none; }
 .ui-empty__title { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--text-title--font-weight); }
 .ui-empty__description { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); }
 
+/* ── Charts & meters (design.md §4) — monochrome, hairline grid, text in text tokens ── */
+.ui-chart__head { display: flex; flex-direction: column; gap: var(--space-inline-tight); }
+.ui-chart__title {
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  font-weight: var(--text-label--font-weight);
+  color: var(--color-foreground);
+}
+.ui-chart__description { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); }
+
+/* Meter */
+.ui-meter { display: flex; flex-direction: column; gap: var(--space-stack); min-width: 0; }
+.ui-meter__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--gap-inline); }
+.ui-meter__label { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-text-secondary); }
+.ui-meter__value { font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--text-label--font-weight); font-variant-numeric: tabular-nums; }
+.ui-meter__track { display: flex; height: var(--size-meter); overflow: hidden; border-radius: var(--radius-full); background: var(--color-chart-track); }
+.ui-meter__fill { border-radius: var(--radius-full); background: var(--color-chart); transition: inline-size var(--duration-slow) var(--ease-out); }
+.ui-meter__hint { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-muted-foreground); }
+
+/* BarList */
+.ui-barlist { display: flex; flex-direction: column; gap: var(--gap-group); margin: 0; min-width: 0; }
+.ui-barlist__list { display: flex; flex-direction: column; gap: var(--gap-text); margin: 0; padding: 0; list-style: none; }
+.ui-barlist__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-inline-tight) var(--gap-inline);
+  font-size: var(--text-body-sm);
+  line-height: var(--text-body-sm--line-height);
+}
+.ui-barlist__label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-foreground); }
+a.ui-barlist__label:hover { text-decoration: underline; text-decoration-thickness: var(--underline-thickness); text-underline-offset: var(--underline-offset); }
+.ui-barlist__value { font-weight: var(--font-weight-medium); font-variant-numeric: tabular-nums; }
+.ui-barlist__bar { grid-column: 1 / -1; display: flex; height: var(--size-meter); }
+.ui-barlist__bar > span { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--color-chart); }
+
+/* BarChart: axis column + plot; columns grow from the baseline, 2px apart, ≤ 24px thick */
+.ui-chart { display: flex; flex-direction: column; gap: var(--gap-group); margin: 0; min-width: 0; }
+.ui-chart__body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: var(--size-chart) auto;
+  column-gap: var(--gap-inline);
+  row-gap: var(--space-inline-tight);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  color: var(--color-muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.ui-chart__axis { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; margin-block: calc(-0.5 * var(--text-caption) * var(--text-caption--line-height)); }
+.ui-chart__plot { position: relative; min-width: 0; }
+.ui-chart__grid { position: absolute; inset-inline: 0; height: var(--border-width); background: var(--color-chart-grid); }
+.ui-chart__cols { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: var(--spacing-2); }
+.ui-chart__col { position: relative; display: flex; align-items: flex-end; justify-content: center; flex: 1 1 0; height: 100%; min-width: 0; }
+.ui-chart__bar {
+  position: relative;
+  width: min(100%, var(--size-chart-bar));
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: var(--color-chart);
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.ui-chart__cap {
+  position: absolute;
+  bottom: calc(100% + var(--spacing-4));
+  left: 50%;
+  translate: -50% 0;
+  white-space: nowrap;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-foreground);
+}
+.ui-chart__tip {
+  position: absolute;
+  bottom: calc(100% + var(--spacing-8));
+  left: 50%;
+  z-index: 2;
+  display: none;
+  flex-direction: column;
+  padding: var(--spacing-4) var(--spacing-8);
+  border-radius: var(--radius-menu-item);
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  white-space: nowrap;
+  translate: -50% 0;
+  pointer-events: none;
+}
+.ui-chart__tip strong { font-weight: var(--font-weight-medium); }
+/* Hover: the column under the pointer stays ink, the rest step back; its value shows */
+@media (hover: hover) {
+  .ui-chart__cols:hover .ui-chart__bar { opacity: .35; }
+  .ui-chart__cols:hover .ui-chart__col:hover .ui-chart__bar { opacity: 1; }
+  .ui-chart__col:hover .ui-chart__tip { display: flex; }
+  .ui-chart__cols:hover .ui-chart__cap { visibility: hidden; }
+}
+.ui-chart__xaxis { grid-column: 2; display: flex; gap: var(--spacing-2); }
+.ui-chart__xaxis > span { flex: 1 1 0; min-width: 0; text-align: center; white-space: nowrap; overflow: visible; }
+
+/* Stat */
+.ui-stat { display: flex; flex-direction: column; gap: var(--space-inline-tight); min-width: 0; }
+.ui-stat__label { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-text-secondary); }
+.ui-stat__value {
+  font-size: var(--text-stat);
+  line-height: var(--text-stat--line-height);
+  font-weight: var(--text-stat--font-weight);
+  letter-spacing: var(--text-stat--letter-spacing);
+  font-variant-numeric: tabular-nums;
+}
+.ui-stat__delta { display: inline-flex; align-items: center; gap: var(--space-inline-tight); font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-text-secondary); }
+.ui-sparkline { position: relative; display: block; height: var(--size-sparkline); margin-top: var(--space-inline); }
+.ui-sparkline svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.ui-sparkline__area { fill: var(--color-chart-area); }
+.ui-sparkline__line { fill: none; stroke: var(--color-chart); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.ui-sparkline__dot {
+  position: absolute;
+  width: var(--size-dot);
+  height: var(--size-dot);
+  border-radius: var(--radius-full);
+  background: var(--color-chart);
+  box-shadow: 0 0 0 var(--spacing-2) var(--color-background); /* surface ring */
+  translate: -50% -50%;
+}
+
 /* ── Dialog · ConfirmDialog — on the shared .ui-modal surface (scrim, shadow, pop) ──
    Width by size, never wider than the screen minus the page gutter on each side. */
 .ui-dialog {
@@ -1440,5 +1561,7 @@ dialog:focus { outline: none; }
   .ui-toast,
   .ui-tooltip__bubble,
   .ui-sidebar,
-  .ui-shell__scrim { transition: none; }
+  .ui-shell__scrim,
+  .ui-meter__fill,
+  .ui-chart__bar { transition: none; }
 }

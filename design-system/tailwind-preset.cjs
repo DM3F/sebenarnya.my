@@ -43,9 +43,9 @@
 const { readFileSync, existsSync } = require('node:fs');
 const { join } = require('node:path');
 
-// tokens.css sits next to this file in the package, or in app/ inside the website repo
+// tokens.css sits next to this file (in the package and in the website repo)
 function tokenNames(file) {
-  const candidates = [file, join(__dirname, 'tokens.css'), join(__dirname, '..', 'app', 'tokens.css')].filter(Boolean);
+  const candidates = [file, join(__dirname, 'tokens.css')].filter(Boolean);
   const path = candidates.find((p) => existsSync(p));
   if (!path) throw new Error('Sebenarnya Tailwind preset: tokens.css not found (pass { tokensPath }).');
   const css = readFileSync(path, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');

@@ -12,7 +12,7 @@ import { withBase } from '@/lib/basePath';
 import DesignSystemDashboard from '@/components/DesignSystemDashboard';
 
 /* Living style guide: every swatch, specimen and component below is drawn with the real
-   tokens (app/tokens.css), styles (app/ui.css) and components (components/ui/). Values in
+   tokens (design-system/tokens.css), styles (design-system/ui.css) and components (design-system/react/). Values in
    grey are measured in the browser, so fluid sizes show what this screen width gets. */
 
 const SECTIONS = [
@@ -745,7 +745,7 @@ function AllTokens({ tokens }) {
   const count = groups.reduce((n, [, list]) => n + list.length, 0);
 
   return (
-    <Section id="semua-token" title="Semua token" lead={`Senarai penuh daripada app/tokens.css (${tokens.length} token), dibaca semasa build. Primitive hanya untuk tokens.css.`}>
+    <Section id="semua-token" title="Semua token" lead={`Senarai penuh daripada design-system/tokens.css (${tokens.length} token), dibaca semasa build. Primitive hanya untuk tokens.css.`}>
       <div className="dsg-row">
         <Field label="Cari token" hideLabel>
           <Input pill icon={Search} placeholder="Cari token, nilai atau catatan…" value={q} onChange={(e) => setQ(e.target.value)} />
@@ -786,8 +786,8 @@ export default function DesignSystemGuide({ tokens }) {
         <h1 className="dsg-intro__title" id="dsg-title">Design system</h1>
         <p className="dsg-intro__lead">
           Satu sistem untuk laman web, CMS dashboard dan browser extension. Semua di halaman ini dirender
-          daripada kod sebenar: <code className="dsg-code">app/tokens.css</code>, <code className="dsg-code">app/ui.css</code> dan{' '}
-          <code className="dsg-code">components/ui/</code>. Jika dokumen bercanggah dengan halaman ini, halaman ini yang betul.
+          daripada kod sebenar: <code className="dsg-code">design-system/tokens.css</code>, <code className="dsg-code">design-system/ui.css</code> dan{' '}
+          <code className="dsg-code">design-system/react/</code>. Jika dokumen bercanggah dengan halaman ini, halaman ini yang betul.
           Peraturan penuh: <code className="dsg-code">docs/design-system-rules.md</code>.
         </p>
         {vw > 0 && <p className="dsg-live">Lebar skrin sekarang: {vw}px. Saiz fluid berubah antara 375 dan 1280px.</p>}

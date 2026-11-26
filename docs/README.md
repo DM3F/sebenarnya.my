@@ -17,10 +17,10 @@ code wins and the document gets fixed.
 
 | File | What it holds |
 |---|---|
-| `app/tokens.css` | Every value: palette (primitive), roles (semantic), type, size, spacing, radius, motion, z-index. Plain CSS custom properties, Tailwind v4 names, no framework. |
-| `app/base.css` | Element defaults every product needs under `ui.css`: body type and colour, headings, links, form controls that inherit the font. No layout, no root font size. |
-| `app/ui.css` | The component styles (`.ui-btn`, `.ui-chip`, `.ui-field`, `.ui-menu`, `.ui-modal`…), written only with semantic tokens. |
-| `components/ui/` | React components (Button, IconButton, Chip, Badge, Verdict, Tabs, SearchField, Field/Input/Textarea/Select, NavLink, DropdownMenu, LanguageMenu, Icon). No Next.js imports. |
+| `design-system/tokens.css` | Every value: palette (primitive), roles (semantic), type, size, spacing, radius, motion, z-index. Plain CSS custom properties, Tailwind v4 names, no framework. |
+| `design-system/base.css` | Element defaults every product needs under `ui.css`: body type and colour, headings, links, form controls that inherit the font. No layout, no root font size. |
+| `design-system/ui.css` | The component styles (`.ui-btn`, `.ui-chip`, `.ui-field`, `.ui-menu`, `.ui-modal`…), written only with semantic tokens. |
+| `design-system/react/` | React components (Button, IconButton, Chip, Badge, Verdict, Tabs, SearchField, Field/Input/Textarea/Select, NavLink, DropdownMenu, LanguageMenu, Icon). No Next.js imports. |
 | `scripts/lint-ds.mjs` | `npm run lint:ds`: the rules as a check (no hex, no raw px, type roles only, Lucide only…). |
 
 ## Documents
@@ -40,26 +40,41 @@ code wins and the document gets fixed.
 | CMS dashboard | separate | Next.js, TypeScript, plain CSS | Not yet |
 | Browser extension | separate | React, TypeScript, Tailwind CSS 3.4 | Not yet; Tailwind preset ready |
 
-Neither the CMS nor the extension uses shadcn/ui or Radix. `components/ui/` is the
+Neither the CMS nor the extension uses shadcn/ui or Radix. `design-system/react/` is the
 component library for all three; shadcn/ui is a reference for API and
 accessibility, translated into plain CSS with our tokens. No dark mode for now.
 
-## Using it in another product (today)
+## Using it in another product
 
-The system is not a package yet (roadmap step 3). Until then a product copies a
-**pinned commit** of these files and records that commit hash in its own README:
+The design system is an installable package, **`@sebenarnya/design-system`**, built from
+`design-system/` in this repo and published as a GitHub Release asset:
 
-1. `app/tokens.css`, `app/base.css`, then the product's own CSS, then
-   `app/ui.css`, loaded in that order. These three files are the whole system;
-   `app/global.css` is the website's page CSS and is never copied.
-2. `components/ui/` if the product uses React. `lucide-react` is the only icon set.
-3. Manrope. The website loads it with `next/font` as `--font-manrope`; elsewhere,
-   load Manrope (400 · 500 · 600) under the family name `Manrope`, the fallback in
-   `--font-sans`.
-4. `scripts/lint-ds.mjs`, run in that product's CI.
+```bash
+npm install https://github.com/DM3F/sebenarnya.my/releases/download/ds-v0.1.0/sebenarnya-design-system-0.1.0.tgz
+```
 
-Do not edit the copied files inside the product. A change goes into this repo
-first (see *Changing the system*), then every product updates its copy.
+Step-by-step guides, each with a prompt to hand to an AI coding agent, and both tested on a
+fresh project:
+
+- **CMS (Next.js, TypeScript, plain CSS):** [`adopting-cms.md`](adopting-cms.md)
+- **Browser extension (React, TypeScript, Tailwind CSS 3.4):** [`adopting-extension.md`](adopting-extension.md)
+
+| Package path | Source in this repo | What |
+|---|---|---|
+| `tokens.css` · `base.css` · `ui.css` | `design-system/` | Values, element defaults, component styles |
+| `@sebenarnya/design-system` (React + types) | `design-system/react/` | Components; `index.d.ts` types every prop |
+| `tailwind-preset` | `design-system/tailwind-preset.cjs` | Tailwind CSS 3.4 classes that read the tokens |
+| `sebenarnya-lint-ds` (bin) | `scripts/lint-ds.mjs` | The lint, runnable in any product |
+
+### Releasing a new version
+
+1. Change the design system here; check `/design-system`, `npm run lint:ds`, `npm run build`.
+2. Bump `"version"` in `design-system/package.json` (semver: a removed or renamed token or prop is a major).
+3. Merge to `main`, then push a tag `ds-v<version>`. The *Release design system package*
+   workflow lints, builds (`npm run build:ds`) and attaches the `.tgz` to a GitHub Release.
+4. Products change the version in their install URL.
+
+Locally, `npm run build:ds` writes `design-system/dist/` and `design-system/sebenarnya-design-system-<version>.tgz`.
 
 ### Browser extension (Tailwind CSS 3.4)
 
@@ -115,17 +130,14 @@ variable) is not set.
 
 | Product | Gap | Roadmap step |
 |---|---|---|
-| All | Not a versioned package: copies drift. The website, CMS and extension live in **separate repos**, so they need an installable package. | 3 |
-| All | Components are JavaScript; the CMS and extension are TypeScript and need type declarations (`.d.ts`). | 3 |
 | All | No dark mode. Not needed for now (decided 26 Nov 2026). | 5 (deferred) |
-| CMS dashboard | Compact density and the dashboard components (Card, Table, Checkbox, Switch, RadioGroup, Pagination, Breadcrumb, Alert, Toast, Tooltip, Skeleton, Avatar, EmptyState) are done. The app shell (sidebar, top bar, page header, phone drawer) is done too. Dialogs (Dialog, ConfirmDialog, `confirmDialog()`) are done too. Still missing: charts and meters, which exist only as guidelines (`design.md` §4). | 4 |
+| CMS dashboard | Compact density and the dashboard components (Card, Table, Checkbox, Switch, RadioGroup, Pagination, Breadcrumb, Alert, Toast, Tooltip, Skeleton, Avatar, EmptyState) are done. The app shell (sidebar, top bar, page header, phone drawer) is done too. Dialogs (Dialog, ConfirmDialog, `confirmDialog()`) are done too. Charts and meters (Stat, Meter, BarList, BarChart, Sparkline) are done too. | 4 |
 | Browser extension | *Only if the UI is injected into other pages (content script):* tokens on `:root` and base rules on bare elements would clash with the host page. Needs a scoped mode (Shadow DOM, tokens on `:host`). Popup and side panel do not need it. | 4 |
 | Browser extension | *Content script only:* fluid sizes use `vw`, which is the host page width there, not the panel. Needs fixed sizes in the scoped mode. | 4 |
-| Browser extension | Manrope must ship inside the extension (CSP blocks font CDNs). | 4 |
 
 Already safe for other products: every size is `px` (no `rem`, so a different
 root font size changes nothing), components use only semantic tokens, and
-`components/ui/` has no Next.js imports (`href` renders a plain `<a>`; pass
+`design-system/react/` has no Next.js imports (`href` renders a plain `<a>`; pass
 `as={Link}` for a router link).
 
 ## Changing the system
@@ -140,13 +152,13 @@ root font size changes nothing), components use only semantic tokens, and
 
 ## Roadmap
 
-1. ✅ Tidy the docs: fix contradictions in `design.md`, split website history
-   from the spec, add this README.
-2. ✅ `/design-system` style guide page: every token and component, live.
-3. Extract a `design-system` package in this repo (tokens, base, ui, React,
-   fonts, lint); the website consumes it first. `lint:ds` in CI and screenshots
-   of `/design-system` as a visual regression check.
-4. Compact mode (dashboard), scoped mode (extension), bundled fonts.
-5. Dark mode, after the decision in `plan.md`.
+1. ✅ Tidy the docs.
+2. ✅ `/design-system` style guide page.
+3. ✅ Package `@sebenarnya/design-system`: tokens, base, ui, React + TypeScript types,
+   Tailwind 3.4 preset, portable lint, release workflow.
+4. ✅ Compact density, dashboard components, app shell, dialogs, charts and meters.
+   ✅ Adoption guides for the CMS and the extension, tested on fresh projects.
+   Open: scoped mode (Shadow DOM) only if the extension injects UI into other pages.
+5. Dark mode: deferred (not needed now).
 6. Optional: Figma variables, text styles and components generated from the code,
    when a designer needs them. The code stays the source of truth.
