@@ -144,6 +144,7 @@
   /* ── Shadow — elevation comes from tone, not shadow ───────────────────── */
   --shadow-float: 0 0 0 .5px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .12); /* floating only */
   --shadow-overlay: 0 0 0 .5px rgba(0, 0, 0, .2), 0 24px 64px rgba(0, 0, 0, .2); /* modals and the AIFA panel: above a scrim */
+  --shadow-header: 0 .5px 0 rgb(0 0 0 / .08), 0 4px 16px rgb(0 0 0 / .06); /* sticky header once the page scrolls: hairline + soft fall-off */
 
   /* ── Format folder (components/FormatFolder.js, Logo section) ───────────
      Colours of the folder card and its file-type tiles (all white). */

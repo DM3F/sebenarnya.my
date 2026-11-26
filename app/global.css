@@ -22,6 +22,9 @@
 html {
   font-size: 62.5%; /* website only: third-party rem; the design system itself is px */
   scroll-behavior: smooth;
+  /* Anchor jumps (#logo, #main) land below the sticky header; Header.js keeps --header-height current */
+  /* Fallback ≈ header row (control + 16 above/below) for the browser's own jump before hydration */
+  scroll-padding-top: var(--header-height, calc(var(--size-control) + 2 * var(--spacing-16)));
 }
 
 h1, h2, h3, h4, h5, h6 { width: 100%; }
@@ -57,11 +60,35 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 
 /* Header — layout only; controls come from components/ui (app/ui.css) */
+/* Sticky: stays at the top while the page scrolls. Its parent (.site) spans the whole page,
+   so it sticks all the way to the footer. */
 .header {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: var(--z-sticky);
   color: var(--color-foreground);
   background-color: var(--color-background);
+}
+
+/* Soft shadow once the page has scrolled (data-scrolled, set in Header.js).
+   It lives on a pseudo-element so only opacity animates: no repaint of the shadow each frame.
+   z-index -1 inside the header's stacking context: the shadow falls below, the content stays on top. */
+.header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  box-shadow: var(--shadow-header);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.header[data-scrolled]::after { opacity: 1; }
+
+/* Forced colours drop box-shadows: keep the edge as a system-colour line instead */
+@media (forced-colors: active) {
+  .header[data-scrolled]::after { box-shadow: none; border-bottom: var(--border-width) solid CanvasText; }
 }
 
 .header-inner {
@@ -342,10 +369,11 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .latest-checks__title { text-wrap: balance; }
 .latest-checks__lead { margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
+/* Two gliding rows, opposite directions (Figma: 40px between rows at desktop) */
 .latest-checks__carousel {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-group);
+  gap: var(--gap-block);
 }
 
 /* Endless glide (components/Latest.js): cards move by transform on a ring, so the
@@ -360,12 +388,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 .latest-checks__rail { display: flex; gap: var(--gap-cards); }
 .latest-checks__rail > .fc { flex: 0 0 340px; will-change: transform; }
-
-.latest-checks__controls {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--gap-inline);
-}
 
 /* "Lihat lagi": outline pill with a foreground edge */
 
@@ -1015,13 +1037,20 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   gap: var(--gap-group);
 }
 
-.articles-search { flex: 1 1 360px; min-width: 0; }
+/* Grows to fill the row but stops at the Figma width (822px), so on wide screens the
+   filters and count sit right after it instead of the field stretching edge to edge */
+.articles-search {
+  --articles-search-max: 822px; /* ds-allow: Figma "Search" container width */
+  flex: 1 1 360px;
+  min-width: 0;
+  max-width: var(--articles-search-max);
+}
 
 /* Native <select> styled as a pill, with a Lucide chevron on top */
 .articles-select { flex: none; }
 
 .articles-count {
-  margin: 0 0 0 auto;
+  margin: 0; /* follows the selects (Figma), not pushed to the far edge */
   font-family: var(--font-sans);
   font-size: var(--text-body-sm);
   line-height: var(--text-body-sm--line-height);
@@ -2079,15 +2108,16 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .logo-kit__head { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .logo-kit-intro { margin: var(--gap-text) 0 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
-/* Fluid: two cards side by side while each gets ≥320px, one column below that */
-.logo-kit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--gap-cards); padding-top: var(--gap-block); }
+/* Desktop: logo · icon · terms in three equal columns (Figma). ≤1100 the two cards share a row
+   (fluid, each ≥320px) with the terms full width under them; ≤900 everything stacks. */
+.logo-kit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-cards); padding-top: var(--gap-block); }
 .logo-card {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--gap-group); /* preview → folder, one step inside the card */
   min-width: 0;
-  padding: var(--pad-card-lg);
+  padding: var(--pad-card-sm); /* folder nearly fills the card width, as in Figma */
   border-radius: var(--radius-card-lg);
   background: var(--color-muted);
 }
@@ -2098,28 +2128,36 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 /* Desktop: both cards share row lines, so previews and folders align; stacked (≤900) each card is its own column */
 .logo-kit-grid { row-gap: 0; }
 .logo-card { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: var(--gap-group); }
-@media (max-width: 900px) {
-  .logo-kit-grid { row-gap: var(--gap-cards); }
-  .logo-card { display: flex; grid-row: auto; grid-template-rows: none; }
-}
-
-/* Logo terms of use (demo copy until MCMC provides the official text) */
+/* Logo terms of use (demo copy until MCMC provides the official text).
+   Desktop: the third card, as tall as the two file cards, text centred vertically. */
 .logo-terms {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: var(--gap-group) var(--pad-card-lg);
-  margin-top: var(--gap-cards);
-  padding: var(--pad-card-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap-group);
+  grid-row: span 2; /* the file cards' two subgrid rows */
+  min-width: 0;
+  padding: var(--pad-card);
   border-radius: var(--radius-card-lg);
   background: var(--color-muted);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
-  color: var(--color-text-secondary); /* body copy graphite; the title is ink */
+  color: var(--color-text-secondary);
 }
-.logo-terms__body { max-width: var(--measure-text); }
-.logo-terms__body p { margin: 0; text-wrap: pretty; }
-.logo-terms__title { margin: 0; color: var(--color-foreground); }
-.logo-terms__list { display: grid; gap: var(--gap-text); margin: var(--gap-group) 0; padding-left: var(--spacing-20); }
+.logo-terms > * { max-width: var(--measure-text); }
+.logo-terms p { margin: 0; text-wrap: pretty; }
+.logo-terms__list { display: grid; gap: var(--gap-text); margin: 0; padding-inline-start: var(--spacing-20); }
+
+@media (max-width: 1100px) {
+  .logo-kit-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+  .logo-card { padding: var(--pad-card-lg); }
+  .logo-terms { grid-column: 1 / -1; grid-row: auto; margin-top: var(--gap-cards); padding: var(--pad-card-lg); }
+}
+@media (max-width: 900px) {
+  .logo-kit-grid { row-gap: var(--gap-cards); }
+  .logo-card { display: flex; grid-row: auto; grid-template-rows: none; }
+  .logo-terms { margin-top: 0; } /* the grid's row gap spaces it now */
+}
 
 /* ── Format folder (components/FormatFolder.js) ────────────────────────────
    Drawn on a 391 × 286 stage (the canvas card) and scaled to the card width by a unitless ratio
@@ -2275,10 +2313,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .folder[data-wide] .folder__tile { transform: rotate(var(--rot)); }
 }
 
-
-@media (max-width: 600px) {
-  .logo-terms { grid-template-columns: 1fr; } /* keeps --pad-card-lg (fluid 32 → 24) like every large card */
-}
 
 /* Single-message pages: /submit-claim/ landing and 404 (app/not-found.js) */
 .page-notice {
@@ -2513,8 +2547,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .claim-done h3,
 .about-intro__facts-title,
 .folder__title,
-.kenali__card-title,
-.logo-terms__title {
+.kenali__card-title {
   font-size: var(--text-title);
   line-height: var(--text-title--line-height);
   font-weight: var(--font-weight-medium);

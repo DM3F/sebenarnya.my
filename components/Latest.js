@@ -1,17 +1,14 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import FlipCard from './FlipCard';
-import { IconButton } from '@/components/ui';
 import { articles, articleStatus } from '@/data/content';
 import { agencyInitials, articleHref } from '@/lib/articles';
 
-const COUNT = 12; // newest fact-checks in the loop; every one has its own photo
-const MIN_RING = 8; // a short list is repeated up to this many cards so the ring fills wide screens
+const COUNT = 12; // newest fact-checks, split over the two rows; every one has its own photo
+const MIN_RING = 8; // a short row is repeated up to this many cards so the ring fills wide screens
 const SPEED = 36; // px per second while gliding
 const EASE_RATE = 5; // how quickly the glide speeds up / slows down (1/s)
-const NUDGE_TAU = 0.12; // seconds; prev/next buttons glide one card with this time constant
 const DRAG_THRESHOLD = 6; // px before a press becomes a drag (so taps still flip a card)
 
 const HOVER_OPEN_DELAY = 90; // ms the pointer must rest on a card before it flips
@@ -27,7 +24,7 @@ const DEFAULT_HEAD = {
 // Newest fact-checks, shaped for the fact-check card.
 // `status` keeps one verdict only; `exclude` drops the article being read.
 function pickLatest(status, exclude) {
-  const list = articles
+  return articles
     .filter((a) => (!status || a.status === status) && a.slug !== exclude)
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, COUNT)
@@ -42,33 +39,41 @@ function pickLatest(status, exclude) {
       dateLabel: dateFmt.format(new Date(`${a.date}T00:00:00`)),
       href: articleHref(a),
     }));
+}
+
+// Repeat whole rounds so a ring never shows a gap; each copy gets its own id
+function fillRing(list, row) {
   if (!list.length) return [];
-  // Repeat whole rounds so the ring never shows a gap; each copy gets its own id
   const rounds = Math.ceil(MIN_RING / list.length);
-  return Array.from({ length: rounds }, (_, r) => list.map((p) => ({ ...p, id: `${p.href}#${r}` }))).flat();
+  return Array.from({ length: rounds }, (_, r) => list.map((p) => ({ ...p, id: `${p.href}#${row}-${r}` }))).flat();
+}
+
+// Two rows: alternate cards so each row mixes old and new; one row only when there is one card
+function splitRows(list) {
+  if (list.length < 2) return [fillRing(list, 0)];
+  return [0, 1].map((row) => fillRing(list.filter((_, i) => i % 2 === row), row));
 }
 
 /**
  * "Semakan fakta terkini" on the home page. Under an article (`status` + `exclude`)
  * it shows only fact-checks with the same verdict, headed by `articleStatus[status].related`.
- * An endless, slowly gliding row of FactCheckCards: the cards sit on a ring and the
- * one that leaves on the left re-enters on the right, so the row never ends and never
- * shows a duplicate.
- * - Mouse hover pauses it (eases to a stop); leaving resumes it (eases back up).
- * - It also holds still while a card is flipped, while keyboard focus is inside,
- *   while being dragged, and always under prefers-reduced-motion.
- * - Prev/next glide exactly one card; touch and pen can drag the row.
+ * Two endless, slowly gliding rows of FlipCards moving in opposite directions; the
+ * second row starts half a card over so the rows stagger.
+ * - A row eases to a stop under the mouse or while keyboard focus is inside it.
+ * - Both rows hold still while a card is flipped, and always under prefers-reduced-motion.
+ * - Touch and pen can drag a row.
  */
 export default function Latest({ status, exclude }) {
-  const [latest] = useState(() => pickLatest(status, exclude));
+  const [rows] = useState(() => splitRows(pickLatest(status, exclude)));
   const head = (status && articleStatus[status]?.related) || DEFAULT_HEAD;
-  const viewRef = useRef(null);
-  const railRef = useRef(null);
-  const st = useRef({ x: 0, v: 0, nudge: 0, setW: 0, step: 0, hover: false, focus: false, open: false, drag: null, moved: false, reduce: false });
 
-  // One card open at a time; hover waits a beat so sweeping across the row doesn't flip every card
+  // One card open at a time; hover waits a beat so sweeping across a row doesn't flip every card
   const [open, setOpen] = useState(null);
-  // Visible pause control: the row moves on its own (WCAG 2.2.2)
+  const openRef = useRef(false);
+  useEffect(() => {
+    openRef.current = open !== null;
+  }, [open]);
+
   const hoverTimer = useRef(0);
   const hover = (id, on) => {
     clearTimeout(hoverTimer.current);
@@ -78,12 +83,44 @@ export default function Latest({ status, exclude }) {
     );
   };
   useEffect(() => () => clearTimeout(hoverTimer.current), []);
-  useEffect(() => {
-    st.current.open = open !== null;
-  }, [open]);
 
-  // Each card is placed on a ring: its slot (index × step) plus the shared offset, wrapped
-  // into one set's width. No duplicate cards, so every visible card is real and interactive.
+  const card = (post) => (
+    <FlipCard
+      key={post.id}
+      post={post}
+      flipped={open === post.id}
+      onHover={(on) => hover(post.id, on)}
+      onToggle={() => setOpen((cur) => (cur === post.id ? null : post.id))}
+    />
+  );
+
+  return (
+    <section className="latest-checks" aria-labelledby="latest-checks-title">
+      <div className="latest-checks__head">
+        <h2 id="latest-checks-title" className="latest-checks__title">{head.title}</h2>
+        <p className="latest-checks__lead">{head.lead}</p>
+      </div>
+
+      <div className="latest-checks__carousel">
+        {rows.map((posts, i) => (
+          <GlideRow key={i} posts={posts} dir={i % 2 ? 1 : -1} stagger={i % 2 ? 0.5 : 0} openRef={openRef} card={card} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * One endless row. Each card sits on a ring: its slot (index × step) plus the shared
+ * offset, wrapped into one set's width. No duplicate DOM, so every visible card is real
+ * and interactive. `dir` −1 glides left, 1 glides right; `stagger` starts the row that
+ * many cards over.
+ */
+function GlideRow({ posts, dir, stagger, openRef, card }) {
+  const viewRef = useRef(null);
+  const railRef = useRef(null);
+  const st = useRef({ x: 0, v: 0, setW: 0, step: 0, hover: false, focus: false, drag: null, moved: false, reduce: false, placed: false });
+
   const paint = () => {
     const s = st.current;
     const cards = railRef.current.children;
@@ -104,8 +141,12 @@ export default function Latest({ status, exclude }) {
     if (cards.length < 2) return;
     s.step = cards[1].offsetLeft - cards[0].offsetLeft;
     s.setW = s.step * cards.length;
+    if (!s.placed) {
+      s.x = -stagger * s.step;
+      s.placed = true;
+    }
     paint();
-  }, []);
+  }, [stagger]);
 
   // Glide loop
   useEffect(() => {
@@ -122,15 +163,14 @@ export default function Latest({ status, exclude }) {
     const tick = (now) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      const running = !s.hover && !s.focus && !s.open && !s.drag && !s.reduce;
-      const target = running ? -SPEED : 0;
+      const running = !s.hover && !s.focus && !openRef.current && !s.drag && !s.reduce;
+      const target = running ? dir * SPEED : 0;
       s.v += (target - s.v) * Math.min(1, dt * EASE_RATE);
       if (Math.abs(s.v) < 0.05 && !running) s.v = 0;
-      const glide = s.nudge * (1 - Math.exp(-dt / NUDGE_TAU));
-      s.nudge -= glide;
-      if (Math.abs(s.nudge) < 0.1) s.nudge = 0;
-      if (!s.drag) s.x += s.v * dt + glide;
-      paint();
+      if (!s.drag && s.v) {
+        s.x += s.v * dt;
+        paint();
+      }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -139,9 +179,9 @@ export default function Latest({ status, exclude }) {
       mq.removeEventListener('change', setReduce);
       window.removeEventListener('resize', measure);
     };
-  }, [measure]);
+  }, [measure, dir, openRef]);
 
-  // Drag with touch / pen (mouse users hover to pause and use the buttons)
+  // Drag with touch / pen (mouse users hover to pause)
   useEffect(() => {
     const view = viewRef.current;
     const s = st.current;
@@ -162,7 +202,6 @@ export default function Latest({ status, exclude }) {
         try { view.setPointerCapture(d.id); } catch {}
       }
       s.x = d.base + dx;
-      s.nudge = 0;
       paint();
     };
     const up = () => { s.drag = null; };
@@ -191,13 +230,12 @@ export default function Latest({ status, exclude }) {
   const onFocus = (e) => {
     const s = st.current;
     s.focus = true;
-    const card = e.target.closest('.fc');
-    if (!card) return;
+    const el = e.target.closest('.fc');
+    if (!el) return;
     const viewW = viewRef.current.clientWidth;
-    const rect = card.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
     const viewRect = viewRef.current.getBoundingClientRect();
     if (rect.left < viewRect.left || rect.right > viewRect.left + viewW) {
-      s.nudge = 0;
       s.x -= rect.left - viewRect.left;
       paint();
     }
@@ -206,53 +244,18 @@ export default function Latest({ status, exclude }) {
     if (!e.currentTarget.contains(e.relatedTarget)) st.current.focus = false;
   };
 
-  const go = (dir) => {
-    const s = st.current;
-    if (s.reduce) {
-      s.x -= dir * s.step;
-      paint();
-    } else {
-      s.nudge -= dir * s.step;
-    }
-  };
-
-  const card = (post) => (
-    <FlipCard
-      key={post.id}
-      post={post}
-      flipped={open === post.id}
-      onHover={(on) => hover(post.id, on)}
-      onToggle={() => setOpen((cur) => (cur === post.id ? null : post.id))}
-    />
-  );
-
   return (
-    <section className="latest-checks" aria-labelledby="latest-checks-title">
-      <div className="latest-checks__head">
-        <h2 id="latest-checks-title" className="latest-checks__title">{head.title}</h2>
-        <p className="latest-checks__lead">{head.lead}</p>
+    <div
+      className="latest-checks__track"
+      ref={viewRef}
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') st.current.hover = true; }}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') st.current.hover = false; }}
+      onFocus={onFocus}
+      onBlur={onBlur}
+    >
+      <div className="latest-checks__rail" ref={railRef}>
+        {posts.map((post) => card(post))}
       </div>
-
-      <div className="latest-checks__carousel">
-        <div
-          className="latest-checks__track"
-          ref={viewRef}
-          onPointerEnter={(e) => { if (e.pointerType === 'mouse') st.current.hover = true; }}
-          onPointerLeave={(e) => { if (e.pointerType === 'mouse') st.current.hover = false; }}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        >
-          <div className="latest-checks__rail" ref={railRef}>
-            {latest.map((post) => card(post))}
-          </div>
-        </div>
-
-        <div className="latest-checks__controls">
-          <IconButton icon={ChevronLeft} label="Semakan sebelumnya" onClick={() => go(-1)} />
-          <IconButton icon={ChevronRight} label="Semakan seterusnya" onClick={() => go(1)} />
-        </div>
-      </div>
-
-    </section>
+    </div>
   );
 }

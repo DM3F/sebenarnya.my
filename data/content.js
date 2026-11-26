@@ -348,11 +348,9 @@ export const logoPage = {
     items: [
       'Gunakan logo untuk merujuk atau mempromosikan Sebenarnya.my, seperti dalam laporan berita, pembentangan dan bahan pendidikan.',
       'Gunakan fail asal tanpa mengubah warna, bentuk, huruf atau slogan.',
-      'Beri ruang kosong di sekeliling logo, sekurang-kurangnya setinggi huruf “S”.',
       'Pastikan penggunaan anda tidak memberi gambaran bahawa MCMC menyokong produk, perkhidmatan atau pendapat anda.',
-      'Dapatkan kebenaran bertulis daripada MCMC sebelum menggunakan logo untuk tujuan komersial.',
     ],
-    note: 'MCMC boleh meminta anda berhenti menggunakan logo jika terma ini tidak dipatuhi.',
+    // note: optional closing line under the list (none in the current design)
   },
 };
 
