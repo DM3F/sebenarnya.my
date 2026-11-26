@@ -32,6 +32,18 @@ code wins and the document gets fixed.
 | [`plan.md`](plan.md) | You want the open decisions and the roadmap. | Bahasa Melayu |
 | [`website-changelog.md`](website-changelog.md) | You work on a specific website page. Page notes and history only, **not a spec** (many old values). | Bahasa Melayu |
 
+## Products
+
+| Product | Repo | Stack | Status |
+|---|---|---|---|
+| Website | this repo | Next.js 16, JavaScript, plain CSS | Uses the system |
+| CMS dashboard | separate | Next.js, TypeScript, plain CSS | Not yet |
+| Browser extension | separate | React, TypeScript, styling to confirm (Tailwind CSS 3.4 or plain CSS) | Not yet |
+
+Neither the CMS nor the extension uses shadcn/ui or Radix. `components/ui/` is the
+component library for all three; shadcn/ui is a reference for API and
+accessibility, translated into plain CSS with our tokens. No dark mode for now.
+
 ## Using it in another product (today)
 
 The system is not a package yet (roadmap step 3). Until then a product copies a
@@ -53,11 +65,13 @@ first (see *Changing the system*), then every product updates its copy.
 
 | Product | Gap | Roadmap step |
 |---|---|---|
-| All | Not a versioned package: copies drift. | 3 |
-| All | No dark mode (`plan.md` decision still open). | 5 |
+| All | Not a versioned package: copies drift. The website, CMS and extension live in **separate repos**, so they need an installable package. | 3 |
+| All | Components are JavaScript; the CMS and extension are TypeScript and need type declarations (`.d.ts`). | 3 |
+| All | No dark mode. Not needed for now (decided 26 Nov 2026). | 5 (deferred) |
 | CMS dashboard | One density only ("lapang", made for the public site). Needs a compact mode: tighter controls and gaps, tables, sidebar, dense forms. Charts and meters exist only as guidelines (`design.md` §4). | 4 |
-| Browser extension | Tokens sit on `:root` and base rules hit bare elements, so a content script would clash with the host page. Needs a scoped mode (Shadow DOM, tokens on `:host`). | 4 |
-| Browser extension | Fluid sizes use `vw`: inside a content script that is the *host page* width, not the panel. Needs fixed sizes in the scoped mode. | 4 |
+| Browser extension | Styling stack not confirmed (Tailwind CSS 3.4 or plain CSS). With Tailwind 3.4 it needs a preset that maps its classes to our tokens; `tokens.css` uses Tailwind v4 names, which v3 cannot read directly. | 4 |
+| Browser extension | *Only if the UI is injected into other pages (content script):* tokens on `:root` and base rules on bare elements would clash with the host page. Needs a scoped mode (Shadow DOM, tokens on `:host`). Popup and side panel do not need it. | 4 |
+| Browser extension | *Content script only:* fluid sizes use `vw`, which is the host page width there, not the panel. Needs fixed sizes in the scoped mode. | 4 |
 | Browser extension | Manrope must ship inside the extension (CSP blocks font CDNs). | 4 |
 
 Already safe for other products: every size is `px` (no `rem`, so a different

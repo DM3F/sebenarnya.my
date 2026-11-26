@@ -163,11 +163,23 @@ grep -rn 'transition: all' app design-system
 
 Urutan dipersetujui. Butiran jurang per produk: [`README.md`](README.md) › Known gaps.
 
+**Stack produk lain (jawapan 26 Nov 2026):**
+
+| Produk | Framework | Bahasa | Styling | shadcn / Radix |
+|---|---|---|---|---|
+| CMS dashboard | Next.js | TypeScript | CSS biasa | Belum guna |
+| Browser extension | React | TypeScript | "css 3.4": belum disahkan sama ada Tailwind CSS 3.4 atau CSS biasa | Belum guna |
+
+- Semua repo **berasingan** (laman web, CMS, extension), jadi design system perlu jadi pakej berversi yang dipasang oleh setiap repo.
+- Belum ada pustaka komponen di mana-mana produk: `components/ui/` ialah standard, shadcn/ui hanya rujukan API dan aksesibiliti (diterjemah ke CSS biasa + token kita).
+- Mode dark **tidak diperlukan** buat masa ini.
+- Permukaan UI extension (popup / side panel / content script) belum diketahui. Fokus design system: reka bentuk UI/UX dan token; mode scoped (Shadow DOM) hanya jika extension ternyata guna content script.
+
 - [x] 1. Kemas dokumen: kontradiksi `design.md` dibetulkan (fokus violet → tinta, tinggi 44 → skala kawalan, jadual tipografi ikut `tokens.css`, tajuk 500), `design-system-handoff.md` → `website-changelog.md` (sejarah web, bukan spec), `README.md` netral produk.
 - [x] 2. Halaman style guide `/design-system`: semua token dan komponen dirender daripada kod sebenar (noindex, tiada pautan dalam nav).
 - [x] 3a. `app/base.css`: lalai elemen (body, tajuk, pautan, kawalan borang) dikeluarkan daripada `global.css`, jadi `tokens.css` + `base.css` + `ui.css` boleh berdiri sendiri. Disahkan: 0 perbezaan computed style pada 5,683 elemen (4 halaman).
 - [x] 3b. Peranan bentuk: kontrol pill di `global.css` (9) dan `.ui-lang__trigger` kini `--radius-control`; badge (`.ui-badge`, `.ui-verdict` + 4 pil foto) guna token baharu `--radius-badge`; `--radius-full` hanya untuk bulatan; `--radius-media` diterbitkan daripada `--radius-card` − 8. Satu baris dalam `tokens.css` kini mengubah setiap kawalan, badge atau kad. Disahkan: 0 perbezaan computed style pada laman web.
-- [ ] 3. Ekstrak pakej `design-system` (tokens, base, ui, React, fonts, lint); laman web guna dahulu. `lint:ds` dalam CI + tangkapan skrin `/design-system` sebagai ujian regresi visual.
-- [ ] 4. Mode `compact` (dashboard), mode scoped (extension, Shadow DOM + saiz tetap), fon Manrope dibundel.
-- [ ] 5. Mode dark (selepas keputusan di atas).
+- [ ] 3. Ekstrak pakej `design-system` (tokens, base, ui, React + jenis TypeScript `.d.ts`, fonts, lint), diterbitkan untuk repo berasingan; laman web guna dahulu. `lint:ds` dalam CI + tangkapan skrin `/design-system` sebagai ujian regresi visual.
+- [ ] 4. Mode `compact` (dashboard: jadual, sidebar, borang padat), fon Manrope dibundel. Preset Tailwind 3.4 jika extension guna Tailwind. Mode scoped (Shadow DOM) hanya jika extension guna content script.
+- [ ] 5. Mode dark: **ditangguh** (tidak diperlukan, 26 Nov 2026).
 - [ ] 6. Pilihan: Figma variables, text styles dan komponen dijana daripada kod.
