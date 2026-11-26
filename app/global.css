@@ -126,6 +126,27 @@ input::placeholder { color: var(--color-foreground); }
   background-color: var(--color-background);
 }
 
+/* Soft shadow once the page has scrolled (data-scrolled, set in Header.js).
+   It lives on a pseudo-element so only opacity animates: no repaint of the shadow each frame.
+   z-index -1 inside the header's stacking context: the shadow falls below, the content stays on top. */
+.header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  box-shadow: var(--shadow-header);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.header[data-scrolled]::after { opacity: 1; }
+
+/* Forced colours drop box-shadows: keep the edge as a system-colour line instead */
+@media (forced-colors: active) {
+  .header[data-scrolled]::after { box-shadow: none; border-bottom: var(--border-width) solid CanvasText; }
+}
+
 .header-inner {
   display: flex;
   align-items: center;

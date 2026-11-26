@@ -46,8 +46,17 @@ export default function Header() {
     return () => observer.disconnect();
   }, []);
 
+  // Soft shadow once the page leaves the very top (styled in global.css)
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 0); // React skips the render when the value is unchanged
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
+
   return (
-    <header className="header" ref={headerRef}>
+    <header className="header" ref={headerRef} data-scrolled={scrolled || undefined}>
       <div className="header-inner">
         <div className="brand">
           <Logo />
