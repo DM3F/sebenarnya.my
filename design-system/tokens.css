@@ -9,7 +9,7 @@
                    --spacing-44). Never used by components/ui.
      2. SEMANTIC   roles (--color-primary, --text-label, --size-control,
                    --radius-control, --focus-ring-*). Components use these.
-     3. COMPONENT  per-component knobs defined in app/ui.css (--btn-bg,
+     3. COMPONENT  per-component knobs defined in ui.css (--btn-bg,
                    --chip-height…). Variants only reassign these.
    Rules for agents and contributors: docs/design-system-rules.md
    ========================================================================== */
@@ -254,7 +254,7 @@
      sm · md (default) · lg · xl, each FLUID from the phone size at 375px to the desktop
      size at 1280px (same formula as the type roles), so a phone gets compact controls and
      a desktop keeps the full size, with no breakpoints. Anything below 44 keeps a 44px
-     touch target through its ::after (app/ui.css). */
+     touch target through its ::after (ui.css). */
   --size-control-sm: clamp(var(--spacing-32), 30.34px + 0.442vw, 36px);            /* sm · 32 → 36 · dense rows, inline actions */
   --size-control: clamp(var(--spacing-40), 38.34px + 0.442vw, var(--spacing-44));  /* md · 40 → 44 · default button, chip, tab, field */
   --size-control-lg: clamp(var(--spacing-44), 42.34px + 0.442vw, var(--spacing-48)); /* lg · 44 → 48 · carousel controls, a page's main action */

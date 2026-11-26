@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { stripBase, withBase } from '@/lib/basePath';
 import { Check, CloudUpload, Flag, Link, X } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Icon } from '@/components/ui';
 import { Button, IconButton } from '@/components/ui';
 
 // "Lapor berita tular" form, shown as a pop-up on every page.

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Icon } from '@/components/ui';
 import { Verdict } from '@/components/ui';
 
 const VERDICT_LABEL = { palsu: 'Palsu', makluman: 'Makluman', benar: 'Benar' };

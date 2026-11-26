@@ -12,7 +12,7 @@ export const metadata = {
 };
 
 export default function DesignSystemPage() {
-  // Read at build time, so the page always lists exactly what app/tokens.css defines
+  // Read at build time, so the page always lists exactly what design-system/tokens.css defines
   const tokens = readTokens();
 
   return (

@@ -6,3 +6,7 @@ out/
 
 # Claude Code local settings
 .claude/
+
+# Design system package build output (npm run build:ds)
+design-system/dist/
+design-system/*.tgz

@@ -1,0 +1,50 @@
+name: Release design system package
+
+# Push a tag ds-vX.Y.Z (matching design-system/package.json "version") to publish
+# sebenarnya-design-system-X.Y.Z.tgz as a GitHub Release asset. Products install it by URL:
+#   npm install https://github.com/DM3F/sebenarnya.my/releases/download/ds-vX.Y.Z/sebenarnya-design-system-X.Y.Z.tgz
+on:
+  push:
+    tags: ["ds-v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check the tag matches the package version
+        run: |
+          VERSION=$(node -p "require('./design-system/package.json').version")
+          if [ "${GITHUB_REF_NAME}" != "ds-v${VERSION}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match design-system/package.json version ${VERSION}" >&2
+            exit 1
+          fi
+
+      - name: Lint the design system
+        run: npm run lint:ds
+
+      - name: Build the package
+        run: npm run build:ds
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(node -p "require('./design-system/package.json').version")
+          gh release create "${GITHUB_REF_NAME}" "design-system/sebenarnya-design-system-${VERSION}.tgz" \
+            --title "Design system ${VERSION}" \
+            --notes "Install: npm install https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/sebenarnya-design-system-${VERSION}.tgz"

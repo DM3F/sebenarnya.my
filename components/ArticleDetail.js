@@ -2,7 +2,7 @@ import Link from 'next/link';
 import ShareButton from './ShareButton';
 import { agencyParts, formatDate } from '@/lib/articles';
 import { ArrowLeft } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Icon } from '@/components/ui';
 import { Verdict } from '@/components/ui';
 
 /**

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Calendar, X } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Icon } from '@/components/ui';
 import { Button, IconButton } from '@/components/ui';
 import { socialLinks, stories } from '@/data/content';
 

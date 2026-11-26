@@ -4,7 +4,7 @@
    ========================================================================== */
 
 /* Font: Manrope is loaded in app/layout.js (next/font) as --font-manrope.
-   Design tokens live in app/tokens.css. Only layout and motion helpers are defined here. */
+   Design tokens live in design-system/tokens.css. Only layout and motion helpers are defined here. */
 
 /* Variables */
 :root {
@@ -17,7 +17,7 @@
    new page plays its own entrance (PageEnter). Opacity only, so reduced motion keeps it. */
 ::view-transition-group(root) { animation-duration: var(--duration-base); animation-timing-function: var(--ease-out); }
 
-/* Base element defaults live in app/base.css (shared with the dashboard and extension).
+/* Base element defaults live in design-system/base.css (shared with the dashboard and extension).
    Only what is specific to this website stays here. */
 html {
   font-size: 62.5%; /* website only: third-party rem; the design system itself is px */
@@ -59,7 +59,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   padding-left: var(--side);
 }
 
-/* Header — layout only; controls come from components/ui (app/ui.css) */
+/* Header — layout only; controls come from design-system/react (design-system/ui.css) */
 /* Sticky: stays at the top while the page scrolls. Its parent (.site) spans the whole page,
    so it sticks all the way to the footer. */
 .header {

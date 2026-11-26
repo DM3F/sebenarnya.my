@@ -1,5 +1,5 @@
 import { Globe, MessageSquareText, Smartphone, Trophy } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Icon } from '@/components/ui';
 import CountUp from '@/components/CountUp';
 import { withBase } from '@/lib/basePath';
 import SocialPeek from '@/components/SocialPeek';
