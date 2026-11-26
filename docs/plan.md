@@ -168,7 +168,7 @@ Urutan dipersetujui. Butiran jurang per produk: [`README.md`](README.md) › Kno
 | Produk | Framework | Bahasa | Styling | shadcn / Radix |
 |---|---|---|---|---|
 | CMS dashboard | Next.js | TypeScript | CSS biasa | Belum guna |
-| Browser extension | React | TypeScript | "css 3.4": belum disahkan sama ada Tailwind CSS 3.4 atau CSS biasa | Belum guna |
+| Browser extension | React | TypeScript | Tailwind CSS 3.4 | Belum guna |
 
 - Semua repo **berasingan** (laman web, CMS, extension), jadi design system perlu jadi pakej berversi yang dipasang oleh setiap repo.
 - Belum ada pustaka komponen di mana-mana produk: `components/ui/` ialah standard, shadcn/ui hanya rujukan API dan aksesibiliti (diterjemah ke CSS biasa + token kita).
@@ -180,6 +180,7 @@ Urutan dipersetujui. Butiran jurang per produk: [`README.md`](README.md) › Kno
 - [x] 3a. `app/base.css`: lalai elemen (body, tajuk, pautan, kawalan borang) dikeluarkan daripada `global.css`, jadi `tokens.css` + `base.css` + `ui.css` boleh berdiri sendiri. Disahkan: 0 perbezaan computed style pada 5,683 elemen (4 halaman).
 - [x] 3b. Peranan bentuk: kontrol pill di `global.css` (9) dan `.ui-lang__trigger` kini `--radius-control`; badge (`.ui-badge`, `.ui-verdict` + 4 pil foto) guna token baharu `--radius-badge`; `--radius-full` hanya untuk bulatan; `--radius-media` diterbitkan daripada `--radius-card` − 8. Satu baris dalam `tokens.css` kini mengubah setiap kawalan, badge atau kad. Disahkan: 0 perbezaan computed style pada laman web.
 - [ ] 3. Ekstrak pakej `design-system` (tokens, base, ui, React + jenis TypeScript `.d.ts`, fonts, lint), diterbitkan untuk repo berasingan; laman web guna dahulu. `lint:ds` dalam CI + tangkapan skrin `/design-system` sebagai ujian regresi visual.
-- [ ] 4. Mode `compact` (dashboard: jadual, sidebar, borang padat), fon Manrope dibundel. Preset Tailwind 3.4 jika extension guna Tailwind. Mode scoped (Shadow DOM) hanya jika extension guna content script.
+- [x] 4a. Preset Tailwind CSS 3.4 untuk extension (`design-system/tailwind-preset.cjs`): setiap token jadi kelas yang membaca `var()`, nama kelas dibaca daripada `tokens.css`, nilai luar sistem (`bg-red-500`, `text-sm`, `rounded-lg`) tidak wujud, tiada rem. Diuji dengan Tailwind 3.4.17. Juga: `--font-sans` kini ada fallback `'Manrope'` (sebelum ini jatuh ke Times di luar Next.js).
+- [ ] 4. Mode `compact` (dashboard: jadual, sidebar, borang padat), fon Manrope dibundel. Mode scoped (Shadow DOM) hanya jika extension guna content script.
 - [ ] 5. Mode dark: **ditangguh** (tidak diperlukan, 26 Nov 2026).
 - [ ] 6. Pilihan: Figma variables, text styles dan komponen dijana daripada kod.

@@ -38,7 +38,7 @@ code wins and the document gets fixed.
 |---|---|---|---|
 | Website | this repo | Next.js 16, JavaScript, plain CSS | Uses the system |
 | CMS dashboard | separate | Next.js, TypeScript, plain CSS | Not yet |
-| Browser extension | separate | React, TypeScript, styling to confirm (Tailwind CSS 3.4 or plain CSS) | Not yet |
+| Browser extension | separate | React, TypeScript, Tailwind CSS 3.4 | Not yet; Tailwind preset ready |
 
 Neither the CMS nor the extension uses shadcn/ui or Radix. `components/ui/` is the
 component library for all three; shadcn/ui is a reference for API and
@@ -61,6 +61,56 @@ The system is not a package yet (roadmap step 3). Until then a product copies a
 Do not edit the copied files inside the product. A change goes into this repo
 first (see *Changing the system*), then every product updates its copy.
 
+### Browser extension (Tailwind CSS 3.4)
+
+`design-system/tailwind-preset.cjs` turns every token into a Tailwind class that
+reads it through `var()`. Change a token in `tokens.css` and the extension follows
+with no code change. Class names are read from `tokens.css` when Tailwind starts,
+so a new token is a new class.
+
+```js
+// tailwind.config.js
+module.exports = {
+  presets: [require('./design-system/tailwind-preset.cjs')],
+  content: ['./src/**/*.{ts,tsx,html}'],
+};
+```
+
+```css
+/* CSS entry: tokens first, our base after Tailwind's preflight */
+@import './design-system/tokens.css';
+@tailwind base;
+@import './design-system/base.css';
+@tailwind components;
+@tailwind utilities;
+```
+
+| Need | Class |
+|---|---|
+| Colour | `bg-background` `bg-muted` `bg-primary` `hover:bg-primary-hover` `text-foreground` `text-text-secondary` `text-muted-foreground` `border-border` `border-input` `text-verdict-palsu` `bg-verdict-palsu-dot` |
+| Text (size + line height + weight in one class) | `text-display` `text-heading-lg` `text-heading` `text-title` `text-body` `text-body-sm` `text-label` `text-eyebrow` `text-verdict` `text-caption` `text-stat` |
+| Control height | `h-control-sm` `h-control` `h-control-lg` `h-control-xl` · padding `px-control-x-sm` `px-control-x` `px-control-x-lg` |
+| Spacing by relationship | `gap-inline` `gap-text` `gap-group` `gap-cards` `gap-block` · cards `p-card-sm` `p-card` `p-card-lg` |
+| Shape | `rounded-control` (anything you press) `rounded-badge` `rounded-card` `rounded-card-lg` `rounded-field` `rounded-media` `rounded-full` (circles only) |
+| Badge, dot, avatar | `h-badge` `h-badge-lg` `px-badge-x` `size-dot` `size-avatar` |
+| Effects | `shadow-float` `shadow-overlay` `duration-fast` `duration-base` `ease-out` `active:scale-press` `z-dropdown` |
+| Focus ring | `focus-visible:outline outline-focus outline-offset-focus` |
+| Breakpoints | `xl:` `lg:` `md:` `sm:` are **max-width** (1280 · 1100 · 900 · 600), mobile last |
+
+Two things differ from stock Tailwind on purpose:
+
+- **Off-system values do not exist.** The preset replaces Tailwind's colours, type
+  sizes, spacing, radius, weights and breakpoints, so `bg-red-500`, `text-sm`,
+  `rounded-lg` and `font-bold` generate nothing. Use the roles above.
+- **Spacing numbers are px.** `p-16` is 16px (`--spacing-16`), not Tailwind's
+  `p-4` = 1rem. There is no rem anywhere: inside a content script rem follows the
+  host page's root size. Prefer the relationship roles (`gap-group`, `p-card`) over
+  numbers.
+
+Load Manrope (400 · 500 · 600) inside the extension under the family name `Manrope`;
+`--font-sans` falls back to it when `--font-manrope` (the website's `next/font`
+variable) is not set.
+
 ### Known gaps per product
 
 | Product | Gap | Roadmap step |
@@ -69,7 +119,6 @@ first (see *Changing the system*), then every product updates its copy.
 | All | Components are JavaScript; the CMS and extension are TypeScript and need type declarations (`.d.ts`). | 3 |
 | All | No dark mode. Not needed for now (decided 26 Nov 2026). | 5 (deferred) |
 | CMS dashboard | One density only ("lapang", made for the public site). Needs a compact mode: tighter controls and gaps, tables, sidebar, dense forms. Charts and meters exist only as guidelines (`design.md` §4). | 4 |
-| Browser extension | Styling stack not confirmed (Tailwind CSS 3.4 or plain CSS). With Tailwind 3.4 it needs a preset that maps its classes to our tokens; `tokens.css` uses Tailwind v4 names, which v3 cannot read directly. | 4 |
 | Browser extension | *Only if the UI is injected into other pages (content script):* tokens on `:root` and base rules on bare elements would clash with the host page. Needs a scoped mode (Shadow DOM, tokens on `:host`). Popup and side panel do not need it. | 4 |
 | Browser extension | *Content script only:* fluid sizes use `vw`, which is the host page width there, not the panel. Needs fixed sizes in the scoped mode. | 4 |
 | Browser extension | Manrope must ship inside the extension (CSP blocks font CDNs). | 4 |
