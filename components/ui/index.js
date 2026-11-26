@@ -30,3 +30,4 @@ export {
   Topbar, PageHeader, PageContent,
 } from './AppShell';
 export { Dialog, ConfirmDialog, ConfirmDialogHost, confirmDialog } from './Dialog';
+export { Meter, BarList, BarChart, Stat, Sparkline } from './Chart';

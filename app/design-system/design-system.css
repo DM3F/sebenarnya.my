@@ -348,3 +348,12 @@
 .dsg-shell-product { font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--text-label--font-weight); }
 .dsg-shell-user { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); font-weight: var(--font-weight-medium); }
 .dsg-shell-role { font-weight: var(--font-weight-regular); color: var(--color-muted-foreground); }
+
+/* Charts demo */
+.dsg-charts { display: flex; flex-direction: column; gap: var(--gap-cards); }
+.dsg-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--gap-cards); }
+.dsg-chart-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--gap-cards); align-items: start; }
+.dsg-meters { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--gap-group) var(--gap-cards); }
+@media (max-width: 900px) {
+  .dsg-chart-row { grid-template-columns: minmax(0, 1fr); }
+}

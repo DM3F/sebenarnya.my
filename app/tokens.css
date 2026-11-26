@@ -61,6 +61,11 @@
   --color-link: var(--color-foreground);           /* links are ink + underline, like every other text */
   --color-destructive: var(--color-red-dark);      /* error text */
   --color-success: var(--color-green-dark);        /* system status in tools (saved, published); never a verdict */
+  /* Charts (design.md §4): monochrome. One series in ink; colour only when it carries meaning */
+  --color-chart: var(--color-foreground);          /* the series: bars, lines, meter fill */
+  --color-chart-area: color-mix(in srgb, var(--color-chart) 10%, transparent); /* wash under a line */
+  --color-chart-grid: var(--color-muted-strong);   /* hairline gridlines, baseline */
+  --color-chart-track: var(--color-muted-strong);  /* meter track */
   --color-brand: var(--color-red);                 /* logo, sphere — never actions */
   --color-brand-strong: var(--color-red-dark);
   --color-brand-spark: var(--color-blue);          /* decorative spark */
@@ -281,6 +286,10 @@
   --size-dialog-sm: 400px;                      /* confirm dialog: one question, two buttons */
   --size-dialog: 520px;                         /* default dialog: a short form */
   --size-dialog-lg: 720px;                      /* dialog with a table or a long form */
+  --size-chart: 200px;                          /* plot height of a bar chart */
+  --size-chart-bar: 24px;                       /* bar thickness cap: never fill the slot */
+  --size-meter: 8px;                            /* meter track thickness (design.md: 4–8) */
+  --size-sparkline: 40px;                       /* sparkline height in a stat */
 
   /* ══ 2. SEMANTIC — spacing roles ════════════════════════════════════════ */
   /* Control side padding follows the control scale (fluid 375 → 1280) */
