@@ -184,6 +184,9 @@ Keputusan (21 Nov 2026):
 | 2 | Display weight | Semua tajuk **500** (termasuk display); body dan angka statistik 400. | ✅ Siap. |
 | 3 | Angka besar | **400** untuk semua angka statistik. | ✅ Siap (`--font-weight-display`). Tiada weight 300 lagi. |
 | 4 | Tanya AIFA | **Biarkan merah buat masa ini** (belum ada idea). | Kekal terbuka di `plan.md`. |
-| 5 | Chart & meter | Garis panduan §4 jadi titik mula bila diperlukan (cth. dashboard CMS). | Belum ada dalam sistem. |
+| 5 | Chart & meter | Garis panduan §4 jadi titik mula bila diperlukan (cth. dashboard CMS). | ✅ Siap: `Stat`, `Meter`, `BarList`, `BarChart` (monokrom). |
+| 6 | Hijau status sistem | `--color-success` (hijau tua) untuk status dalam alat seperti CMS: "Disimpan", "Diterbitkan". Hanya pada ikon dan garis tepi `Alert` (dan ikon toast), tidak sebagai latar atau warna butang. Bukan verdict: verdict Benar kekal dengan tokennya sendiri. | ✅ Diputuskan 26 Nov 2026. |
+| 7 | Sasaran sentuh mod compact | 24px (WCAG 2.2 AA 2.5.8) dalam `data-density="compact"`, kerana sasaran 44px bertindih dengan baris jadual 40px. Compact hanya untuk alat desktop berasaskan tetikus (CMS); laman web dan apa-apa yang dipakai di telefon kekal 44px. | ✅ Diputuskan 26 Nov 2026. |
+| 8 | Warna amaran | Tiada warna amaran (kuning/oranye) dalam palet. `Alert` hanya default · success · destructive; amaran ditulis dengan perkataan yang jelas dalam `Alert` default. Tambah warna hanya jika keperluan sebenar muncul, sebagai token baharu. | ✅ Diputuskan 26 Nov 2026. |
 
 Setiap keputusan baharu: kemas kini serentak `design-system/tokens.css`, `design-system-rules.md` dan fail ini.
