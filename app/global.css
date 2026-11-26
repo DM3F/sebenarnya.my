@@ -425,10 +425,11 @@ input::placeholder { color: var(--color-foreground); }
 .latest-checks__title { text-wrap: balance; }
 .latest-checks__lead { margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
+/* Two gliding rows, opposite directions (Figma: 40px between rows at desktop) */
 .latest-checks__carousel {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-group);
+  gap: var(--gap-block);
 }
 
 /* Endless glide (components/Latest.js): cards move by transform on a ring, so the
@@ -443,12 +444,6 @@ input::placeholder { color: var(--color-foreground); }
 }
 .latest-checks__rail { display: flex; gap: var(--gap-cards); }
 .latest-checks__rail > .fc { flex: 0 0 340px; will-change: transform; }
-
-.latest-checks__controls {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--gap-inline);
-}
 
 /* "Lihat lagi": outline pill with a foreground edge */
 
