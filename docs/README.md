@@ -118,7 +118,7 @@ variable) is not set.
 | All | Not a versioned package: copies drift. The website, CMS and extension live in **separate repos**, so they need an installable package. | 3 |
 | All | Components are JavaScript; the CMS and extension are TypeScript and need type declarations (`.d.ts`). | 3 |
 | All | No dark mode. Not needed for now (decided 26 Nov 2026). | 5 (deferred) |
-| CMS dashboard | Compact density and the dashboard components (Card, Table, Checkbox, Switch, RadioGroup, Pagination, Breadcrumb, Alert, Toast, Tooltip, Skeleton, Avatar, EmptyState) are done. Still missing: an app shell (sidebar + top bar), dialogs for confirm/delete, and charts and meters, which exist only as guidelines (`design.md` §4). | 4 |
+| CMS dashboard | Compact density and the dashboard components (Card, Table, Checkbox, Switch, RadioGroup, Pagination, Breadcrumb, Alert, Toast, Tooltip, Skeleton, Avatar, EmptyState) are done. The app shell (sidebar, top bar, page header, phone drawer) is done too. Still missing: dialogs for confirm/delete, and charts and meters, which exist only as guidelines (`design.md` §4). | 4 |
 | Browser extension | *Only if the UI is injected into other pages (content script):* tokens on `:root` and base rules on bare elements would clash with the host page. Needs a scoped mode (Shadow DOM, tokens on `:host`). Popup and side panel do not need it. | 4 |
 | Browser extension | *Content script only:* fluid sizes use `vw`, which is the host page width there, not the panel. Needs fixed sizes in the scoped mode. | 4 |
 | Browser extension | Manrope must ship inside the extension (CSP blocks font CDNs). | 4 |

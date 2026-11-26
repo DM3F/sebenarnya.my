@@ -333,3 +333,18 @@
 @media (max-width: 1280px) {
   .dsg-density { grid-template-columns: 1fr; }
 }
+
+/* App shell demo: a 640px window onto a full-height shell. The transform makes the
+   drawer's position: fixed resolve to this frame instead of the page. */
+.dsg-shell-frame {
+  height: 640px;
+  overflow: auto;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-card);
+  transform: translateZ(0);
+}
+.dsg-shell-frame .ui-shell { --shell-height: 640px; }
+.dsg-shell-logo { width: var(--size-avatar-sm); height: var(--size-avatar-sm); border-radius: var(--radius-media); }
+.dsg-shell-product { font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--text-label--font-weight); }
+.dsg-shell-user { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); font-weight: var(--font-weight-medium); }
+.dsg-shell-role { font-weight: var(--font-weight-regular); color: var(--color-muted-foreground); }

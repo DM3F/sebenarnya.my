@@ -1,11 +1,14 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { FileText, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Bell, ChartColumn, FileCheck, FileText, Inbox, LayoutDashboard, LogOut, Megaphone, Pencil, Plus, Settings, Trash2, Users } from 'lucide-react';
+import { withBase } from '@/lib/basePath';
 import {
   Alert, Avatar, Badge, Breadcrumb, Button, Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
   CardTitle, Checkbox, EmptyState, IconButton, Pagination, RadioGroup, SearchField, Select, Separator, Skeleton,
   Switch, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Toaster, Tooltip, Verdict, toast,
+  AppShell, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarItem, SidebarFooter, SidebarTrigger,
+  Topbar, PageHeader, PageContent,
 } from '@/components/ui';
 
 /* Dashboard components on the /design-system page: one demo per component, then the same
@@ -44,7 +47,7 @@ function Demo({ code, children, wide }) {
 }
 
 /* The CMS panel: toolbar, selectable and sortable table, row actions, pagination */
-function ChecksPanel() {
+function ChecksPanel({ header = true }) {
   const [sort, setSort] = useState({ key: 'date', dir: 'descending' });
   const [selected, setSelected] = useState(() => new Set([2]));
   const [page, setPage] = useState(1);
@@ -61,11 +64,13 @@ function ChecksPanel() {
 
   return (
     <Card variant="outline" className="dsg-panel">
-      <CardHeader>
-        <CardTitle>Semakan fakta</CardTitle>
-        <CardDescription>{selected.size ? `${selected.size} dipilih` : `${ROWS.length} semakan minggu ini`}</CardDescription>
-        <CardAction><Button icon={Plus} size="sm" onClick={() => toast('Draf baharu dibuka')}>Semakan baharu</Button></CardAction>
-      </CardHeader>
+      {header && (
+        <CardHeader>
+          <CardTitle>Semakan fakta</CardTitle>
+          <CardDescription>{selected.size ? `${selected.size} dipilih` : `${ROWS.length} semakan minggu ini`}</CardDescription>
+          <CardAction><Button icon={Plus} size="sm" onClick={() => toast('Draf baharu dibuka')}>Semakan baharu</Button></CardAction>
+        </CardHeader>
+      )}
       <div className="dsg-toolbar">
         <SearchField size="sm" hideLabel label="Tapis semakan" placeholder="Tapis tajuk atau agensi…" buttonLabel={null} onSubmit={() => {}} />
         <Select size="sm" aria-label="Verdict" defaultValue="semua">
@@ -118,6 +123,59 @@ function ChecksPanel() {
   );
 }
 
+
+function ShellDemo() {
+  const [page, setPage] = useState('semakan');
+  const item = (id, icon, label, count) => (
+    <SidebarItem icon={icon} current={page === id} count={count} onClick={() => setPage(id)}>{label}</SidebarItem>
+  );
+  return (
+    <div className="dsg-shell-frame">
+      <AppShell sidebar={
+        <Sidebar>
+          <SidebarHeader>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="dsg-shell-logo" src={withBase('/images/logo/icon.png')} alt="" />
+            <span className="dsg-shell-product">Sebenarnya CMS</span>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
+              {item('ringkasan', LayoutDashboard, 'Ringkasan')}
+            </SidebarGroup>
+            <SidebarGroup label="Kandungan">
+              {item('semakan', FileCheck, 'Semakan fakta')}
+              {item('aduan', Inbox, 'Aduan masuk', 12)}
+              {item('makluman', Megaphone, 'Makluman agensi')}
+            </SidebarGroup>
+            <SidebarGroup label="Pentadbiran">
+              {item('analitik', ChartColumn, 'Analitik')}
+              {item('pengguna', Users, 'Pengguna')}
+              {item('tetapan', Settings, 'Tetapan')}
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter>
+            <Avatar alt="Nur Aisyah" size="sm" />
+            <span className="dsg-shell-user"><span>Nur Aisyah</span><span className="dsg-shell-role">Penyunting</span></span>
+            <Tooltip content="Log keluar"><IconButton icon={LogOut} label="Log keluar" variant="quiet" size="icon-sm" /></Tooltip>
+          </SidebarFooter>
+        </Sidebar>
+      }>
+        <Topbar actions={
+          <Tooltip content="Pemberitahuan" side="bottom"><IconButton icon={Bell} label="Pemberitahuan" variant="quiet" /></Tooltip>
+        }>
+          <SidebarTrigger />
+          <Breadcrumb items={[{ label: 'Kandungan', href: '#app-shell' }, { label: 'Semakan fakta' }]} />
+        </Topbar>
+        <PageContent as="div" id={undefined}>
+          <PageHeader title="Semakan fakta" description="Semua semakan, draf dan yang menunggu pengesahan agensi."
+            actions={<><Button variant="outline" size="sm">Eksport</Button><Button size="sm" icon={Plus}>Semakan baharu</Button></>} />
+          <ChecksPanel header={false} />
+        </PageContent>
+      </AppShell>
+    </div>
+  );
+}
+
 export default function DesignSystemDashboard() {
   const [radio, setRadio] = useState('sendiri');
   const [loading, setLoading] = useState(true);
@@ -144,6 +202,11 @@ export default function DesignSystemDashboard() {
             <ChecksPanel />
           </figure>
         </div>
+      </Group>
+
+      <Group title="App shell" note="Kerangka alat (CMS): Sidebar + Topbar + PageContent, compact secara lalai. Produk mengisi menu dan halaman. Pada 900px ke bawah sidebar jadi laci: butang menu membukanya, Escape / scrim / pautan menutupnya, fokus kembali ke butang.">
+        <span id="app-shell" />
+        <ShellDemo />
       </Group>
 
       <Group title="Card" note="muted (lalai) untuk kumpulan dalam halaman · outline untuk panel kerja · raised untuk permukaan atas taupe. Saiz kad menentukan padding dan radius.">
