@@ -22,6 +22,9 @@ html {
   font-size: 62.5%;
   line-height: 1.15;
   scroll-behavior: smooth;
+  /* Anchor jumps (#logo, #main) land below the sticky header; Header.js keeps --header-height current */
+  /* Fallback ≈ header row (control + 16 above/below) for the browser's own jump before hydration */
+  scroll-padding-top: var(--header-height, calc(var(--size-control) + 2 * var(--spacing-16)));
   -webkit-text-size-adjust: 100%;
 }
 
@@ -113,8 +116,11 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 /* Header — layout only; controls come from components/ui (app/ui.css) */
+/* Sticky: stays at the top while the page scrolls. Its parent (.site) spans the whole page,
+   so it sticks all the way to the footer. */
 .header {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: var(--z-sticky);
   color: var(--color-foreground);
   background-color: var(--color-background);

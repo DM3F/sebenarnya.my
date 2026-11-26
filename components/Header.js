@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 import { Button, DropdownMenu, LanguageMenu, NavLink } from '@/components/ui';
@@ -32,8 +32,22 @@ export default function Header() {
   // Close the compact menu after navigating
   useEffect(() => setOpen(false), [pathname]);
 
+  // Publish the sticky header's height so anchor jumps (scroll-padding-top in global.css) clear it
+  const headerRef = useRef(null);
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const root = document.documentElement;
+    const publish = () => root.style.setProperty('--header-height', `${el.offsetHeight}px`);
+    // Set it now too: PageTransition's anchor jump runs before the observer's first callback
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <header className="header">
+    <header className="header" ref={headerRef}>
       <div className="header-inner">
         <div className="brand">
           <Logo />
