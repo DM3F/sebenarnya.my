@@ -1,4 +1,5 @@
 import './tokens.css';
+import './base.css'; // element defaults shared with the dashboard and extension
 import './global.css';
 import './ui.css';
 import { Manrope } from 'next/font/google';

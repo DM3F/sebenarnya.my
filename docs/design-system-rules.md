@@ -1,11 +1,13 @@
 # Design system rules — Sebenarnya.my
 
 Rules for anyone (people or coding agents) writing UI in this repo. Taste and
-visual direction live in [`design.md`](design.md); exact component specs in
-[`design-system-handoff.md`](design-system-handoff.md). This file says **how to
-write the code** so the system stays easy to update.
+visual direction live in [`design.md`](design.md); the doc map and how to use the
+system in other products (CMS dashboard, browser extension) is in
+[`README.md`](README.md). This file is the technical spec: it says **how to write
+the code** so the system stays easy to update. Website page notes and history are
+in [`website-changelog.md`](website-changelog.md) (not a spec).
 
-**Source of truth:** the code (`app/tokens.css`, `app/ui.css`, `components/ui/`)
+**Source of truth:** the code (`app/tokens.css`, `app/base.css`, `app/ui.css`, `components/ui/`)
 and these docs. The Paper file is no longer a reference — its canvas does not
 match the current design, so never copy values or layouts from it.
 
@@ -37,7 +39,7 @@ Decision guide:
 | Type roles | `--text-display · heading-lg · heading · title · intro · article · body · body-sm · label · label-sm · eyebrow · badge · verdict · caption · stat`, each with `--line-height`, and where it applies `--font-weight` / `--letter-spacing` (Tailwind v4 shape: `--text-label--line-height`) |
 | Size | `--size-control-sm · control · control-lg · control-xl` (fluid control scale, below) `· hit-area (44) · badge-sm (20) · badge (24) · badge-lg (32) · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu (220) · menu-lg (260)` |
 | Space roles | Content: `--gap-inline · gap-text · gap-group · gap-cards · gap-block`, cards: `--pad-card-sm · pad-card · pad-card-lg`; controls: `--space-control-x-sm · control-x · control-x-lg` (fluid) `· field-x · badge-x-sm/-x/-x-lg · inline-tight · stack · segment`; page: `--space-page-x · section · page-top` |
-| Shape | `--radius-control (pill) · field (8) · menu · menu-item · media (12) · card (20) · card-lg (24) · tail (4, chat bubble corner)` |
+| Shape | `--radius-control (pill) · badge (pill) · field (8) · menu · menu-item · media (card − 8 = 12) · card (20) · card-lg (24) · tail (4, chat bubble corner)`; `--radius-full` for true circles only |
 | Focus & effects | `--border-width · underline-thickness · underline-offset · focus-ring-width · focus-ring-offset · focus-ring-color · blur-overlay · press-scale · transition-colors · shadow-*` |
 | Motion | `--duration-fast/base/slow/slower · ease-out/in-out/emphasized` |
 
@@ -129,8 +131,13 @@ Four rules:
    container. A column gutter inside a card equals the card padding.
 3. **Nested radius = outer − inset**: media inset 8px in a 20px card gets 12.
    Full-bleed media inherits the card radius through `overflow: hidden`.
-4. **Pill (`--radius-control`) is for controls only**: buttons, chips, tabs, search.
-   Cards are never pills.
+4. **Pick the shape by role, never by look.** `--radius-control` for anything you
+   press (buttons, chips, tabs, search, icon buttons, carousel controls, round social
+   buttons); `--radius-badge` for static pill labels (Badge, Verdict, photo pills);
+   `--radius-full` only for true circles (avatars, dots, decorative icon discs,
+   progress tracks). Both roles are pills today, but a rebrand changes each with one
+   line in tokens.css, so a control written with `--radius-full` would be left behind.
+   Cards are never pills; `--radius-media` follows `--radius-card` by itself.
 
 Exceptions: a full-screen modal on a phone uses `sm` (= the 16px page gutter).
 Hero stages (`.about-hero-card`) are layout, not cards: they use section spacing.
@@ -266,4 +273,4 @@ design needs a new look, add a variant in `ui.css` first.
 2. Need a new look? Add a variant (knob reassignment) in `ui.css`.
 3. Need a new value? Add a semantic token in `tokens.css` (and a primitive only if the raw value is new).
 4. Run `npm run lint:ds` and `npm run build`.
-5. Update this file and `design-system-handoff.md` if the API changed.
+5. Update this file (and `README.md` if the file layout changed) when the API changes. Website-only notes go in `website-changelog.md`.

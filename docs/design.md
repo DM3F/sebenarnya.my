@@ -1,6 +1,6 @@
 # DESIGN.md — Sebenarnya.my
 
-Arah rasa (taste) dan bahasa visual. Dokumen ini menjawab **"seperti apa rasanya"**; angka teknis (token, ukuran komponen) ada di [`design-system-handoff.md`](design-system-handoff.md).
+Arah rasa (taste) dan bahasa visual. Dokumen ini menjawab **"seperti apa rasanya"**; angka teknis (token, ukuran komponen) ada di [`design-system-rules.md`](design-system-rules.md) dan `app/tokens.css`. Jika dokumen ini bercanggah dengan kod, **kod yang betul**. Peta dokumen: [`README.md`](README.md).
 
 Referensi rasa: **elevenlabs.io** — diambil *bahasa visualnya saja* (ketenangan, material, cara warna dipakai, ritme ruang). Layout, struktur halaman, ilustrasi, dan kontennya **tidak** disalin.
 
@@ -65,21 +65,21 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 
 > Nota: Inter dan `--font-ui` sudah dibuang dari kod (21 Nov 2026). Manrope satu-satunya keluarga.
 
-| Peranan | Desktop / ≤1024 / ≤600 | Weight | Dipakai untuk |
+| Peranan | Saiz (375 → 1280px) / line-height | Weight | Dipakai untuk |
 |---|---|---|---|
-| Display | 32 → 48 (fluid) | **500** | H1 halaman sahaja (hero, detail artikel, Tentang Kami). **48px ialah saiz paling besar di laman.** |
-| Section | 28 → 36 (fluid) | 500 | H2 seksyen, tajuk slaid carousel dan banner WSIS: semua sama weight dengan Display. |
-| Heading | 24/32 · 22/30 · 20/28 | 500 | Tajuk ciri / sub-tajuk dalam seksyen, tajuk kad besar, tajuk pop-up. |
-| Title | 20/26 · 20/26 · 18/24 | 500 | Tajuk kad. |
-| Angka (statistik) | 48 · 40 · 36, line-height 1.1 | **400** | Semua angka statistik. Unit (juta+, ribu, jam) 0.42em. Angka tabular. |
-| Lead | 16/24 | 400 | Perenggan pengenalan di bawah tajuk. Sama saiz dengan Body; dibezakan dengan warna Graphite (bukan tinta) dan ruang. |
-| Article | 16 → 18 (fluid) | 400 | Body dalam lajur bacaan artikel sahaja. |
-| Body | 16/24 | 400 | Teks badan (`body` = 16). Graphite. Lebar baris maks ±68 aksara. |
-| Label (butang, nav, chip) | 16/24 | 500 | Sentence case. |
-| Small / meta | 14/20 | 400–500 | Tarikh, meta, label kecil. Smoke. |
-| Eyebrow | 13/18 | 500 (verdict 600) | UPPERCASE, tracking +0.04em (satu-satunya tracking bukan 0): verdict, eyebrow, heading footer. |
+| Display | 32 → 48 fluid / 1.2 | **500** | H1 halaman sahaja (hero, detail artikel, Tentang Kami). **48px ialah saiz paling besar di laman.** |
+| Section | 28 → 36 fluid / 1.2 | 500 | H2 seksyen, tajuk slaid carousel dan banner WSIS: semua sama weight dengan Display. |
+| Heading | 20 → 24 fluid / 1.2 | 500 | Tajuk ciri / sub-tajuk dalam seksyen, tajuk kad besar, tajuk pop-up. |
+| Title | 18 → 20 fluid / 1.2 | 500 | Tajuk kad. |
+| Angka (statistik) | 36 → 48 fluid / 1.2 | **400** | Semua angka statistik. Unit (juta+, ribu, jam) 0.42em. Angka tabular. |
+| Lead | 16 / 1.5 | 400 | Perenggan pengenalan di bawah tajuk. Sama saiz dengan Body; dibezakan dengan warna Graphite (bukan tinta) dan ruang. |
+| Article | 16 → 18 fluid / 1.5 | 400 | Body dalam lajur bacaan artikel sahaja. |
+| Body | 16 / 1.5 | 400 | Teks badan (`body` = 16). Graphite. Lebar baris maks ±68 aksara. |
+| Label (butang, nav, chip) | 16 / 1.5 (kecil: 14) | 500 | Sentence case. |
+| Small / meta | 14 / 1.5 · kapsyen 12 / 1.5 | 400–500 | Tarikh, meta, label kecil. Smoke. |
+| Eyebrow | 13 / 1.5 | 500 (verdict 600) | UPPERCASE, tracking +0.04em (satu-satunya tracking bukan 0): verdict, eyebrow, heading footer. |
 
-Token peranan ada dalam `app/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (body artikel sahaja, 16 → 18), `--text-body` (16, termasuk Lead), `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi tiga lajur saiz di atas jadi satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
+Token peranan ada dalam `app/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (body artikel sahaja, 16 → 18), `--text-body` (16, termasuk Lead), `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi setiap saiz ialah satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
 
 **Font weight:** semua tajuk 500 (Display hero, tajuk seksyen, heading, title) supaya jelas berbeza daripada body 400; angka statistik 400; 600 hanya untuk verdict.
 
@@ -117,17 +117,17 @@ Bahasa bentuk: **pill untuk apa yang ditekan, kotak membulat lembut untuk apa ya
 - Meter autoplay (cth. titik carousel) mengisi secara linear; berhenti bila dijeda.
 
 ### Butang
-- Semua butang **pill**, tinggi 44px, label 16 Medium.
+- Semua butang **pill**, label 16 Medium. Tinggi ikut skala kawalan fluid: `sm` 32 → 36 · `md` 40 → 44 (lalai) · `lg` 44 → 48; sasaran sentuh sentiasa 44.
 - **Filled** (tinta hitam, teks putih) — satu sahaja per skrin, untuk aksi paling penting.
 - **Outline** (kanvas + border 1px) dan **ghost** (tanpa border) untuk aksi sekunder.
 - Atas foto: pill putih/kanvas dengan teks tinta.
 - Ikon Lucide 16px, garis 1.75px, di hujung label (anak panah) atau di awal (muat turun, kongsi).
-- Tekan: scale 0.96–0.98. Hover: nada sedikit cerah. Fokus: cincin violet 2px.
+- Tekan: scale 0.97 (`--press-scale`). Hover: nada sedikit cerah. Fokus: cincin tinta 2px, offset 2px (putih atas foto/gelap). Tiada biru atau violet.
 
 ### Kawalan lain
 - Segmented control / tab: bekas pill kanvas dengan border nipis; item terpilih "naik" ke putih dengan border halus — tiada warna.
 - Carian: pill besar, border kuat, ikon kiri, butang filled di kanan.
-- Chip: pill 44px latar taupe; terpilih = tinta hitam.
+- Chip: pill latar taupe, tinggi sama dengan butang (skala `sm` · `md` · `lg`); terpilih = tinta hitam.
 
 ---
 
@@ -164,7 +164,7 @@ Skala 1–3 (1 = rendah, 3 = tinggi).
 | Do | Don't |
 |---|---|
 | Biarkan foto dan verdict jadi satu-satunya warna | Butang merah, latar seksyen berwarna, gradient pada kad |
-| Tajuk besar weight 400–500 | Bold 700 untuk "menarik perhatian" |
+| Tajuk weight 500, angka besar 400 | Bold 700 untuk "menarik perhatian" |
 | Angka statistik besar dan ringan | Angka tebal dalam kotak berwarna |
 | Pill untuk semua aksi | Butang segi empat tajam bercampur pill |
 | Elevation melalui nada (eggshell → taupe → stone) | Bayang berlapis pada setiap kad |
@@ -180,10 +180,10 @@ Keputusan (21 Nov 2026):
 
 | # | Perkara | Keputusan | Status implementasi |
 |---|---|---|---|
-| 1 | Keluarga font | **Manrope sahaja.** Buang Inter / `--font-ui`. | ✅ Siap: kod, handoff. |
-| 2 | Display weight | Semua tajuk **500** (termasuk display); body dan angka statistik 400. | ✅ Siap: kod, handoff (`--font-weight-display`). |
-| 3 | Angka besar | **400** untuk semua angka statistik. | ✅ Siap: kod, handoff (angka statistik guna `--font-weight-display`; kapsyen kekal Light). |
+| 1 | Keluarga font | **Manrope sahaja.** Buang Inter / `--font-ui`. | ✅ Siap. |
+| 2 | Display weight | Semua tajuk **500** (termasuk display); body dan angka statistik 400. | ✅ Siap. |
+| 3 | Angka besar | **400** untuk semua angka statistik. | ✅ Siap (`--font-weight-display`). Tiada weight 300 lagi. |
 | 4 | Tanya AIFA | **Biarkan merah buat masa ini** (belum ada idea). | Kekal terbuka di `plan.md`. |
 | 5 | Chart & meter | Garis panduan §4 jadi titik mula bila diperlukan (cth. dashboard CMS). | Belum ada dalam sistem. |
 
-Bila 1–3 dilaksana, kemas kini serentak: `app/tokens.css`, `design-system-handoff.md` §2.3, dan kod.
+Setiap keputusan baharu: kemas kini serentak `app/tokens.css`, `design-system-rules.md` dan fail ini.
