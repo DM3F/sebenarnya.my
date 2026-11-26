@@ -1,14 +1,24 @@
 name: Release design system package
 
-# Push a tag ds-vX.Y.Z (matching design-system/package.json "version") to publish
-# sebenarnya-design-system-X.Y.Z.tgz as a GitHub Release asset. Products install it by URL:
+# Publishes sebenarnya-design-system-X.Y.Z.tgz (X.Y.Z = design-system/package.json "version")
+# as a GitHub Release asset under the tag ds-vX.Y.Z. Products install it by URL:
 #   npm install https://github.com/DM3F/sebenarnya.my/releases/download/ds-vX.Y.Z/sebenarnya-design-system-X.Y.Z.tgz
+#
+# Two ways to release:
+#   - Actions tab → "Release design system package" → Run workflow (branch: main).
+#     The workflow creates the tag ds-vX.Y.Z on the commit it ran on.
+#   - Or push a tag ds-vX.Y.Z yourself (it must match the package version).
 on:
+  workflow_dispatch:
   push:
     tags: ["ds-v*"]
 
 permissions:
   contents: write
+
+concurrency:
+  group: design-system-release
+  cancel-in-progress: false
 
 jobs:
   release:
@@ -23,16 +33,32 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Check the tag matches the package version
+      - name: Work out the version and tag
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           VERSION=$(node -p "require('./design-system/package.json').version")
-          if [ "${GITHUB_REF_NAME}" != "ds-v${VERSION}" ]; then
-            echo "Tag ${GITHUB_REF_NAME} does not match design-system/package.json version ${VERSION}" >&2
+          TAG="ds-v${VERSION}"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            if [ "${GITHUB_REF}" != "refs/heads/main" ]; then
+              echo "::error::Run this workflow on main (you picked ${GITHUB_REF_NAME})." >&2
+              exit 1
+            fi
+            if gh release view "${TAG}" >/dev/null 2>&1; then
+              echo "::error::${TAG} is already released. Bump \"version\" in design-system/package.json, merge it to main, then run this again." >&2
+              exit 1
+            fi
+          elif [ "${GITHUB_REF_NAME}" != "${TAG}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match design-system/package.json version ${VERSION}." >&2
             exit 1
           fi
+          echo "Releasing ${TAG}"
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Lint the design system
         run: npm run lint:ds
@@ -43,8 +69,11 @@ jobs:
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
-          VERSION=$(node -p "require('./design-system/package.json').version")
-          gh release create "${GITHUB_REF_NAME}" "design-system/sebenarnya-design-system-${VERSION}.tgz" \
+          # --target creates the tag on this commit when it does not exist yet (Run workflow)
+          gh release create "${TAG}" "design-system/sebenarnya-design-system-${VERSION}.tgz" \
+            --target "${GITHUB_SHA}" \
             --title "Design system ${VERSION}" \
-            --notes "Install: npm install https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/sebenarnya-design-system-${VERSION}.tgz"
+            --notes "Install: npm install https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/sebenarnya-design-system-${VERSION}.tgz"

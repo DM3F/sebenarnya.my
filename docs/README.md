@@ -70,8 +70,10 @@ fresh project:
 
 1. Change the design system here; check `/design-system`, `npm run lint:ds`, `npm run build`.
 2. Bump `"version"` in `design-system/package.json` (semver: a removed or renamed token or prop is a major).
-3. Merge to `main`, then push a tag `ds-v<version>`. The *Release design system package*
-   workflow lints, builds (`npm run build:ds`) and attaches the `.tgz` to a GitHub Release.
+3. Merge to `main`, then on GitHub: **Actions → Release design system package → Run workflow**
+   (branch `main`). It creates the tag `ds-v<version>`, lints, builds (`npm run build:ds`) and
+   attaches the `.tgz` to a GitHub Release. It stops if that version is already released.
+   (Pushing a tag `ds-v<version>` yourself does the same.)
 4. Products change the version in their install URL.
 
 Locally, `npm run build:ds` writes `design-system/dist/` and `design-system/sebenarnya-design-system-<version>.tgz`.
