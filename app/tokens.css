@@ -16,7 +16,9 @@
 
 :root {
   /* ── Fonts (loaded in app/layout.js via next/font) ───────────────────── */
-  --font-sans: var(--font-manrope), 'Manrope', system-ui, sans-serif; /* the only family: content, headings, UI */
+  /* the only family: content, headings, UI. The website sets --font-manrope (next/font); other
+     products load Manrope under its own name, so the var() needs a fallback or the whole list is invalid */
+  --font-sans: var(--font-manrope, 'Manrope'), system-ui, sans-serif;
 
   /* ══ 1. PRIMITIVE ═══════════════════════════════════════════════════════ */
 
