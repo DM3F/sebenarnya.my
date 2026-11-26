@@ -242,7 +242,7 @@ export declare function TableBody(props: HTMLAttributes<HTMLTableSectionElement>
 export declare function TableFooter(props: HTMLAttributes<HTMLTableSectionElement>): ReactElement;
 export declare function TableCaption(props: HTMLAttributes<HTMLTableCaptionElement>): ReactElement;
 export declare function TableRow(props: HTMLAttributes<HTMLTableRowElement> & { selected?: boolean }): ReactElement;
-export interface TableHeadProps extends ThHTMLAttributes<HTMLTableCellElement> {
+export interface TableHeadProps extends Omit<ThHTMLAttributes<HTMLTableCellElement>, 'align'> {
   /** Right-align numbers. */
   align?: 'num';
   /** Selection column. */
@@ -252,7 +252,7 @@ export interface TableHeadProps extends ThHTMLAttributes<HTMLTableCellElement> {
   onSort?: () => void;
 }
 export declare function TableHead(props: TableHeadProps): ReactElement;
-export declare function TableCell(props: TdHTMLAttributes<HTMLTableCellElement> & { align?: 'num'; check?: boolean }): ReactElement;
+export declare function TableCell(props: Omit<TdHTMLAttributes<HTMLTableCellElement>, 'align'> & { align?: 'num'; check?: boolean }): ReactElement;
 
 export declare function Separator(props: { orientation?: 'horizontal' | 'vertical'; decorative?: boolean; className?: string }): ReactElement;
 export interface AvatarProps { src?: string; alt?: string; fallback?: string; size?: 'sm' | 'md'; className?: string }

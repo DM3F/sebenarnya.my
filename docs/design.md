@@ -1,6 +1,6 @@
 # DESIGN.md — Sebenarnya.my
 
-Arah rasa (taste) dan bahasa visual. Dokumen ini menjawab **"seperti apa rasanya"**; angka teknis (token, ukuran komponen) ada di [`design-system-rules.md`](design-system-rules.md) dan `app/tokens.css`. Jika dokumen ini bercanggah dengan kod, **kod yang betul**. Peta dokumen: [`README.md`](README.md).
+Arah rasa (taste) dan bahasa visual. Dokumen ini menjawab **"seperti apa rasanya"**; angka teknis (token, ukuran komponen) ada di [`design-system-rules.md`](design-system-rules.md) dan `design-system/tokens.css`. Jika dokumen ini bercanggah dengan kod, **kod yang betul**. Peta dokumen: [`README.md`](README.md).
 
 Referensi rasa: **elevenlabs.io** — diambil *bahasa visualnya saja* (ketenangan, material, cara warna dipakai, ritme ruang). Layout, struktur halaman, ilustrasi, dan kontennya **tidak** disalin.
 
@@ -79,7 +79,7 @@ Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan te
 | Small / meta | 14 / 1.5 · kapsyen 12 / 1.5 | 400–500 | Tarikh, meta, label kecil. Smoke. |
 | Eyebrow | 13 / 1.5 | 500 (verdict 600) | UPPERCASE, tracking +0.04em (satu-satunya tracking bukan 0): verdict, eyebrow, heading footer. |
 
-Token peranan ada dalam `app/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (body artikel sahaja, 16 → 18), `--text-body` (16, termasuk Lead), `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi setiap saiz ialah satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
+Token peranan ada dalam `design-system/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (body artikel sahaja, 16 → 18), `--text-body` (16, termasuk Lead), `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi setiap saiz ialah satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
 
 **Font weight:** semua tajuk 500 (Display hero, tajuk seksyen, heading, title) supaya jelas berbeza daripada body 400; angka statistik 400; 600 hanya untuk verdict.
 
@@ -186,4 +186,4 @@ Keputusan (21 Nov 2026):
 | 4 | Tanya AIFA | **Biarkan merah buat masa ini** (belum ada idea). | Kekal terbuka di `plan.md`. |
 | 5 | Chart & meter | Garis panduan §4 jadi titik mula bila diperlukan (cth. dashboard CMS). | Belum ada dalam sistem. |
 
-Setiap keputusan baharu: kemas kini serentak `app/tokens.css`, `design-system-rules.md` dan fail ini.
+Setiap keputusan baharu: kemas kini serentak `design-system/tokens.css`, `design-system-rules.md` dan fail ini.

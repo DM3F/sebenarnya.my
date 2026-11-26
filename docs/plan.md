@@ -2,7 +2,7 @@
 
 Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** setiap kali satu item siap (catatan halaman web: `docs/website-changelog.md`).
 
-> **Sumber kebenaran:** kod dalam repo ini (`app/tokens.css`, `app/ui.css`, `components/ui/`) bersama [`design.md`](design.md) dan [`design-system-rules.md`](design-system-rules.md). Fail Paper `sebenarnya.my` **bukan lagi rujukan**: kanvasnya tidak sama dengan design semasa. Jangan salin nilai atau susun atur daripada Paper.
+> **Sumber kebenaran:** kod dalam repo ini (`design-system/tokens.css`, `design-system/ui.css`, `design-system/react/`) bersama [`design.md`](design.md) dan [`design-system-rules.md`](design-system-rules.md). Fail Paper `sebenarnya.my` **bukan lagi rujukan**: kanvasnya tidak sama dengan design semasa. Jangan salin nilai atau susun atur daripada Paper.
 - Spec penuh: [`design-system-rules.md`](design-system-rules.md) · peta dokumen: [`README.md`](README.md) · sejarah web: [`website-changelog.md`](website-changelog.md).
 - Branch: `endahbyu`.
 - Skop: laman web Sebenarnya.my (Next.js 16, CSS biasa). Sejak 25 Nov 2026 design system juga disediakan untuk **CMS dashboard** dan **browser extension**: lihat *Handover ke produk lain* di bawah dan [`README.md`](README.md).
@@ -11,7 +11,7 @@ Checklist kerja design system. Kemas kini fail ini **dalam commit yang sama** se
 - Komponen hanya guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`…) + skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*`.
 - Font: **Manrope sahaja** (kandungan, tajuk, navigasi dan kawalan UI). Display 48+ dan angka statistik **400** (`--font-weight-display`); heading 24–36 dan label **Medium 500**. Tiada 700+. Rujuk [`design.md`](design.md).
 - Merah Kebenaran bukan warna aksi (button, link, nav).
-- Ikon: **Lucide** sahaja, melalui `components/ui/Icon.js` (garis 1.75px `absoluteStrokeWidth`, currentColor, `aria-hidden`). Logo jenama (Facebook, TikTok…) kekal SVG jenama.
+- Ikon: **Lucide** sahaja, melalui `design-system/react/Icon.js` (garis 1.75px `absoluteStrokeWidth`, currentColor, `aria-hidden`). Logo jenama (Facebook, TikTok…) kekal SVG jenama.
 - Semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = **16 / 24 Medium**.
 - Unit **px** sahaja dalam token dan komponen (tiada `rem`): laman web set `html { font-size: 62.5% }`.
 
@@ -22,15 +22,15 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 ## Fasa 1 — Fondasi (tokens & font)
 
 - [x] Font Manrope via `next/font` (`app/layout.js`); Inter dibuang
-- [x] `app/tokens.css`: primitive, semantic, type scale, weight, spacing, radius, shadow, container, skala mobile
+- [x] `design-system/tokens.css`: primitive, semantic, type scale, weight, spacing, radius, shadow, container, skala mobile
 - [x] Petakan variable lama `:root` dalam `global.css` ke token
 - [x] Peraturan berat tajuk dalam dokumen (display 400, heading 500 — ikut `design.md`)
-- [x] **Satu set nama token** dalam `app/tokens.css` (namespace Tailwind v4 + warna semantik gaya shadcn), tiga lapis: primitive → semantic → component.
+- [x] **Satu set nama token** dalam `design-system/tokens.css` (namespace Tailwind v4 + warna semantik gaya shadcn), tiga lapis: primitive → semantic → component.
 - [x] Token untuk overlay media: `--gradient-scrim-media`, `-media-wide`, `-bottom`, `-bottom-short`, `-top`
 - [x] Token motion dalam `tokens.css`: `--duration-fast/base/slow/page`, `--ease-out` (lalai), `--ease-in-out`, `--ease-emphasized`, `--ease-page`. `--ease`/`--slide` lama dibuang; tiada `cubic-bezier` keras lagi kecuali lengkung flip FlipCard
 - [?] Mode dark — sekarang atau kemudian.
 
-## Fasa 2 — Komponen asas (`components/ui/`, `app/ui.css`)
+## Fasa 2 — Komponen asas (`design-system/react/`, `design-system/ui.css`)
 
 - [x] Button (filled, outline, ghost, disabled, `href`)
 - [x] Chip + ChipRow
@@ -42,7 +42,7 @@ Legend: `[x]` siap & dipush · `[~]` separa · `[ ]` belum · `[?]` perlu keputu
 - [x] Ikon: Lucide (`lucide-react` ^0.577) melalui `Icon`; semua SVG tulis tangan diganti (kecuali logo jenama)
 - [x] Button: saiz `sm` + varian `media` (butang kanvas atas imej) + `secondary`, `iconEnd`
 - [x] Icon button bulat: `IconButton` (44 / 36 / 48), dipakai di carousel, Latest, Tentang Kami, Artikel, dialog
-- [x] Field / Input / Textarea / Select (`components/ui/Field.js`) — dipakai di ClaimForm, Artikel, AIFA
+- [x] Field / Input / Textarea / Select (`design-system/react/Field.js`) — dipakai di ClaimForm, Artikel, AIFA
 - [ ] Pagination dots sebagai komponen kongsi (kini hanya dalam HeroCarousel).
 - [ ] Avatar agensi (30 / 40px)
 
@@ -115,16 +115,16 @@ Jalankan sebelum setiap PR (`npm run lint:ds`). Semua mesti kosong kecuali yang 
 grep -rnE '#[0-9a-fA-F]{3,8}\b|rgba?\(' components design-system/components --include=*.js --include=*.css | grep -v tokens.css
 
 # 2. Palette primitif dipakai terus dalam komponen
-grep -rnE 'var\(--color-(grey-[0-9]+|red|red-dark|blue|azure|orange|green)[^-a-z]' components design-system/components app/ui.css
+grep -rnE 'var\(--color-(grey-[0-9]+|red|red-dark|blue|azure|orange|green)[^-a-z]' components design-system/components design-system/ui.css
 
 # 3. Pustaka ikon lain selain Lucide
 grep -rnE "from ['\"](react-icons|@heroicons|@radix-ui/react-icons|@tabler|phosphor)" components app
 
 # 4. Ikon Lucide dipakai tanpa <Icon> (mesti melalui wrapper)
-grep -rn "from 'lucide-react'" components app | grep -v 'components/ui/Icon.js'   # semak: setiap fail mesti render <Icon icon={...}>
+grep -rn "from 'lucide-react'" components app | grep -v 'design-system/react/Icon.js'   # semak: setiap fail mesti render <Icon icon={...}>
 
 # 5. rem dalam komponen kongsi
-grep -rnE '[0-9.]+rem\b' design-system app/ui.css
+grep -rnE '[0-9.]+rem\b' design-system design-system/ui.css
 
 # 6. Berat font di luar skala (400/500/600)
 grep -rnE 'font-weight:\s*(700|800|900|bold)' app design-system
@@ -171,20 +171,20 @@ Urutan dipersetujui. Butiran jurang per produk: [`README.md`](README.md) › Kno
 | Browser extension | React | TypeScript | Tailwind CSS 3.4 | Belum guna |
 
 - Semua repo **berasingan** (laman web, CMS, extension), jadi design system perlu jadi pakej berversi yang dipasang oleh setiap repo.
-- Belum ada pustaka komponen di mana-mana produk: `components/ui/` ialah standard, shadcn/ui hanya rujukan API dan aksesibiliti (diterjemah ke CSS biasa + token kita).
+- Belum ada pustaka komponen di mana-mana produk: `design-system/react/` ialah standard, shadcn/ui hanya rujukan API dan aksesibiliti (diterjemah ke CSS biasa + token kita).
 - Mode dark **tidak diperlukan** buat masa ini.
 - Permukaan UI extension (popup / side panel / content script) belum diketahui. Fokus design system: reka bentuk UI/UX dan token; mode scoped (Shadow DOM) hanya jika extension ternyata guna content script.
 
 - [x] 1. Kemas dokumen: kontradiksi `design.md` dibetulkan (fokus violet → tinta, tinggi 44 → skala kawalan, jadual tipografi ikut `tokens.css`, tajuk 500), `design-system-handoff.md` → `website-changelog.md` (sejarah web, bukan spec), `README.md` netral produk.
 - [x] 2. Halaman style guide `/design-system`: semua token dan komponen dirender daripada kod sebenar (noindex, tiada pautan dalam nav).
-- [x] 3a. `app/base.css`: lalai elemen (body, tajuk, pautan, kawalan borang) dikeluarkan daripada `global.css`, jadi `tokens.css` + `base.css` + `ui.css` boleh berdiri sendiri. Disahkan: 0 perbezaan computed style pada 5,683 elemen (4 halaman).
+- [x] 3a. `design-system/base.css`: lalai elemen (body, tajuk, pautan, kawalan borang) dikeluarkan daripada `global.css`, jadi `tokens.css` + `base.css` + `ui.css` boleh berdiri sendiri. Disahkan: 0 perbezaan computed style pada 5,683 elemen (4 halaman).
 - [x] 3b. Peranan bentuk: kontrol pill di `global.css` (9) dan `.ui-lang__trigger` kini `--radius-control`; badge (`.ui-badge`, `.ui-verdict` + 4 pil foto) guna token baharu `--radius-badge`; `--radius-full` hanya untuk bulatan; `--radius-media` diterbitkan daripada `--radius-card` − 8. Satu baris dalam `tokens.css` kini mengubah setiap kawalan, badge atau kad. Disahkan: 0 perbezaan computed style pada laman web.
-- [ ] 3. Ekstrak pakej `design-system` (tokens, base, ui, React + jenis TypeScript `.d.ts`, fonts, lint), diterbitkan untuk repo berasingan; laman web guna dahulu. `lint:ds` dalam CI + tangkapan skrin `/design-system` sebagai ujian regresi visual.
+- [x] 3. Pakej `@sebenarnya/design-system` (`design-system/`): tokens, base, ui, React + jenis TypeScript, preset Tailwind 3.4, lint mudah alih (`npx sebenarnya-lint-ds`), aliran kerja rilis (tag `ds-vX.Y.Z` → `.tgz` dalam GitHub Release). Laman web guna dari `design-system/`. Panduan adopsi CMS dan extension diuji pada projek baharu (Next.js + TypeScript: build, semakan jenis, lint dan pelayar lulus; Tailwind 3.4: semua lapisan dan fon dalam output).
 - [x] 4a. Preset Tailwind CSS 3.4 untuk extension (`design-system/tailwind-preset.cjs`): setiap token jadi kelas yang membaca `var()`, nama kelas dibaca daripada `tokens.css`, nilai luar sistem (`bg-red-500`, `text-sm`, `rounded-lg`) tidak wujud, tiada rem. Diuji dengan Tailwind 3.4.17. Juga: `--font-sans` kini ada fallback `'Manrope'` (sebelum ini jatuh ke Times di luar Next.js).
 - [x] 4b. Mode compact + komponen dashboard: `data-density="compact"` (hanya nilai token: kawalan 32/36/40/44, baris jadual 40, padding kad 12/16/24, hit area 24 untuk desktop). Komponen baharu (API shadcn, elemen asli, tiada Radix): Card, Table (sort + pilihan baris), Checkbox, Switch, RadioGroup, Pagination, Breadcrumb, Alert, Toast, Tooltip, Skeleton, Avatar, EmptyState, Separator; varian Button `quiet`. Token baharu: `--color-success` (status sistem, bukan verdict), `--size-row`, `--size-check`, `--size-switch`, `--size-toast`, `--size-sidebar`, `--radius-check`, `--spacing-36`. Semua dalam `/design-system` › Komponen dashboard, termasuk panel CMS dalam lalai vs compact.
 - [x] 4c. App shell: `AppShell`, `Sidebar` (+ Header, Content, Group, Item dengan `count`, Footer), `SidebarTrigger`, `Topbar`, `PageContent`, `PageHeader`. Compact secara lalai. ≤900 sidebar jadi laci: fokus masuk dan kembali, Escape / scrim / pautan menutup, halaman di belakang `inert`. Komponen design system sahaja: menu dan halaman diisi oleh repo CMS.
 - [x] 4d. Dialog: `Dialog` (tugas pendek, saiz sm/md/lg) dan `ConfirmDialog` / `confirmDialog()` (role alertdialog, tiada tutup scrim, onConfirm async dengan label menunggu dan ralat dalam dialog, destructive: fokus mula pada Batal + tanda amaran pada ikon, butang tindakan tetap tinta). Fokus kekal pada butang semasa menunggu (aria-disabled, bukan disabled).
 - [x] 4e. Carta dan meter: `Stat` (+ sparkline), `Meter`, `BarList`, `BarChart` (monokrom, grid garis rambut, label nilai terkini, tooltip hover, jadual pembaca skrin). Token `--color-chart*`, `--size-chart`, `--size-chart-bar`, `--size-meter`, `--size-sparkline`.
-- [ ] 4. Fon Manrope dibundel untuk extension. Mode scoped (Shadow DOM) hanya jika extension guna content script.
+- [x] 4. Fon Manrope untuk extension: `@fontsource/manrope` (dalam panduan). Mode scoped (Shadow DOM) hanya jika extension guna content script.
 - [ ] 5. Mode dark: **ditangguh** (tidak diperlukan, 26 Nov 2026).
 - [ ] 6. Pilihan: Figma variables, text styles dan komponen dijana daripada kod.

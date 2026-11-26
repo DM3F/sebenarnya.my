@@ -217,6 +217,11 @@ const rules = [
     },
   },
   {
+    id: 'tw-arbitrary',
+    why: 'Tailwind arbitrary value with a raw colour or length (bg-[#…], p-[13px], text-[15px]); use a preset class that reads a token.',
+    test: (l, p) => !isCss(p) && /(?:^|[\s"'`:])[\w-]+-\[[^\]]*(?:#[0-9a-fA-F]{3,8}|\d+(?:\.\d+)?(?:px|rem)|rgba?\(|hsla?\()[^\]]*\]/.test(code(l)),
+  },
+  {
     id: 'transition-all',
     why: 'Name the properties you animate.',
     test: (l) => /transition:\s*all\b/.test(code(l)),

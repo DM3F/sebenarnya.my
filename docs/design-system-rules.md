@@ -7,7 +7,7 @@ system in other products (CMS dashboard, browser extension) is in
 the code** so the system stays easy to update. Website page notes and history are
 in [`website-changelog.md`](website-changelog.md) (not a spec).
 
-**Source of truth:** the code (`app/tokens.css`, `app/base.css`, `app/ui.css`, `components/ui/`)
+**Source of truth:** the code (`design-system/tokens.css`, `design-system/base.css`, `design-system/ui.css`, `design-system/react/`)
 and these docs. The Paper file is no longer a reference — its canvas does not
 match the current design, so never copy values or layouts from it.
 
@@ -20,9 +20,9 @@ Stack: Next.js 16 (App Router, static export), React 19, JavaScript, plain CSS
 
 | Tier | Where | Examples | Who may use it |
 |---|---|---|---|
-| 1 · Primitive | `app/tokens.css` (top) | `--color-grey-95`, `--text-16`, `--leading-body`, `--spacing-44` | Only tokens.css itself |
-| 2 · Semantic | `app/tokens.css` | `--color-primary`, `--color-input`, `--text-label`, `--size-control`, `--radius-control`, `--focus-ring-*` | Every component |
-| 3 · Component | `app/ui.css`, top of each block | `--btn-bg`, `--chip-height`, `--field-border`, `--verdict-dot` | That component and its variants |
+| 1 · Primitive | `design-system/tokens.css` (top) | `--color-grey-95`, `--text-16`, `--leading-body`, `--spacing-44` | Only tokens.css itself |
+| 2 · Semantic | `design-system/tokens.css` | `--color-primary`, `--color-input`, `--text-label`, `--size-control`, `--radius-control`, `--focus-ring-*` | Every component |
+| 3 · Component | `design-system/ui.css`, top of each block | `--btn-bg`, `--chip-height`, `--field-border`, `--verdict-dot` | That component and its variants |
 
 Decision guide:
 
@@ -162,7 +162,7 @@ is a token in the DENSITY block.
 
 ### Overlays: one menu, one modal
 
-- **Menu** (`.ui-menu`, `app/ui.css`): nav dropdown, language and Kongsi menus share one
+- **Menu** (`.ui-menu`, `design-system/ui.css`): nav dropdown, language and Kongsi menus share one
   surface — `--color-background`, 1px `--color-border`, `--radius-menu`, `--space-inline`
   padding, `--shadow-float` — and one 150ms pop-in (opacity + scale .96) from the trigger
   edge. A menu adds `.ui-menu` and sets only its width and `transform-origin`.
@@ -230,12 +230,12 @@ Easing `--ease-out` by default. Ambient loops
 
 1. No hex/rgb colours outside `tokens.css`.
 2. No palette primitives (`--color-grey-*`, `--color-red`…) in components.
-3. `app/ui.css`: **no raw lengths** (`px`); use roles. Exceptions carry `/* ds-allow: reason */`.
+3. `design-system/ui.css`: **no raw lengths** (`px`); use roles. Exceptions carry `/* ds-allow: reason */`.
 3d. **Details:** focus rings, motion and border widths only from tokens; `<Icon>` sizes by name.
 3c. **Layout:** only the four breakpoints, `max-width` only (no `min-width` media queries); z-index above 5 must be a `--z-*` layer.
 3b. **Spacing & radius, every file except tokens.css:** no raw `px` in padding, margin or gap, no raw `px` radius, no `--radius-lg` (use `--radius-card-lg`). Optical nudges and overlaps carry `/* ds-allow: reason */`.
 3a. **Type, every file except tokens.css:** only type roles. No `--text-16`/`--leading-*` steps, no raw `font-size` (px, `clamp()`, `calc()`), no `px` line-height, no `fontSize` in JSX, no role that tokens.css does not define. Percent/em tweaks are fine.
-4. Icons: Lucide only, always through `components/ui/Icon.js`.
+4. Icons: Lucide only, always through `design-system/react/Icon.js`.
 5. No `rem` (the root is 62.5% and the CSS is reused in the extension).
 6. Font weights only from `--font-weight-*`; nothing above 600.
 7. Manrope only (`--font-sans`).
@@ -249,7 +249,7 @@ Run it before every commit; it exits 1 on failure.
 
 ## 3. Components — use these, don't rebuild them
 
-Import from `@/components/ui`. API mirrors shadcn/ui (variant + size props).
+Import from `@sebenarnya/design-system` in other products, `@/components/ui` in this website (it re-exports `design-system/react`). API mirrors shadcn/ui (variant + size props).
 
 | Need | Component | Notes |
 |---|---|---|
