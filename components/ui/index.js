@@ -25,3 +25,7 @@ export { default as Skeleton } from './Skeleton';
 export { default as Avatar } from './Avatar';
 export { default as EmptyState } from './EmptyState';
 export { default as Separator } from './Separator';
+export {
+  AppShell, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarItem, SidebarFooter, SidebarTrigger,
+  Topbar, PageHeader, PageContent,
+} from './AppShell';

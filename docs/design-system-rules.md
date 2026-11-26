@@ -283,6 +283,7 @@ Import from `@/components/ui`. API mirrors shadcn/ui (variant + size props).
 | Person or agency | `Avatar` | Initials fallback. sm · md. |
 | Nothing here yet | `EmptyState` | Say what will appear and how to add the first one. |
 | Divider | `Separator` | Decorative by default. |
+| Frame of a tool | `AppShell` + `Sidebar` (`SidebarHeader` `SidebarContent` `SidebarGroup` `SidebarItem` `SidebarFooter`) + `Topbar` + `SidebarTrigger` + `PageContent` + `PageHeader` | Compact by default. Sidebar `--size-sidebar`; items take the control shape, current page = muted fill + medium, `count` for numbers to act on. ≤900: drawer (trigger opens; Escape, scrim or a link closes; focus moves in and back; page inert). One `PageHeader` per page: title (`heading` role), one-line description, main actions. |
 
 A page-specific class may position a component (`margin`, `grid-area`,
 `align-self`). It must not restyle it (colour, height, radius, font). If a
