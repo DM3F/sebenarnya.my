@@ -445,6 +445,23 @@ input::placeholder { color: var(--color-foreground); }
 .latest-checks__rail { display: flex; gap: var(--gap-cards); }
 .latest-checks__rail > .fc { flex: 0 0 340px; will-change: transform; }
 
+/* Pause button + progress dots, centred under the rows. Same pill and dots as the hero
+   carousel; the long dot fills as its card glides off the first row. */
+.latest-checks__controls { display: flex; justify-content: center; align-items: center; gap: var(--gap-inline); }
+.latest-checks__dots { display: flex; align-items: center; gap: var(--spacing-16); /* ds-allow: keeps the 24px dot hit areas from overlapping */ height: var(--size-control-lg); padding: 0 var(--spacing-20); border-radius: var(--radius-full); background: var(--color-muted); }
+.latest-checks__dots:hover { background: var(--color-muted-strong); }
+.latest-checks__dots button { position: relative; width: var(--size-dot); height: var(--size-dot); padding: 0; border: 0; border-radius: var(--radius-full); background: var(--color-border-strong); cursor: pointer; }
+/* Invisible 24×44 hit area for the 8px dots (WCAG 2.5.8) */
+.latest-checks__dots button::before { content: ""; position: absolute; inset: -18px -8px; }
+.latest-checks__dots button:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.latest-checks__dots button.on { width: calc(4 * var(--size-dot)); background: var(--color-border); }
+.latest-checks__dots button.on i { position: absolute; inset: 0; border-radius: inherit; background: var(--color-foreground); transform-origin: left; transform: scaleX(0); }
+@media (forced-colors: active) {
+  .latest-checks__dots button { background: CanvasText; }
+  .latest-checks__dots button.on { background: Canvas; border: var(--border-width) solid CanvasText; }
+  .latest-checks__dots button.on i { background: CanvasText; }
+}
+
 /* "Lihat lagi": outline pill with a foreground edge */
 
 @media (max-width: 600px) {
