@@ -2169,15 +2169,16 @@ input::placeholder { color: var(--color-foreground); }
 .logo-kit__head { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .logo-kit-intro { margin: var(--gap-text) 0 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
-/* Fluid: two cards side by side while each gets ≥320px, one column below that */
-.logo-kit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--gap-cards); padding-top: var(--gap-block); }
+/* Desktop: logo · icon · terms in three equal columns (Figma). ≤1100 the two cards share a row
+   (fluid, each ≥320px) with the terms full width under them; ≤900 everything stacks. */
+.logo-kit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-cards); padding-top: var(--gap-block); }
 .logo-card {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--gap-group); /* preview → folder, one step inside the card */
   min-width: 0;
-  padding: var(--pad-card-lg);
+  padding: var(--pad-card-sm); /* folder nearly fills the card width, as in Figma */
   border-radius: var(--radius-card-lg);
   background: var(--color-muted);
 }
@@ -2188,28 +2189,36 @@ input::placeholder { color: var(--color-foreground); }
 /* Desktop: both cards share row lines, so previews and folders align; stacked (≤900) each card is its own column */
 .logo-kit-grid { row-gap: 0; }
 .logo-card { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: var(--gap-group); }
-@media (max-width: 900px) {
-  .logo-kit-grid { row-gap: var(--gap-cards); }
-  .logo-card { display: flex; grid-row: auto; grid-template-rows: none; }
-}
-
-/* Logo terms of use (demo copy until MCMC provides the official text) */
+/* Logo terms of use (demo copy until MCMC provides the official text).
+   Desktop: the third card, as tall as the two file cards, text centred vertically. */
 .logo-terms {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: var(--gap-group) var(--pad-card-lg);
-  margin-top: var(--gap-cards);
-  padding: var(--pad-card-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap-group);
+  grid-row: span 2; /* the file cards' two subgrid rows */
+  min-width: 0;
+  padding: var(--pad-card);
   border-radius: var(--radius-card-lg);
   background: var(--color-muted);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
-  color: var(--color-text-secondary); /* body copy graphite; the title is ink */
+  color: var(--color-text-secondary);
 }
-.logo-terms__body { max-width: var(--measure-text); }
-.logo-terms__body p { margin: 0; text-wrap: pretty; }
-.logo-terms__title { margin: 0; color: var(--color-foreground); }
-.logo-terms__list { display: grid; gap: var(--gap-text); margin: var(--gap-group) 0; padding-left: var(--spacing-20); }
+.logo-terms > * { max-width: var(--measure-text); }
+.logo-terms p { margin: 0; text-wrap: pretty; }
+.logo-terms__list { display: grid; gap: var(--gap-text); margin: 0; padding-inline-start: var(--spacing-20); }
+
+@media (max-width: 1100px) {
+  .logo-kit-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+  .logo-card { padding: var(--pad-card-lg); }
+  .logo-terms { grid-column: 1 / -1; grid-row: auto; margin-top: var(--gap-cards); padding: var(--pad-card-lg); }
+}
+@media (max-width: 900px) {
+  .logo-kit-grid { row-gap: var(--gap-cards); }
+  .logo-card { display: flex; grid-row: auto; grid-template-rows: none; }
+  .logo-terms { margin-top: 0; } /* the grid's row gap spaces it now */
+}
 
 /* ── Format folder (components/FormatFolder.js) ────────────────────────────
    Drawn on a 391 × 286 stage (the canvas card) and scaled to the card width by a unitless ratio
@@ -2365,10 +2374,6 @@ input::placeholder { color: var(--color-foreground); }
   .folder[data-wide] .folder__tile { transform: rotate(var(--rot)); }
 }
 
-
-@media (max-width: 600px) {
-  .logo-terms { grid-template-columns: 1fr; } /* keeps --pad-card-lg (fluid 32 → 24) like every large card */
-}
 
 /* Single-message pages: /submit-claim/ landing and 404 (app/not-found.js) */
 .page-notice {
@@ -2603,8 +2608,7 @@ input::placeholder { color: var(--color-foreground); }
 .claim-done h3,
 .about-intro__facts-title,
 .folder__title,
-.kenali__card-title,
-.logo-terms__title {
+.kenali__card-title {
   font-size: var(--text-title);
   line-height: var(--text-title--line-height);
   font-weight: var(--font-weight-medium);

@@ -28,22 +28,22 @@ export default function LogoKit({ headingLevel = 2 }) {
             <FormatFolder title={item.folderTitle ?? logoPage.formatTitle} subject={item.name} formats={item.formats} />
           </article>
         ))}
-      </div>
 
-      {logoPage.terms && (
-        <div className="logo-terms">
-          <Name className="logo-terms__title">{logoPage.terms.title}</Name>
-          <div className="logo-terms__body">
+        {/* Terms: third card on desktop, full width under the two cards below 1100px.
+            The title stays for screen readers and the outline; the card shows the terms only (Figma). */}
+        {logoPage.terms && (
+          <div className="logo-terms">
+            <Name className="sr-only">{logoPage.terms.title}</Name>
             <p>{logoPage.terms.intro}</p>
             <ol className="logo-terms__list">
               {logoPage.terms.items.map((t) => (
                 <li key={t}>{t}</li>
               ))}
             </ol>
-            <p className="logo-terms__note">{logoPage.terms.note}</p>
+            {logoPage.terms.note && <p>{logoPage.terms.note}</p>}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }
