@@ -188,3 +188,5 @@ Urutan dipersetujui. Butiran jurang per produk: [`README.md`](README.md) › Kno
 - [x] 4. Fon Manrope untuk extension: `@fontsource/manrope` (dalam panduan). Mode scoped (Shadow DOM) hanya jika extension guna content script.
 - [ ] 5. Mode dark: **ditangguh** (tidak diperlukan, 26 Nov 2026).
 - [ ] 6. Pilihan: Figma variables, text styles dan komponen dijana daripada kod.
+
+**Keputusan reka bentuk (26 Nov 2026, disahkan pengguna):** `--color-success` untuk status sistem (ikon + garis tepi sahaja) · sasaran sentuh 24px dalam mod compact (alat desktop sahaja) · tiada warna amaran; `Alert` kekal default · success · destructive. Butiran: [`design.md`](design.md) § 8, keputusan 6–8.

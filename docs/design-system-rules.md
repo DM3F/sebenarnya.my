@@ -276,7 +276,7 @@ Import from `@sebenarnya/design-system` in other products, `@/components/ui` in 
 | One of a few visible options | `RadioGroup` | `items`, `value`, `onValueChange`, orientation. Over ~5 options: Select. |
 | Pages of a list | `Pagination` | `page`, `pageCount`, `onPageChange` or `href(page)`. |
 | Where this page sits | `Breadcrumb` | `items`; last item is the current page. |
-| Message that stays | `Alert` | default · success · destructive (role="alert"). Colour on the icon and edge only. |
+| Message that stays | `Alert` | default · success · destructive (role="alert"). Colour on the icon and edge only. There is no warning colour (design.md § 8, decision 8): write a warning in words in a default Alert. |
 | Confirmation that goes away | `toast()` + `<Toaster />` once | 5s, pauses on hover/focus, polite. Not for errors the user must act on: use Alert. |
 | Name of an icon-only control | `Tooltip` | Hover after 400ms, focus at once, Escape hides. Never essential information. |
 | Loading | `Skeleton` | text · circle · block. Put `aria-busy` on the loading region. |
