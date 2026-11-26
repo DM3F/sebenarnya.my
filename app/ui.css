@@ -125,6 +125,7 @@
   --btn-fg: var(--color-secondary-foreground);
 }
 .ui-btn--ghost { --btn-decoration: underline; }
+.ui-btn--quiet { --btn-bg: transparent; } /* toolbars, pagination, row actions: no fill, no underline, tinted on hover (shadcn's ghost) */
 .ui-btn--media { --btn-bg: var(--color-background); } /* on photos and dark panels */
 .ui-btn--media:focus-visible { outline-color: var(--focus-ring-color-inverse); } /* an ink ring would vanish on the photo / dark panel around it */
 .ui-btn--link {
@@ -166,7 +167,9 @@
   cursor: not-allowed;
 }
 .ui-btn--ghost:disabled,
-.ui-btn--ghost[aria-disabled='true'] { --btn-bg: transparent; --btn-bg-hover: transparent; }
+.ui-btn--ghost[aria-disabled='true'],
+.ui-btn--quiet:disabled,
+.ui-btn--quiet[aria-disabled='true'] { --btn-bg: transparent; --btn-bg-hover: transparent; }
 
 .ui-btn-group { display: inline-flex; flex-wrap: wrap; gap: var(--space-inline); }
 
@@ -776,3 +779,445 @@
 /* Dialogs take focus themselves on open (components call dialog.focus()), so no control opens
    with a ring; Tab moves to the first control and shows the ring as usual. */
 dialog:focus { outline: none; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DASHBOARD COMPONENTS (CMS, extension, any tool)
+   Same rules as above: semantic tokens only, knobs at the top of each block,
+   variants reassign knobs. Reference for API and accessibility: shadcn/ui,
+   rebuilt on native elements (no Radix). Pair with data-density="compact".
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Card ──────────────────────────────────────────────────────────────────
+   variant: muted (default, taupe on the canvas) · outline (canvas + edge) · raised (white + edge)
+   size:    sm · md (default) · lg — padding and radius travel together (rules › card size) */
+.ui-card {
+  --card-pad: var(--pad-card);
+  --card-radius: var(--radius-card);
+  --card-bg: var(--color-muted);
+  --card-border: transparent;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-group);
+  min-width: 0;
+  padding: var(--card-pad);
+  border: var(--border-width) solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--card-bg);
+  color: var(--color-foreground);
+}
+.ui-card--outline { --card-bg: var(--color-background); --card-border: var(--color-border); }
+.ui-card--raised { --card-bg: var(--color-card); --card-border: var(--color-border); }
+.ui-card--sm { --card-pad: var(--pad-card-sm); }
+.ui-card--lg { --card-pad: var(--pad-card-lg); --card-radius: var(--radius-card-lg); }
+.ui-card__header { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: var(--gap-text) var(--gap-group); }
+.ui-card__heading { display: flex; flex-direction: column; gap: var(--gap-text); min-width: 0; }
+.ui-card__title {
+  margin: 0;
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
+  font-weight: var(--text-title--font-weight);
+}
+.ui-card__description {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--text-body-sm--line-height);
+  color: var(--color-muted-foreground);
+}
+.ui-card__action { justify-self: end; }
+.ui-card__content { min-width: 0; }
+.ui-card__footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-inline); }
+
+/* ── Separator ─────────────────────────────────────────────────────────── */
+.ui-separator { flex: none; margin: 0; border: 0; background: var(--color-muted-strong); }
+.ui-separator--horizontal { width: 100%; height: var(--border-width); }
+.ui-separator--vertical { align-self: stretch; width: var(--border-width); }
+
+/* ── Checkbox · Radio · Switch — native inputs, drawn with tokens ──────────
+   The real <input> stays in place (keyboard, forms, screen readers); the box is drawn on it. */
+.ui-choice {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--gap-inline);
+  min-width: 0;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  color: var(--color-foreground);
+  cursor: pointer;
+}
+.ui-choice__text { display: flex; flex-direction: column; min-width: 0; }
+.ui-choice__hint { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); }
+.ui-choice__control {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  /* centre the box on the first line of the label */
+  margin-block: calc((var(--text-body) * var(--text-body--line-height) - var(--size-check)) / 2);
+}
+.ui-choice--disabled { color: var(--color-disabled-foreground); cursor: not-allowed; }
+
+.ui-checkbox,
+.ui-radio {
+  --check-border: var(--color-input);
+  --check-bg: var(--color-card);
+
+  appearance: none;
+  box-sizing: border-box;
+  width: var(--size-check);
+  height: var(--size-check);
+  margin: 0;
+  border: var(--border-width) solid var(--check-border);
+  border-radius: var(--radius-check);
+  background: var(--check-bg);
+  cursor: inherit;
+  transition: var(--transition-colors);
+}
+.ui-radio { border-radius: var(--radius-full); }
+/* The input stays above its own hit area, so a click lands on the real control */
+.ui-checkbox,
+.ui-radio { position: relative; z-index: 1; }
+/* Touch target without growing the box (24 in compact, 44 by default) */
+.ui-choice__control::after {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: max(100%, var(--size-hit-area));
+  height: max(100%, var(--size-hit-area));
+  translate: -50% -50%;
+}
+.ui-checkbox:checked,
+.ui-checkbox:indeterminate { --check-border: var(--color-primary); --check-bg: var(--color-primary); }
+.ui-radio:checked { --check-border: var(--color-primary); }
+.ui-checkbox:focus-visible,
+.ui-radio:focus-visible,
+.ui-switch:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.ui-checkbox[aria-invalid='true'],
+.ui-radio[aria-invalid='true'] { --check-border: var(--color-destructive); }
+.ui-checkbox:disabled,
+.ui-radio:disabled { --check-border: var(--color-border); --check-bg: var(--color-disabled); }
+.ui-checkbox:checked:disabled,
+.ui-checkbox:indeterminate:disabled { --check-border: var(--color-disabled); }
+
+/* Tick and dash: Lucide icons laid over the box, shown by state */
+.ui-choice__mark {
+  position: absolute;
+  z-index: 2; /* above the input (z 1), which sits above its hit area */
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+  color: var(--color-primary-foreground);
+  opacity: 0;
+  pointer-events: none;
+}
+.ui-checkbox:checked:not(:indeterminate) ~ .ui-choice__mark--check,
+.ui-checkbox:indeterminate ~ .ui-choice__mark--dash { opacity: 1; }
+.ui-checkbox:disabled ~ .ui-choice__mark { color: var(--color-disabled-foreground); }
+.ui-radio-dot {
+  position: absolute;
+  z-index: 2;
+  width: var(--size-dot);
+  height: var(--size-dot);
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  opacity: 0;
+  pointer-events: none;
+}
+.ui-radio:checked ~ .ui-radio-dot { opacity: 1; }
+.ui-radio:disabled ~ .ui-radio-dot { background: var(--color-disabled-foreground); }
+
+.ui-radio-group { display: flex; flex-direction: column; gap: var(--gap-text); margin: 0; padding: 0; border: 0; min-width: 0; }
+.ui-radio-group--row { flex-direction: row; flex-wrap: wrap; gap: var(--gap-text) var(--gap-group); }
+.ui-radio-group__legend { margin-bottom: var(--space-stack); padding: 0; }
+
+/* Switch: track = 2 × knob, knob inset 2px */
+.ui-switch {
+  --switch-h: var(--size-switch);
+  --switch-inset: var(--spacing-2);
+  --switch-knob: calc(var(--switch-h) - 2 * var(--switch-inset));
+  --switch-bg: var(--color-border-strong);
+
+  appearance: none;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  flex: none;
+  width: calc(2 * var(--switch-knob) + 2 * var(--switch-inset));
+  height: var(--switch-h);
+  margin: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--switch-bg);
+  cursor: inherit;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.ui-switch::before {
+  content: '';
+  position: absolute;
+  top: var(--switch-inset);
+  left: var(--switch-inset);
+  width: var(--switch-knob);
+  height: var(--switch-knob);
+  border-radius: var(--radius-control);
+  background: var(--color-card);
+  box-shadow: var(--shadow-tile);
+  transition: translate var(--duration-base) var(--ease-out);
+}
+.ui-switch:checked { --switch-bg: var(--color-primary); }
+.ui-switch:checked::before { translate: var(--switch-knob) 0; }
+.ui-switch:disabled { --switch-bg: var(--color-disabled); }
+.ui-choice--switch .ui-choice__control { margin-block: calc((var(--text-body) * var(--text-body--line-height) - var(--size-switch)) / 2); }
+
+/* ── Table ─────────────────────────────────────────────────────────────────
+   Scrolls inside its own frame; the page never scrolls sideways. Row height = --size-row
+   (48 default, 40 compact). Selected rows: aria-selected="true" or data-state="selected". */
+.ui-table-wrap {
+  position: relative; /* contains absolute children (sr-only text, hit areas) so they scroll with the table instead of widening the page */
+  min-width: 0;
+  overflow-x: auto;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-background);
+}
+.ui-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+  line-height: var(--text-body-sm--line-height);
+  font-variant-numeric: tabular-nums;
+}
+.ui-table__caption {
+  caption-side: bottom;
+  padding: var(--space-stack) var(--space-field-x);
+  text-align: start;
+  color: var(--color-muted-foreground);
+}
+.ui-table__head,
+.ui-table__cell {
+  height: var(--size-row);
+  padding: 0 var(--space-field-x);
+  text-align: start;
+  vertical-align: middle;
+  border-bottom: var(--border-width) solid var(--color-muted-strong);
+}
+.ui-table__head {
+  font-size: var(--text-label-sm);
+  line-height: var(--text-label-sm--line-height);
+  font-weight: var(--text-label-sm--font-weight);
+  color: var(--color-muted-foreground);
+  background: var(--color-muted);
+  white-space: nowrap;
+}
+.ui-table__head--num,
+.ui-table__cell--num { text-align: end; }
+.ui-table__cell--check,
+.ui-table__head--check { width: var(--size-check); padding-inline-end: 0; }
+/* Inline-flex content (checkbox, buttons, badges) sits on the middle, not the text baseline, so rows keep --size-row */
+.ui-table__cell > *,
+.ui-table__head > * { vertical-align: middle; }
+.ui-table__body .ui-table__row:last-child .ui-table__cell { border-bottom: 0; }
+.ui-table__footer .ui-table__cell { border-top: var(--border-width) solid var(--color-border); border-bottom: 0; font-weight: var(--font-weight-medium); }
+@media (hover: hover) {
+  .ui-table__body .ui-table__row:hover { background: var(--color-muted); }
+}
+.ui-table__row[aria-selected='true'],
+.ui-table__row[data-state='selected'] { background: var(--color-muted); }
+.ui-table__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-inline-tight);
+  margin: 0 calc(-1 * var(--spacing-6));
+  padding: var(--spacing-2) var(--spacing-6);
+  border: 0;
+  border-radius: var(--radius-menu-item);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: var(--transition-colors);
+}
+.ui-table__sort:hover { color: var(--color-foreground); background: var(--color-accent); }
+.ui-table__sort:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: 0; }
+.ui-table__head[aria-sort='ascending'] .ui-table__sort,
+.ui-table__head[aria-sort='descending'] .ui-table__sort { color: var(--color-foreground); }
+
+/* ── Pagination · Breadcrumb ───────────────────────────────────────────── */
+.ui-pagination__list,
+.ui-breadcrumb__list { display: flex; flex-wrap: wrap; align-items: center; margin: 0; padding: 0; list-style: none; }
+.ui-pagination__list { gap: var(--space-inline-tight); }
+.ui-pagination__ellipsis {
+  display: inline-grid;
+  place-items: center;
+  width: var(--size-control);
+  height: var(--size-control);
+  color: var(--color-muted-foreground);
+}
+.ui-btn[aria-current='page'] { --btn-bg: var(--color-background); --btn-border: var(--color-input); }
+
+.ui-breadcrumb__list {
+  gap: var(--space-inline-tight);
+  font-size: var(--text-body-sm);
+  line-height: var(--text-body-sm--line-height);
+  color: var(--color-muted-foreground);
+}
+.ui-breadcrumb__item { display: inline-flex; align-items: center; gap: var(--space-inline-tight); min-width: 0; }
+.ui-breadcrumb__link {
+  color: inherit;
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.ui-breadcrumb__link:hover { color: var(--color-foreground); text-decoration: underline; text-decoration-thickness: var(--underline-thickness); text-underline-offset: var(--underline-offset); }
+.ui-breadcrumb__page { color: var(--color-foreground); font-weight: var(--font-weight-medium); }
+
+/* ── Alert — an inline message inside the page (not a toast) ───────────────
+   variant: default · success · destructive. Colour is on the icon and the edge only;
+   the words carry the meaning. */
+.ui-alert {
+  --alert-accent: var(--color-foreground);
+
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: var(--space-inline-tight) var(--gap-inline);
+  padding: var(--pad-card-sm);
+  border: var(--border-width) solid var(--color-border);
+  border-inline-start: var(--spacing-4) solid var(--alert-accent); /* ds-allow: status stripe, the one place an alert shows its colour */
+  border-radius: var(--radius-field);
+  background: var(--color-card);
+  color: var(--color-foreground);
+}
+.ui-alert--success { --alert-accent: var(--color-success); }
+.ui-alert--destructive { --alert-accent: var(--color-destructive); }
+.ui-alert > .ui-icon { color: var(--alert-accent); margin-block: calc((var(--text-label) * var(--text-label--line-height) - var(--size-icon-lg)) / 2); }
+.ui-alert__body { display: flex; flex-direction: column; gap: var(--space-inline-tight); min-width: 0; }
+.ui-alert__title {
+  margin: 0;
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  font-weight: var(--text-label--font-weight);
+}
+.ui-alert__description { margin: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-text-secondary); }
+.ui-alert__action { grid-column: 2; margin-top: var(--space-inline-tight); }
+
+/* ── Toast — short confirmations (Disimpan, Diterbitkan) ───────────────────
+   Bottom-right stack, polite live region, 5s, pauses on hover and focus. */
+.ui-toaster {
+  position: fixed;
+  inset: auto var(--space-page-x) var(--space-page-x) auto;
+  z-index: var(--z-floating);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-inline);
+  width: min(var(--size-toast), calc(100vw - 2 * var(--space-page-x)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+.ui-toast {
+  --toast-accent: var(--color-foreground-inverse);
+
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: var(--space-inline-tight) var(--gap-inline);
+  padding: var(--pad-card-sm);
+  border-radius: var(--radius-field);
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  box-shadow: var(--shadow-overlay);
+  pointer-events: auto;
+  transition: opacity var(--duration-base) var(--ease-out), translate var(--duration-base) var(--ease-out);
+}
+@starting-style { .ui-toast { opacity: 0; translate: 0 var(--spacing-8); } }
+.ui-toast > .ui-icon { color: var(--toast-accent); margin-block: calc((var(--text-label) * var(--text-label--line-height) - var(--size-icon-lg)) / 2); }
+.ui-toast__body { display: flex; flex-direction: column; min-width: 0; }
+.ui-toast__title { font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--text-label--font-weight); }
+.ui-toast__description { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-text-secondary-inverse); }
+.ui-toast .ui-btn { --btn-fg: var(--color-primary-foreground); --btn-fg-hover: var(--color-text-secondary-inverse); --btn-bg-hover: var(--color-primary-hover); }
+.ui-toast .ui-btn:focus-visible { outline-color: var(--focus-ring-color-inverse); }
+
+/* ── Tooltip — a short label for an icon-only control ──────────────────────
+   Shows on hover (after a beat) and keyboard focus, hides on Escape (WCAG 1.4.13). */
+.ui-tooltip { position: relative; display: inline-flex; }
+.ui-tooltip__bubble {
+  position: absolute;
+  bottom: calc(100% + var(--space-inline));
+  left: 50%;
+  z-index: var(--z-dropdown);
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--size-menu);
+  padding: var(--spacing-4) var(--spacing-8);
+  border-radius: var(--radius-menu-item);
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  font-size: var(--text-body-sm);
+  line-height: var(--text-body-sm--line-height);
+  text-align: center;
+  translate: -50% 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out), translate var(--duration-fast) var(--ease-out);
+}
+.ui-tooltip__bubble[hidden] { display: block !important; visibility: hidden; opacity: 0; translate: -50% var(--spacing-4); }
+.ui-tooltip--bottom .ui-tooltip__bubble { top: calc(100% + var(--space-inline)); bottom: auto; }
+
+/* ── Skeleton — the shape of content that is loading ───────────────────── */
+.ui-skeleton {
+  display: block;
+  border-radius: var(--radius-field);
+  background: var(--color-muted-strong);
+  animation: ui-skeleton-pulse 2s var(--ease-in-out) infinite;
+}
+.ui-skeleton--text { height: calc(var(--text-body) * var(--text-body--line-height) * .7); border-radius: var(--radius-sm); }
+.ui-skeleton--circle { aspect-ratio: 1; border-radius: var(--radius-full); }
+@keyframes ui-skeleton-pulse { 50% { opacity: .55; } }
+
+/* ── Avatar — a person or an agency, with initials as fallback ─────────── */
+.ui-avatar {
+  --avatar-size: var(--size-avatar);
+
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--color-muted-strong);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  line-height: 1;
+  font-weight: var(--font-weight-medium);
+  box-shadow: inset 0 0 0 var(--border-width) var(--color-hairline-strong);
+}
+.ui-avatar--sm { --avatar-size: var(--size-avatar-sm); }
+.ui-avatar__img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ── Empty state — nothing here yet, and what to do about it ───────────── */
+.ui-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-group);
+  padding: var(--pad-card-lg);
+  border: var(--border-width) dashed var(--color-border);
+  border-radius: var(--radius-card);
+  text-align: center;
+}
+.ui-empty > .ui-icon { color: var(--color-muted-foreground); }
+.ui-empty__text { display: flex; flex-direction: column; align-items: center; gap: var(--gap-text); max-width: var(--measure-text); }
+.ui-empty__title { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--text-title--font-weight); }
+.ui-empty__description { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-text-secondary); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-skeleton { animation: none; }
+  .ui-switch,
+  .ui-switch::before,
+  .ui-toast,
+  .ui-tooltip__bubble { transition: none; }
+}

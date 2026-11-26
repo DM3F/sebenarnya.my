@@ -312,3 +312,24 @@
   .dsg-bar__name { grid-column: 1 / -1; }
   .dsg-demos { grid-template-columns: 1fr; }
 }
+
+/* ── Dashboard components (components/DesignSystemDashboard.js) ───────────── */
+.dsg-demo__stage--column { flex-direction: column; align-items: flex-start; gap: var(--gap-group); }
+.dsg-demo__stage--column > .ui-alert,
+.dsg-demo__stage--column > .ui-empty,
+.dsg-demo__stage--column > .ui-separator,
+.dsg-demo__stage--column > .ui-pagination,
+.dsg-demo__stage--column > .ui-breadcrumb { align-self: stretch; }
+.dsg-density { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-cards); align-items: start; }
+.dsg-density__col { display: flex; flex-direction: column; gap: var(--gap-text); margin: 0; min-width: 0; }
+.dsg-panel { min-width: 0; }
+.dsg-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-inline); }
+.dsg-toolbar > .ui-field { flex: 1 1 200px; }
+.dsg-cell-title { min-width: 220px; font-weight: var(--font-weight-medium); color: var(--color-foreground); }
+.dsg-row-actions { display: inline-flex; align-items: center; gap: var(--space-inline-tight); }
+.dsg-panel__footer { justify-content: center; }
+.dsg-stat { margin: 0; font-size: var(--text-stat); line-height: var(--text-stat--line-height); font-weight: var(--text-stat--font-weight); letter-spacing: var(--text-stat--letter-spacing); font-variant-numeric: tabular-nums; }
+.dsg-skeleton-card { display: flex; flex-direction: column; gap: var(--gap-text); padding: var(--pad-card-sm); border-radius: var(--radius-card); background: var(--color-card); border: var(--border-width) solid var(--color-border); }
+@media (max-width: 1280px) {
+  .dsg-density { grid-template-columns: 1fr; }
+}
