@@ -230,7 +230,7 @@ function NewsGallery() {
 
       <NewsMarquee rows={marquee} />
 
-      <h3 className="gallery-title" id="galeri">{aboutNews.galleryTitle}</h3>
+      <h3 className="sr-only">{aboutNews.galleryTitle}</h3>
       <GalleryGrid sections={gallery} />
     </section>
   );
