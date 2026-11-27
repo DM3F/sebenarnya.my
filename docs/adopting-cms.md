@@ -6,6 +6,9 @@ and `sebenarnya-lint-ds` keeps it that way.
 
 **Ground rules (read first)**
 
+- **Need a component, token or animation that does not exist?** Follow
+  [`contributing.md`](contributing.md); never install another UI library or restyle a component.
+
 - The design system is a package. **Never copy its files into the CMS and never edit them.**
   A change belongs in `DM3F/sebenarnya.my` (`design-system/`); the CMS installs the new version.
 - **Use the components; do not rebuild them.** No shadcn/ui install, no Radix, no Tailwind,

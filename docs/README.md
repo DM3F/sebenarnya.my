@@ -29,6 +29,7 @@ code wins and the document gets fixed.
 |---|---|---|
 | [`design.md`](design.md) | You need the *feel*: identity, palette meaning, type voice, density, motion dials, do/don't. | Bahasa Melayu |
 | [`design-system-rules.md`](design-system-rules.md) | You write UI code: token tiers, type roles, control scale, spacing roles, components, lint rules, accessibility. **The technical spec.** | English |
+| [`contributing.md`](contributing.md) | You need something the design system lacks (component, token, animation, shadcn), or you change and release it. | English |
 | [`plan.md`](plan.md) | You want the open decisions and the roadmap. | Bahasa Melayu |
 | [`website-changelog.md`](website-changelog.md) | You work on a specific website page. Page notes and history only, **not a spec** (many old values). | Bahasa Melayu |
 
