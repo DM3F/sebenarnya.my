@@ -314,7 +314,7 @@ Cards 220×560 radius 20 (platform gradient bg), the active card 920 wide + `0 2
 | `/` | `Hero`, `Carousel`, `Latest` + `FlipCard`, `Viewership`, `Bento`, `Stories` |
 | `/article` | `Articles` |
 | `/article/[slug]` | `ArticleDetail` |
-| `/about-us` | `AboutUs`, `SphereGallery`, `LogoKit` |
+| `/about-us` | `AboutUs`, `GalleryGrid`, `LogoKit` |
 | all | `Header`, `Footer`, `Chatbot`, `ClaimForm` |
 
 Figma nodes (early reference only): `/` `3:203` · `/article` `20:3033` · `/about-us` `4:1359` · `/article/[slug]` `4:1876` · design system `14:14`–`14:1347`.
@@ -633,3 +633,9 @@ Problem: on phones buttons, search, chips and badges felt too large and inconsis
 ## Design system becomes a package (24–26 Nov 2026)
 
 From here the design system's history is in [`plan.md`](plan.md) (Handover to other products) and [`../design-system/CHANGELOG.md`](../design-system/CHANGELOG.md): the docs tidied, the `/design-system` style guide, `design-system/base.css`, shape roles, the Tailwind 3.4 preset, compact density and dashboard components, the app shell, dialogs, charts and meters, the `@sebenarnya/design-system` package (released as `ds-v0.1.0`) and the contribution process.
+
+## About us gallery: sphere → photo grid (27 Nov 2026)
+
+- **Galeri** (`components/GalleryGrid.js`, `.gallery-grid*`) replaces the 3D sphere (`SphereGallery.js` removed). A two-column grid of sections from `aboutNews.gallery`: `single` = one tall photo, `grid` = 2 × 2 squares; a lone last section spans both columns as a 3:1 strip. ≤900px: one column.
+- Tiles take `--radius-card`, gaps `--gap-cards`; hover zooms the photo 1.05, press `--press-scale`. Every photo still opens in the image-only `.ui-modal` (`.gallery-dialog`).
+- The "Galeri" heading is now visible (`.gallery-title`, `heading` role, centred, underlined in `--color-primary`).

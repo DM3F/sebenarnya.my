@@ -266,7 +266,7 @@ export const aboutIntro = {
   ],
 };
 
-// News and gallery. News = two marquee rows; gallery = 3D sphere (SphereGallery.js), `caption` is the photo's accessible name.
+// News and gallery. News = two marquee rows; gallery = photo grid (GalleryGrid.js), `caption` is the photo's accessible name.
 export const aboutNews = {
   title: 'Berita dan Galeri',
   intro: 'Ikuti perkembangan terkini, pengiktirafan dan aktiviti Sebenarnya.my bersama masyarakat.',
@@ -291,13 +291,20 @@ export const aboutNews = {
     ],
   ],
   galleryTitle: 'Galeri',
+  // Sections fill a two-column grid in order: `single` = one tall photo, `grid` = 2 × 2 squares.
+  // A lone last section spans both columns.
   gallery: [
-    { image: aboutImg('galeri-1.jpg'), caption: 'Semak dahulu, sebelum berkongsi' },
-    { image: aboutImg('galeri-2.jpg'), caption: 'Sesi dialog komuniti' },
-    { image: aboutImg('galeri-3.jpg'), caption: 'Perkongsian bersama warga emas' },
-    { image: aboutImg('galeri-4.jpg'), caption: 'Kempen kesedaran penipuan dalam talian' },
-    { image: aboutImg('galeri-5.jpg'), caption: 'Bual santai di kopitiam' },
-    { image: aboutImg('galeri-6.jpg'), caption: 'Celik digital setiap hari' },
+    { type: 'single', images: [{ image: aboutImg('galeri-1.jpg'), caption: 'Semak dahulu, sebelum berkongsi' }] },
+    {
+      type: 'grid',
+      images: [
+        { image: aboutImg('galeri-2.jpg'), caption: 'Sesi dialog komuniti' },
+        { image: aboutImg('galeri-3.jpg'), caption: 'Perkongsian bersama warga emas' },
+        { image: aboutImg('galeri-4.jpg'), caption: 'Kempen kesedaran penipuan dalam talian' },
+        { image: aboutImg('galeri-5.jpg'), caption: 'Bual santai di kopitiam' },
+      ],
+    },
+    { type: 'single', images: [{ image: aboutImg('galeri-6.jpg'), caption: 'Celik digital setiap hari' }] },
   ],
 };
 
