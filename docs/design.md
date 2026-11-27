@@ -1,161 +1,162 @@
 # DESIGN.md — Sebenarnya.my
 
-Arah rasa (taste) dan bahasa visual. Dokumen ini menjawab **"seperti apa rasanya"**; angka teknis (token, ukuran komponen) ada di [`design-system-rules.md`](design-system-rules.md) dan `design-system/tokens.css`. Jika dokumen ini bercanggah dengan kod, **kod yang betul**. Peta dokumen: [`README.md`](README.md).
+Taste and visual language. This document answers **"what should it feel like"**; the technical numbers (tokens, component sizes) are in [`design-system-rules.md`](design-system-rules.md) and `design-system/tokens.css`. When this document disagrees with the code, **the code is right**. Doc map: [`README.md`](README.md).
 
-Referensi rasa: **elevenlabs.io** — diambil *bahasa visualnya saja* (ketenangan, material, cara warna dipakai, ritme ruang). Layout, struktur halaman, ilustrasi, dan kontennya **tidak** disalin.
+Taste reference: **elevenlabs.io** — only its *visual language* is borrowed (calm, materials, how colour is used, the rhythm of space). Its layouts, page structure, illustrations and content are **not** copied.
 
 ---
 
 ## 1. Identity
 
-**Produknya:** portal semakan fakta rasmi Malaysia. Orang datang dalam keadaan ragu — baru menerima mesej tular — dan pergi dengan jawapan yang jelas: *Palsu, Makluman atau Benar*, beserta sumber rasminya.
+**The product:** Malaysia's official fact-check portal. People arrive unsure — they have just received a viral message — and leave with a clear answer: *Palsu, Makluman or Benar* (false, notice, true), with the official source.
 
-**Rasanya:** tenang, yakin, editorial. Seperti majalah yang dicetak di kertas krem hangat, bukan dashboard kerajaan dan bukan media sosial yang ribut. Antaramuka menyingkir supaya **dakwaan, verdict, dan sumber rasmi** yang bercakap.
+**The feel:** calm, confident, editorial. Like a magazine printed on warm cream paper, not a government dashboard and not noisy social media. The interface steps back so that **the claim, the verdict and the official source** do the talking.
 
-- **Tenang, bukan dingin.** Putih hangat (eggshell), hitam tinta, kelabu batu. Tiada biru korporat, tiada gradient pelangi.
-- **Yakin tanpa menjerit.** Tajuk besar tetapi ringan; tiada huruf tebal untuk "meyakinkan". Kepastian datang daripada kejelasan, bukan berat huruf.
-- **Warna = makna.** Warna hanya muncul bila ia membawa maklumat (verdict) atau identiti (logo, sfera). Selebihnya akromatik.
-- **Manusiawi.** Foto sebenar, bahasa Melayu yang biasa, sudut membulat lembut. Rasmi tetapi tidak birokratik.
+- **Calm, not cold.** Warm white (eggshell), ink black, stone greys. No corporate blue, no rainbow gradients.
+- **Confident without shouting.** Large but light headings; no bold type to "convince". Certainty comes from clarity, not from weight.
+- **Colour = meaning.** Colour appears only when it carries information (a verdict) or identity (the logo, the sphere). Everything else is achromatic.
+- **Human.** Real photos, everyday Malay, softly rounded corners. Official but not bureaucratic.
 
-Kata kunci: *warm paper · ink · quiet authority · one spark of colour*.
+Keywords: *warm paper · ink · quiet authority · one spark of colour*.
 
 ---
 
 ## 2. Palette
 
-Hampir semuanya akromatik hangat (±97%). Warna kromatik dikunci pada peranan tertentu.
+Almost everything is warm achromatic (±97%). Chromatic colours are locked to specific roles.
 
-### Neutral (kanvas)
+### Neutrals (the canvas)
 
-| Peranan | Warna | Bila dipakai |
+| Role | Colour | When |
 |---|---|---|
-| Kanvas | `#FDFCFC` eggshell | Latar halaman, latar kawalan (carian, chip, butang outline). Bukan putih tulen — sedikit hangat. |
-| Permukaan terangkat | `#FFFFFF` | Hanya untuk sesuatu yang perlu "naik" dari kanvas: panel terpilih dalam segmented control, dropdown. |
-| Panggung (stage) | `#F5F3F1` warm taupe | Band, latar kad artikel, kawasan yang membingkai kandungan. Elevation datang dari **nada**, bukan bayang. |
-| Inset / pembahagi | `#EBE8E4` stone | Garis halus, isian disabled, thumbnail kosong, trek progress. |
-| Tepi | `#D7D2CC` | Border pill dan kad (0.5–1px). |
-| Tepi kuat | `#878179` | Border field input (kontras 3:1). |
-| Teks redup | `#6F6A63` smoke | Eyebrow, meta, tarikh, placeholder, ikon. |
-| Teks badan kuat | `#44403B` graphite | Perenggan panjang, lede. |
-| Tinta | `#000000` | Tajuk, label, butang utama. |
-| Hiasan sahaja | `#A59F97` ash | Garis/ornamen. **Jangan untuk teks.** |
+| Canvas | `#FDFCFC` eggshell | Page background, control backgrounds (search, chip, outline button). Not pure white — slightly warm. |
+| Raised surface | `#FFFFFF` | Only for something that must "lift" off the canvas: the selected panel in a segmented control, a dropdown. |
+| Stage | `#F5F3F1` warm taupe | Bands, article card backgrounds, areas that frame content. Elevation comes from **tone**, not shadow. |
+| Inset / divider | `#EBE8E4` stone | Hairlines, disabled fills, empty thumbnails, progress tracks. |
+| Edge | `#D7D2CC` | Pill and card borders (0.5–1px). |
+| Strong edge | `#878179` | Input field borders (3:1 contrast). |
+| Muted text | `#6F6A63` smoke | Eyebrows, meta, dates, placeholders, icons. |
+| Strong body text | `#44403B` graphite | Long paragraphs, ledes. |
+| Ink | `#000000` | Headings, labels, primary buttons. |
+| Decoration only | `#A59F97` ash | Lines and ornaments. **Never for text.** |
 
-### Kromatik (dikunci)
+### Chromatic (locked)
 
-| Peranan | Warna | Bila dipakai |
+| Role | Colour | When |
 |---|---|---|
-| Aksi utama | Tinta `#000` | Satu butang terisi per skrin (cth. "Salur Kepada Kami", "Semak"). Aksi **tidak pernah merah**. |
-| Fokus / pautan | Tinta `#000` (atas gelap / foto: putih) | Cincin fokus 2px (offset 2) dan sempadan medan semasa fokus; pautan teks = tinta + garis bawah. **Tiada biru/violet** pada fokus atau pautan. |
-| Jenama | Merah Kebenaran `#E8302A` | Logo dan elemen identiti (sfera/atmosfera). Bukan untuk butang, nav, atau ralat biasa. |
-| Verdict — Palsu | titik `#E8302A`, teks `#C8211C` | Hanya pada label verdict. |
-| Verdict — Makluman | titik `#3A46F5`, teks `#2F5FD0` | Hanya pada label verdict. |
-| Verdict — Benar | titik `#1FA463`, teks `#137A49` | Hanya pada label verdict. |
+| Primary action | Ink `#000` | One filled button per screen (e.g. "Salur Kepada Kami", "Semak"). Actions are **never red**. |
+| Focus / link | Ink `#000` (on dark or photos: white) | 2px focus ring (offset 2) and the field border while focused; text links = ink + underline. **No blue or violet** on focus or links. |
+| Brand | Kebenaran red `#E8302A` | The logo and identity elements (the sphere, the atmosphere). Not for buttons, navigation or ordinary errors. |
+| Verdict — Palsu | dot `#E8302A`, text `#C8211C` | Verdict labels only. |
+| Verdict — Makluman | dot `#3A46F5`, text `#2F5FD0` | Verdict labels only. |
+| Verdict — Benar | dot `#1FA463`, text `#137A49` | Verdict labels only. |
 
-**Peraturan rasa:**
-- Satu "percikan" warna per pandangan sudah cukup. Jika satu skrin ada lebih dari dua warna kromatik di luar verdict, ada yang salah.
-- Warna verdict **sentiasa** bersama perkataannya (dot + PERKATAAN) — warna tidak pernah bekerja sendirian.
-- Foto boleh berwarna penuh; antaramuka di sekelilingnya tetap akromatik supaya foto yang "bercakap".
-- Gradient hanya pada satu tempat: sfera / medan atmosfera jenama (lembut, kabur, seperti cahaya). Tidak pada butang, kad, atau latar seksyen.
+**Taste rules:**
+- One "spark" of colour per view is enough. If a screen has more than two chromatic colours outside verdicts, something is wrong.
+- A verdict colour **always** comes with its word (dot + WORD) — colour never works alone.
+- Photos may be full colour; the interface around them stays achromatic so the photo does the talking.
+- Gradients in one place only: the brand sphere / atmospheric field (soft, blurred, like light). Never on buttons, cards or section backgrounds.
 
 ---
 
 ## 3. Typography
 
-**Satu keluarga font: Manrope.** Satu suara dari tajuk hero hingga label butang dan angka. Kontras dicipta melalui **saiz dan warna**, bukan dengan menukar font atau menebalkan huruf.
+**One family: Manrope.** One voice from the hero heading to button labels and numbers. Contrast comes from **size and colour**, not from switching fonts or going bold.
 
-> Nota: Inter dan `--font-ui` sudah dibuang dari kod (21 Nov 2026). Manrope satu-satunya keluarga.
+> Note: Inter and `--font-ui` were removed from the code (21 Nov 2026). Manrope is the only family.
 
-| Peranan | Saiz (375 → 1280px) / line-height | Weight | Dipakai untuk |
+| Role | Size (375 → 1280px) / line height | Weight | Used for |
 |---|---|---|---|
-| Display | 32 → 48 fluid / 1.2 | **500** | H1 halaman sahaja (hero, detail artikel, Tentang Kami). **48px ialah saiz paling besar di laman.** |
-| Section | 28 → 36 fluid / 1.2 | 500 | H2 seksyen, tajuk slaid carousel dan banner WSIS: semua sama weight dengan Display. |
-| Heading | 20 → 24 fluid / 1.2 | 500 | Tajuk ciri / sub-tajuk dalam seksyen, tajuk kad besar, tajuk pop-up. |
-| Title | 18 → 20 fluid / 1.2 | 500 | Tajuk kad. |
-| Angka (statistik) | 36 → 48 fluid / 1.2 | **400** | Semua angka statistik. Unit (juta+, ribu, jam) 0.42em. Angka tabular. |
-| Lead | 16 / 1.5 | 400 | Perenggan pengenalan di bawah tajuk. Sama saiz dengan Body; dibezakan dengan warna Graphite (bukan tinta) dan ruang. |
-| Article | 16 → 18 fluid / 1.5 | 400 | Body dalam lajur bacaan artikel sahaja. |
-| Body | 16 / 1.5 | 400 | Teks badan (`body` = 16). Graphite. Lebar baris maks ±68 aksara. |
-| Label (butang, nav, chip) | 16 / 1.5 (kecil: 14) | 500 | Sentence case. |
-| Small / meta | 14 / 1.5 · kapsyen 12 / 1.5 | 400–500 | Tarikh, meta, label kecil. Smoke. |
-| Eyebrow | 13 / 1.5 | 500 (verdict 600) | UPPERCASE, tracking +0.04em (satu-satunya tracking bukan 0): verdict, eyebrow, heading footer. |
+| Display | 32 → 48 fluid / 1.2 | **500** | Page H1 only (hero, article detail, About us). **48px is the largest size on the site.** |
+| Section | 28 → 36 fluid / 1.2 | 500 | Section H2, carousel slide titles and the WSIS banner: all the same weight as Display. |
+| Heading | 20 → 24 fluid / 1.2 | 500 | Feature titles / subheadings inside a section, large card titles, pop-up titles. |
+| Title | 18 → 20 fluid / 1.2 | 500 | Card titles. |
+| Numbers (statistics) | 36 → 48 fluid / 1.2 | **400** | Every statistic. Units (juta+, ribu, jam) at 0.42em. Tabular figures. |
+| Lead | 16 / 1.5 | 400 | The intro paragraph under a heading. Same size as Body; set apart by graphite colour (not ink) and space. |
+| Article | 16 → 18 fluid / 1.5 | 400 | Body text in the article reading column only. |
+| Body | 16 / 1.5 | 400 | Body text (`body` = 16). Graphite. Line length at most ±68 characters. |
+| Label (buttons, nav, chips) | 16 / 1.5 (small: 14) | 500 | Sentence case. |
+| Small / meta | 14 / 1.5 · caption 12 / 1.5 | 400–500 | Dates, meta, small labels. Smoke. |
+| Eyebrow | 13 / 1.5 | 500 (verdict 600) | UPPERCASE, tracking +0.04em (the only tracking that is not 0): verdicts, eyebrows, footer headings. |
 
-Token peranan ada dalam `design-system/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (body artikel sahaja, 16 → 18), `--text-body` (16, termasuk Lead), `--text-stat` = Angka … + `--line-height`). Saiz besar kini **fluid** dengan `clamp()` antara 375px dan 1280px, jadi setiap saiz ialah satu julat yang licin (cth. Display 32 → 48), tanpa media query. Blok "Type roles" di hujung `app/global.css` memetakan setiap kelas kepada peranannya. Jadual penuh: `docs/design-system-rules.md` › Type roles.
+The role tokens live in `design-system/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (article body only, 16 → 18), `--text-body` (16, Lead included), `--text-stat` = Numbers … + `--line-height`). Large sizes are **fluid** with `clamp()` between 375px and 1280px, so each size is one smooth range (e.g. Display 32 → 48) with no media queries. The "Type roles" block at the end of `app/global.css` maps each website class to its role. Full table: `docs/design-system-rules.md` › Type roles.
 
-**Font weight:** semua tajuk 500 (Display hero, tajuk seksyen, heading, title) supaya jelas berbeza daripada body 400; angka statistik 400; 600 hanya untuk verdict.
+**Font weight:** every heading is 500 (hero Display, section headings, heading, title) so it is clearly apart from 400 body text; statistics 400; 600 for verdicts only.
 
-**Line-height & tracking:** semua tajuk 1.2, semua teks lain 1.5. Tracking 0 di mana-mana (Manrope sudah seimbang); kecuali label UPPERCASE kecil (+0.04em).
+**Line height & tracking:** every heading 1.2, all other text 1.5. Tracking 0 everywhere (Manrope is balanced as drawn), except small UPPERCASE labels (+0.04em).
 
-**Peraturan rasa:**
-- Tiada weight 700+ di mana-mana. Penekanan = saiz, warna tinta vs smoke, atau ruang kosong.
-- Tajuk pendek, dipecah sengaja kepada 2 baris yang seimbang.
-- Huruf besar (UPPERCASE) hanya untuk label kecil (verdict, eyebrow footer) — tidak untuk tajuk.
-- Angka statistik ialah "tajuk" bahagian itu: biarkan ia besar, ringan, dan bernafas; kapsyen di bawahnya kecil dan redup.
+**Taste rules:**
+- No weight 700+ anywhere. Emphasis = size, ink vs smoke, or white space.
+- Short headings, deliberately broken into 2 balanced lines.
+- UPPERCASE only for small labels (verdicts, footer eyebrows) — never for headings.
+- A statistic is the "heading" of its block: let it be large, light and breathing; the caption under it small and muted.
 
 ---
 
-## 4. Komponen
+## 4. Components
 
-Bahasa bentuk: **pill untuk apa yang ditekan, kotak membulat lembut untuk apa yang dibaca.** Garis rambut, bukan bayang.
+Shape language: **pills for what you press, softly rounded boxes for what you read.** Hairlines, not shadows.
 
 ### Card
-- Sudut 20px (kad besar 24px). Latar warm taupe di atas kanvas eggshell — kad "duduk" di atas kertas, tidak terapung.
-- Tiada bayang pada keadaan rehat. Jika perlu pemisahan, guna border 0.5–1px `#D7D2CC` atau lapisan nada.
-- Media dalam kad: sudut 12px (konsentrik dengan padding 8px kad).
-- Foto boleh full-bleed dengan scrim gelap lembut di bahagian teks; teks putih atas foto mesti lulus 4.5:1.
-- Hover: foto zoom halus (1.03), bukan kad melompat atau bayang membesar.
+- 20px corners (large cards 24px). Warm taupe on the eggshell canvas — a card "sits" on the paper, it does not float.
+- No shadow at rest. If separation is needed, a 0.5–1px `#D7D2CC` border or a layer of tone.
+- Media inside a card: 12px corners (concentric with the card's 8px padding).
+- Photos may run full-bleed with a soft dark scrim behind the text; white text on a photo must pass 4.5:1.
+- Hover: a subtle photo zoom (1.03), not a jumping card or a growing shadow.
 
 ### Chart
-- Monokrom secara lalai: garis/bar tinta atau graphite atas kanvas, grid garis rambut `#EBE8E4`, label 13–14 smoke.
-- Satu siri sahaja boleh berwarna — dan warnanya mesti bermakna (cth. verdict). Selebihnya kelabu.
-- Tiada 3D, tiada gradient isian, tiada legenda berwarna-warni. Label terus pada garis/bar (direct labelling) lebih baik daripada legenda.
-- Angka dalam chart guna angka tabular Manrope, weight 400.
+- Monochrome by default: ink or graphite lines and bars on the canvas, `#EBE8E4` hairline grid, 13–14px smoke labels.
+- Only one series may be coloured — and its colour must mean something (e.g. a verdict). Everything else is grey.
+- No 3D, no gradient fills, no colourful legends. Labelling the line or bar directly beats a legend.
+- Numbers in charts use Manrope's tabular figures, weight 400.
 
-### Meter (progress / skor / kiraan)
-- Trek: pill nipis (4–8px) `#EBE8E4`; isian: tinta `#000`.
-- Untuk status (cth. semakan dalam proses) boleh guna warna verdict pada isian — hanya jika ia membawa makna.
-- Nilai di sebelah meter: angka besar weight 400 + unit kecil; tiada peratusan berganda.
-- Meter autoplay (cth. titik carousel) mengisi secara linear; berhenti bila dijeda.
+### Meter (progress / score / count)
+- Track: a thin pill (4–8px) in `#EBE8E4`; fill: ink `#000`.
+- For a status (e.g. a check in progress) the fill may use a verdict colour — only when it carries meaning.
+- The value beside the meter: a large number at weight 400 + a small unit; no doubled percentages.
+- Autoplay meters (e.g. carousel dots) fill linearly and stop when paused.
 
-### Butang
-- Semua butang **pill**, label 16 Medium. Tinggi ikut skala kawalan fluid: `sm` 32 → 36 · `md` 40 → 44 (lalai) · `lg` 44 → 48; sasaran sentuh sentiasa 44.
-- **Filled** (tinta hitam, teks putih) — satu sahaja per skrin, untuk aksi paling penting.
-- **Outline** (kanvas + border 1px) dan **ghost** (tanpa border) untuk aksi sekunder.
-- Atas foto: pill putih/kanvas dengan teks tinta.
-- Ikon Lucide 16px, garis 1.75px, di hujung label (anak panah) atau di awal (muat turun, kongsi).
-- Tekan: scale 0.97 (`--press-scale`). Hover: nada sedikit cerah. Fokus: cincin tinta 2px, offset 2px (putih atas foto/gelap). Tiada biru atau violet.
+### Buttons
+- Every button is a **pill**, label 16 Medium. Height follows the fluid control scale: `sm` 32 → 36 · `md` 40 → 44 (default) · `lg` 44 → 48; the touch target is always 44.
+- **Filled** (ink, white text) — one per screen, for the most important action.
+- **Outline** (canvas + 1px border) for secondary actions; **ghost** (no border, underlined label) for quiet text actions; **quiet** (no fill, no underline, tinted on hover) for toolbars, pagination and row actions.
+- On photos: a white/canvas pill with ink text.
+- Lucide icons at 16px, 1.75px stroke, after the label (arrows) or before it (download, share).
+- Press: scale 0.97 (`--press-scale`). Hover: a slightly lighter tone. Focus: 2px ink ring, offset 2px (white on photos and dark). No blue or violet.
 
-### Kawalan lain
-- Segmented control / tab: bekas pill kanvas dengan border nipis; item terpilih "naik" ke putih dengan border halus — tiada warna.
-- Carian: pill besar, border kuat, ikon kiri, butang filled di kanan.
-- Chip: pill latar taupe, tinggi sama dengan butang (skala `sm` · `md` · `lg`); terpilih = tinta hitam.
+### Other controls
+- Segmented control / tabs: a canvas pill container with a thin border; the selected item "lifts" to white with a fine border — no colour.
+- Search: a large pill, strong border, icon on the left, filled button on the right.
+- Chip: a taupe pill, the same height as a button (scale `sm` · `md` · `lg`); selected = ink.
 
 ---
 
 ## 5. Density
 
-**Lapang — rendah ketumpatan, tinggi keyakinan.**
+**Spacious — low density, high confidence.**
 
-- Ruang kosong ialah bahan utama. Seksyen dipisah oleh 64 → 120px (fluid, telefon → desktop), kira-kira 3× jarak tajuk → kandungan (24 → 40); tepi halaman 96px pada desktop.
-- Satu idea per seksyen: satu tajuk, satu baris kandungan, satu aksi. Jangan tumpuk tiga grid dalam satu skrin.
-- Dalam kumpulan rapat (8–16px), antara kumpulan sekurang-kurangnya 2× lebih jauh. Ruang yang membina struktur, bukan garis.
-- Teks kecil (13–14px) boleh padat; tajuk dan angka besar mesti diberi ruang bernafas di sekeliling.
-- Kad dalam grid: 3–4 sebaris pada desktop, sentiasa sama tinggi. Tiada kad mini 6 sebaris.
-- **Jarak ikut hubungan, bukan nombor:** dalam satu kumpulan teks 8, antara kumpulan dalam kad 16, antara kad 16 → 24, tajuk seksyen → kandungan 24 → 40, antara seksyen 64 → 120.
-- **Saiz kad menentukan padding + radius serentak:** kecil 16/20, biasa 24/20 (default), besar 32→24/24 (feature, modal). Gap dalam kad tidak pernah lebih besar daripada padding kad. Jadual penuh: `docs/design-system-rules.md` › Spacing & radius roles.
-- Bila ragu: buang satu elemen, bukan kecilkan semua.
-- **Empat breakpoint sahaja:** 1280 · 1100 · 900 · 600. Lebar baca perenggan maksimum 68ch; kepala seksyen berpusat 720px.
+- White space is the main material. Sections are 64 → 120px apart (fluid, phone → desktop), about 3× the heading → content gap (24 → 40); page gutter 96px on desktop.
+- One idea per section: one heading, one row of content, one action. Never stack three grids on one screen.
+- Inside a tight group (8–16px), the space between groups is at least 2× larger. Space builds the structure, not lines.
+- Small text (13–14px) may be dense; headings and big numbers need room to breathe.
+- Cards in a grid: 3–4 per row on desktop, always the same height. No rows of 6 mini cards.
+- **Spacing by relationship, not by number:** inside a text group 8, between groups inside a card 16, between cards 16 → 24, section heading → content 24 → 40, between sections 64 → 120.
+- **Card size decides padding + radius together:** small 16/20, regular 24/20 (default), large 32→24/24 (feature, modal). A gap inside a card is never larger than the card's padding. Full table: `docs/design-system-rules.md` › Spacing & radius roles.
+- When in doubt: remove one element, don't shrink everything.
+- **Four breakpoints only:** 1280 · 1100 · 900 · 600. Paragraph reading width at most 68ch; centred section heads 720px.
+- **Tools (the CMS) use `data-density="compact"`:** the same components with shorter controls and tighter gaps (`design-system-rules.md` › Density). The public website stays spacious.
 
 ---
 
 ## 6. Dials
 
-Skala 1–3 (1 = rendah, 3 = tinggi).
+Scale 1–3 (1 = low, 3 = high).
 
-| Dial | Nilai | Maksud |
+| Dial | Value | Meaning |
 |---|---|---|
-| **ENERGY** | **1** | Tenang. Akromatik, tajuk ringan, satu percikan warna. Tiada ilustrasi ramai, tiada sticker, tiada emoji. Energi datang hanya daripada foto dan verdict. |
-| **RHYTHM** | **2** | Teratur tetapi tidak membosankan. Grid yang konsisten, diselang dengan satu elemen besar per seksyen (kad utama, angka besar, carousel full-bleed). Tajuk kiri / kandungan kanan diulang sebagai motif. |
-| **MOTION** | **2** | Bergerak dengan tujuan. Carousel dan baris kad meluncur perlahan (autoplay, berhenti bila hover/fokus), flip kad, zoom foto halus. Easing ease-out kuat, 150–600ms. **Satu entrance per halaman, semasa dimuat sahaja** (`components/PageEnter.js`): kepala halaman masuk berturutan 100ms (H1 hero naik baris demi baris dari topeng 600ms; lede, carian, tajuk artikel: opacity + blur 4px + naik 12px, 300ms). Tiada reveal semasa skrol: seksyen di bawah skrin pertama sudah sedia ada, jadi tiada kandungan tersembunyi dan tiada pendengar skrol. Pertukaran halaman = crossfade 250ms sahaja (aksi paling kerap). Menu dan modal: satu gaya masing-masing (menu 150ms, modal 250ms masuk dan keluar). Pengecualian: pop-in folder logo (koreografi komponen sendiri). Tiada parallax, dan `prefers-reduced-motion` mematikan semua gerakan autoplay. |
+| **ENERGY** | **1** | Calm. Achromatic, light headings, one spark of colour. No busy illustrations, no stickers, no emoji. Energy comes only from photos and verdicts. |
+| **RHYTHM** | **2** | Orderly but not dull. A consistent grid, broken by one large element per section (a lead card, a big number, a full-bleed carousel). Heading left / content right repeats as a motif. |
+| **MOTION** | **2** | Moves with purpose. Carousels and card rows glide slowly (autoplay, stopping on hover or focus), cards flip, photos zoom subtly. Strong ease-out, 150–600ms. **One entrance per page, on load only** (`components/PageEnter.js`): the page head enters in sequence, 100ms apart (the hero H1 rises line by line from a 600ms mask; lede, search, article title: opacity + 4px blur + 12px rise, 300ms). Nothing reveals on scroll: sections below the first screen are already there, so no content is hidden and there are no scroll listeners. A page change is a 250ms crossfade only (the most frequent action). Menus and modals have one style each (menu 150ms, modal 250ms in and out). Exception: the logo folder pop-in (its own choreography). No parallax, and `prefers-reduced-motion` stops all autoplay motion. |
 
 ---
 
@@ -163,30 +164,30 @@ Skala 1–3 (1 = rendah, 3 = tinggi).
 
 | Do | Don't |
 |---|---|
-| Biarkan foto dan verdict jadi satu-satunya warna | Butang merah, latar seksyen berwarna, gradient pada kad |
-| Tajuk weight 500, angka besar 400 | Bold 700 untuk "menarik perhatian" |
-| Angka statistik besar dan ringan | Angka tebal dalam kotak berwarna |
-| Pill untuk semua aksi | Butang segi empat tajam bercampur pill |
-| Elevation melalui nada (eggshell → taupe → stone) | Bayang berlapis pada setiap kad |
-| Satu butang filled per skrin | Tiga butang hitam bersebelahan |
-| Ruang kosong sebagai pemisah | Garis pembahagi di antara setiap blok |
-| Ikon Lucide garis nipis | Emoji, glyph teks (↗ →), set ikon bercampur |
+| Let photos and verdicts be the only colour | Red buttons, coloured section backgrounds, gradients on cards |
+| Headings at weight 500, big numbers at 400 | Bold 700 to "grab attention" |
+| Large, light statistics | Bold numbers in coloured boxes |
+| Pills for every action | Sharp rectangular buttons mixed with pills |
+| Elevation through tone (eggshell → taupe → stone) | Layered shadows on every card |
+| One filled button per screen | Three black buttons side by side |
+| White space as the separator | A divider line between every block |
+| Thin-stroke Lucide icons | Emoji, text glyphs (↗ →), mixed icon sets |
 
 ---
 
-## 8. Keputusan & jurang dengan implementasi sekarang
+## 8. Decisions & gaps with the current implementation
 
-Keputusan (21 Nov 2026):
+Decisions (21 Nov 2026 onwards):
 
-| # | Perkara | Keputusan | Status implementasi |
+| # | Topic | Decision | Implementation status |
 |---|---|---|---|
-| 1 | Keluarga font | **Manrope sahaja.** Buang Inter / `--font-ui`. | ✅ Siap. |
-| 2 | Display weight | Semua tajuk **500** (termasuk display); body dan angka statistik 400. | ✅ Siap. |
-| 3 | Angka besar | **400** untuk semua angka statistik. | ✅ Siap (`--font-weight-display`). Tiada weight 300 lagi. |
-| 4 | Tanya AIFA | **Biarkan merah buat masa ini** (belum ada idea). | Kekal terbuka di `plan.md`. |
-| 5 | Chart & meter | Garis panduan §4 jadi titik mula bila diperlukan (cth. dashboard CMS). | ✅ Siap: `Stat`, `Meter`, `BarList`, `BarChart` (monokrom). |
-| 6 | Hijau status sistem | `--color-success` (hijau tua) untuk status dalam alat seperti CMS: "Disimpan", "Diterbitkan". Hanya pada ikon dan garis tepi `Alert` (dan ikon toast), tidak sebagai latar atau warna butang. Bukan verdict: verdict Benar kekal dengan tokennya sendiri. | ✅ Diputuskan 26 Nov 2026. |
-| 7 | Sasaran sentuh mod compact | 24px (WCAG 2.2 AA 2.5.8) dalam `data-density="compact"`, kerana sasaran 44px bertindih dengan baris jadual 40px. Compact hanya untuk alat desktop berasaskan tetikus (CMS); laman web dan apa-apa yang dipakai di telefon kekal 44px. | ✅ Diputuskan 26 Nov 2026. |
-| 8 | Warna amaran | Tiada warna amaran (kuning/oranye) dalam palet. `Alert` hanya default · success · destructive; amaran ditulis dengan perkataan yang jelas dalam `Alert` default. Tambah warna hanya jika keperluan sebenar muncul, sebagai token baharu. | ✅ Diputuskan 26 Nov 2026. |
+| 1 | Font family | **Manrope only.** Remove Inter / `--font-ui`. | ✅ Done. |
+| 2 | Display weight | Every heading **500** (display included); body and statistics 400. | ✅ Done. |
+| 3 | Large numbers | **400** for every statistic. | ✅ Done (`--font-weight-display`). No weight 300 left. |
+| 4 | Tanya AIFA | **Keep it red for now** (no better idea yet). | Still open in `plan.md`. |
+| 5 | Charts & meters | The § 4 guidelines are the starting point when needed (e.g. the CMS dashboard). | ✅ Done: `Stat`, `Meter`, `BarList`, `BarChart` (monochrome). |
+| 6 | System-status green | `--color-success` (dark green) for status in tools such as the CMS: "Disimpan", "Diterbitkan". Only on `Alert` icons and edges (and toast icons), never as a background or a button colour. Not a verdict: the Benar verdict keeps its own token. | ✅ Decided 26 Nov 2026. |
+| 7 | Touch target in compact density | 24px (WCAG 2.2 AA 2.5.8) in `data-density="compact"`, because 44px targets overlap 40px table rows. Compact is only for mouse-first desktop tools (the CMS); the website and anything used on a phone keep 44px. | ✅ Decided 26 Nov 2026. |
+| 8 | Warning colour | No warning colour (yellow/amber) in the palette. `Alert` is default · success · destructive only; a warning is written in clear words in a default `Alert`. Add a colour only if a real need appears, as a new token. | ✅ Decided 26 Nov 2026. |
 
-Setiap keputusan baharu: kemas kini serentak `design-system/tokens.css`, `design-system-rules.md` dan fail ini.
+For every new decision, update together: `design-system/tokens.css`, `design-system-rules.md` and this file.

@@ -1,165 +1,165 @@
-# Sebenarnya.my website — catatan implementasi & sejarah
+# Sebenarnya.my website — implementation notes & history
 
-> **Bukan spesifikasi design system.** Fail ini ialah log kerja **laman web** sebenarnya.my: keputusan per halaman, ukuran seksyen, dan sejarah perubahan sejak Nov 2026. Banyak nilai di bawah sudah **usang** (cth. `--color-ring` biru, override tipe mobile, `--radius-lg`) dan disimpan hanya sebagai sejarah.
+> **Not the design system spec.** This file is the **website**'s work log: per-page decisions, section sizes and the history of changes since Nov 2026. Many values below are **outdated** (e.g. a blue `--color-ring`, mobile type overrides, `--radius-lg`) and are kept only as history.
 >
-> Untuk design system (dipakai juga oleh CMS dashboard dan browser extension), baca:
-> - [`README.md`](README.md) — peta dokumen dan cara guna di produk lain
-> - [`design.md`](design.md) — rasa visual
-> - [`design-system-rules.md`](design-system-rules.md) — token, komponen, lint
-> - `app/tokens.css`, `app/ui.css`, `components/ui/` — **sumber kebenaran**; jika fail ini bercanggah dengan kod, kod yang betul.
+> For the design system (also used by the CMS dashboard and the browser extension), read:
+> - [`README.md`](README.md) — doc map and how other products use it
+> - [`design.md`](design.md) — look and feel
+> - [`design-system-rules.md`](design-system-rules.md) — tokens, components, lint
+> - `design-system/tokens.css`, `design-system/ui.css`, `design-system/react/` — **the source of truth**; when this file disagrees with the code, the code is right. (Older entries below say `app/tokens.css`, `app/ui.css` and `components/ui/`: those files moved to `design-system/` on 26 Nov 2026.)
 >
-> Rujukan awal (sejarah sahaja): Figma `wxC95N2gmMWvBOWU1K7Nsy`. Fail Paper `sebenarnya.my` bukan lagi rujukan.
+> Early reference (history only): Figma `wxC95N2gmMWvBOWU1K7Nsy`. The Paper file `sebenarnya.my` is no longer a reference.
 
 ---
 
-## 0. Konteks repo (status sekarang)
+## 0. Repo context (status at the time)
 
-- Next.js 16 + React 19, **JavaScript** (bukan TS), App Router, `output: "export"`, `basePath` `/sebenarnya.my` untuk production (GitHub Pages). Guna `withBase()` dari `lib/basePath.js` untuk path aset.
+- Next.js 16 + React 19, **JavaScript** (not TS), App Router, `output: "export"`, `basePath` `/sebenarnya.my` in production (GitHub Pages). Use `withBase()` from `lib/basePath.js` for asset paths.
 - Routes: `/` (Home), `/about-us`, `/logo`, `/article`, `/article/[slug]`.
-- Styling: satu fail `app/global.css` (~3,900 baris), **tiada Tailwind**. Root font-size 62.5% → `1rem = 10px`.
-- Font: **Manrope sahaja** (`--font-manrope` → `--font-sans`) via `next/font/google` dalam `app/layout.js`, untuk kandungan, tajuk dan semua kawalan UI. Inter dan `--font-ui` dibuang (21 Nov 2026, `design.md` §8). ✅ Siap.
-- Tokens: `app/tokens.css` (diimport sebelum `global.css`). Variable lama dalam `:root` `global.css` sudah dipetakan ke token (bahagian 3). ✅ Siap.
-- Komponen sedia ada: `Header, Footer, Hero, Carousel, Latest, FlipCard, Bento, Stories, Viewership, Collaborators, Articles, ArticleDetail, AboutUs, Logo, LogoKit, ShareButton, Chatbot, ClaimForm, ScrollMotion`.
+- Styling: one file `app/global.css` (~3,900 lines), **no Tailwind**. Root font size 62.5% → `1rem = 10px`.
+- Font: **Manrope only** (`--font-manrope` → `--font-sans`) through `next/font/google` in `app/layout.js`, for content, headings and every UI control. Inter and `--font-ui` removed (21 Nov 2026, `design.md` §8). ✅ Done.
+- Tokens: `app/tokens.css` (imported before `global.css`). The old `:root` variables in `global.css` are mapped to tokens (section 3). ✅ Done.
+- Existing components: `Header, Footer, Hero, Carousel, Latest, FlipCard, Bento, Stories, Viewership, Collaborators, Articles, ArticleDetail, AboutUs, Logo, LogoKit, ShareButton, Chatbot, ClaimForm, ScrollMotion`.
 
-**Peraturan token (wajib):** design system ini akan dipakai juga di **CMS dashboard** dan **browser extension**. Komponen HANYA boleh guna **token semantik** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`, `--color-brand*` …) serta skala `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*` — jangan guna palette (`--color-grey-*`, `--color-red`, `--color-blue` …) atau hex terus. Nilai komponen dalam px supaya tak bergantung pada root font-size projek lain.
+**Token rule (mandatory):** this design system will also be used by the **CMS dashboard** and the **browser extension**. Components may ONLY use **semantic tokens** (`--color-background`, `--color-foreground`, `--color-muted*`, `--color-border*`, `--color-primary*`, `--color-ring`, `--color-verdict-*`, `--color-brand*` …) and the `--text-*`, `--leading-*`, `--spacing-*`, `--radius-*` scales — never the palette (`--color-grey-*`, `--color-red`, `--color-blue` …) or raw hex. Component values are px so they do not depend on another project's root font size.
 
-**Prinsip:** jangan tulis semula dari kosong. Tambah tokens → petakan variable lama ke tokens → kemas komponen satu per satu. Kekalkan routes, data (`data/content.js`, `lib/*`) dan behaviour (carousel, flip card, chatbot).
+**Principle:** don't rewrite from scratch. Add tokens → map old variables to tokens → tidy components one by one. Keep the routes, the data (`data/content.js`, `lib/*`) and the behaviour (carousel, flip card, chatbot).
 
 ---
 
 ## 1. Brand idea
 
-"Warm cream editorial, clear headlines." 97% akromatik; warna hanya pada logo, sphere, atmospheric field dan verdict. **Kebenaran Red bukan warna aksi** — jangan guna untuk button, link atau nav.
+"Warm cream editorial, clear headlines." 97% achromatic; colour only on the logo, the sphere, the atmospheric field and verdicts. **Kebenaran red is not an action colour** — never for buttons, links or nav.
 
 ---
 
 ## 2. Design tokens
 
-✅ **Satu set nama token** untuk situs, CMS dashboard dan browser extension (namespace Tailwind v4 + warna semantik gaya shadcn). Sumber tunggal: `app/tokens.css` (boleh ditampal terus ke `@theme` Tailwind). Tiga lapis: primitive → semantic → component; peraturan di [`design-system-rules.md`](design-system-rules.md).
+✅ **One set of token names** for the site, the CMS dashboard and the browser extension (Tailwind v4 namespaces + shadcn-style semantic colours). Single source: `app/tokens.css` (can be pasted straight into a Tailwind `@theme`). Three tiers: primitive → semantic → component; rules in [`design-system-rules.md`](design-system-rules.md).
 
-### 2.1 Palette (primitive — JANGAN guna dalam komponen)
+### 2.1 Palette (primitive — NEVER in components)
 `--color-white #FFFFFF` · `--color-grey-99 #FDFCFC` (eggshell) · `--color-grey-95 #F5F3F1` (warm taupe) · `--color-grey-91 #EBE8E4` (stone) · `--color-grey-82 #D7D2CC` (pill edge) · `--color-grey-50 #878179` (field edge) · `--color-grey-43 #6F6A63` (smoke) · `--color-grey-41 #6B6A68` · `--color-grey-25 #44403B` (graphite) · `--color-black #000` · `--color-red #E8302A` · `--color-red-dark #C8211C` · `--color-blue #3A46F5` · `--color-azure #2F5FD0` · `--color-green #1FA463` · `--color-green-dark #137A49`
 
-### 2.2 Semantic colours (guna INI)
-| Token | Nilai | Guna |
+### 2.2 Semantic colours (use THESE)
+| Token | Value | Use |
 |---|---|---|
-| `--color-background` | grey-99 | kanvas page, kawalan (button outline, chip, tab, search) |
-| `--color-foreground` | black | teks utama |
-| `--color-muted-foreground-inverse` | putih 60% | teks redup atas latar gelap/hitam (≈7:1 atas hitam); jangan guna `--color-muted-foreground` atas hitam (3.86:1) |
-| `--color-card` | white | permukaan terangkat |
-| `--color-muted` | grey-95 | band, hover, nav aktif |
-| `--color-muted-strong` | grey-91 | inset, divider, isi disabled |
-| `--color-text-secondary` | grey-25 | teks body kuat |
-| `--color-muted-foreground` | grey-43 | teks redup, eyebrow, ikon, placeholder, tagline hero |
-| `--color-border` | grey-82 | tepi pill, kad, dropdown |
-| `--color-border-strong` | grey-50 | border field, button outline |
-| `--color-primary` / `-hover` / `-foreground` | black / grey-25 / white | aksi utama |
-| `--color-foreground-inverse` | white | teks atas gelap/media |
-| `--color-ring` | blue | fokus |
-| `--color-link` | blue | pautan |
-| `--color-destructive` | red-dark | teks ralat, field tidak sah |
-| `--color-brand` / `-strong` | red / red-dark | logo, sphere — BUKAN aksi |
-| `--color-brand-spark` | blue | hiasan |
-| `--color-hairline` | rgba(0,0,0,.05) | garis halus |
-| `--color-verdict-{palsu,makluman,benar}` | red-dark / azure / green-dark | perkataan verdict (tone single) |
-| `--color-verdict-*-dot` | red / orange / blue / green | titik verdict |
+| `--color-background` | grey-99 | page canvas, controls (outline button, chip, tab, search) |
+| `--color-foreground` | black | main text |
+| `--color-muted-foreground-inverse` | white 60% | muted text on dark/black (≈7:1 on black); never `--color-muted-foreground` on black (3.86:1) |
+| `--color-card` | white | raised surface |
+| `--color-muted` | grey-95 | bands, hover, active nav |
+| `--color-muted-strong` | grey-91 | inset, divider, disabled fill |
+| `--color-text-secondary` | grey-25 | strong body text |
+| `--color-muted-foreground` | grey-43 | muted text, eyebrows, icons, placeholders, hero tagline |
+| `--color-border` | grey-82 | pill, card and dropdown edges |
+| `--color-border-strong` | grey-50 | field border, outline button |
+| `--color-primary` / `-hover` / `-foreground` | black / grey-25 / white | primary action |
+| `--color-foreground-inverse` | white | text on dark/media |
+| `--color-ring` | blue | focus |
+| `--color-link` | blue | links |
+| `--color-destructive` | red-dark | error text, invalid field |
+| `--color-brand` / `-strong` | red / red-dark | logo, sphere — NOT actions |
+| `--color-brand-spark` | blue | decoration |
+| `--color-hairline` | rgba(0,0,0,.05) | hairlines |
+| `--color-verdict-{palsu,makluman,benar}` | red-dark / azure / green-dark | verdict word (tone single) |
+| `--color-verdict-*-dot` | red / orange / blue / green | verdict dot |
 
-Saiz kawalan ikut **skala kawalan fluid** (375 → 1280px): `sm` `--size-control-sm` 32→36 · `md` `--size-control` 40→44 (lalai) · `lg` `--size-control-lg` 44→48 · `xl` `--size-control-xl` 48→56 (search utama + Tanya AIFA sahaja). Padding sisi `--space-control-x-sm/-x/-x-lg` 12→16 · 16→20 · 20→24. Sasaran sentuh kekal 44 (`::after`). Radius `--radius-full`.
-(Mode dark belum wajib.)
+Control sizes follow the **fluid control scale** (375 → 1280px): `sm` `--size-control-sm` 32→36 · `md` `--size-control` 40→44 (default) · `lg` `--size-control-lg` 44→48 · `xl` `--size-control-xl` 48→56 (the primary search + Tanya AIFA only). Side padding `--space-control-x-sm/-x/-x-lg` 12→16 · 16→20 · 20→24. The touch target stays 44 (`::after`). Radius `--radius-full`.
+(Dark mode not required yet.)
 
 ### 2.3 Typography
-Font: **Manrope** 300/400/500/600 untuk semuanya (`--font-sans`) — kandungan, tajuk, navigasi dan kawalan UI.
+Font: **Manrope** 300/400/500/600 for everything (`--font-sans`) — content, headings, navigation and UI controls.
 
-| Gaya | Weight | Size / line (token) | Tracking | Guna |
+| Style | Weight | Size / line (token) | Tracking | Use |
 |---|---|---|---|---|
 | Display/56 Medium | 500 | 56 / 60 | -0.02em | cover, hero headline, section display |
 | Display/48 Medium | 500 | 48 / 52 | -0.02em | hero |
-| Heading/48 Medium | 500 | 48 / 52 | -0.02em | tajuk slide carousel |
-| Heading/36 | 500 | 36 / 42 | -0.02em | tajuk section |
+| Heading/48 Medium | 500 | 48 / 52 | -0.02em | carousel slide titles |
+| Heading/36 | 500 | 36 / 42 | -0.02em | section titles |
 | Heading/32 | 500 | 32 / 36 | -0.02em | closing band, lead story |
-| Heading/24 | 500 | 24 / 32 | -0.01em | tajuk panel/kad |
-| Heading/20 | 500 | 20 / 26 | 0 | tajuk kad artikel (page Artikel) |
-| Heading/18 | 500 | 18 / 28 | 0 | subheading, tajuk kad kecil |
-| Body/24 Large | 400 | 24 / 32 | -0.01em | intro Tentang Kami |
-| Body/18 | 400 | 18 / 28 | 0 | intro, artikel body |
+| Heading/24 | 500 | 24 / 32 | -0.01em | panel/card titles |
+| Heading/20 | 500 | 20 / 26 | 0 | article card titles (Articles page) |
+| Heading/18 | 500 | 18 / 28 | 0 | subheadings, small card titles |
+| Body/24 Large | 400 | 24 / 32 | -0.01em | About us intro |
+| Body/18 | 400 | 18 / 28 | 0 | intro, article body |
 | Body/16 | 400 | 16 / 24 | +0.01em | default |
 | Body/14 | 400 | 14 / 21 | +0.01em | meta, support |
-| Label/16 (Button/Nav/Tab/Link) | 500 | 16 / 24 | 0 | semua button, tab, chip, nav, dropdown, link footer, CTA |
+| Label/16 (Button/Nav/Tab/Link) | 500 | 16 / 24 | 0 | every button, tab, chip, nav, dropdown, footer link, CTA |
 | Eyebrow/14 | 500 | 14 / 20 | +0.01em | Smoke, sentence case |
 | Verdict/13 | 600 | 13 / 18 | +0.04em | UPPERCASE |
-| Caption/12 | 500 | 12 / 16 | +0.01em | tarikh, kredit |
-| Stat/40 Light | 300 | 40 / 44 | -0.02em | angka statistik |
-| Stat/32 Light | 300 | 32 / 36 | 0 | angka kecil (WSIS) |
+| Caption/12 | 500 | 12 / 16 | +0.01em | dates, credits |
+| Stat/40 Light | 300 | 40 / 44 | -0.02em | statistics |
+| Stat/32 Light | 300 | 32 / 36 | 0 | small numbers (WSIS) |
 
-**Peraturan: semua label interaktif (button, nav, tab, chip, dropdown, CTA, link footer) = 16 / 24 Medium** — tiada label 18px. **Semua tajuk guna Medium 500** (Display H1, tajuk seksyen, tajuk slaid carousel, award, heading, title), dibaca daripada `--font-weight` peranannya, tidak pernah ditulis tangan. **Angka statistik guna 400** melalui `--font-weight-display` (kini untuk angka sahaja). Regular 400 untuk body; Light 300 hanya untuk kapsyen statistik. Tiada 700+.
+**Rule: every interactive label (button, nav, tab, chip, dropdown, CTA, footer link) = 16 / 24 Medium** — no 18px labels. **Every heading is Medium 500** (Display H1, section titles, carousel slide titles, award, heading, title), read from its role's `--font-weight`, never written by hand. **Statistics are 400** through `--font-weight-display` (now for numbers only). Regular 400 for body; Light 300 only for statistic captions. Nothing 700+.
 
-Token: komponen **hanya** guna type role `--text-{display,heading-lg,heading,title,intro,article,body,body-sm,label,label-sm,eyebrow,badge,verdict,caption,stat}` (+ `--line-height`, `--font-weight`, `--letter-spacing`). Role besar fluid dengan `clamp()` (375 → 1280px), tiada media query untuk type. Jadual penuh: `docs/design-system-rules.md` › Type roles. Primitive (`--text-12…48`, `--leading-heading` 1.2, `--leading-body` 1.5; tracking 0 kecuali `--tracking-label` untuk UPPERCASE) hanya dalam tokens.css.
+Tokens: components use **only** the type roles `--text-{display,heading-lg,heading,title,intro,article,body,body-sm,label,label-sm,eyebrow,badge,verdict,caption,stat}` (+ `--line-height`, `--font-weight`, `--letter-spacing`). Large roles are fluid with `clamp()` (375 → 1280px), no media queries for type. Full table: `docs/design-system-rules.md` › Type roles. Primitives (`--text-12…48`, `--leading-heading` 1.2, `--leading-body` 1.5; tracking 0 except `--tracking-label` for UPPERCASE) only in tokens.css.
 
-Mobile (<600px): Display → `--text-38`/`--leading-42`, Heading/36 → `--text-30`/`--leading-36`, Heading/32 → `--text-28`/`--leading-34` (tukar dalam media query komponen). Body kekal 400, max 68ch.
+Mobile (<600px): Display → `--text-38`/`--leading-42`, Heading/36 → `--text-30`/`--leading-36`, Heading/32 → `--text-28`/`--leading-34` (switched in component media queries). Body stays 400, max 68ch.
 
-> **Peraturan kini (ganti senarai di bawah):** komponen guna role jarak `--gap-inline/text/group/cards/block` dan saiz kad `--pad-card-sm/-/lg` + `--radius-card` / `--radius-card-lg`. Lihat `docs/design-system-rules.md` › Spacing & radius roles.
+> **Current rule (replaces the list below):** components use the spacing roles `--gap-inline/text/group/cards/block` and card sizes `--pad-card-sm/-/lg` + `--radius-card` / `--radius-card-lg`. See `docs/design-system-rules.md` › Spacing & radius roles.
 
 ### 2.4 Spacing (4px base) — `--spacing-*`
 `2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 72, 96, 120`
-- 8: gap pill berpasangan/chip · 12: gutter grid · 16: inset, margin mobile · 20: padding sisi pill · 24: title→body panel · 32: padding kad · 40: bawah header section · 64: padding stage · 96: hero top.
+- 8: paired pills/chips gap · 12: grid gutter · 16: inset, mobile margin · 20: pill side padding · 24: panel title→body · 32: card padding · 40: under a section header · 64: stage padding · 96: hero top.
 
-**Ritma halaman (token peranan, `app/tokens.css`) — semua halaman guna yang sama:**
-| Token | Desktop | ≤1280 | ≤1024 | ≤900 | ≤600 | Guna |
+**Page rhythm (role tokens, `app/tokens.css`) — every page uses the same:**
+| Token | Desktop | ≤1280 | ≤1024 | ≤900 | ≤600 | Use |
 |---|---|---|---|---|---|---|
-| `--space-page-x` | 96 | 48 | 48 | 24 | 16 | Gutter halaman: header, setiap seksyen, footer (`--side` ialah alias) |
-| `--space-section` | 120 | ≈120 | ≈104 | ≈96 | 64 → ≈78 | Fluid `clamp(64, 40.8px + 6.188vw, 120)`: 64 @375 → 120 @1280, ≈3× `--gap-block`. Jarak antara seksyen; `.main` ialah flex column dengan `row-gap` ini + `padding-bottom` sebelum footer; padding atas footer |
-| `--space-page-top` | 40 | 40 | 40 | 40 | 24 | Header → blok pertama pada halaman tanpa hero (Artikel, detail) |
+| `--space-page-x` | 96 | 48 | 48 | 24 | 16 | Page gutter: header, every section, footer (`--side` is an alias) |
+| `--space-section` | 120 | ≈120 | ≈104 | ≈96 | 64 → ≈78 | Fluid `clamp(64, 40.8px + 6.188vw, 120)`: 64 @375 → 120 @1280, ≈3× `--gap-block`. Space between sections; `.main` is a flex column with this `row-gap` + `padding-bottom` before the footer; footer top padding |
+| `--space-page-top` | 40 | 40 | 40 | 40 | 24 | Header → first block on pages without a hero (Articles, detail) |
 
-Seksyen **tidak** ada padding atas/bawah sendiri; jarak datang dari `.main`. Kumpulan rapat dapat separuh (`.hero + .hero-carousel`, `.hero-carousel + .partners`: −½ `--space-section`). Seksyen baharu: cukup `padding-inline: var(--space-page-x)`.
+Sections have **no** top/bottom padding of their own; the space comes from `.main`. Tight pairs get half (`.hero + .hero-carousel`, `.hero-carousel + .partners`: −½ `--space-section`). A new section only needs `padding-inline: var(--space-page-x)`.
 
 ### 2.5 Radius
-`--radius-sm: 4px` · `--radius-input: 8px` · `--radius-md: 12px` (thumbnail, media, dropdown) · `--radius-card: 20px` (kad, stage, panel) · `--radius-lg: 24px` (feature card, hero stage) · `--radius-full: 9999px` (SEMUA button, tab, chip, search).
+`--radius-sm: 4px` · `--radius-input: 8px` · `--radius-md: 12px` (thumbnails, media, dropdown) · `--radius-card: 20px` (cards, stages, panels) · `--radius-lg: 24px` (feature card, hero stage) · `--radius-full: 9999px` (EVERY button, tab, chip, search).
 
 ### 2.6 Effects
 ```css
---shadow-float: 0 0 0 .5px rgba(0,0,0,.2), 0 8px 24px rgba(0,0,0,.12); /* Tanya AIFA sahaja */
+--shadow-float: 0 0 0 .5px rgba(0,0,0,.2), 0 8px 24px rgba(0,0,0,.12); /* Tanya AIFA only */
 ```
-Elevation datang dari tona (Eggshell → Warm Taupe → Stone), bukan shadow.
+Elevation comes from tone (Eggshell → Warm Taupe → Stone), not shadow.
 
-### 2.6b Ikon — Lucide ✅
-Semua ikon UI guna **Lucide** (`lucide-react`, https://lucide.dev) melalui `components/ui/Icon.js`:
+### 2.6b Icons — Lucide ✅
+Every UI icon is **Lucide** (`lucide-react`, https://lucide.dev) through `components/ui/Icon.js`:
 ```jsx
 import { ArrowRight } from 'lucide-react';
 import { Icon } from '@/components/ui';
 <Icon icon={ArrowRight} />          // 16px (default)
 <Icon icon={Search} size={18} />
 ```
-- Garis **1.75px pada semua saiz** (`absoluteStrokeWidth`), warna `currentColor` (ikut token teks), `aria-hidden` — nama boleh-capai datang dari kawalan.
-- Saiz: 16 dalam button/label/kad · 18–20 kawalan (search, tutup, anak panah carousel) · 24 butang terapung (Tanya AIFA) · 28–40 ilustrasi status (borang).
-- Dipakai: ArrowLeft, ArrowRight, ArrowUpRight, ChevronDown/Left/Right, Search, X, MessageSquareText, Flag, Check, Link, CloudUpload, Share, Download, Calendar, Play (butang jeda dan `filledIcons` dibuang 22 Nov 2026).
-- **Pengecualian:** logo jenama (Facebook, Instagram, Threads, X, TikTok) bukan dalam Lucide → kekal SVG jenama (`data/content.js`).
-- Jangan guna glyph teks (↗ → ‹ ›), SVG tulis tangan atau set ikon lain. Jangan override `stroke-width` dalam CSS.
+- **1.75px stroke at every size** (`absoluteStrokeWidth`), colour `currentColor` (follows the text token), `aria-hidden` — the accessible name comes from the control.
+- Sizes: 16 in buttons/labels/cards · 18–20 controls (search, close, carousel arrows) · 24 floating button (Tanya AIFA) · 28–40 status illustrations (forms).
+- In use: ArrowLeft, ArrowRight, ArrowUpRight, ChevronDown/Left/Right, Search, X, MessageSquareText, Flag, Check, Link, CloudUpload, Share, Download, Calendar, Play (the pause button and `filledIcons` were removed 22 Nov 2026).
+- **Exception:** brand logos (Facebook, Instagram, Threads, X, TikTok) are not in Lucide → they stay brand SVGs (`data/content.js`).
+- No text glyphs (↗ → ‹ ›), hand-written SVGs or other icon sets. Never override `stroke-width` in CSS.
 
 ### 2.7 Layout
-Page max `--max-width`, sisi `--space-page-x` (96 → 48 ≤1280 → 24 ≤900 → 16 ≤600). Editorial grid 12 kolum, gap 12 (heading span 7, copy col 9–12). Breakpoints (nombor dalam media query; tiada token kerana media query tak boleh baca variable): 1100 header kompak · 900 susun atur bertindan · 600 telefon.
+Page max `--max-width`, sides `--space-page-x` (96 → 48 ≤1280 → 24 ≤900 → 16 ≤600). 12-column editorial grid, gap 12 (heading spans 7, copy column 9–12). Breakpoints (numbers in media queries; no tokens because media queries cannot read variables): 1100 compact header · 900 stacked layouts · 600 phone.
 
 ---
 
 ### 2.x Motion — page transition
-- `components/PageTransition.js` (dalam `app/layout.js`): tangkap klik link dalaman, jalankan `document.startViewTransition`, lalu `router.push`. Link `/submit-claim/`, tab baru, link luar dan hash tidak disentuh.
-- CSS: crossfade bawaan pelayar, `::view-transition-group(root)` `--duration-base` (250ms) `--ease-out`. Opacity sahaja, jadi sama untuk reduced motion. Halaman baru main entrance sendiri (`PageEnter`). (Dulu 1.2s naik + wipe; `--duration-page` dan `--ease-page` dibuang, 23 Nov 2026.)
-- Browser tanpa `startViewTransition`: navigasi biasa.
+- `components/PageTransition.js` (in `app/layout.js`): catches internal link clicks, runs `document.startViewTransition`, then `router.push`. `/submit-claim/` links, new tabs, external links and hashes are left alone.
+- CSS: the browser's own crossfade, `::view-transition-group(root)` `--duration-base` (250ms) `--ease-out`. Opacity only, so the same under reduced motion. The new page plays its own entrance (`PageEnter`). (It used to be a 1.2s rise + wipe; `--duration-page` and `--ease-page` removed 23 Nov 2026.)
+- Browsers without `startViewTransition`: normal navigation.
 
 ### 2.y Motion — hero carousel
-- Infinite loop (tiada slide pertama/terakhir); slide disusun di sekitar posisi kontinu dengan `translate3d`.
-- Gerak: ease eksponensial τ 0.11s ke arah sasaran (boleh disentuh di tengah gerakan). Drag ikut jari, flick > 0.6 slide/s cukup untuk tukar slide; trackpad ikut jari lalu snap selepas 140ms.
-- Teks dipaparkan pada semua kad (tengah, kiri, kanan); tiada badge kiraan (infinite loop). Mobile: kad potret, teks di bahagian bawah dalam kad.
-- `prefers-reduced-motion`: tiada autoplay, perpindahan terus tanpa glide.
+- Infinite loop (no first/last slide); slides are placed around a continuous position with `translate3d`.
+- Motion: exponential ease τ 0.11s toward the target (can be grabbed mid-motion). Drag follows the finger; a flick > 0.6 slide/s is enough to change slides; the trackpad follows the finger, then snaps after 140ms.
+- Text shown on every card (centre, left, right); no count badge (infinite loop). Mobile: portrait cards, text at the bottom inside the card.
+- `prefers-reduced-motion`: no autoplay, moves straight without a glide.
 
 ### 2.z Motion — FlipCard (Semakan fakta terkini)
-- Satu kad terbuka pada satu masa (state di `Latest.js`).
-- Hover: tunggu 90ms sebelum flip (sapuan pointer tidak flip semua kad); keluar: tunggu 140ms supaya pindah ke kad sebelah bertukar dalam satu gerakan.
-- Buka 0.7s `cubic-bezier(.23,1,.32,1)` + naik 4px (mouse sahaja); tutup 0.45s `cubic-bezier(.65,0,.35,1)`. Transition CSS, jadi boleh diterbalikkan di tengah jalan.
-- `prefers-reduced-motion`: tukar terus tanpa putaran.
+- One card open at a time (state in `Latest.js`).
+- Hover: wait 90ms before flipping (a pointer sweep does not flip every card); leave: wait 140ms so moving to the next card swaps in one motion.
+- Opens 0.7s `cubic-bezier(.23,1,.32,1)` + rises 4px (mouse only); closes 0.45s `cubic-bezier(.65,0,.35,1)`. CSS transitions, so it can reverse mid-way.
+- `prefers-reduced-motion`: switches straight without rotating.
 
-## 3. Pemetaan variable lama → token baru (`app/global.css`)
+## 3. Mapping old variables → new tokens (`app/global.css`)
 
-| Lama | Nilai lama | Baru |
+| Old | Old value | New |
 |---|---|---|
 | `--font` | Montserrat | `var(--font-sans)` (Manrope) |
 | `--text`, `--dark` | #151618 | `var(--color-foreground)` |
@@ -168,464 +168,468 @@ Page max `--max-width`, sisi `--space-page-x` (96 → 48 ≤1280 → 24 ≤900 �
 | `--dark-card` | #0c0d11 | `var(--color-primary)` |
 | `--tag-bg` | #efeef0 | `var(--color-muted)` |
 | `--tag-hover` | #e6e6ea | `var(--color-muted-strong)` |
-| `--input-bg` | #f2f0f2 | `var(--color-muted)` (atau field putih + border, lihat Field/Search) |
+| `--input-bg` | #f2f0f2 | `var(--color-muted)` (or a white field + border, see Field/Search) |
 | `--line` | #ceced0 | `var(--color-border)` |
 | `--accent` | #314bff | `var(--color-link)` |
 | `--orange` | #ff6b35 | `var(--color-verdict-waspada-dot)` |
 | `--red` | #e51c23 | `var(--color-brand)` |
-| `--radius` | 26px | `var(--radius-card)` (20px); pill → `var(--radius-full)` |
-| `--gap` | 16px | kekal / `12px` untuk grid editorial |
+| `--radius` | 26px | `var(--radius-card)` (20px); pills → `var(--radius-full)` |
+| `--gap` | 16px | kept / `12px` for the editorial grid |
 
-Lepas tu cari hex keras dalam `global.css` (contoh `#6d6d72`, `#e2e2e5`, `#8a8a8f`, `#4a4a4f`, `#f5f5f7`, `#111215`, `#0d0e12`) dan gantikan dengan token semantik paling hampir (`--color-muted-foreground`, `--color-border`, `--color-muted`, `--color-primary`).
+Then find the hard-coded hex in `global.css` (e.g. `#6d6d72`, `#e2e2e5`, `#8a8a8f`, `#4a4a4f`, `#f5f5f7`, `#111215`, `#0d0e12`) and replace it with the nearest semantic token (`--color-muted-foreground`, `--color-border`, `--color-muted`, `--color-primary`).
 
-Warna verdict dalam page Artikel lama (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3`) → guna token verdict di 2.1.
+The verdict colours on the old Articles page (`#e51c23`, `#1d8a4e`, `#f56300`, `#0071e3`) → use the verdict tokens in 2.1.
 
 ---
 
-## 4. Komponen (spec)
+## 4. Components (spec)
 
-✅ **Komponen asas siap** dalam `components/ui/` (import dari `@/components/ui`) dengan CSS dalam `app/ui.css` (kelas `ui-*`, token semantik sahaja, font Manrope):
+✅ **Base components done** in `components/ui/` (import from `@/components/ui`) with CSS in `app/ui.css` (`ui-*` classes, semantic tokens only, Manrope):
 - `Button` (`variant`: filled | outline | ghost, `icon`, `href`, `disabled`) + `ButtonGroup`
-- `Chip` (`href?`) + `ChipRow` (`label` cth. "Popular:")
-- `Tabs` (`items`, `value`, `onChange`, `label`) — ikut corak ARIA tabs (anak panah, Home/End)
-- `Verdict` (`type`: palsu | makluman | benar, `tone`: default | single, `agency`) — hanya tiga verdict
-- `SearchField` (`label`, `hideLabel`, `placeholder`, `buttonLabel`, `value`+`onChange(text)` atau `defaultValue`, `error`, `action` atau `onSubmit(query)`)
-- `Tabs` `mode="toggle"` → `role=group` + `aria-pressed` (tiada tab panel)
-- `NavLink` (`href`, `current`) — link nav tanpa border, padding sisi `--space-control-x` (20). State: rehat weight 400 transparent · hover bg `--color-accent` (pointer sahaja) · tekan scale .97 · halaman aktif weight 500, tanpa fill · fokus ring standard
-- `LanguageMenu` (`items` [{value, label, lang, flag}], `value`, `onChange`, `label`, `groupLabel`, `align`) — pill bendera bulat 24 + chevron (border `--color-border`, bg `--color-secondary`); panel `--radius-menu` + `--shadow-float`, label kumpulan caption muted, item bendera + nama, terpilih bg `--color-accent`. Masuk 150ms opacity+scale .96 dari sudut trigger. Bendera: `public/images/flags/*.svg`
-- `DropdownMenu` (`label`, `items` [{label, href, current}], `current`, `align`) — trigger NavLink + chevron, panel pautan. `.ui-dropdown__item` boleh `<a>` atau `<button>` (chrome butang browser dibuang: tiada border/bg, lebar penuh)
-- Menu mudah alih: label kumpulan (cth. Tentang Kami) sama saiz/warna dengan Utama/Artikel; anak pautan `--text-label-sm` (14), muted, inden 32
-- Menu Kongsi: `.ui-menu` (sama dengan dropdown nav dan bahasa), muncul 150ms opacity + scale .96 dari tengah atas (butang Kongsi)
-- `Button`/`Chip`/`NavLink` dengan `href` render `<a>` biasa (tiada kebergantungan Next.js) supaya boleh guna di CMS/extension.
+- `Chip` (`href?`) + `ChipRow` (`label` e.g. "Popular:")
+- `Tabs` (`items`, `value`, `onChange`, `label`) — follows the ARIA tabs pattern (arrows, Home/End)
+- `Verdict` (`type`: palsu | makluman | benar, `tone`: default | single, `agency`) — three verdicts only
+- `SearchField` (`label`, `hideLabel`, `placeholder`, `buttonLabel`, `value`+`onChange(text)` or `defaultValue`, `error`, `action` or `onSubmit(query)`)
+- `Tabs` `mode="toggle"` → `role=group` + `aria-pressed` (no tab panels)
+- `NavLink` (`href`, `current`) — borderless nav link, side padding `--space-control-x` (20). States: rest weight 400 transparent · hover bg `--color-accent` (pointer only) · press scale .97 · current page weight 500, no fill · standard focus ring
+- `LanguageMenu` (`items` [{value, label, lang, flag}], `value`, `onChange`, `label`, `groupLabel`, `align`) — 24px round flag pill + chevron (border `--color-border`, bg `--color-secondary`); panel `--radius-menu` + `--shadow-float`, muted caption group label, items flag + name, selected bg `--color-accent`. Enters in 150ms opacity+scale .96 from the trigger corner. Flags: `public/images/flags/*.svg`
+- `DropdownMenu` (`label`, `items` [{label, href, current}], `current`, `align`) — NavLink trigger + chevron, a panel of links. `.ui-dropdown__item` can be `<a>` or `<button>` (browser button chrome removed: no border/bg, full width)
+- Mobile menu: group labels (e.g. Tentang Kami) the same size/colour as Utama/Artikel; child links `--text-label-sm` (14), muted, indented 32
+- Kongsi (share) menu: `.ui-menu` (the same as the nav and language dropdowns), appears in 150ms opacity + scale .96 from the top centre (the Kongsi button)
+- `Button`/`Chip`/`NavLink` with `href` render a plain `<a>` (no Next.js dependency) so they work in the CMS/extension.
 
-Untuk CMS/extension: salin `app/tokens.css` + `app/ui.css` (+ `components/ui/` jika React). Sudah dipasang: **Header** dan **Hero** (lihat di bawah). Komponen lain belum.
+For the CMS/extension: copy `app/tokens.css` + `app/ui.css` (+ `components/ui/` if React). (Superseded 26 Nov 2026: products install the `@sebenarnya/design-system` package.) Already in place: **Header** and **Hero** (below). Other components not yet.
 
 ### Button
-- Asas (`md`): `height --size-control` (40 telefon → 44 desktop); `padding 0 --space-control-x` (16→20); radius pill; Label/16; gap 8px (ikon 16px).
-- Saiz: `sm` 32→36, padding 12→16, Label/14 · `md` (lalai) · `lg` 44→48, padding 20→24 · `icon-sm` / `icon` / `icon-lg` segi empat sama dengan tinggi masing-masing. Di bawah 44px, `::after` halimunan kekalkan sasaran sentuh 44.
+- Base (`md`): `height --size-control` (40 phone → 44 desktop); `padding 0 --space-control-x` (16→20); pill radius; Label/16; gap 8px (16px icon).
+- Sizes: `sm` 32→36, padding 12→16, Label/14 · `md` (default) · `lg` 44→48, padding 20→24 · `icon-sm` / `icon` / `icon-lg` squares of their height. Below 44px an invisible `::after` keeps a 44 touch target.
 - `filled`: bg `--color-primary`, text `--color-primary-foreground`; hover bg `--color-primary-hover`.
 - `outline`: bg `--color-background`, border `.5px solid --color-border-strong`; hover bg `--color-muted`.
-- `ghost`: bg `--color-background`, text underline; hover bg `--color-muted`.
-- `focus` (semua): `border: 2px solid --color-ring`.
+- `ghost`: bg `--color-background`, underlined text; hover bg `--color-muted`.
+- `focus` (all): `border: 2px solid --color-ring`.
 - `disabled`: bg `--color-muted-strong`, border `.5px --color-border-strong`, text `--color-muted-foreground`.
-- Pasangan button: gap 8px. Props: `variant`, `size?` (sm · md · lg · icon-sm · icon · icon-lg), `icon?`, `href?`.
+- Button pairs: gap 8px. Props: `variant`, `size?` (sm · md · lg · icon-sm · icon · icon-lg), `icon?`, `href?`.
 
 ### Chip
-Tinggi sama dengan Button: `sm` 32→36 (Label/14) · `md` 40→44 (lalai) · `lg` 44→48; radius pill; bg `--color-secondary`; Label/16. Hover `--color-secondary-hover`. Didahului label "Popular:" Body/14 Smoke.
+The same heights as Button: `sm` 32→36 (Label/14) · `md` 40→44 (default) · `lg` 44→48; pill radius; bg `--color-secondary`; Label/16. Hover `--color-secondary-hover`. Preceded by a "Popular:" label, Body/14 Smoke.
 
 ### Tabs/Segmented
-Container setinggi satu kawalan `md` (`--tabs-height`), `padding 2px; gap 2px; radius pill`. Tab = `track − 2 × (2 + border)`, jadi seluruh kawalan sama tinggi dengan Button di sebelahnya. Item terpilih bg `--color-card` + border `--color-border`.
+The container is one `md` control tall (`--tabs-height`), `padding 2px; gap 2px; pill radius`. A tab = `track − 2 × (2 + border)`, so the whole control is as tall as the Button next to it. Selected item bg `--color-card` + border `--color-border`.
 
 ### Field/Search
-Saiz: `lg` (lalai, `--size-control-xl` 48→56) · `md` (44→48) · `sm` (40→44, toolbar). `padding 0 4px 0 --space-control-x; radius pill; bg --color-background; border 1px --color-border-strong; gap 12`. Ikon carian 18px Smoke, placeholder Body/16 Smoke, Button filled "Semak" di kanan, tingginya = `search − 2 × (4 + border)` (38 telefon → 46 desktop), jadi jarak 4px sama di atas, bawah dan kanan. Focus: `border 2px --color-ring` + `box-shadow 0 0 0 1.5px --color-ring`. Label atas: 14 Medium Ink.
+Sizes: `lg` (default, `--size-control-xl` 48→56) · `md` (44→48) · `sm` (40→44, toolbar). `padding 0 4px 0 --space-control-x; pill radius; bg --color-background; border 1px --color-border-strong; gap 12`. 18px Smoke search icon, Body/16 Smoke placeholder, filled "Semak" Button on the right, its height = `search − 2 × (4 + border)` (38 phone → 46 desktop), so the 4px gap is the same above, below and on the right. Focus: `border 2px --color-ring` + `box-shadow 0 0 0 1.5px --color-ring`. Label above: 14 Medium Ink.
 
 ### Verdict
-Skala badge, bukan kawalan: `pill` (lalai) = badge `lg` 32, padding `0 12 0 10`; `overlay` / `tint` = badge `md` 24, padding `0 10 0 8`. Gap 8; radius pill; bg `--color-background`. Dot 8px (warna dot) + halo `0 0 0 3px <dot> @18%` + perkataan Verdict/13 + agensi Body/13 Smoke (`· KPDN`).
-- `tone="default"`: perkataan Ink.
-- `tone="single"`: perkataan guna warna text verdict.
-- Selalu dot + perkataan + agensi (WCAG 1.4.1). Varian: `palsu | makluman | benar` sahaja (label: Palsu, Makluman, Benar).
+Badge scale, not a control: `pill` (default) = `lg` badge 32, padding `0 12 0 10`; `overlay` / `tint` = `md` badge 24, padding `0 10 0 8`. Gap 8; pill radius; bg `--color-background`. 8px dot (dot colour) + halo `0 0 0 3px <dot> @18%` + Verdict/13 word + Body/13 Smoke agency (`· KPDN`).
+- `tone="default"`: ink word.
+- `tone="single"`: the word in the verdict text colour.
+- Always dot + word + agency (WCAG 1.4.1). Variants: `palsu | makluman | benar` only (labels: Palsu, Makluman, Benar).
 
 ### Nav/Header ✅
-Dilaksanakan dalam `components/Header.js`, data dalam `data/content.js` (`navLinks`, `claimLink`):
-- Kiri logo 133×40 · tengah `NavLink` **Utama**, **Artikel** + `DropdownMenu` **Tentang Kami ▾** (Tentang kami, Logo) · kanan `LanguageMenu` (Bahasa Melayu / English) + `Button` filled **Salur Kepada Kami**.
-- Bar: bg `--color-background`, border bawah 1px `--color-border`, padding 16 / 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 24.
-- Item aktif: pill `--color-muted` (dropdown trigger aktif bila salah satu anaknya halaman semasa).
-- Bahasa: `LanguageMenu` (pill bendera, padding sisi `--space-control-x`, panel di kanan).
-- Jarak antara item nav dan antara butang di kanan: token `--space-nav-gap` (8).
-- Dropdown: panel bg `--color-background`, border 1px `--color-border`, radius `--radius-md`, padding 8, `--shadow-float`; item 44px, padding 10 16, radius 8, hover/aktif `--color-muted`. Tutup dengan Escape (fokus balik ke trigger), klik luar, atau blur.
-- ≤1100px: nav jadi panel (butang menu 44×44); anak dropdown disenarai di bawah label kumpulan. ≤600px: butang "Salur Kepada Kami" pindah ke dalam panel, logo max 140.
-- Font: semua label header (NavLink, dropdown, BM/EN, butang "Salur Kepada Kami") guna **Manrope** (`--font-sans`). Kawalan UI lain juga Manrope (Inter dibuang).
-- "Hubungi kami" belum dalam dropdown — tiada page `/contact/` lagi.
+Built in `components/Header.js`, data in `data/content.js` (`navLinks`, `claimLink`):
+- Left: logo 133×40 · centre: `NavLink` **Utama**, **Artikel** + `DropdownMenu` **Tentang Kami ▾** (Tentang kami, Logo) · right: `LanguageMenu` (Bahasa Melayu / English) + filled `Button` **Salur Kepada Kami**.
+- Bar: bg `--color-background`, 1px bottom border `--color-border`, padding 16 / 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 24.
+- Active item: `--color-muted` pill (the dropdown trigger is active when one of its children is the current page).
+- Language: `LanguageMenu` (flag pill, side padding `--space-control-x`, panel on the right).
+- Space between nav items and between the buttons on the right: the `--space-nav-gap` token (8).
+- Dropdown: panel bg `--color-background`, 1px border `--color-border`, radius `--radius-md`, padding 8, `--shadow-float`; items 44px, padding 10 16, radius 8, hover/active `--color-muted`. Closes on Escape (focus back to the trigger), outside click or blur.
+- ≤1100px: the nav becomes a panel (44×44 menu button); dropdown children are listed under their group label. ≤600px: the "Salur Kepada Kami" button moves into the panel, logo max 140.
+- Font: every header label (NavLink, dropdown, BM/EN, the "Salur Kepada Kami" button) uses **Manrope** (`--font-sans`). Other UI controls too (Inter removed).
+- "Hubungi kami" is not in the dropdown yet — there is no `/contact/` page.
 
-Baseline asal dari Figma:
-- Wide: `padding 16; flex space-between; bg --color-background`. Logo 133×40 dalam slot 160×56. Nav items: Chip tanpa border (active bg `--color-muted`), gap 4: Utama, Artikel, Tentang Kami ▾ (dropdown), Berita dan Galeri, Salur Kepada Kami. Kanan: Language switcher + Button filled "Tanya AIFA".
-- Compact (<1100): baris 1 logo + utilities, baris 2 nav.
-- Dropdown menu: `padding 8; radius 12; bg canvas; border 1px --color-border`; item 44px, padding 10px 16px, Label/16. Item: Tentang kami, Logo, Hubungi kami.
-- Language switcher **guna token** (bg `--color-muted`, aktif `--color-primary`).
+Original Figma baseline:
+- Wide: `padding 16; flex space-between; bg --color-background`. Logo 133×40 in a 160×56 slot. Nav items: borderless Chips (active bg `--color-muted`), gap 4: Utama, Artikel, Tentang Kami ▾ (dropdown), Berita dan Galeri, Salur Kepada Kami. Right: language switcher + filled Button "Tanya AIFA".
+- Compact (<1100): row 1 logo + utilities, row 2 nav.
+- Dropdown menu: `padding 8; radius 12; bg canvas; border 1px --color-border`; items 44px, padding 10px 16px, Label/16. Items: Tentang kami, Logo, Hubungi kami.
+- The language switcher **uses tokens** (bg `--color-muted`, active `--color-primary`).
 
 ### Hero ✅
-`components/Hero.js` + `components/Carousel.js`. Hero: padding atas 96, gap 48; heading group gap 16.
-- Tajuk Display/56 Medium, **2 baris**: "Tidak pasti? / Semak sebelum kongsi." (≤600px: `--text-38`, baris mengalir dengan `text-wrap: balance`, tetap 2 baris).
-- Lede 18/32 Medium `--color-text-secondary`, **2 baris** (69 + 69 aksara): "Portal rujukan rasmi yang disahkan terus oleh kementerian dan agensi. / Tampal tajuk mesej tular di sini, atau tanya AIFA 24 jam di WhatsApp." (≤760px mengalir bebas).
-- `SearchField` max 800, placeholder "Contoh: bantuan tunai WhatsApp", ralat bawah field.
-- Bawah search (gap 16): `ChipRow` "Carian popular:" (Body/14 `--color-muted-foreground`) + 4 `Chip`: Bantuan tunai · RON95 · Hujan lebat · Lesen memandu. Setiap kata kunci mesti pulangkan sekurang-kurangnya satu semakan; klik = cari terus (`/article?q=`).
+`components/Hero.js` + `components/Carousel.js`. Hero: top padding 96, gap 48; heading group gap 16.
+- Display/56 Medium heading, **2 lines**: "Tidak pasti? / Semak sebelum kongsi." (≤600px: `--text-38`, lines flow with `text-wrap: balance`, still 2 lines).
+- Lede 18/32 Medium `--color-text-secondary`, **2 lines** (69 + 69 characters): "Portal rujukan rasmi yang disahkan terus oleh kementerian dan agensi. / Tampal tajuk mesej tular di sini, atau tanya AIFA 24 jam di WhatsApp." (≤760px flows freely).
+- `SearchField` max 800, placeholder "Contoh: bantuan tunai WhatsApp", error under the field.
+- Under the search (gap 16): `ChipRow` "Carian popular:" (Body/14 `--color-muted-foreground`) + 4 `Chip`s: Bantuan tunai · RON95 · Hujan lebat · Lesen memandu. Every keyword must return at least one check; a click searches straight away (`/article?q=`).
 
 ### HeroCarousel ✅
-- Slide 960×480 (lebar `min(960, 100vw − 128)`), radius `--radius-card`, gap 20; slide tengah di tengah, jiran kiri/kanan mengintai.
-- **Hanya slide tengah tunjuk teks** (eyebrow, tajuk, teks, CTA, kaunter); slide sisi imej sahaja dengan scrim gelap 25%. Teks muncul selepas slide berhenti (fade .5s, delay .6s).
-- Kandungan: kiri 64, lebar max 484, gap 16. Eyebrow Verdict/13 putih + dot 8px warna `--color-verdict-*-dot` (halo 3px 25%) — "PALSU · KPDN". Tajuk Heading/48 Medium putih 2 baris (`title` + `titleEm`). Teks Body/16 putih, max 400. CTA pill `--color-background` + teks `--color-foreground` + anak panah.
+- Slides 960×480 (width `min(960, 100vw − 128)`), radius `--radius-card`, gap 20; the centre slide in the middle, the left/right neighbours peeking.
+- **Only the centre slide shows text** (eyebrow, title, text, CTA, counter); side slides are image only with a 25% dark scrim. Text appears after the slide stops (fade .5s, delay .6s).
+- Content: left 64, max width 484, gap 16. White Verdict/13 eyebrow + 8px dot in `--color-verdict-*-dot` (3px 25% halo) — "PALSU · KPDN". White Heading/48 Medium title on 2 lines (`title` + `titleEm`). White Body/16 text, max 400. CTA pill `--color-background` + `--color-foreground` text + arrow.
 - Overlay: `linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.05) 85%)`.
-- Kawalan: pill dots bg `--color-muted` h48 padding 20 gap 12; dot 8 `--color-border-strong`, aktif 32 lebar dengan isian progres `--color-foreground` 6s; butang jeda/main 48 bulat `--color-muted`.
-- **Autoplay 6s**; jeda/main; mula dijeda jika `prefers-reduced-motion`. Seret/swipe, trackpad, kekunci ←/→ (gallery boleh difokus). Klik slide sisi = bawa ke tengah; klik slide tengah = buka artikel.
-- ≤900px: lebar `100vw − 64`, tajuk 36/42. ≤700px: imej atas (16:10), teks bawah, tajuk 28/34, slide sisi 50% opacity.
-- Tajuk seksyen lama "Semakan Fakta Popular" dibuang.
+- Controls: dots pill bg `--color-muted` h48 padding 20 gap 12; 8px dots `--color-border-strong`, the active one 32 wide with a 6s `--color-foreground` progress fill; round 48 pause/play button `--color-muted`.
+- **Autoplay 6s**; pause/play; starts paused under `prefers-reduced-motion`. Drag/swipe, trackpad, ←/→ keys (the gallery can take focus). Click a side slide = bring it to the centre; click the centre slide = open the article.
+- ≤900px: width `100vw − 64`, title 36/42. ≤700px: image on top (16:10), text below, title 28/34, side slides at 50% opacity.
+- The old section heading "Semakan Fakta Popular" was removed.
 
 ### Footer ✅
-Border-top 1px `--color-border`, padding 96 atas / 32 bawah, sisi 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 64. Kiri: logo 180 + teks Medium 18/24 (max 400). Kanan: 3 kolum lebar 180, gap 48 — **Sosial** (teks sahaja, buka di tab baharu), **Semak & Lapor** (Semak Fakta, AIFA, Salur Kepada Kami), **Sebenarnya.my** (Tentang Kami, Berita dan Galeri). Tajuk kolum 14 semibold UPPERCASE `--tracking-label` `--color-muted-foreground`; pautan 16/24 Medium, gap 12, garis bawah semasa hover. Hak cipta 14/21 `--color-muted-foreground`. ≤1100 bertindan; ≤600 kolum 2 sebaris.
+1px top border `--color-border`, padding 96 top / 32 bottom, sides 96 (48 ≤1280, 24 ≤900, 16 ≤600), gap 64. Left: 180 logo + Medium 18/24 text (max 400). Right: 3 columns 180 wide, gap 48 — **Sosial** (text only, opens in a new tab), **Semak & Lapor** (Semak Fakta, AIFA, Salur Kepada Kami), **Sebenarnya.my** (Tentang Kami, Berita dan Galeri). Column titles 14 semibold UPPERCASE `--tracking-label` `--color-muted-foreground`; links 16/24 Medium, gap 12, underline on hover. Copyright 14/21 `--color-muted-foreground`. ≤1100 stacked; ≤600 2 columns per row.
 
-### Halaman Tentang Kami ✅
-- **Hero:** kad foto `--radius-lg`, padding 56/40/64, tinggi min(755px, 85svh). Atas: "Ikuti kami" 36/42 + 4 butang sosial 48 bulat (`--color-card`, ikon jenama 24). Bawah: tajuk 48/52 + lead 24/32, putih.
-- **Empat fungsi:** tajuk 56 rata kanan. Kiri: kad pilihan 560×440 `--color-muted-strong` (36/42, nombor `/01` tnum, teks 18/28) + butang ‹ › 44 + bar kemajuan 3px (ibu jari 25%, gelongsor .45s `--ease-in-out`). Kanan: 3 kad kecil `--color-muted` (24/32, 16/24) — klik untuk pilih. Kandungan masuk .32s `--ease` (opacity + 6px + blur 2px), kad kecil berperingkat 40ms. Reduced motion: pudar sahaja.
-- **Berita dan Galeri (kemas kini 22 Nov, marquee):** kepala di tengah (tajuk bahagian + intro). Dua baris foto berita (`aboutNews.marquee`, data demo + foto janaan AI) bergerak berlawanan arah ~28px/s: baris atas ke kiri, bawah ke kanan, gelung tanpa lompatan (dua set sama, `translateX(-50%)`). Kad lebar 529×340 (foto + tag + tajuk 20px) dan kad sempit 166×340 (foto + tag), jarak 10px, jejari `--radius-card`, kaki gelap `--gradient-scrim-bottom` supaya teks putih ≥ 4.5:1. Berhenti semasa hover/fokus dan dengan butang jeda (WCAG 2.2.2); dengan reduced motion baris tidak bergerak dan boleh digulung tangan. Tinggi kad 340 / 280 (≤1100) / 220 (≤600). Di bawahnya sfera foto; tajuk "Galeri" `sr-only`.
-- **Logo:** `LogoKit headingLevel={2}` — gaya sama dengan page `/logo` (tajuk 36/42, pratonton 475 muted, butang `Button` filled).
+### About us page ✅
+- **Hero:** photo card `--radius-lg`, padding 56/40/64, height min(755px, 85svh). Top: "Ikuti kami" 36/42 + 4 round 48 social buttons (`--color-card`, 24px brand icons). Bottom: 48/52 title + 24/32 lead, white.
+- **Four functions:** right-aligned 56 title. Left: a 560×440 `--color-muted-strong` selected card (36/42, `/01` number tnum, 18/28 text) + ‹ › 44 buttons + a 3px progress bar (25% thumb, slides .45s `--ease-in-out`). Right: 3 small `--color-muted` cards (24/32, 16/24) — click to select. Content enters .32s `--ease` (opacity + 6px + 2px blur), small cards staggered 40ms. Reduced motion: fade only.
+- **Berita dan Galeri (updated 22 Nov, marquee):** centred head (section title + intro). Two rows of news photos (`aboutNews.marquee`, demo data + AI-generated photos) moving in opposite directions ~28px/s: top row left, bottom row right, seamless loop (two identical sets, `translateX(-50%)`). Wide cards 529×340 (photo + tag + 20px title) and narrow cards 166×340 (photo + tag), 10px apart, `--radius-card`, a dark `--gradient-scrim-bottom` foot so white text is ≥ 4.5:1. Stops on hover/focus and with a pause button (WCAG 2.2.2); under reduced motion the rows do not move and can be scrolled by hand. Card height 340 / 280 (≤1100) / 220 (≤600). Under it, the photo sphere; the "Galeri" heading is `sr-only`.
+- **Logo:** `LogoKit headingLevel={2}` — the same style as the `/logo` page (36/42 title, 475 muted preview, filled `Button`).
 
-### Halaman detail artikel ✅
-Padding 32 atas / 96 bawah, sisi 81 (48 ≤1280, 24 ≤900, 16 ≤600). "Semua artikel" 16/24 Medium + ikon 20. Tag: `Verdict tone="single"` dengan agensi + pil kategori 14/20 Medium, kedua-duanya border .5px `--color-border`, tinggi 44. Tajuk 48/52 Medium `--tracking-display` (32/36 ≤600), subtajuk 18/28 `--color-text-secondary`, meta 14/21 `--color-muted-foreground` + butang Kongsi (border 1px, 16/24 Medium, ikon 20). Imej 1100 × 2:1, `--radius-card` (4:3 ≤600). Lajur bacaan 680: lead 18/28, garis pemisah, "Penjelasan rasmi" 24/32 Medium.
+### Article detail page ✅
+Padding 32 top / 96 bottom, sides 81 (48 ≤1280, 24 ≤900, 16 ≤600). "Semua artikel" 16/24 Medium + 20 icon. Tags: `Verdict tone="single"` with agency + a 14/20 Medium category pill, both with a .5px `--color-border` border, 44 tall. Title 48/52 Medium `--tracking-display` (32/36 ≤600), subtitle 18/28 `--color-text-secondary`, meta 14/21 `--color-muted-foreground` + Kongsi button (1px border, 16/24 Medium, 20 icon). Image 1100 × 2:1, `--radius-card` (4:3 ≤600). 680 reading column: 18/28 lead, a divider, "Penjelasan rasmi" 24/32 Medium.
 
-### Halaman Artikel ✅
-- Sisi `--articles-side` 96 / 48 / 24 / 16, padding atas 40, bawah 96.
-- **Penapis:** carian pill 44 (border 1px `--color-border-strong`, ikon Search 18, input Manrope 16) + 2 `<select>` asli bergaya pill 44 (border `--color-border`, label 16 Medium, ChevronDown Lucide) + kiraan 14 `--color-muted-foreground`. Chip kategori pill 44 bg `--color-muted`, label 16 Medium, dot verdict 7px; terpilih = `--color-primary` + `--color-primary-foreground`; baris boleh skrol dengan butang ‹ › 44 bila melimpah.
-- **Hasil:** jika >4 hasil — kad utama (960:440, tinggi 560, radius 20, scrim bawah, tajuk 28/36 Medium putih, tarikh 14) + senarai sisi 4 item (thumb 160×122 radius 12, tajuk 20/26 Medium, tarikh 14); kemudian grid 4 kolum (3 ≤1280, 2 ≤900, 1 ≤600), gap 32/24. Kad grid: bg `--color-muted`, radius 20, padding 8/8/20, foto 220 radius 12, tajuk 20/26, tarikh 14.
-- Pill verdict atas foto: bg `--color-background` 90%, dot `--color-verdict-*-dot`, perkataan 13 semibold UPPERCASE `--color-verdict-*`. Status `benar` dilabel **"Benar"**.
-- Seluruh kad boleh diklik (pautan tajuk `::after`), cincin fokus pada kad.
+### Articles page ✅
+- Sides `--articles-side` 96 / 48 / 24 / 16, top padding 40, bottom 96.
+- **Filters:** 44 pill search (1px `--color-border-strong` border, 18 Search icon, Manrope 16 input) + 2 native `<select>`s styled as 44 pills (`--color-border` border, 16 Medium label, Lucide ChevronDown) + a 14 `--color-muted-foreground` count. 44 category chip pills bg `--color-muted`, 16 Medium label, 7px verdict dot; selected = `--color-primary` + `--color-primary-foreground`; the row scrolls with ‹ › 44 buttons when it overflows.
+- **Results:** with >4 results — a lead card (960:440, height 560, radius 20, bottom scrim, white 28/36 Medium title, 14 date) + a side list of 4 items (160×122 thumb radius 12, 20/26 Medium title, 14 date); then a 4-column grid (3 ≤1280, 2 ≤900, 1 ≤600), gap 32/24. Grid card: bg `--color-muted`, radius 20, padding 8/8/20, 220 photo radius 12, 20/26 title, 14 date.
+- Verdict pill on photos: bg `--color-background` 90%, dot `--color-verdict-*-dot`, 13 semibold UPPERCASE word `--color-verdict-*`. Status `benar` is labelled **"Benar"**.
+- The whole card is clickable (title link `::after`), focus ring on the card.
 
 ### Tanya AIFA (floating)
-Pill `padding 10px 22px 10px 18px; min-height 44`, ikon chat 24px + "Tanya AIFA" Label/16. Dalam artwork merah `#e51c23` + shadow merah — **bercanggah dengan rule "Red bukan warna aksi"**. Cadangan: Button filled Ink + `--shadow-float` (sahkan dengan user).
+Pill `padding 10px 22px 10px 18px; min-height 44`, 24px chat icon + "Tanya AIFA" Label/16. Red `#e51c23` + red shadow in the artwork — **conflicts with the rule "red is not an action colour"**. Proposal: filled Ink Button + `--shadow-float` (to confirm with the owner).
 
-### Kad
-- **Article card (page Artikel):** lebar 230; imej 276 tinggi radius 26→`--radius-card`; pill verdict kiri atas (bg white 90% + blur 10, padding 6px 10px, dot 7px, 13 SemiBold); avatar agensi 30px bulat kiri bawah; tajuk Heading/20; tarikh Body/14 @60%.
-- **FactCheckCard ✅ (Home "Semakan fakta terkini"):** `components/FlipCard.js`, 340×480, radius `--radius-card`. Flip dikekalkan: hover tetikus, klik/tap, Enter/Space (fokus pindah ke sisi yang kelihatan), `rotateY(180deg)` .6s `cubic-bezier(.77,0,.175,1)`, tiada animasi jika reduced motion.
-  - Depan: foto penuh; scrim atas tipis (0.35→0, 120px) di belakang logo dan scrim bawah pekat (0.8→0.55→0, 300px) di bawah teks supaya teks putih kekal ≥4.5:1 atas sebarang foto; **logo agensi 44 putih (logo 30, atau monogram) di kanan atas**; **pill verdict (dot + PERKATAAN 13 semibold) + tajuk 24/125% Medium putih di bawah** (inset 24); tiada ikon panah.
-  - Belakang: bg `--color-muted`, border 1px `--color-border`, padding 24; `● PALSU · MCMC` (perkataan warna `--color-verdict-*`) + avatar 36; tajuk 20/130% Medium; ringkasan 16/24 `--color-text-secondary`; meta 13 `--color-muted-foreground` "Disemak {tarikh}" + "Sumber: kenyataan rasmi {agensi}" atas garisan; CTA penuh lebar tinggi 48, padding 6/6/6/20, `--color-primary`, label 16 Medium "Baca semakan" + bulatan ↗ putih 36 (konsentrik dengan radius pill); hover `--color-primary-hover` + ikon geser 2px ↗; tekan `scale .96`. Kedua-dua sisi tepat 480px (`box-sizing: border-box`) supaya tinggi kad tidak berubah semasa flip; ringkasan max 4 baris.
-- **Seksyen "Semakan fakta terkini" ✅:** `components/Latest.js`. Padding atas/bawah 96 (64 ≤1280, 48 ≤600), sisi `--latest-side` 96 / 48 ≤1280 / 24 ≤900 / 16 ≤600 untuk tajuk dan butang sahaja — **baris kad full-bleed hingga tepi skrin** (seperti hero carousel), kad pertama sejajar dengan tajuk; gap 48; tajuk Heading/36 Medium **2 baris seimbang (22 + 22 aksara): "Semakan fakta terkini, / disahkan agensi rasmi."** (≤600px baris mengalir dengan `text-wrap: balance`, kekal 2 baris). Baris kartu = **gelangsar automatik tanpa hujung** (12 semakan terbaru, setiap satu gambar unik): kad duduk atas "cincin" — kad yang keluar di kiri masuk semula di kanan, tiada salinan pendua. Kelajuan 36px/s; **hover tetikus = perlahan hingga berhenti, mouse leave = laju semula** (ease ~0.2s). Juga berhenti semasa kad diflip, fokus papan kekunci di dalam (kad yang difokus dibawa ke pandangan), diseret (sentuh/pen), dan sentiasa di bawah `prefers-reduced-motion`. Butang ‹ › 44 bulat (border `--color-border`) gelongsor tepat satu kad; "Lihat lagi" `Button` outline dengan border `--color-foreground`, di tengah.
-- **Seksyen yang sama di bawah halaman artikel ✅:** `<Latest status={article.status} exclude={article.slug} />` di `app/article/[slug]/page.js`. Gaya, gelangsar dan flip sama seperti di Home; hanya semakan dengan **verdict yang sama** (palsu / benar / makluman), tanpa artikel yang sedang dibaca. Tajuk + sub-tajuk ikut verdict, dari `articleStatus[status].related` di `data/content.js`: Palsu "Dakwaan palsu lain", Benar "Fakta benar lain", Makluman "Makluman lain". Senarai pendek (cth. 3 benar) diulang hingga ≥ 8 kad supaya cincin tidak berlubang.
-- **Feature card / WSIS:** bg `--color-muted`, radius 20, padding 46 44; stats Stat/32 Light + caption 12 Smoke.
-- **Fungsi card (Tentang Kami):** tinggi 280, padding 24, radius 20, bg subtle; tajuk Heading/24 + nombor "/01" Body/16; teks Body/16 Smoke.
-- **Logo download card:** border 1px `--color-border`, radius 20; area pratonton bg subtle; bawah: Heading/36 + Body/16 @80% + meta 14 @60% + Button filled "Muat turun" (ikon muat turun).
+### Cards
+- **Article card (Articles page):** width 230; image 276 tall, radius 26→`--radius-card`; verdict pill top-left (bg white 90% + blur 10, padding 6px 10px, 7px dot, 13 SemiBold); 30px round agency avatar bottom-left; Heading/20 title; Body/14 date @60%.
+- **FactCheckCard ✅ (Home "Semakan fakta terkini"):** `components/FlipCard.js`, 340×480, radius `--radius-card`. The flip is kept: mouse hover, click/tap, Enter/Space (focus moves to the visible side), `rotateY(180deg)` .6s `cubic-bezier(.77,0,.175,1)`, no animation under reduced motion.
+  - Front: full photo; a thin top scrim (0.35→0, 120px) behind the logo and a dense bottom scrim (0.8→0.55→0, 300px) under the text so white text stays ≥4.5:1 on any photo; **a white 44 agency logo (30 logo, or a monogram) top-right**; **verdict pill (dot + 13 semibold WORD) + 24/125% Medium white title at the bottom** (inset 24); no arrow icon.
+  - Back: bg `--color-muted`, 1px border `--color-border`, padding 24; `● PALSU · MCMC` (word in `--color-verdict-*`) + 36 avatar; 20/130% Medium title; 16/24 summary `--color-text-secondary`; 13 meta `--color-muted-foreground` "Disemak {date}" + "Sumber: kenyataan rasmi {agency}" above a rule; full-width CTA 48 tall, padding 6/6/6/20, `--color-primary`, 16 Medium label "Baca semakan" + a white 36 ↗ circle (concentric with the pill radius); hover `--color-primary-hover` + the ↗ icon slides 2px; press `scale .96`. Both faces exactly 480px (`box-sizing: border-box`) so the card height does not change while flipping; summary max 4 lines.
+- **"Semakan fakta terkini" section ✅:** `components/Latest.js`. Top/bottom padding 96 (64 ≤1280, 48 ≤600), sides `--latest-side` 96 / 48 ≤1280 / 24 ≤900 / 16 ≤600 for the heading and buttons only — **the card row runs full-bleed to the screen edge** (like the hero carousel), the first card aligned with the heading; gap 48; Heading/36 Medium title on **2 balanced lines (22 + 22 characters): "Semakan fakta terkini, / disahkan agensi rasmi."** (≤600px lines flow with `text-wrap: balance`, still 2 lines). The card row = **an endless automatic glide** (the 12 latest checks, each with a unique image): cards sit on a "ring" — a card leaving on the left comes back on the right, no duplicate copies. Speed 36px/s; **mouse hover = slows to a stop, mouse leave = speeds back up** (ease ~0.2s). Also stops while a card is flipped, while keyboard focus is inside (the focused card is brought into view), while dragged (touch/pen), and always under `prefers-reduced-motion`. Round ‹ › 44 buttons (border `--color-border`) glide exactly one card; "Lihat lagi" outline `Button` with a `--color-foreground` border, centred.
+- **The same section under the article page ✅:** `<Latest status={article.status} exclude={article.slug} />` in `app/article/[slug]/page.js`. The same style, glide and flip as Home; only checks with **the same verdict** (palsu / benar / makluman), without the article being read. Title + subtitle follow the verdict, from `articleStatus[status].related` in `data/content.js`: Palsu "Dakwaan palsu lain", Benar "Fakta benar lain", Makluman "Makluman lain". A short list (e.g. 3 benar) repeats to ≥ 8 cards so the ring has no hole.
+- **Feature card / WSIS:** bg `--color-muted`, radius 20, padding 46 44; Stat/32 Light stats + 12 Smoke caption.
+- **Function card (About us):** height 280, padding 24, radius 20, subtle bg; Heading/24 title + "/01" Body/16 number; Body/16 Smoke text.
+- **Logo download card:** 1px border `--color-border`, radius 20; subtle preview area; bottom: Heading/36 + Body/16 @80% + 14 meta @60% + filled Button "Muat turun" (download icon).
 
-### Carousel "Semakan fakta popular" (Hero carousel)
-Slide 960×480 radius 20, gap 20, slide aktif di tengah. Overlay `linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.05) 85%)`. Eyebrow Verdict/13 Smoke ("Palsu · KPDN"), tajuk Heading/48 Medium putih, teks Body/16 putih, Button canvas + ikon panah. Butang prev/next 48 bulat Ink + border Stone. Bawah: pill dots bg subtle (dot 8, aktif 48 lebar) + butang Jeda 56.
+### "Semakan fakta popular" carousel (Hero carousel)
+Slides 960×480 radius 20, gap 20, the active slide centred. Overlay `linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.05) 85%)`. Verdict/13 Smoke eyebrow ("Palsu · KPDN"), white Heading/48 Medium title, white Body/16 text, canvas Button + arrow icon. Round 48 prev/next buttons, Ink + Stone border. Below: a subtle dots pill (8 dots, active 48 wide) + a 56 Pause button.
 
-### Media sosial carousel
-Kad 220×560 radius 20 (bg gradient ikut platform), kad aktif 920 lebar + `0 24px 50px rgba(0,0,0,.45)`. Progress bar 680×4. Butang 48 bulat bg subtle.
+### Social media carousel
+Cards 220×560 radius 20 (platform gradient bg), the active card 920 wide + `0 24px 50px rgba(0,0,0,.45)`. Progress bar 680×4. Round 48 buttons, subtle bg.
 
-### Lain-lain section
-- Band/Closing: border atas+bawah, padding 86 0, Heading/32 + pasangan Button (outline "Salur kepada kami" + filled "Semak dakwaan").
-- Band/Announcement: tinggi 48, radius 12, bg subtle, dot Violet 8 + Body/14 + Button outline.
-- Timeline (Tentang Kami): garis 2px Stone, dot 12 Kebenaran Red + halo putih 5px, tajuk Heading/24, teks Body/16 @80%, gap 44.
-- Sumber kenyataan rasmi: border-top, padding 36 0, label 12 + baris logo agensi (tinggi 48, gap 56, opacity .92).
+### Other sections
+- Band/Closing: top + bottom border, padding 86 0, Heading/32 + a Button pair (outline "Salur kepada kami" + filled "Semak dakwaan").
+- Band/Announcement: height 48, radius 12, subtle bg, 8 Violet dot + Body/14 + outline Button.
+- Timeline (About us): 2px Stone line, 12 Kebenaran red dot + 5px white halo, Heading/24 title, Body/16 @80% text, gap 44.
+- Official statement sources: top border, padding 36 0, 12 label + a row of agency logos (height 48, gap 56, opacity .92).
 
 ---
 
-## 5. Pemetaan page → komponen
+## 5. Page → component map
 
-| Route | Komponen |
+| Route | Components |
 |---|---|
 | `/` | `Hero`, `Carousel`, `Latest` + `FlipCard`, `Viewership`, `Bento`, `Stories` |
 | `/article` | `Articles` |
 | `/article/[slug]` | `ArticleDetail` |
 | `/about-us` | `AboutUs`, `SphereGallery`, `LogoKit` |
-| semua | `Header`, `Footer`, `Chatbot`, `ClaimForm` |
+| all | `Header`, `Footer`, `Chatbot`, `ClaimForm` |
 
-Node Figma (rujukan awal sahaja): `/` `3:203` · `/article` `20:3033` · `/about-us` `4:1359` · `/article/[slug]` `4:1876` · design system `14:14`–`14:1347`.
+Figma nodes (early reference only): `/` `3:203` · `/article` `20:3033` · `/about-us` `4:1359` · `/article/[slug]` `4:1876` · design system `14:14`–`14:1347`.
 
-Gambar: guna aset sedia ada dalam `public/images/` dahulu; aset baru dari Figma perlu dimuat turun ke `public/` (URL Figma MCP tamat 7 hari).
+Images: use the existing assets in `public/images/` first; new assets from Figma must be downloaded into `public/` (Figma MCP URLs expire after 7 days).
 
 ---
 
-## 6. Urutan kerja dicadangkan
-
-1. Branch baru dari `endahbyu` (contoh `design-system`).
-2. ✅ Tukar font ke Manrope dalam `layout.js` (Inter dibuang 21 Nov 2026).
-3. ✅ Tambah `app/tokens.css` (bahagian 2) dan import.
-4. ✅ Petakan variable lama dalam `:root` `global.css` (bahagian 3). Semak visual setiap page masih perlu.
-5. ✅ Bina `components/ui/` (Button, Chip, Tabs, Verdict, SearchField). Belum: guna dalam komponen sedia ada.
-6. ✅ Header + Hero. Belum: Footer, Tanya AIFA.
-7. Kemas section ikut page (bahagian 4 & 5), satu commit setiap section.
-8. Ganti hex keras yang tinggal dengan token.
-9. `npm run build` (export statik mesti lulus), semak dengan `npm run dev`, `npm run lint:ds`, dan semak visual desktop + 390px.
-10. Buka PR ke `endahbyu`.
-
-## 7. Perkara terbuka (sahkan dengan user)
-- Warna butang Tanya AIFA (merah vs Ink).
-- Page Artikel masih guna Montserrat dan radius 26 — tukar ke Manrope / 20 (cadangan: ya).
-- Perlu mode Dark sekarang atau kemudian.
-
-## Home — bagian bawah
-
-- **Tentang ringkas** (`.viewership`, `.partners`): sisi `--brief-side` 96 → 48 (≤1280) → 24 (≤960) → 16 (≤600). Kicker 24 Medium, lead 20/130%. Angka statistik `clamp(48px, 5vw, 72px)` Medium, keterangan 16 Light. Label mitra 14 semibold uppercase `--color-muted-foreground`, jarak logo 40, ticker tetap.
-- **Aktiviti media sosial terkini** (`.activity`): padding sisi 96, gap 32, judul Heading/36 Medium.
-- **WSIS PromoBanner** (`components/Bento.js`, `.wsis-banner`): baris flex tinggi 560, gap 24. Kartu cerita flex 1.62, padding 48, `--radius-lg`, latar `--color-black`; eyebrow merah merek (bukan aksi); CTA pil terang 44px, label 16/24 Medium, ikon Lucide `ArrowRight`, scale .96 saat ditekan → `/about-us/#berita-galeri`. Media flex 1, border 1px, `--radius-lg`. Menumpuk di ≤1100.
-- **SocialCarousel** (`components/Stories.js`): tanpa judul sendiri (judul dari `.activity`). Ukuran dari lebar viewport: kecil = 15.3%, besar = sisa, gap 8; ≤700: kecil max(16%, 56), besar min(80%, 380). Kartu `--radius-lg`, progress track `--color-muted-strong` / bar `--color-foreground`, tombol bulat 44px outline dengan focus ring.
-
-## Catatan halaman (Tentang Kami, Artikel, detail artikel)
-
-- **Artikel** (`components/Articles.js`): baris kartu utama + senarai sisi dibuang; semua hasil dalam grid kartu 4 kolom. Chip kategori hanya `Semua` + empat keputusan (Palsu, Penjelasan, Waspada, Makluman). Tajuk kartu kini `box-sizing: border-box` supaya padding kanan 12 dihormati.
-- **Detail artikel**: kolum bacaan `.post-body` 514px, 18/28.
-- **Tentang Kami › About** (`.about-intro`, data `aboutIntro`): pill label 14 Medium berbingkai `--color-border`; lead 24/32 lebar 700. Tiga kartu tinggi 340, gap 12, `--radius-card`: (1) `--color-primary` dengan teks 24 Medium + bahagian `--color-muted-foreground` dan penunjuk status (suis hiasan, `--color-link`); (2) `--color-muted-strong` dengan pill 16/24 Medium; (3) `--color-muted` dengan angka 40 Light + bar putus-putus keputusan (dikira daripada `articles`). Baris fakta: judul 20 Medium tengah, angka 40 Light, label 14 `--color-muted-foreground`. ≤1100 kartu menindan, fakta 2×2.
-- Bahagian "Bagaimana kami menyemak fakta" dibuang daripada halaman kerana tiada dalam canvas (data `howItWorks` kemudian dibuang, 23 Nov 2026).
-- **Mobile fixes**: `.about-intro__lead` `flex: none` ≤1100 (flex-basis 700 jadi tinggi dalam kolum); `.about-fn-card` `flex: none` ≤700 (kad kecil Empat fungsi runtuh ke 48px); `.articles-card` `box-sizing: border-box` (kad melimpah 28px daripada slot grid).
-- **Hero carousel**: teks hanya pada slaid tengah (slaid sisi: gambar sahaja, fade .2s keluar / .3s masuk); pembilang `03 / 05` 14px tnum dalam pill hitam 60% di kanan bawah slaid aktif (disembunyikan ≤600). Slaid RON95 guna foto pam minyak.
-
-## Fasa 5 — Pembersihan (21 Nov 2026)
-
-- `global.css`: ~700 baris CSS mati dibuang (disahkan dengan perbandingan tangkapan skrin piksel demi piksel, desktop 1624 + mobile 390, semua halaman).
-- Tiada hex keras lagi kecuali warna jenama platform (`.story-instagram` …) dan `#000` dalam `mask-image`. Alias lama `:root` dibuang; `:root` dalam `global.css` kini hanya pembantu layout & motion (`--side`, `--max-width`, `--ease`, `--slide`, `--ease-in-out`, `--duration-page`, `--fade`).
-- Overlay media: `--gradient-scrim-media` (hero, kiri→kanan), `--gradient-scrim-media-wide`, `--gradient-scrim-bottom` (FlipCard), `--gradient-scrim-bottom-short` (hero mobile), `--gradient-scrim-top`.
-- Berat font: semua melalui `--font-weight-*`; tiada 700. Asas `h1–h6` = Medium 500.
-- Radius: semua melalui `--radius-*` kecuali bulatan `50%`.
-- Saiz: tiada `rem`; saiz font luar skala dipetakan (15→16, 11→12, 27→28, 22→24, 19→20, 12.5→13, 18.5→18). Pengecualian: monogram agensi 9px.
-- Ralat borang (ClaimForm) = `--color-destructive`; fokus input AIFA = `--color-ring`; hover pautan AIFA = `--color-link`. Merah AIFA yang tinggal (togol, avatar, bubble pengguna, butang hantar) menunggu keputusan warna Tanya AIFA.
-
-## Motion, lint dan aksesibiliti (21 Nov 2026)
-
-- **Token motion** (`app/tokens.css`): `--duration-fast` 150ms (hover, warna, tekan) · `--duration-base` 250ms · `--duration-slow` 450ms · `--duration-page` 1.2s (transisi route sahaja). `--ease-out` cubic-bezier(.23,1,.32,1) = lalai untuk masuk/gerak/reveal · `--ease-in-out` (morf atas skrin, cth. ikon menu) · `--ease-emphasized` (anjakan kecil anak panah CTA) · `--ease-page` (transisi route sahaja).
-- **`npm run lint:ds`** (`scripts/lint-ds.mjs`): hex, primitif palet, pustaka ikon lain, ikon Lucide tanpa `<Icon>`, `rem`, berat font luar skala, font selain Manrope, `transition: all`, warna lalai shadcn. Pengecualian: komen `ds-allow: <sebab>` pada baris yang sama. Exit 1 bila ada masalah (sedia untuk CI).
-- **Kontras:** semua teks pada 4 halaman lulus WCAG AA (diimbas pada runtime terhadap latar sebenar). Tanya AIFA kini `--color-brand-strong` (#C8211C, 5.56:1 dengan putih) — masih merah, tetapi dulu 4.30:1 gagal AA. Nombor "/01" Empat fungsi = `--color-text-secondary`.
-- **Fokus:** carousel media sosial (`.stories-viewport`) kini ada cincin fokus.
-
-## Kad artikel gaya baharu (21 Nov 2026, rujukan elevenlabs.io)
-
-`components/Articles.js › GridCard`, `.articles-card` dalam `global.css`.
-
-- Kad: latar `--color-card`, border 1px `--color-border`, radius `--radius-card` (20), `overflow: hidden`, tiada bayang.
-- Foto: full-bleed di atas (dipotong oleh radius kad), `aspect-ratio: 16 / 10`, latar `--color-muted-strong` sementara imej dimuat.
-- Pill verdict atas foto: putih solid `--color-card`, 16px dari tepi, padding 8/12; teks kekal 13 Semibold UPPERCASE warna verdict.
-- Avatar agensi: kiri bawah foto, 16px dari tepi.
-- Badan (`.articles-card__body`): padding 20/24/24 (mobile 16/20/20), jarak 8; tajuk 20/26 Medium (mobile 18/24); tarikh 14 **Medium** `--color-muted-foreground`.
-- Hover (pointer halus sahaja): foto zoom 1.03 (`--ease-out`), border → `--color-border-strong` (`--duration-fast`). Fokus papan kekunci: cincin pada kad (`:focus-within`).
-
-## Keputusan 21 Nov 2026
-
-- **Ikut `design.md`**: kad media sosial kini hitam polos (gradient platform dibuang); teks meta (tarikh kad, `.fc-meta`, `.story-meta`, `.post-meta`, meta kad logo) = Medium 500.
-- Tanya AIFA = `--color-brand-strong` (kekal).
-- Skop: laman web sahaja — CMS & extension dibuang dari plan.
-
-## Kemas kini 21 Nov 2026 (petang)
-
-- **Semakan fakta terkini:** butang "Lihat lagi" dibuang ().
-- **Logo:** halaman `/logo` dibuang. Seksyen Logo dalam Tentang Kami ada `id="logo"`; menu Tentang Kami › Logo → `/about-us/#logo`. `PageTransition` kini mendarat pada `#hash` selepas transisi (dulu sentiasa ke atas).
-- **Kad artikel:** border kini `--color-muted-strong` (hairline lembut); **tiada hover pada border** — hover hanya zoom foto 1.03.
-- **Tentang Kami, seksyen 2 (About):** label + lead, tiga kad (cerita, pill agensi, statistik + bar keputusan Palsu/Penjelasan/Makluman) dan baris fakta dalam angka. Label kiri atas ialah **teks eyebrow biasa** (14 Medium, `--color-muted-foreground`), bukan pill.
-- **Empat fungsi:** autoplay setiap 5s (`AUTOPLAY_MS`); berhenti bila hover atau fokus, bila tab tersembunyi, dan tiada autoplay dengan `prefers-reduced-motion`. Pilihan manual mula semula pemasa. `aria-live` hanya `polite` bila pengguna yang mengawal.
-- **Galeri media sosial** (`components/Stories.js`, `.social-gallery`), menggantikan slider:
-  - 5 kad sebaris (Instagram, Threads, X, TikTok, Facebook), tinggi 560, gap 8, `--radius-lg`. Kad terbuka `flex-grow: 4`, kad lipat `1`. Hover / fokus / ketik membuka kad.
-  - Gerakan: lebar 600ms `--ease-out`; foto 1.1 → 1 dalam 800ms; kad lipat malap `brightness(.5)` (hover .7); teks naik 12px + pudar masuk selepas 180ms, keluar 150ms tanpa jeda; ikon platform kembali selepas 300ms.
-  - Scrim baharu `--gradient-scrim-card` supaya teks putih terbaca atas foto/infografik yang sibuk.
-  - Kad lipat: ikon platform sahaja. Kad terbuka: lencana platform + tarikh, tajuk 28/34, ringkasan 2 baris, CTA pill putih "Buka di {platform}" (44px, tekan `scale(.97)`).
-  - Mobile (≤700): lajur menegak tinggi 720; ringkasan disembunyikan. `prefers-reduced-motion`: tiada transisi.
-  - Data `stories` kini ada `image` + `alt` untuk setiap kad; Facebook ditambah (pautan ke halaman Facebook). Pemain video/embed dibuang — CTA membuka hantaran asal.
-
-## Kemas kini 21 Nov 2026 (malam)
-
-- **Galeri Tentang Kami** (`components/SphereGallery.js`, `.sphere-*`): sfera 3D foto bulat (port SphereImageGrid), menggantikan grid/akordion.
-  - 36 nod (6 foto galeri berulang) atas sfera Fibonacci, jitter berbenih (tiada `Math.random`, selamat SSR). Pentas segi empat hingga 960px; jejari 0.4×, nod 0.18× saiz pentas, skala ikut kedalaman + jarak dari tengah, nod bertindih dikecilkan.
-  - Gerakan ditulis terus ke DOM dari satu gelung rAF (tiada render semula React setiap bingkai); berhenti bila di luar skrin.
-  - Auto-putar ~7°/s, terus berputar semasa hover (seperti kod asal); berhenti hanya semasa fokus papan kekunci, seret, dialog terbuka atau `prefers-reduced-motion`. Seret (pointer capture selepas 4px) dengan momentum (decay .94); seretan tidak membuka foto. Sentuh: `touch-action: pan-y` — leret mendatar memutar, menegak menatal halaman.
-  - Nod: butang bulat, border 2px putih 20%, `--shadow-float`; hover (mouse) skala 1.2, tekan .97, fokus outline `--color-ring`.
-  - Klik/ketuk → `<dialog>` asli, **foto sahaja tanpa kotak teks** (alt = kapsyen), butang tutup 44px ikon X; Esc/backdrop menutup. Masuk: opacity + scale .96 → 1, 300ms `--ease-out`; backdrop 200ms. Reduced motion: fade sahaja.
-  - Petunjuk 14/20 `--color-muted-foreground`: "Seret untuk memutar, pilih foto untuk membesarkan."
-- **Galeri media sosial — kad terlipat** (`.social-card__tint`): kembali seperti sebelum galeri elastik — panel dakwat dengan gradient warna platform (Instagram, Threads, X, TikTok, Facebook; `ds-allow: platform brand colour`) dan ikon platform 48px di tengah (32px ≤700). Foto hanya kelihatan pada kad terbuka.
-  - Buka: tint pudar 250ms `ease`, ikon pudar + skala .8 dalam 120ms. Tutup: tint dan ikon kembali selepas 250–300ms, bila baris sudah stabil. Hover (mouse) pada kad terlipat: tint brightness 1.35.
-  - Ini menyimpang daripada keputusan design.md "tiada gradient pada kad" atas permintaan pengguna (21 Nov 2026).
-
-## Scroll motion — line reveal tajuk
-`components/ScrollMotion.js` (dipasang di Utama, Tentang Kami, detail artikel). Tajuk dalam senarai `lineBlocks` dipecah per baris (GSAP SplitText, `mask: 'lines'`) dan naik dari `yPercent 100` ke 0: 0.9s, `power4.out`, stagger 0.08, sekali sahaja apabila atas tajuk sampai 85% viewport. Mask setiap baris diberi padding .14em/.2em (margin negatif sama) supaya huruf tinggi dan descender tidak terpotong; selepas animasi, split di-revert jadi teks biasa. Teks badan, kad dan data tidak bergerak. `prefers-reduced-motion` mematikan semua. Pembaca skrin mendapat `aria-label` penuh dari SplitText.
-
-## Halaman baharu (21 Nov 2026)
-- `/submit-claim/` (`app/submit-claim/page.js`): lawatan terus (pautan dikongsi, tab baharu) dapat halaman "Lapor berita tular" dan borang pop-up `ClaimForm` terbuka sendiri. Klik dalam laman masih buka pop-up tanpa navigasi.
-- 404 (`app/not-found.js`): header + footer, eyebrow "Ralat 404", tajuk display, dua jalan keluar (Utama filled, Artikel outline). Gaya `.page-notice`.
-
-## Pembaikan audit MEDIUM (21 Nov 2026)
-- **Tajuk seksyen:** satu peranan untuk semua halaman (`.latest-checks__title`, `.activity__title`, `.about-title`, `.about-fn-title`, `.logo-kit-title`): 28 → 36 fluid, weight 500, rata kiri. Display H1 juga 500. Sub-tajuk dalam seksyen (`.about-subtitle`) 24/32.
-- **Outline tajuk:** carousel hero ada `<h2 class="sr-only">Semakan fakta pilihan</h2>` supaya slaid H3 tidak melangkau tahap.
-- **Semibold (600)** hanya untuk label verdict (dan wordmark logo). Eyebrow, badge, heading footer, label AIFA, tajuk keputusan AIFA, tajuk borang: 500. `b, strong`: 500 (deklarasi rosak `…semibold)er` dibaiki).
-- **Satu butang filled per skrin:** muat turun Logo/Ikon kini `variant="outline"`. Butang header "Salur Kepada Kami" jadi outline di Utama sahaja (hero "Semak" ialah aksi utama di sana); halaman lain kekal filled.
-- **Merah jenama** tidak lagi dipakai sebagai teks (eyebrow WSIS → `--color-muted-foreground-inverse`). Tanya AIFA kekal merah (keputusan #4 terbuka) tetapi tanpa glow merah dan tanpa lompat: `--shadow-float`, hover sedikit gelap, tekan scale .97.
-- **Poster WSIS** (`img[src*="wsis"]`) guna `object-fit: contain` atas `--color-card` supaya teks poster tidak terpotong.
-- **Kad foto "275 juta+":** lapisan 20% + scrim kecerunan hanya di separuh atas (60% → 45% → 0 pada 80%). Diukur pada piksel sebenar: kapsyen ≥ 4.75:1 (desktop) / 5.32:1 (telefon) pada titik paling terang.
-- **Galeri sfera:** kawasan tekan halimunan ≥ 24 px pada skrin (`--node-hit` dari JS, `.sphere-node::after`).
-
-## Seksyen "Cara Sebenarnya.my membantu" (Utama, sebelum Aktiviti media sosial)
-`components/KenaliSebenarnya.js`, gaya `.kenali*` (dulu `HowItWorks.js` / `.how*`) dalam `app/global.css`. Grid bento 3 kolum (`grid-template-areas`):
-saluran | foto tinggi (3 baris) | empat verdict · cerita foto | foto | stat "24 jam" (2 baris) · agensi | foto | stat.
-Tablet (≤1024) 2 kolum, telefon (≤600) satu kolum. Gap kad `--spacing-20` (telefon 12), padding kad 32 (telefon 24), radius `--radius-card`.
-- Kad baca: latar taupe `--color-muted`, tanpa bayang. Satu kad tinta (stat) dengan angka besar weight 400 + unit separuh saiz (sama skala dengan statistik viewership).
-- Foto: full-bleed, hover zoom 1.03 (pointer sahaja). Kapsyen putih atas scrim bawah (80% → 55% → 0), diukur ≥ 6.4:1 pada piksel paling terang di 1440/768/390.
-- Verdict guna komponen `Verdict` (dot + perkataan). Ikon Lucide dalam cakera kanvas 48.
-- Tajuk seksyen guna peranan tajuk seksyen dikongsi (`.how__title`). Animasi: tajuk naik per baris; kad masuk melalui ScrollMotion dengan stagger tidak sekata 60–300 ms; `prefers-reduced-motion` matikan.
-- Disesuaikan daripada contoh BentoGridShowcase (Tailwind/shadcn/framer-motion): susun atur sahaja; tiada kebergantungan baharu.
-
-## Seksyen Logo — folder format (Tentang Kami, paling bawah sebelum footer)
-`components/LogoKit.js` + `components/FormatFolder.js`, gaya `.logo-kit*`, `.logo-card*`, `.folder*`, `.logo-terms*` dalam `app/global.css`. Reka bentuk daripada kanvas Wonder ("Logo Kit Section").
-- Susun atur: tajuk + intro di tengah; grid 2 kolum (gap 32; satu kolum ≤900) — kad `--color-muted`, radius `--radius-lg`, padding 32 (telefon 20): tajuk 36/42 (28/34 telefon) · keterangan 16 · meta 14 → pratonton (logo 356×107 / ikon 134×134, di tengah) → folder format. Kotak "Terma penggunaan logo" di bawah (`--color-border`, radius `--radius-card`, padding 32, teks 16/21, jarak atas 56).
-- **Folder:** dilukis pada pentas 391×286 dan diskala ke lebar kad dengan nisbah tanpa unit daripada container query (`tan(atan2(100cqw, 391px))`) — tiada JS resize. Plat belakang `--color-folder-back`, poket depan `--color-folder-front` (tepi `--color-folder-edge`), pil ikon mini `--color-folder-pill`. Tiga jubin 101×101 (JPEG, PNG, SVG; ikon fail di `public/images/formats/*.svg`) di kedudukan kanvas. Warna mengikut kanvas Logo Kit Section: poket `rgb(71 67 64 / .95)`, pil `#766e69`, teks cip `--color-accent`; padding kad 48, jarak antara bahagian 64, kad terma `--color-muted`. Token baharu dalam `tokens.css`: `--color-folder-*`, `--gradient-tile-jpeg/svg`, `--color-tile-png`, `--color-tile-svg-mini`, `--shadow-tile` (bayang jubin mengikut kanvas — pengecualian kepada "elevation dari tone").
-- Muat turun: chip PNG / SVG / JPEG (`<a download>`, aria-label "Muat turun Logo (PNG)"). Fail: `logo.*` dan `icon-download.*` dalam `public/images/logo/`. **JPEG** = latar putih. **SVG masih membungkus PNG** (bukan vektor) sehingga artwork vektor asal dibekalkan.
-- Gerak (daripada komponen IconFolder yang ditampal, nilai asal): masuk sekali apabila 30% kelihatan — kad naik 34 px + skala .92 → rehat dalam .9s `cubic-bezier(.2,.8,.2,1)`, jubin menyusul dengan delay .35s + .08s setiap satu. Sebaran: hover tetikus, ketuk, atau fokus papan kekunci pada chip → kad naik 6 px + skala 1.02, poket turun 6 px, jubin merebak 10.5 px × jarak dari tengah, naik 4 px, condong ×1.2 (.6s, delay .04s setiap satu). Hover satu jubin: naik 26 px, skala 1.1, jubin lain skala .96 + saturasi .75 / kecerahan .85, label format muncul dan chip padanan disorot. Penyimpangan kecil: selepas kemasukan (1.6s) hover tidak lagi guna delay .35s supaya tindak balas serta-merta. Chip: `:active` skala .97, `:focus-visible` outline putih.
-- `prefers-reduced-motion`: tiada kemasukan, tiada pergerakan (jubin kekal condong asal).
-- Jubin ialah hiasan (`aria-hidden`); kawalan sebenar ialah pautan muat turun.
-
-## Hierarki tipografi satu sistem (21 Nov 2026)
-- Saiz maksimum 48px (H1 halaman). Peranan: display 48 · section 36 · heading 24 · title 20 · lead 18 · body 16 · small 14 · eyebrow 13; angka statistik 48. Tablet/telefon turun ikut token (`app/tokens.css` › Type roles). `body` kini 16 (dulu 20 dan bocor ke elemen tanpa saiz).
-- 63 deklarasi saiz ad hoc dibuang daripada kelas komponen; saiz kini datang dari blok "Type roles" di hujung `app/global.css`. Komponen baharu: pilih peranan, jangan tulis `font-size` sendiri.
-
-## Logo media sosial + pop-up pratonton (Utama › Cara Sebenarnya.my membantu)
-- `components/SocialPeek.js`: baris logo platform (Instagram, Threads, X, TikTok, Facebook; ikon Simple Icons dari `socialLinks`), butang 48px kanvas, hover tinta.
-- Tekan logo → `<dialog>` modal (`showModal`): backdrop 60% hitam, panel putih `--radius-card`, masuk opacity + scale .96 (200–250ms). Isi: badge platform + tarikh, tajuk (peranan heading), ringkasan, butang outline "Buka di …", media 9:16 di kanan.
-- Media: `video` tempatan (Instagram) → `embed` rasmi platform (Threads, X, TikTok; dimuat hanya bila pop-up dibuka) → imej muka depan (Facebook, pautan halaman). Data dalam `stories` (`data/content.js`).
-- Escape, butang tutup dan klik backdrop menutup; fokus kembali ke logo yang membukanya. Telefon: satu kolum, media 48dvh.
-- Kad verdict seksyen ini kini tiga sahaja: Palsu, Makluman, Penjelasan (jenis `benar`).
+## 6. Suggested work order (at the time)
+
+1. A new branch from `endahbyu` (e.g. `design-system`).
+2. ✅ Switch the font to Manrope in `layout.js` (Inter removed 21 Nov 2026).
+3. ✅ Add `app/tokens.css` (section 2) and import it.
+4. ✅ Map the old variables in `global.css`'s `:root` (section 3). A visual check of every page is still needed.
+5. ✅ Build `components/ui/` (Button, Chip, Tabs, Verdict, SearchField). Not yet: use them in the existing components.
+6. ✅ Header + Hero. Not yet: Footer, Tanya AIFA.
+7. Tidy sections page by page (sections 4 & 5), one commit per section.
+8. Replace the remaining hard-coded hex with tokens.
+9. `npm run build` (the static export must pass), check with `npm run dev`, `npm run lint:ds`, and a visual check at desktop + 390px.
+10. Open a PR to `endahbyu`.
+
+## 7. Open questions (to confirm with the owner, at the time)
+- The Tanya AIFA button colour (red vs Ink).
+- The Articles page still used Montserrat and radius 26 — switch to Manrope / 20 (proposal: yes).
+- Dark mode now or later.
+
+## Home — lower part
+
+- **Short About** (`.viewership`, `.partners`): sides `--brief-side` 96 → 48 (≤1280) → 24 (≤960) → 16 (≤600). Kicker 24 Medium, lead 20/130%. Statistics `clamp(48px, 5vw, 72px)` Medium, 16 Light description. Partner label 14 semibold uppercase `--color-muted-foreground`, logos 40 apart, fixed ticker.
+- **Latest social media activity** (`.activity`): side padding 96, gap 32, Heading/36 Medium title.
+- **WSIS PromoBanner** (`components/Bento.js`, `.wsis-banner`): flex row 560 tall, gap 24. Story card flex 1.62, padding 48, `--radius-lg`, `--color-black` background; brand-red eyebrow (not an action); light 44px CTA pill, 16/24 Medium label, Lucide `ArrowRight` icon, scale .96 on press → `/about-us/#berita-galeri`. Media flex 1, 1px border, `--radius-lg`. Stacks at ≤1100.
+- **SocialCarousel** (`components/Stories.js`): no title of its own (the title comes from `.activity`). Sizes from the viewport width: small = 15.3%, large = the rest, gap 8; ≤700: small max(16%, 56), large min(80%, 380). Cards `--radius-lg`, progress track `--color-muted-strong` / bar `--color-foreground`, round 44px outline buttons with a focus ring.
+
+## Page notes (About us, Articles, article detail)
+
+- **Articles** (`components/Articles.js`): the lead card row + side list removed; every result in a 4-column card grid. Category chips only `Semua` + four verdicts (Palsu, Penjelasan, Waspada, Makluman). Card titles now `box-sizing: border-box` so the 12 right padding is respected.
+- **Article detail**: `.post-body` reading column 514px, 18/28.
+- **About us › About** (`.about-intro`, data `aboutIntro`): 14 Medium label pill framed in `--color-border`; 24/32 lead, 700 wide. Three cards 340 tall, gap 12, `--radius-card`: (1) `--color-primary` with 24 Medium text + a `--color-muted-foreground` part and a status indicator (decorative switch, `--color-link`); (2) `--color-muted-strong` with 16/24 Medium pills; (3) `--color-muted` with a 40 Light number + a dashed verdict bar (computed from `articles`). Facts row: 20 Medium centred title, 40 Light numbers, 14 `--color-muted-foreground` labels. ≤1100 the cards stack, facts 2×2.
+- The "Bagaimana kami menyemak fakta" part was removed from the page because it is not on the canvas (the `howItWorks` data was removed later, 23 Nov 2026).
+- **Mobile fixes**: `.about-intro__lead` `flex: none` ≤1100 (flex-basis 700 became a height in a column); `.about-fn-card` `flex: none` ≤700 (the small Four-functions cards collapsed to 48px); `.articles-card` `box-sizing: border-box` (the card overflowed its grid slot by 28px).
+- **Hero carousel**: text on the centre slide only (side slides: image only, fade .2s out / .3s in); a 14px tnum `03 / 05` counter in a 60% black pill bottom-right of the active slide (hidden ≤600). The RON95 slide uses a fuel pump photo.
+
+## Phase 5 — Clean-up (21 Nov 2026)
+
+- `global.css`: ~700 lines of dead CSS removed (verified by a pixel-by-pixel screenshot comparison, desktop 1624 + mobile 390, every page).
+- No hard-coded hex left except platform brand colours (`.story-instagram` …) and `#000` in `mask-image`. Old `:root` aliases removed; `:root` in `global.css` now holds only layout & motion helpers (`--side`, `--max-width`, `--ease`, `--slide`, `--ease-in-out`, `--duration-page`, `--fade`).
+- Media overlays: `--gradient-scrim-media` (hero, left→right), `--gradient-scrim-media-wide`, `--gradient-scrim-bottom` (FlipCard), `--gradient-scrim-bottom-short` (mobile hero), `--gradient-scrim-top`.
+- Font weights: all through `--font-weight-*`; no 700. Base `h1–h6` = Medium 500.
+- Radius: all through `--radius-*` except `50%` circles.
+- Sizes: no `rem`; off-scale font sizes mapped (15→16, 11→12, 27→28, 22→24, 19→20, 12.5→13, 18.5→18). Exception: the 9px agency monogram.
+- Form errors (ClaimForm) = `--color-destructive`; AIFA input focus = `--color-ring`; AIFA link hover = `--color-link`. The remaining AIFA reds (toggle, avatar, user bubble, send button) wait for the Tanya AIFA colour decision.
+
+## Motion, lint and accessibility (21 Nov 2026)
+
+- **Motion tokens** (`app/tokens.css`): `--duration-fast` 150ms (hover, colour, press) · `--duration-base` 250ms · `--duration-slow` 450ms · `--duration-page` 1.2s (route transitions only). `--ease-out` cubic-bezier(.23,1,.32,1) = the default for enter/move/reveal · `--ease-in-out` (on-screen morphs, e.g. the menu icon) · `--ease-emphasized` (small CTA arrow nudges) · `--ease-page` (route transitions only).
+- **`npm run lint:ds`** (`scripts/lint-ds.mjs`): hex, palette primitives, other icon libraries, Lucide icons without `<Icon>`, `rem`, weights off the scale, fonts other than Manrope, `transition: all`, shadcn default colours. Exceptions: a `ds-allow: <reason>` comment on the same line. Exits 1 on a problem (ready for CI).
+- **Contrast:** all text on the 4 pages passes WCAG AA (scanned at runtime against the real background). Tanya AIFA is now `--color-brand-strong` (#C8211C, 5.56:1 with white) — still red, but it used to fail AA at 4.30:1. The Four-functions "/01" numbers = `--color-text-secondary`.
+- **Focus:** the social media carousel (`.stories-viewport`) now has a focus ring.
+
+## New-style article card (21 Nov 2026, elevenlabs.io reference)
+
+`components/Articles.js › GridCard`, `.articles-card` in `global.css`.
+
+- Card: background `--color-card`, 1px border `--color-border`, radius `--radius-card` (20), `overflow: hidden`, no shadow.
+- Photo: full-bleed on top (clipped by the card radius), `aspect-ratio: 16 / 10`, `--color-muted-strong` background while the image loads.
+- Verdict pill on the photo: solid white `--color-card`, 16px from the edge, padding 8/12; the text stays 13 Semibold UPPERCASE in the verdict colour.
+- Agency avatar: bottom-left of the photo, 16px from the edge.
+- Body (`.articles-card__body`): padding 20/24/24 (mobile 16/20/20), gap 8; 20/26 Medium title (mobile 18/24); 14 **Medium** date `--color-muted-foreground`.
+- Hover (fine pointers only): photo zoom 1.03 (`--ease-out`), border → `--color-border-strong` (`--duration-fast`). Keyboard focus: a ring on the card (`:focus-within`).
+
+## Decisions 21 Nov 2026
+
+- **Follow `design.md`**: social media cards are now plain black (platform gradients removed); meta text (card dates, `.fc-meta`, `.story-meta`, `.post-meta`, logo card meta) = Medium 500.
+- Tanya AIFA = `--color-brand-strong` (kept).
+- Scope: the website only — CMS & extension dropped from the plan. (Reversed on 25 Nov 2026: the design system now serves both.)
+
+## Update 21 Nov 2026 (afternoon)
+
+- **Semakan fakta terkini:** the "Lihat lagi" button removed.
+- **Logo:** the `/logo` page removed. The Logo section in About us has `id="logo"`; the Tentang Kami › Logo menu item → `/about-us/#logo`. `PageTransition` now lands on the `#hash` after the transition (it always went to the top before).
+- **Article card:** the border is now `--color-muted-strong` (a soft hairline); **no hover on the border** — hover is only the 1.03 photo zoom.
+- **About us, section 2 (About):** label + lead, three cards (story, agency pills, statistic + Palsu/Penjelasan/Makluman verdict bar) and a facts-in-numbers row. The top-left label is **plain eyebrow text** (14 Medium, `--color-muted-foreground`), not a pill.
+- **Four functions:** autoplay every 5s (`AUTOPLAY_MS`); stops on hover or focus, when the tab is hidden, and no autoplay under `prefers-reduced-motion`. A manual choice restarts the timer. `aria-live` is `polite` only when the user is in control.
+- **Social media gallery** (`components/Stories.js`, `.social-gallery`), replacing the slider:
+  - 5 cards in a row (Instagram, Threads, X, TikTok, Facebook), 560 tall, gap 8, `--radius-lg`. The open card `flex-grow: 4`, folded cards `1`. Hover / focus / tap opens a card.
+  - Motion: width 600ms `--ease-out`; photo 1.1 → 1 in 800ms; folded cards dimmed `brightness(.5)` (hover .7); text rises 12px + fades in after 180ms, leaves in 150ms with no delay; the platform icon returns after 300ms.
+  - A new `--gradient-scrim-card` scrim so white text reads over busy photos/infographics.
+  - Folded card: platform icon only. Open card: platform badge + date, 28/34 title, 2-line summary, white CTA pill "Buka di {platform}" (44px, press `scale(.97)`).
+  - Mobile (≤700): a vertical column 720 tall; summary hidden. `prefers-reduced-motion`: no transitions.
+  - The `stories` data now has an `image` + `alt` for every card; Facebook added (link to the Facebook page). The video/embed player removed — the CTA opens the original post.
+
+## Update 21 Nov 2026 (evening)
+
+- **About us gallery** (`components/SphereGallery.js`, `.sphere-*`): a 3D sphere of round photos (a port of SphereImageGrid), replacing the grid/accordion.
+  - 36 nodes (6 gallery photos repeated) on a Fibonacci sphere, seeded jitter (no `Math.random`, SSR-safe). A square stage up to 960px; radius 0.4×, nodes 0.18× the stage size, scaled by depth + distance from the centre, overlapping nodes shrunk.
+  - Motion written straight to the DOM from one rAF loop (no React re-render per frame); stops when off-screen.
+  - Auto-rotates ~7°/s and keeps rotating on hover (as in the original code); stops only on keyboard focus, drag, an open dialog or `prefers-reduced-motion`. Drag (pointer capture after 4px) with momentum (decay .94); a drag does not open a photo. Touch: `touch-action: pan-y` — a horizontal swipe rotates, a vertical one scrolls the page.
+  - Nodes: round buttons, 2px white 20% border, `--shadow-float`; hover (mouse) scale 1.2, press .97, focus outline `--color-ring`.
+  - Click/tap → a native `<dialog>`, **photo only, no text box** (alt = caption), 44px close button with an X icon; Esc/backdrop closes. Enter: opacity + scale .96 → 1, 300ms `--ease-out`; backdrop 200ms. Reduced motion: fade only.
+  - Hint 14/20 `--color-muted-foreground`: "Seret untuk memutar, pilih foto untuk membesarkan."
+- **Social media gallery — folded cards** (`.social-card__tint`): back to how they were before the elastic gallery — an ink panel with the platform's colour gradient (Instagram, Threads, X, TikTok, Facebook; `ds-allow: platform brand colour`) and a 48px platform icon in the centre (32px ≤700). The photo shows only on the open card.
+  - Open: the tint fades in 250ms `ease`, the icon fades + scales .8 in 120ms. Close: the tint and icon return after 250–300ms, once the row has settled. Hover (mouse) on a folded card: tint brightness 1.35.
+  - This departs from the design.md decision "no gradients on cards" at the owner's request (21 Nov 2026).
+
+## Scroll motion — heading line reveal
+`components/ScrollMotion.js` (installed on Home, About us, article detail). Headings in the `lineBlocks` list are split per line (GSAP SplitText, `mask: 'lines'`) and rise from `yPercent 100` to 0: 0.9s, `power4.out`, stagger 0.08, once only when the top of the heading reaches 85% of the viewport. Each line mask gets .14em/.2em padding (with the same negative margin) so tall letters and descenders are not clipped; after the animation the split reverts to plain text. Body text, cards and data do not move. `prefers-reduced-motion` turns it all off. Screen readers get the full `aria-label` from SplitText. (Replaced by `PageEnter.js` on 23 Nov 2026, see below.)
+
+## New pages (21 Nov 2026)
+- `/submit-claim/` (`app/submit-claim/page.js`): a direct visit (a shared link, a new tab) gets a "Lapor berita tular" page and the `ClaimForm` pop-up opens by itself. A click inside the site still opens the pop-up without navigating.
+- 404 (`app/not-found.js`): header + footer, eyebrow "Ralat 404", display title, two ways out (Utama filled, Artikel outline). Style `.page-notice`.
+
+## MEDIUM audit fixes (21 Nov 2026)
+- **Section titles:** one role for every page (`.latest-checks__title`, `.activity__title`, `.about-title`, `.about-fn-title`, `.logo-kit-title`): 28 → 36 fluid, weight 500, left-aligned. The Display H1 is 500 too. Subtitles inside a section (`.about-subtitle`) 24/32.
+- **Heading outline:** the hero carousel has `<h2 class="sr-only">Semakan fakta pilihan</h2>` so the H3 slides do not skip a level.
+- **Semibold (600)** only for verdict labels (and the logo wordmark). Eyebrows, badges, footer headings, AIFA labels, AIFA result titles, form titles: 500. `b, strong`: 500 (a broken `…semibold)er` declaration fixed).
+- **One filled button per screen:** Logo/Icon downloads are now `variant="outline"`. The header button "Salur Kepada Kami" is outline on Home only (the hero "Semak" is the main action there); other pages stay filled.
+- **Brand red** is no longer used as text (WSIS eyebrow → `--color-muted-foreground-inverse`). Tanya AIFA stays red (open decision #4) but without the red glow and without the jump: `--shadow-float`, slightly darker hover, press scale .97.
+- **The WSIS poster** (`img[src*="wsis"]`) uses `object-fit: contain` on `--color-card` so the poster text is not cropped.
+- **"275 juta+" photo card:** a 20% layer + a gradient scrim on the top half only (60% → 45% → 0 at 80%). Measured on the real pixels: caption ≥ 4.75:1 (desktop) / 5.32:1 (phone) at the brightest point.
+- **Sphere gallery:** an invisible hit area ≥ 24 px on screen (`--node-hit` from JS, `.sphere-node::after`).
+
+## "Cara Sebenarnya.my membantu" section (Home, before social media activity)
+`components/KenaliSebenarnya.js`, styles `.kenali*` (formerly `HowItWorks.js` / `.how*`) in `app/global.css`. A 3-column bento grid (`grid-template-areas`):
+channels | tall photo (3 rows) | four verdicts · photo story | photo | "24 jam" stat (2 rows) · agencies | photo | stat.
+Tablet (≤1024) 2 columns, phone (≤600) one column. Card gap `--spacing-20` (phone 12), card padding 32 (phone 24), radius `--radius-card`.
+- Reading cards: taupe `--color-muted` background, no shadow. One ink card (stat) with a large weight-400 number + a half-size unit (the same scale as the viewership statistics).
+- Photos: full-bleed, hover zoom 1.03 (pointer only). White captions on a bottom scrim (80% → 55% → 0), measured ≥ 6.4:1 at the brightest pixel at 1440/768/390.
+- Verdicts use the `Verdict` component (dot + word). Lucide icons in a 48 canvas disc.
+- The section title uses the shared section-title role (`.how__title`). Animation: the title rises line by line; cards enter through ScrollMotion with an uneven 60–300 ms stagger; `prefers-reduced-motion` turns it off.
+- Adapted from the BentoGridShowcase example (Tailwind/shadcn/framer-motion): layout only; no new dependencies.
+
+## Logo section — format folder (About us, last before the footer)
+`components/LogoKit.js` + `components/FormatFolder.js`, styles `.logo-kit*`, `.logo-card*`, `.folder*`, `.logo-terms*` in `app/global.css`. Design from the Wonder canvas ("Logo Kit Section").
+- Layout: centred title + intro; a 2-column grid (gap 32; one column ≤900) — `--color-muted` cards, radius `--radius-lg`, padding 32 (phone 20): 36/42 title (28/34 phone) · 16 description · 14 meta → preview (logo 356×107 / icon 134×134, centred) → format folder. A "Terma penggunaan logo" box below (`--color-border`, radius `--radius-card`, padding 32, 16/21 text, 56 top margin).
+- **Folder:** drawn on a 391×286 stage and scaled to the card width with a unitless ratio from a container query (`tan(atan2(100cqw, 391px))`) — no JS resize. Back plate `--color-folder-back`, front pocket `--color-folder-front` (edge `--color-folder-edge`), mini icon pill `--color-folder-pill`. Three 101×101 tiles (JPEG, PNG, SVG; file icons in `public/images/formats/*.svg`) at the canvas positions. Colours follow the Logo Kit Section canvas: pocket `rgb(71 67 64 / .95)`, pill `#766e69`, chip text `--color-accent`; card padding 48, 64 between parts, terms card `--color-muted`. New tokens in `tokens.css`: `--color-folder-*`, `--gradient-tile-jpeg/svg`, `--color-tile-png`, `--color-tile-svg-mini`, `--shadow-tile` (tile shadows follow the canvas — an exception to "elevation from tone").
+- Downloads: PNG / SVG / JPEG chips (`<a download>`, aria-label "Muat turun Logo (PNG)"). Files: `logo.*` and `icon-download.*` in `public/images/logo/`. **JPEG** = white background. **The SVG still wraps a PNG** (not vector) until the original vector artwork is supplied.
+- Motion (from the pasted IconFolder component, original values): enters once when 30% visible — the card rises 34 px + scale .92 → rest in .9s `cubic-bezier(.2,.8,.2,1)`, tiles follow with a .35s delay + .08s each. Spread: mouse hover, tap, or keyboard focus on a chip → the card rises 6 px + scale 1.02, the pocket drops 6 px, tiles spread 10.5 px × distance from the centre, rise 4 px, tilt ×1.2 (.6s, .04s delay each). Hovering one tile: it rises 26 px, scale 1.1, the other tiles scale .96 + saturation .75 / brightness .85, the format label appears and the matching chip is highlighted. A small departure: after the entrance (1.6s) hover no longer uses the .35s delay, so it responds immediately. Chips: `:active` scale .97, `:focus-visible` white outline.
+- `prefers-reduced-motion`: no entrance, no movement (the tiles keep their original tilt).
+- The tiles are decoration (`aria-hidden`); the real controls are the download links.
+
+## One type hierarchy (21 Nov 2026)
+- Maximum size 48px (the page H1). Roles: display 48 · section 36 · heading 24 · title 20 · lead 18 · body 16 · small 14 · eyebrow 13; statistics 48. Tablet/phone step down through tokens (`app/tokens.css` › Type roles). `body` is now 16 (it was 20 and leaked into elements without a size).
+- 63 ad-hoc size declarations removed from component classes; sizes now come from the "Type roles" block at the end of `app/global.css`. A new component: pick a role, never write its own `font-size`.
+
+## Social media logos + preview pop-up (Home › Cara Sebenarnya.my membantu)
+- `components/SocialPeek.js`: a row of platform logos (Instagram, Threads, X, TikTok, Facebook; Simple Icons from `socialLinks`), 48px canvas buttons, ink hover.
+- Pressing a logo → a modal `<dialog>` (`showModal`): 60% black backdrop, white panel `--radius-card`, enters with opacity + scale .96 (200–250ms). Content: platform badge + date, title (heading role), summary, outline button "Buka di …", 9:16 media on the right.
+- Media: local `video` (Instagram) → the platform's official `embed` (Threads, X, TikTok; loaded only when the pop-up opens) → a cover image (Facebook, page link). Data in `stories` (`data/content.js`).
+- Escape, the close button and a backdrop click close it; focus returns to the logo that opened it. Phone: one column, media 48dvh.
+- The verdict cards in this section are now three only: Palsu, Makluman, Penjelasan (type `benar`).
 
-## WSIS dipindah ke "Cara Sebenarnya.my membantu" (21 Nov 2026)
-- **Poster WSIS** (`/images/bento/wsis-prize-award.webp`, persegi) duduk di kad kiri tengah (kawasan `story`, dulu foto warga emas), `object-fit: contain` atas `--color-card` + garis rambut `--color-border`: trofi dan tulisan poster tidak pernah terpotong. Kad min 300px tinggi (poster ≈300px di desktop); telefon: kad persegi. Kad tinggi tengah kekal foto "Tanya sebelum kongsi."
-- Kad tinta (dulu "24 jam") kini **Juara Dunia**: eyebrow 13 UPPERCASE + ikon trofi, tajuk peranan section (36/400, telefon 28), satu baris konteks (lead, putih 60%), butang `media` "Ketahui lebih lanjut" → `/about-us/#berita-galeri`. Teks penuh kekal di Tentang Kami › Berita.
-- Banner WSIS (`components/Bento.js`) dan gayanya dibuang; "Aktiviti media sosial terkini" kini galeri media sosial sahaja.
+## WSIS moved into "Cara Sebenarnya.my membantu" (21 Nov 2026)
+- **The WSIS poster** (`/images/bento/wsis-prize-award.webp`, square) sits in the left-middle card (`story` area, formerly the elderly-people photo), `object-fit: contain` on `--color-card` + a `--color-border` hairline: the trophy and the poster text are never cropped. Card min 300px tall (poster ≈300px on desktop); phone: a square card. The tall middle card stays the "Tanya sebelum kongsi." photo.
+- The ink card (formerly "24 jam") is now **Juara Dunia**: 13 UPPERCASE eyebrow + trophy icon, section-role title (36/400, phone 28), one line of context (lead, white 60%), `media` button "Ketahui lebih lanjut" → `/about-us/#berita-galeri`. The full text stays in About us › Berita.
+- The WSIS banner (`components/Bento.js`) and its styles removed; "Aktiviti media sosial terkini" is now the social media gallery only.
 
-## Seksyen dibuang + semakan bahasa (22 Nov 2026)
-- Dibuang: **Empat fungsi utama kami** (Tentang Kami; data `whatWeDo`, komponen dan gayanya) dan **Aktiviti media sosial terkini** (Utama; `components/Stories.js` dan gaya `.activity` / `.social-card`). Nota lama tentang kedua-duanya di atas kini sejarah sahaja. Pratonton media sosial kekal melalui logo dalam kad "Ikuti kami" (`SocialPeek`). Kelas `.about-fn-controls/-arrows/-track` kekal kerana dipakai oleh Berita dan Galeri.
-- Bahasa: semua teks antara muka dalam Bahasa Melayu baku (rujukan istilah laman MCMC). Dibetulkan: "Temukan" → "temui", "tangkap layar" → "tangkapan skrin", "Terbaru/Terlama dahulu" → "Terkini/Terawal dahulu", "nak"/"jumpa" → "hendak"/"menemui", "Semak Tentang Kami" → "Ketahui tentang kami". "dari" hanya untuk tempat/masa, "daripada" untuk sumber.
+## Sections removed + language review (22 Nov 2026)
+- Removed: **Empat fungsi utama kami** (About us; the `whatWeDo` data, component and styles) and **Aktiviti media sosial terkini** (Home; `components/Stories.js` and the `.activity` / `.social-card` styles). The older notes about both above are history only. The social media preview stays through the logos in the "Ikuti kami" card (`SocialPeek`). The `.about-fn-controls/-arrows/-track` classes stay because Berita dan Galeri uses them.
+- Language: all interface text in standard Malay (MCMC site terminology as reference). Fixed: "Temukan" → "temui", "tangkap layar" → "tangkapan skrin", "Terbaru/Terlama dahulu" → "Terkini/Terawal dahulu", "nak"/"jumpa" → "hendak"/"menemui", "Semak Tentang Kami" → "Ketahui tentang kami". "dari" only for place/time, "daripada" for sources.
 
-- **Hero Tentang Kami (22 Nov 2026, ikut Wonder › About Hero Section):** gambar baharu `public/images/about/hero-2026.jpg` (menara kaca, 1600w, dari 3276×4096) dengan `filter: brightness(.66)` (= lapisan hitam 34%) + scrim dari bawah (60% → 40% → 0 pada 65%) di belakang tajuk dan perenggan; diukur pada piksel paling terang: perenggan ≥ 6.9:1, tajuk ≥ 3.4:1. Tajuk max 12em (2–3 baris), perenggan max 47em. Jenis dan jarak kekal ikut peranan tapak (display 48, body, label), bukan nilai Wonder (40/20/24).
+- **About us hero (22 Nov 2026, following Wonder › About Hero Section):** new image `public/images/about/hero-2026.jpg` (glass tower, 1600w, from 3276×4096) with `filter: brightness(.66)` (= a 34% black layer) + a scrim from the bottom (60% → 40% → 0 at 65%) behind the title and paragraph; measured at the brightest pixel: paragraph ≥ 6.9:1, title ≥ 3.4:1. Title max 12em (2–3 lines), paragraph max 47em. Type and spacing follow the site roles (display 48, body, label), not the Wonder values (40/20/24).
 
-## Berita (Tentang Kami) + angka statistik (22 Nov 2026)
-- **Berita, desktop:** kad besar kiri = berita aktif; kad kecil kanan = giliran seterusnya. Bila maju (autoplay 5s / ›), kandungan berita seterusnya masuk ke kad besar dari kanan dan setiap kad kecil beralih satu slot ke kiri (`news-in`: translateX 40px → 0 + opacity, 380ms `--ease-out`, stagger 50ms). ‹ membalikkan arah (`data-dir="back"`). Saiz kad tidak berubah (480×488 besar). Reduced motion: pudar sahaja.
-- **Berita, telefon (≤700):** hanya kad besar dipaparkan; autoplay berulang tanpa henti (WCAG 2.2.2: butang jeda kekal).
-- **Angka:** komponen `components/CountUp.js` dipakai di Utama (statistik) dan Tentang Kami (fakta + "20+"): kira dari 0 bila masuk viewport (2s ease-out expo), lebar dikunci dan angka tabular hanya semasa mengira; selepas itu angka proporsional + `--text-stat--letter-spacing` (−0.02em) supaya "1,016" tidak renggang. Reduced motion: terus nilai akhir.
+## News (About us) + statistics (22 Nov 2026)
+- **News, desktop:** the large card on the left = the active story; the small cards on the right = the next in line. On advance (5s autoplay / ›) the next story's content enters the large card from the right and each small card shifts one slot left (`news-in`: translateX 40px → 0 + opacity, 380ms `--ease-out`, 50ms stagger). ‹ reverses the direction (`data-dir="back"`). Card sizes do not change (480×488 large). Reduced motion: fade only.
+- **News, phone (≤700):** only the large card shows; autoplay loops endlessly (WCAG 2.2.2: the pause button stays).
+- **Numbers:** `components/CountUp.js` is used on Home (statistics) and About us (facts + "20+"): counts from 0 when entering the viewport (2s ease-out expo), width locked and tabular figures only while counting; afterwards proportional figures + `--text-stat--letter-spacing` (−0.02em) so "1,016" is not loose. Reduced motion: the final value straight away.
 
-## Kenali Sebenarnya.my: nama dan kad Juara Dunia (22 Nov 2026)
-- Komponen `components/KenaliSebenarnya.js`, kelas `.kenali` / `.kenali__*` (dulu `HowItWorks` / `.how`). Kawasan grid kini ikut isi: `channels · photo · visitors · poster · award · social` (dulu `main · story · stat · agencies`).
-- Kad Juara Dunia: eyebrow → "Juara Dunia" (peranan section, 400) → sub "dalam Kepercayaan Digital & Semakan Fakta Awam" (peranan title 20/500, putih) → perenggan penuh (body 16, putih 60%) dengan fakta **33 juta rakyat** dan **lebih 20 agensi persekutuan** dalam `<strong>` putih 500 → butang "Ketahui lebih lanjut".
-
-## Peranan jarak + jenis diluaskan ke modal, borang, menu dan footer (22 Nov 2026)
-- **Borang Lapor (modal):** kad besar: padding `--pad-card` (atas/bawah) × `--pad-card-lg` (sisi); medan `--gap-group` (16) baris dan lajur; tajuk → deskripsi `--gap-text`; zon seret, fail dan "Saluran aduan lain" `--pad-card-sm` + `--radius-media`; paparan "dihantar" `--pad-card-lg`. Telefon: `--pad-card-sm` seluruhnya.
-- **Panel AIFA:** kepala `--pad-card-sm`, avatar ↔ tajuk `--gap-inline`; tajuk panel kini peranan title (20/500) sama seperti tajuk borang Lapor; mesej dan hasil `--gap-cards`, gelembung `--radius-media`; cadangan boleh berbalut (tidak terkeluar panel di telefon).
-- **Pop-up pratonton:** badge guna `--space-badge-x` / `--space-inline-tight`; ruang butang tutup di telefon = `--size-control` + `--gap-inline`.
-- **Menu Kongsi + menu telefon:** ikut peranan menu dropdown: padding `--space-inline`, radius `--radius-menu`, item `--space-field-x` sisi dengan tinggi kawalan.
-- **Footer:** blok `--gap-block` (24 → 40 fluid), tajuk lajur → senarai `--gap-group` (16), antara pautan `--gap-cards` (16 → 24 fluid).
+## Kenali Sebenarnya.my: name and the Juara Dunia card (22 Nov 2026)
+- Component `components/KenaliSebenarnya.js`, classes `.kenali` / `.kenali__*` (formerly `HowItWorks` / `.how`). The grid areas now follow the content: `channels · photo · visitors · poster · award · social` (formerly `main · story · stat · agencies`).
+- Juara Dunia card: eyebrow → "Juara Dunia" (section role, 400) → sub "dalam Kepercayaan Digital & Semakan Fakta Awam" (title role 20/500, white) → full paragraph (body 16, white 60%) with the facts **33 juta rakyat** and **lebih 20 agensi persekutuan** in white 500 `<strong>` → button "Ketahui lebih lanjut".
+
+## Spacing + type roles extended to modals, forms, menus and the footer (22 Nov 2026)
+- **Lapor form (modal):** a large card: padding `--pad-card` (top/bottom) × `--pad-card-lg` (sides); fields `--gap-group` (16) for rows and columns; title → description `--gap-text`; the drop zone, files and "Saluran aduan lain" `--pad-card-sm` + `--radius-media`; the "sent" view `--pad-card-lg`. Phone: `--pad-card-sm` throughout.
+- **AIFA panel:** header `--pad-card-sm`, avatar ↔ title `--gap-inline`; the panel title now uses the title role (20/500), like the Lapor form title; messages and results `--gap-cards`, bubbles `--radius-media`; suggestions can wrap (no overflow out of the panel on phones).
+- **Preview pop-up:** the badge uses `--space-badge-x` / `--space-inline-tight`; room for the close button on phones = `--size-control` + `--gap-inline`.
+- **Kongsi menu + phone menu:** follow the dropdown menu roles: padding `--space-inline`, radius `--radius-menu`, items `--space-field-x` on the sides with the control height.
+- **Footer:** blocks `--gap-block` (24 → 40 fluid), column title → list `--gap-group` (16), between links `--gap-cards` (16 → 24 fluid).
 
-## Verdict diseragamkan: Palsu · Makluman · Benar (22 Nov 2026)
-- Hanya tiga verdict wujud: **Palsu** (`palsu`), **Makluman** (`makluman`), **Benar** (`benar`). Label "Penjelasan" ditukar kepada **Benar** di mana-mana (penapis Artikel, kad flip, kad Kenali Sebenarnya.my, badge). Alias `penjelasan` dibuang; jenis yang tidak dikenali jatuh ke `makluman`.
-- **Waspada dibuang** daripada sistem: tiada lagi `--color-verdict-waspada(-dot)`, `.ui-verdict--waspada`, `.ui-chip--waspada`, `.fc--waspada`. Primitif `--color-orange*` kekal dalam palet tetapi tiada peranan verdict.
-- Nota lama di atas yang menyebut Waspada / "Penjelasan" sebagai label verdict kini sejarah sahaja. Tajuk bahagian artikel "Penjelasan rasmi" dan tajuk artikel bukan label verdict dan kekal.
+## Verdicts standardised: Palsu · Makluman · Benar (22 Nov 2026)
+- Only three verdicts exist: **Palsu** (`palsu`), **Makluman** (`makluman`), **Benar** (`benar`). The label "Penjelasan" is now **Benar** everywhere (Articles filters, flip cards, Kenali Sebenarnya.my cards, badges). The `penjelasan` alias removed; an unknown type falls back to `makluman`.
+- **Waspada removed** from the system: no more `--color-verdict-waspada(-dot)`, `.ui-verdict--waspada`, `.ui-chip--waspada`, `.fc--waspada`. The `--color-orange*` primitives stayed in the palette with no verdict role (removed later, 23 Nov 2026).
+- Older notes above that mention Waspada / "Penjelasan" as a verdict label are history only. The article section title "Penjelasan rasmi" and article titles are not verdict labels and stay.
 
-## Grid kad Artikel (22 Nov 2026, ikut Wonder › Container)
-- **Grid cecair:** `repeat(auto-fill, minmax(max(min(100%, var(--media-min) + 2 × --cell-pad-x), 25% − 1px), 1fr))` dengan `--media-min: 320px` → 1 kolum telefon, 2 (tablet, ≈768–1100), 3 (laptop, foto ≈350–440 nisbah 420 × 230), 4 (≥≈1520); tidak pernah lebih 4.
-- **Garis rambut berterusan** antara kolum dan baris: setiap sel lukis garis kanan + bawah `--color-muted-strong`; pembungkus `.articles-results` (overflow hidden) + margin negatif menyembunyikan garis tepi luar. Ruang dalam sel: `--cell-pad` atas/bawah `--gap-block` (24 → 40 fluid), `--cell-pad-x` kiri/kanan `--pad-card` (24) supaya foto lebih lebar; telefon `--pad-card` atas/bawah, tiada garis tegak.
-- **Kad terbuka** (tiada latar/border): foto nisbah 42:23 (420 × 230) radius `--radius-card` dengan logo agensi di dalamnya (kiri bawah); di bawah foto baris meta `Verdict tint · tarikh · N minit bacaan` (caption 12, smoke) lalu tajuk (peranan title). Hover: foto zoom 1.03.
-- **`Verdict` varian `tint`** (baharu, `app/ui.css`): pill 28px di atas warna verdict 22% atas putih.
-- **Masa baca:** `readingMinutes()` (`lib/articles.js`): perkataan tajuk + lead + penjelasan ÷ 200, minimum 1.
+## Articles card grid (22 Nov 2026, following Wonder › Container)
+- **Fluid grid:** `repeat(auto-fill, minmax(max(min(100%, var(--media-min) + 2 × --cell-pad-x), 25% − 1px), 1fr))` with `--media-min: 320px` → 1 column on phones, 2 (tablet, ≈768–1100), 3 (laptop, photo ≈350–440 at a 420 × 230 ratio), 4 (≥≈1520); never more than 4.
+- **Continuous hairlines** between columns and rows: each cell draws a right + bottom `--color-muted-strong` line; the `.articles-results` wrapper (overflow hidden) + negative margins hide the outer edge lines. Cell padding: `--cell-pad` top/bottom `--gap-block` (24 → 40 fluid), `--cell-pad-x` left/right `--pad-card` (24) so photos are wider; phone `--pad-card` top/bottom, no vertical lines.
+- **Open card** (no background/border): a 42:23 photo (420 × 230) radius `--radius-card` with the agency logo inside (bottom-left); under the photo a meta row `Verdict tint · date · N minit bacaan` (caption 12, smoke), then the title (title role). Hover: photo zoom 1.03.
+- **`Verdict` variant `tint`** (new, `app/ui.css`): a 28px pill on the verdict colour at 22% over white.
+- **Reading time:** `readingMinutes()` (`lib/articles.js`): words of the title + lead + explanation ÷ 200, minimum 1.
 
-- **Pemilih bahasa (22 Nov 2026):** tiada bendera lagi. Butang memaparkan kod bahasa (`BM` / `EN`, peranan label 16/500) + chevron; menu senarai kod sahaja, tanpa tajuk "Bahasa" (lebar 3 × `--size-control`). Nama penuh kekal dalam nama aksesibel ("BM — Bahasa Melayu"). Fail `public/images/flags/` dibuang.
+- **Language picker (22 Nov 2026):** no more flags. The button shows the language code (`BM` / `EN`, label role 16/500) + a chevron; the menu lists the codes only, without a "Bahasa" title (3 × `--size-control` wide). The full name stays in the accessible name ("BM — Bahasa Melayu"). `public/images/flags/` removed.
 
-- **Kad pengunjung, Kenali Sebenarnya.my (22 Nov 2026):** menggantikan kad "Tiga jawapan yang jelas" (`.kenali__card--visitors`, kawasan grid `visitors`). Tajuk "Lebih 130 pengunjung setiap hari" (peranan title, nombor guna `CountUp`). Di bawah, dipin ke dasar kad seperti ikon kad saluran: empat avatar bulat bertindih (`--size-control` 44, tindih 12, gelang 2px warna kad) + "menyemak fakta bersama kami" (body-sm, secondary). Avatar dipotong daripada foto karusel sedia ada → `public/images/avatars/visitor-1…4.webp` (96 × 96, hiasan, `alt=""`).
+- **Visitors card, Kenali Sebenarnya.my (22 Nov 2026):** replaces the "Tiga jawapan yang jelas" card (`.kenali__card--visitors`, grid area `visitors`). Title "Lebih 130 pengunjung setiap hari" (title role, the number uses `CountUp`). Below it, pinned to the bottom of the card like the channels card icons: four overlapping round avatars (`--size-control` 44, 12 overlap, 2px ring in the card colour) + "menyemak fakta bersama kami" (body-sm, secondary). The avatars are cropped from existing carousel photos → `public/images/avatars/visitor-1…4.webp` (96 × 96, decorative, `alt=""`).
 
-- **H1 Utama, verdict berputar (22 Nov 2026, dikemas kini):** baris kedua "Semak dakwaan **palsu**" (huruf kecil). Perkataan berputar palsu → benar → makluman dengan flip 3D huruf demi huruf (`components/FlipWord.js`, Web Animations API). **Transform sahaja:** perkataan baharu masuk ke susun atur sekali; hurufnya bergolek masuk dari bawah (rotateX −90° → 0) sementara perkataan lama, ditindih di atasnya, bergolek keluar (0 → 90°). Perkataan duduk dalam slot selebar perkataan terpanjang (salinan halimunan `.flip-word__ghost` bertindan dalam satu sel grid), jadi "Semak dakwaan" kekal di tempatnya dan perkataan tumbuh ke kanan; baris dipusatkan mengikut "makluman". Di telefon (perkataan di baris sendiri, berpusat) perkataan meluncur ke tengah baharu dengan FLIP. Masa: 700 ms setiap huruf, sela 40 ms, `cubic-bezier(0.2, 0, 0, 1)`; tahan 2.2 s. Berhenti apabila tab tersembunyi/di luar skrin; gerakan dikurangkan = tukar tanpa flip. Berat sama dengan teks H1 lain (display), ink. Pembaca skrin: "Semak dakwaan palsu, benar atau makluman". Telefon (≤600): verdict di baris sendiri. Animasi masuk H1 = tween transform + clip-path pada span baris (bukan SplitText).
+- **Home H1, rotating verdict (22 Nov 2026, updated):** the second line "Semak dakwaan **palsu**" (lower case). The word rotates palsu → benar → makluman with a letter-by-letter 3D flip (`components/FlipWord.js`, Web Animations API). **Transform only:** the new word enters the layout once; its letters roll in from below (rotateX −90° → 0) while the old word, laid over it, rolls out (0 → 90°). The word sits in a slot as wide as the longest word (an invisible copy `.flip-word__ghost` stacked in one grid cell), so "Semak dakwaan" stays put and the word grows to the right; the line is centred on "makluman". On phones (the word on its own line, centred) the word glides to its new centre with FLIP. Timing: 700 ms per letter, 40 ms apart, `cubic-bezier(0.2, 0, 0, 1)`; hold 2.2 s. Stops when the tab is hidden / off-screen; reduced motion = switch without the flip. The same weight as the rest of the H1 (display), ink. Screen readers: "Semak dakwaan palsu, benar atau makluman". Phone (≤600): the verdict on its own line. The H1 entrance = a transform + clip-path tween on the line spans (not SplitText).
 
-- **Tentang Kami, 22 Nov 2026:** (1) Marquee Berita tiada lagi butang jeda/main (`.marquee__bar`, `.is-stopped` dibuang); hover masih menjeda, gerakan dikurangkan masih menghentikan dan membolehkan skrol tangan. (2) Kad logo tanpa teks kelihatan: nama, keterangan dan meta fail dibuang; nama kekal sebagai `h3.sr-only` untuk pembaca skrin. Kad = pratonton + folder format, padding `--pad-card-lg`, jarak `--gap-group`; pratonton tanpa `min-height`: tinggi fail + `--pad-card` atas/bawah, jadi ruang di atas logo ≈ ruang di bawahnya (desktop 60/63, telefon 48/51). Tajuk folder ikut kad: "Muat turun logo" / "Muat turun ikon" (`folderTitle` dalam `logoPage.items`, jatuh ke `formatTitle`). Desktop: subgrid 2 baris supaya pratonton dan folder sejajar antara dua kad.
+- **About us, 22 Nov 2026:** (1) The News marquee has no pause/play button any more (`.marquee__bar`, `.is-stopped` removed); hover still pauses, reduced motion still stops it and allows manual scrolling. (2) Logo cards without visible text: the name, description and file meta removed; the name stays as an `h3.sr-only` for screen readers. Card = preview + format folder, padding `--pad-card-lg`, gap `--gap-group`; the preview has no `min-height`: file height + `--pad-card` top/bottom, so the space above the logo ≈ the space below it (desktop 60/63, phone 48/51). The folder title follows the card: "Muat turun logo" / "Muat turun ikon" (`folderTitle` in `logoPage.items`, falls back to `formatTitle`). Desktop: a 2-row subgrid so the preview and folder line up across both cards.
 
-- **Folder format, teks ikut peranan (22 Nov 2026):** folder dilukis atas pentas 391 px lalu diskala ke lebar kad (`--s`), jadi teksnya dulu ikut terskala (tajuk ≈ 26 px desktop / 16 px telefon, cip ≈ 18 / 11 px). Kini tajuk + cip dalam `.folder__text` yang diskala balik `scale(1 / --s)`: tajuk = peranan **title** (20, fluid 18 di telefon), cip = **label-sm** (14) dengan ikon muat turun 14, jarak tajuk → cip `--gap-group`, antara cip `--space-inline-tight`. Kedudukan (34 / 18 dari bucu poket) kekal dalam unit pentas.
+- **Format folder, text follows the roles (22 Nov 2026):** the folder is drawn on a 391 px stage and scaled to the card width (`--s`), so its text used to scale too (title ≈ 26 px desktop / 16 px phone, chips ≈ 18 / 11 px). Now the title + chips sit in `.folder__text`, scaled back with `scale(1 / --s)`: title = the **title** role (20, fluid 18 on phones), chips = **label-sm** (14) with a 14 download icon, title → chips `--gap-group`, between chips `--space-inline-tight`. Positions (34 / 18 from the pocket corner) stay in stage units.
 
-- **22 Nov 2026:** (1) Flip verdict H1: animasi flip kekal 700 ms / sela 40 ms; masa diam (dwell) antara perkataan dipendekkan 2.2 s → 1.2 s. (2) Seksyen "Semakan fakta terkini" kini guna kepala yang sama dengan Kenali Sebenarnya.my dan Berita: tajuk tengah "Semakan fakta terkini" + lead satu baris "Setiap jawapan disahkan terus oleh kementerian dan agensi berkaitan." (`.latest-checks__head`, lead = peranan body, secondary).
+- **22 Nov 2026:** (1) H1 verdict flip: the flip stays 700 ms / 40 ms apart; the dwell between words shortened 2.2 s → 1.2 s. (2) The "Semakan fakta terkini" section now uses the same head as Kenali Sebenarnya.my and Berita: a centred title "Semakan fakta terkini" + a one-line lead "Setiap jawapan disahkan terus oleh kementerian dan agensi berkaitan." (`.latest-checks__head`, lead = body role, secondary).
 
-- **Kad maklumat AIFA, hero Tentang Kami (22 Nov 2026):** `.about-hero-aifa` diletak `position: absolute` di kanan atas kad hero dengan inset sama seperti blok "Ikuti kami" (atas `--spacing-56`, tepi `--spacing-40`), lebar `min(330px, 34%)`, gap `--spacing-12`. Dua `.aifa-card`: media (latar `--color-card`, padding 8, ruang 16:9 radius `--radius-media` + kapsyen body-sm secondary; kini poster `berita-aifa.jpg`, ganti `<img>` dengan embed video Instagram di `.aifa-card__media`) dan info (latar `--color-muted-strong`, tajuk label 16/500, teks body-sm secondary). Hover angkat 2px; mati di `prefers-reduced-motion`. ≤1100px (tablet + telefon) kad disembunyikan. Teks di `aboutHero.aifa` (`data/content.js`). Tajuk kad ialah `<p>`, bukan `<h2>`, kerana ia datang sebelum `<h1>` dalam DOM.
+- **AIFA info cards, About us hero (22 Nov 2026):** `.about-hero-aifa` placed `position: absolute` top-right of the hero card with the same inset as the "Ikuti kami" block (top `--spacing-56`, side `--spacing-40`), width `min(330px, 34%)`, gap `--spacing-12`. Two `.aifa-card`s: media (`--color-card` background, padding 8, a 16:9 area radius `--radius-media` + a body-sm secondary caption; currently the poster `berita-aifa.jpg`, replace the `<img>` with an Instagram video embed in `.aifa-card__media`) and info (`--color-muted-strong` background, 16/500 label title, body-sm secondary text). Hover lifts 2px; off under `prefers-reduced-motion`. ≤1100px (tablet + phone) the cards are hidden. Text in `aboutHero.aifa` (`data/content.js`). The card title is a `<p>`, not an `<h2>`, because it comes before the `<h1>` in the DOM.
 
-- **Kad AIFA hero Tentang Kami (22 Nov 2026):** gambar diganti video reel AIFA (`public/images/about/aifa-reel.mp4`, 1276×718, 58 s) — `autoplay muted loop playsInline`, poster `aifa-reel-poster.jpg` (juga latar fallback). Seluruh bingkai ialah pautan ke reel Instagram (tab baharu, label "Tonton video AIFA di Instagram"). Gerakan dikurangkan: video disembunyikan, poster dipaparkan.
+- **AIFA card, About us hero (22 Nov 2026):** the image replaced by the AIFA reel video (`public/images/about/aifa-reel.mp4`, 1276×718, 58 s) — `autoplay muted loop playsInline`, poster `aifa-reel-poster.jpg` (also the fallback background). The whole frame links to the Instagram reel (new tab, label "Tonton video AIFA di Instagram"). Reduced motion: the video hidden, the poster shown.
 
-- **22 Nov 2026:** (1) Kad info AIFA (hero Tentang Kami) kini latar graphite `--color-text-secondary` (#44403B): tajuk putih 10.3:1, teks putih 80% 7.3:1. (2) Header: `min-height: 72px` dibuang — dengan box-sizing content-box ia ditambah di atas padding 16 (header 104 px). Kini tinggi = logo + 16 atas/bawah = 86 px.
+- **22 Nov 2026:** (1) The AIFA info card (About us hero) now has a graphite `--color-text-secondary` (#44403B) background: white title 10.3:1, white 80% text 7.3:1. (2) Header: `min-height: 72px` removed — with content-box sizing it was added on top of the 16 padding (a 104 px header). Height now = logo + 16 top/bottom = 86 px.
 
-- **Pembaikan mobile & lain-lain (22 Nov 2026):**
-  - **Borang Salur Kepada Kami (mobile):** pautan dalam menu kompak kini menutup menu (borang dibuka tanpa navigasi, dan pautan #hash halaman sama tidak menukar laluan, jadi menu dulu kekal terbuka di belakang borang).
-  - **Hero AIFA Tentang Kami:** disembunyikan ≤1100px (tablet + telefon; dulu ≤600, dan 601–900 masuk aliran).
-  - **Semua butang jeda dibuang:** karusel hero Utama (`.gctl .play`) dan baris "Semakan fakta terkini". Karusel masih berhenti semasa hover/fokus/seret; gerakan dikurangkan menghentikannya.
-  - **Butang tutup (X) tanpa cincin biru semasa dibuka:** dialog (borang, pratonton sosial, foto sfera) kini memfokus dirinya sendiri (`tabIndex={-1}` + `dialog.focus()`, `dialog:focus { outline: none }`), jadi butang tutup tidak dibuka dengan cincin fokus. Tab masih menunjukkan cincin seperti biasa.
-  - **Kad logo fluid:** grid `auto-fit, minmax(min(100%, 320px), 1fr)` (2 lajur dari ≈700px), folder maks 480px di tengah; folder ≤340px (container query): cip lebih rapat, tajuk → cip `--gap-text`, pil ikon kecil disembunyikan — cip kekal satu baris dalam poket hingga 320px.
-  - **Artikel:** anak panah bar cip kategori disembunyikan ≤600px (leret sahaja).
-  - **H1 Utama sentiasa dua baris** (telefon juga): setiap baris `nowrap`, saiz = `min(--text-display, (100vw − 2 × --side) / 12.8)` (≈12.3em setiap baris), jadi 22.5px @320, 28px @390, 39px @768, 48px desktop. Verdict tidak lagi di baris sendiri di telefon.
+- **Mobile & other fixes (22 Nov 2026):**
+  - **Salur Kepada Kami form (mobile):** links in the compact menu now close the menu (the form opens without navigating, and a same-page #hash link does not change the route, so the menu used to stay open behind the form).
+  - **About us AIFA hero:** hidden ≤1100px (tablet + phone; it was ≤600, and 601–900 went into the flow).
+  - **All pause buttons removed:** the Home hero carousel (`.gctl .play`) and the "Semakan fakta terkini" row. The carousel still stops on hover/focus/drag; reduced motion stops it.
+  - **Close (X) buttons without a blue ring on open:** dialogs (form, social preview, sphere photo) now focus themselves (`tabIndex={-1}` + `dialog.focus()`, `dialog:focus { outline: none }`), so the close button does not open with a focus ring. Tab still shows the ring as usual.
+  - **Fluid logo cards:** grid `auto-fit, minmax(min(100%, 320px), 1fr)` (2 columns from ≈700px), folder max 480px centred; folder ≤340px (container query): tighter chips, title → chips `--gap-text`, the small icon pill hidden — the chips stay on one line inside the pocket down to 320px.
+  - **Articles:** the category chip bar arrows hidden ≤600px (swipe only).
+  - **The Home H1 is always two lines** (phones too): each line `nowrap`, size = `min(--text-display, (100vw − 2 × --side) / 12.8)` (≈12.3em per line), so 22.5px @320, 28px @390, 39px @768, 48px desktop. The verdict is no longer on its own line on phones.
 
-- **Ritma seksyen fluid (22 Nov 2026):** `--space-section` kini `clamp(64, 40.8px + 6.188vw, 120)` (dulu langkah 96 · 64 · 48) dan `--gap-block` `clamp(24, 17.37px + 1.768vw, 40)` (dulu tetap 40), jadi antara seksyen ≈ 3× tajuk → kandungan pada setiap lebar. Breakpoint `--space-section` ≤1024 / ≤600 dibuang. "Semakan fakta terkini": kepala → kandungan `--gap-block` (dulu 48), rel kad `--gap-cards` (dulu 24). Peraturan mati `.latest` dibuang.
+- **Fluid section rhythm (22 Nov 2026):** `--space-section` is now `clamp(64, 40.8px + 6.188vw, 120)` (it was steps of 96 · 64 · 48) and `--gap-block` `clamp(24, 17.37px + 1.768vw, 40)` (it was a fixed 40), so the space between sections ≈ 3× heading → content at every width. The `--space-section` breakpoints at ≤1024 / ≤600 removed. "Semakan fakta terkini": head → content `--gap-block` (was 48), card rail `--gap-cards` (was 24). Dead `.latest` rules removed.
 
-- **Folder format, mudah alih (22 Nov 2026):** pil ikon mini (`.folder__pill`, token `--color-folder-pill`, `--color-tile-svg-mini`) dibuang. Ikon muat turun pada chip kekal Lucide `Download` 14px (`Icon`). Skala pentas (`--s` = lebar kad / 391) kini diukur dengan `ResizeObserver` dalam `FormatFolder.js` dan ditulis sebagai gaya inline; `tan(atan2())` hanya dipakai bila pelayar menyokongnya (`@supports`), dengan sandaran `--s: .85`. Sebelum ini Safari tanpa `tan(atan2())` tidak mengira skala lalu folder terpotong. Nota 455 di atas tentang "nisbah tanpa unit daripada container query" kini hanya laluan sokongan, bukan satu-satunya.
+- **Format folder, mobile (22 Nov 2026):** the mini icon pill (`.folder__pill`, tokens `--color-folder-pill`, `--color-tile-svg-mini`) removed. The chip download icon stays Lucide `Download` 14px (`Icon`). The stage scale (`--s` = card width / 391) is now measured with a `ResizeObserver` in `FormatFolder.js` and written as an inline style; `tan(atan2())` is used only where the browser supports it (`@supports`), with a fallback `--s: .85`. Before this, Safari without `tan(atan2())` did not compute the scale and the folder was cropped. The note above about the "unitless ratio from a container query" is now only the supported path, not the only one.
 
-- **Weight tajuk + gap kad (22 Nov 2026):** semua tajuk kini 500 (dulu Display H1, tajuk slaid carousel dan award 400); blok tajuk baca `--text-*--font-weight` peranan, weight tulis tangan dibuang. `--font-weight-display` (400) kini untuk angka statistik sahaja. `--gap-cards` `clamp(16, 12.69px + 0.884vw, 24)` (dulu 12); turut dipakai oleh senarai pautan footer, log AIFA dan statistik viewership.
+- **Heading weight + card gap (22 Nov 2026):** every heading is now 500 (the Display H1, carousel slide titles and the award were 400); heading blocks read the role's `--text-*--font-weight`, hand-written weights removed. `--font-weight-display` (400) is now for statistics only. `--gap-cards` `clamp(16, 12.69px + 0.884vw, 24)` (was 12); also used by the footer link lists, the AIFA log and the viewership statistics.
 
-- **Empat breakpoint, lapisan z-index, lebar baca (22 Nov 2026):** hanya `max-width` 1280 · 1100 · 900 · 600 dibenarkan (`lint:ds` › `breakpoint`). Nilai lama dipetakan ke atas: 1024 → 1100 (agensi, grid Kenali, kad AIFA hero Tentang Kami), 768 / 760 / 960 → 900 (agensi, lede hero, viewership, pop-up sneak-peek), 700 / 480 → 600 (karusel hero, panel AIFA). Nota lama dalam dokumen ini yang menyebut ≤1024, ≤960, ≤768, ≤760, ≤700 atau ≤480 kini merujuk breakpoint baharu itu. Lapisan: `--z-sticky` 10 header · `--z-dropdown` 20 menu / share · `--z-overlay` 30 · `--z-floating` 40 Tanya AIFA · `--z-skip` 50 skip link; dalam komponen hanya −1…5 (`lint:ds` › `z-index`; hover logo agensi kini 5). Lebar baca: `--measure-text` 68ch (`.post-subtitle`, `.logo-terms__body`), `--measure-head` 720px (kepala Semakan fakta terkini, Kenali).
+- **Four breakpoints, z-index layers, reading widths (22 Nov 2026):** only `max-width` 1280 · 1100 · 900 · 600 are allowed (`lint:ds` › `breakpoint`). Old values mapped upward: 1024 → 1100 (agencies, Kenali grid, About us hero AIFA cards), 768 / 760 / 960 → 900 (agencies, hero lede, viewership, sneak-peek pop-up), 700 / 480 → 600 (hero carousel, AIFA panel). Older notes in this document that say ≤1024, ≤960, ≤768, ≤760, ≤700 or ≤480 now refer to those new breakpoints. Layers: `--z-sticky` 10 header · `--z-dropdown` 20 menus / share · `--z-overlay` 30 · `--z-floating` 40 Tanya AIFA · `--z-skip` 50 skip link; inside a component only −1…5 (`lint:ds` › `z-index`; agency logo hover is now 5). Reading widths: `--measure-text` 68ch (`.post-subtitle`, `.logo-terms__body`), `--measure-head` 720px (the Semakan fakta terkini and Kenali heads).
 
-- **H1 Utama di telefon lebih besar daripada H2 (23 Nov 2026):** ≤600px baris H1 boleh berbalut (3–4 baris: "Tidak pasti? / Jangan kongsi / Semak / dakwaan <verdict>"); hanya kumpulan "dakwaan + verdict" (`.hero-title__verdict`, `nowrap`, ≈9.2em termasuk slot selebar "makluman") tidak pernah terpisah. Saiz `min(--text-display, (100vw − 2 × --side) / 9.6)`: 30px @320, 32px @360, 32.3px @390, 33px @430, jadi sentiasa melebihi H2 (28) dan kumpulan itu sentiasa muat dalam lebar kandungan (diukur di Chrome, tiada limpahan). >600px kekal dua baris `nowrap` seperti dahulu (nota di atas "sentiasa dua baris" kini hanya untuk >600px).
+- **Home H1 on phones larger than the H2 (23 Nov 2026):** ≤600px the H1 lines may wrap (3–4 lines: "Tidak pasti? / Jangan kongsi / Semak / dakwaan <verdict>"); only the "dakwaan + verdict" group (`.hero-title__verdict`, `nowrap`, ≈9.2em including a slot as wide as "makluman") never splits. Size `min(--text-display, (100vw − 2 × --side) / 9.6)`: 30px @320, 32px @360, 32.3px @390, 33px @430, so always larger than the H2 (28) and the group always fits the content width (measured in Chrome, no overflow). >600px stays two `nowrap` lines as before (the note above "always two lines" now applies to >600px only).
 
-- **Kad poster Kenali, telefon (23 Nov 2026):** ≤600 kad kekal segi empat (`aspect-ratio: 1`) tanpa `min-height` 300. Gabungan kedua-duanya memaksa lebar kad 332px pada 320 (kandungan 288) dan halaman boleh ditolak ke sisi. Kini tiada limpahan pada 320 / 390 / 600 (diukur di Chrome).
+- **Kenali poster card, phone (23 Nov 2026):** ≤600 the card stays square (`aspect-ratio: 1`) without the 300 `min-height`. The combination forced the card to 332px wide at 320 (content 288) and the page could be pushed sideways. Now no overflow at 320 / 390 / 600 (measured in Chrome).
 
-- **Butiran: fokus, ikon, avatar, gerakan, border (23 Nov 2026):** satu cincin fokus `--focus-ring-width` 2 · `--focus-ring-color` · `--focus-ring-offset` 2 (atas foto / permukaan gelap `--focus-ring-color-inverse`); offset 3/4px lama kini 2. Ikon ikut nama `<Icon size="sm|md|lg|xl|display">` = 14 / 16 / 20 / 24 / 40 (`--size-icon-lg` 18 → 20: ikon carian, medan, logo sosial; ikon selesai borang 28 → 24). Avatar `--size-avatar-sm` 32 (dulu 30 / 36) dan `--size-avatar` 40 (dulu 44 pada kad flip), logo di dalam `--avatar-inset` 4. Gerakan: `--duration-fast` 150 · `base` 250 · `slow` 450 · `slower` 700 (baharu) + `--ease-*`; koreografi folder logo kekal `ds-allow`. Border `--border-width` 1 / `--border-width-hairline` .5. `lint:ds`: `raw-motion`, `focus-ring`, `raw-border`, `icon-size`.
+- **Details: focus, icons, avatars, motion, borders (23 Nov 2026):** one focus ring `--focus-ring-width` 2 · `--focus-ring-color` · `--focus-ring-offset` 2 (on photos / dark surfaces `--focus-ring-color-inverse`); the old 3/4px offsets are now 2. Icons by name `<Icon size="sm|md|lg|xl|display">` = 14 / 16 / 20 / 24 / 40 (`--size-icon-lg` 18 → 20: search, field and social logo icons; form done icon 28 → 24). Avatars `--size-avatar-sm` 32 (was 30 / 36) and `--size-avatar` 40 (was 44 on the flip card), the logo inside at `--avatar-inset` 4. Motion: `--duration-fast` 150 · `base` 250 · `slow` 450 · `slower` 700 (new) + `--ease-*`; the logo folder choreography stays `ds-allow`. Borders `--border-width` 1 / `--border-width-hairline` .5. `lint:ds`: `raw-motion`, `focus-ring`, `raw-border`, `icon-size`.
 
-- **H1 Utama di telefon, empat baris tetap (23 Nov 2026, ganti nota "lebih besar daripada H2" di atas):** ≤600px H1 sentiasa "Tidak pasti? / Jangan kongsi / Semak dakwaan / <verdict>". Setiap bahagian ialah `.hero-title__part` (blok, `nowrap`); verdict di baris sendiri, berpusat (`.flip-word` grid, baris `justify-self: center`), dan FlipWord meluncurkannya ke tengah baharu apabila panjang perkataan berubah. Baris terlebar "Semak dakwaan" ≈7.5em, jadi saiz `min(--text-display, (100vw − 2 × --side) / 7.8)` = 32px dari 320 (36px @600), sentiasa melebihi H2 (28–30). >600px kekal dua baris. `.hero-title__verdict` dibuang. Juga: token `--size-icon-xl: 20px` berganda dibuang (kini 24 sahaja).
+- **Home H1 on phones, four fixed lines (23 Nov 2026, replaces the "larger than the H2" note above):** ≤600px the H1 is always "Tidak pasti? / Jangan kongsi / Semak dakwaan / <verdict>". Each part is a `.hero-title__part` (block, `nowrap`); the verdict on its own line, centred (`.flip-word` grid, the row `justify-self: center`), and FlipWord glides it to the new centre when the word length changes. The widest line "Semak dakwaan" ≈7.5em, so the size `min(--text-display, (100vw − 2 × --side) / 7.8)` = 32px from 320 (36px @600), always larger than the H2 (28–30). >600px stays two lines. `.hero-title__verdict` removed. Also: a duplicate `--size-icon-xl: 20px` token removed (now 24 only).
 
-- **Pembaikan review PR #12 + audit warna (23 Nov 2026):**
-  - **Sfera vs Tanya AIFA:** `.sphere-stage` kini `isolation: isolate`, jadi node (z inline ≈1000) kekal dalam pentas dan tidak lagi menutup butang AIFA (`--z-floating` 40). Diuji di Chrome pada 320 / 390 / 1440.
-  - **Viewership** jadi satu kolum pada ≤1100 (dulu ≤900; pada 901–960 kolum kiri hanya ≈200px).
-  - **Motion:** `--duration-slower` 700 → 600ms, had atas `design.md` (150–600ms): zoom foto hover, scrim carousel, flip buka, scroll reveal.
-  - **Hierarki warna teks** (tinta = tajuk, graphite = perenggan/lead, smoke = meta): lead Tentang Kami dan badan kad terma logo kini graphite (tajuk kekal tinta); keterangan di bawah angka statistik di Utama kini smoke 16 (sama seperti Tentang Kami; weight Light mati dibuang); label carta Tentang Kami smoke; agensi "· MCMC" di belakang kad flip smoke; lede hero weight 400 (dulu 500).
-  - **Token ikut peranan:** `--color-surface-inverse` (graphite, latar kad info AIFA, dulu token teks), `--color-text-secondary-inverse` (putih 80%, teks badan atas gelap, kembar graphite; `--color-muted-foreground-inverse` 60% kembar smoke), `--color-folder-chip` (teks cip folder, dulu `--color-accent` yang ialah token permukaan).
-  - `.fc-avatar--sm`: `outline` lutsinar supaya cincin kekal dalam forced-colors. `design.md`: Lead = Graphite (dulu tertulis Smoke).
+- **PR #12 review fixes + colour audit (23 Nov 2026):**
+  - **Sphere vs Tanya AIFA:** `.sphere-stage` is now `isolation: isolate`, so the nodes (inline z ≈1000) stay inside the stage and no longer cover the AIFA button (`--z-floating` 40). Tested in Chrome at 320 / 390 / 1440.
+  - **Viewership** goes to one column at ≤1100 (was ≤900; at 901–960 the left column was only ≈200px).
+  - **Motion:** `--duration-slower` 700 → 600ms, the ceiling in `design.md` (150–600ms): hover photo zoom, carousel scrim, flip open, scroll reveal.
+  - **Text colour hierarchy** (ink = headings, graphite = paragraphs/leads, smoke = meta): the About us lead and the logo terms card body are now graphite (titles stay ink); the description under the Home statistics is now smoke 16 (as on About us; a dead Light weight removed); About us chart labels smoke; the "· MCMC" agency on the back of flip cards smoke; hero lede weight 400 (was 500).
+  - **Tokens by role:** `--color-surface-inverse` (graphite, the AIFA info card background, formerly a text token), `--color-text-secondary-inverse` (white 80%, body text on dark, graphite's twin; `--color-muted-foreground-inverse` 60% is smoke's twin), `--color-folder-chip` (folder chip text, formerly `--color-accent`, which is a surface token).
+  - `.fc-avatar--sm`: a transparent `outline` so the ring survives forced colours. `design.md`: Lead = Graphite (it said Smoke).
 
-- **Gerakan: satu entrance per halaman (23 Nov 2026):** `ScrollMotion.js` (GSAP ScrollTrigger + SplitText + IntersectionObserver, ±20 elemen muncul semasa skrol) diganti `PageEnter.js` (Web Animations API, tanpa GSAP). Hanya kepala halaman masuk semasa dimuat, 100ms berturutan: Utama = H1 hero baris demi baris dari topeng (`--duration-slower` 600ms) → lede → carian; Tentang Kami = kad hero; Artikel = tajuk → subtajuk → meta. Setiap bahagian: opacity + blur 4px + naik 12px, 300ms `--ease-out`; `fill: backwards`, jadi tanpa JS semuanya kelihatan. Gerakan dikurangkan: tiada entrance. CSS `.motion .reveal`, topeng `.split-line` dan `.about-subtitle` mati dibuang. `design.md` (MOTION) kini membenarkan bentuk ini; pop-in folder logo kekal sebagai koreografi komponen.
-- **Cip muat turun folder logo = butang kecil (23 Nov 2026):** dulu label-sm 14 + ikon 14, tinggi 31, padding 12. Kini spesifikasi `ui-btn--sm`: `--text-label` 16/500, ikon `md` 16, tinggi `--size-control-sm` 36, padding `--space-control-x-sm` 16, jarak `--gap-inline` 8 (label↔ikon dan antara cip). Tajuk "Muat turun …" kekal `--text-title` (18→20), jadi cip dibaca sebagai aksinya. Folder ≤340: padding 12; folder ≤300: ikon disembunyikan supaya tiga cip kekal satu baris dalam poket (tajuk sudah kata "Muat turun", nama aksesibel cip menyebut fail). Diukur di Chrome 320–1440: satu baris, dalam poket.
+- **Motion: one entrance per page (23 Nov 2026):** `ScrollMotion.js` (GSAP ScrollTrigger + SplitText + IntersectionObserver, ±20 elements appearing on scroll) replaced by `PageEnter.js` (Web Animations API, no GSAP). Only the page head enters on load, 100ms apart: Home = the hero H1 line by line from a mask (`--duration-slower` 600ms) → lede → search; About us = the hero card; Articles = title → subtitle → meta. Each part: opacity + 4px blur + 12px rise, 300ms `--ease-out`; `fill: backwards`, so everything is visible without JS. Reduced motion: no entrance. Dead CSS `.motion .reveal`, the `.split-line` mask and `.about-subtitle` removed. `design.md` (MOTION) now allows this form; the logo folder pop-in stays as a component choreography.
+- **Logo folder download chips = small buttons (23 Nov 2026):** they were label-sm 14 + a 14 icon, 31 tall, padding 12. Now the `ui-btn--sm` spec: `--text-label` 16/500, `md` 16 icon, height `--size-control-sm` 36, padding `--space-control-x-sm` 16, gap `--gap-inline` 8 (label↔icon and between chips). The title "Muat turun …" stays `--text-title` (18→20), so the chips read as its actions. Folder ≤340: padding 12; folder ≤300: icons hidden so the three chips stay on one line inside the pocket (the title already says "Muat turun", the chips' accessible names name the file). Measured in Chrome 320–1440: one line, inside the pocket.
 
-- **H1 Utama: verdict kini Typewriter (23 Nov 2026, ganti flip 3D huruf demi huruf):** `components/Typewriter.js` (ganti `FlipWord.js`). Kitaran: tahan 2.5s → padam huruf demi huruf (backspace, 40ms) → jeda 400ms → taip perkataan seterusnya (80ms ± 30ms sehuruf, supaya terasa ditaip manusia): palsu → benar → makluman. Caret teks (`.typewriter__caret`): bar nipis .06em × .82em, warna tinta tajuk; berkelip 530ms hidup / 530ms mati (kadar OS, `step-end`) hanya semasa perkataan berehat, pejal semasa menaip / memadam (`data-busy`). Slot selebar "makluman" + caret (salinan halimunan dalam satu sel grid), jadi "Semak dakwaan" dan tinggi H1 tidak berubah; di telefon slot berpusat di barisnya dan perkataan ditaip dari permulaan slot. Perkataan pertama ada dalam HTML pelayan. Berhenti bila tab tersembunyi / hero di luar skrin. Gerakan dikurangkan: tiada taip, perkataan bertukar penuh selepas setiap tahan, caret tidak berkelip. Diukur di Chrome 320 / 390 / 1440: urutan betul, caret pejal semasa menaip, tiada anjakan susun atur, tiada limpahan.
+- **Home H1: the verdict is now a Typewriter (23 Nov 2026, replaces the letter-by-letter 3D flip):** `components/Typewriter.js` (replaces `FlipWord.js`). The cycle: hold 2.5s → delete letter by letter (backspace, 40ms) → pause 400ms → type the next word (80ms ± 30ms per letter, so it feels typed by a person): palsu → benar → makluman. A text caret (`.typewriter__caret`): a thin .06em × .82em bar in the heading ink; blinks 530ms on / 530ms off (the OS rate, `step-end`) only while the word rests, solid while typing / deleting (`data-busy`). A slot as wide as "makluman" + the caret (an invisible copy in one grid cell), so "Semak dakwaan" and the H1 height never change; on phones the slot is centred on its line and the word is typed from the start of the slot. The first word is in the server HTML. Stops when the tab is hidden / the hero is off-screen. Reduced motion: no typing, the whole word switches after each hold, the caret does not blink. Measured in Chrome 320 / 390 / 1440: the right sequence, a solid caret while typing, no layout shift, no overflow.
 
-- **Fokus = tinta, bukan biru (23 Nov 2026):** `--color-ring` dan `--color-link` kini `--color-foreground` (dulu `--color-blue` #3A46F5 "violet spark"). Satu token ini menukar semua keadaan fokus: bar carian (`.ui-search:focus-within`, sempadan + cincin 1px tinta), medan, butang, cip, menu, kad. Permukaan gelap / foto guna `--focus-ring-color-inverse` (putih): `.ui-btn--media` (CTA carousel, CTA award, tutup foto sfera), slaid carousel, pautan "Ikuti kami", cip folder. Kad media AIFA kekal tinta (ia dalam kad putih). Asas baharu `:where(:focus-visible)` (spesifisiti 0) supaya elemen tanpa gaya sendiri (cth. `<summary>` di Lapor) tidak lagi guna biru pelayar. Hover pautan AIFA kini tinta. Biru kekal hanya untuk titik verdict Makluman dan avatar AIFA. Diuji di Chrome: Tab melalui Utama (53 hentian), Tentang Kami (51), Artikel (58), detail artikel (35), Lapor (9) — tiada cincin biru; cincin tinta atas kanvas 20.5:1.
+- **Focus = ink, not blue (23 Nov 2026):** `--color-ring` and `--color-link` are now `--color-foreground` (they were `--color-blue` #3A46F5, the "violet spark"). This one token changes every focus state: the search bar (`.ui-search:focus-within`, an ink border + 1px ring), fields, buttons, chips, menus, cards. Dark surfaces / photos use `--focus-ring-color-inverse` (white): `.ui-btn--media` (carousel CTA, award CTA, sphere photo close), carousel slides, the "Ikuti kami" links, folder chips. The AIFA media card stays ink (it sits in a white card). A new base `:where(:focus-visible)` (specificity 0) so elements without their own style (e.g. `<summary>` in Lapor) no longer use the browser blue. AIFA link hover is now ink. Blue stays only for the Makluman verdict dot and the AIFA avatar. Tested in Chrome: Tab through Home (53 stops), About us (51), Articles (58), article detail (35), Lapor (9) — no blue ring; the ink ring on the canvas is 20.5:1.
 
-- **Ruang atas header (23 Nov 2026):** pautan langkau "Langkau ke kandungan" (`a.ui-btn.ui-skip-link`) sepatutnya `position: fixed`, tetapi `.ui-btn { position: relative }` (kemudian dalam `ui.css`, spesifisiti sama) menang, jadi pautan halimunan itu kekal dalam aliran dan menolak header 44px ke bawah di setiap halaman. Kini `.ui-btn.ui-skip-link` (dua kelas). Header bermula pada 0, logo 16px dari atas (padding header 16, seperti spesifikasi). Pautan langkau masih muncul di kiri atas (8/8) pada Tab pertama, cincin tinta.
+- **Space above the header (23 Nov 2026):** the skip link "Langkau ke kandungan" (`a.ui-btn.ui-skip-link`) should be `position: fixed`, but `.ui-btn { position: relative }` (later in `ui.css`, same specificity) won, so the invisible link stayed in the flow and pushed the header down 44px on every page. Now `.ui-btn.ui-skip-link` (two classes). The header starts at 0, the logo 16px from the top (header padding 16, as specified). The skip link still appears top-left (8/8) on the first Tab, with an ink ring.
 
-- **Kad flip di iOS Safari (23 Nov 2026):** `backface-visibility: hidden` tidak cukup di WebKit: anak muka depan yang ada lapisan sendiri (blok verdict + tajuk `position: absolute; z-index`, avatar agensi, butang flip) tembus ke muka belakang, terbalik ("NAMULKAM", logo di kiri atas, tajuk atas "Baca semakan"). Kini muka yang berpaling juga `visibility: hidden`, ditukar tepat bila kad tegak (90°): tutup (lengkung simetri) pada 50% `--duration-slow`; buka (`--ease-out` kuat) pada 13% `--duration-slower` (79ms, diselesaikan daripada lengkung). Diukur di Chrome: suis berlaku pada 94°, satu bingkai selepas tegak. Papan kekunci: fokus berpindah ke "Baca semakan" sebaik muka belakang kelihatan (`FlipCard.js` menunggu sehingga ~1s). Gerakan dikurangkan: suis serta-merta. Belum diuji pada peranti iOS sebenar.
+- **Flip card on iOS Safari (23 Nov 2026):** `backface-visibility: hidden` is not enough in WebKit: front-face children with their own layer (the verdict + title block `position: absolute; z-index`, the agency avatar, the flip button) showed through on the back, mirrored ("NAMULKAM", the logo top-left, the title over "Baca semakan"). Now the face turned away is also `visibility: hidden`, switched exactly when the card is edge-on (90°): close (symmetric curve) at 50% of `--duration-slow`; open (strong `--ease-out`) at 13% of `--duration-slower` (79ms, solved from the curve). Measured in Chrome: the switch happens at 94°, one frame after edge-on. Keyboard: focus moves to "Baca semakan" as soon as the back face shows (`FlipCard.js` waits up to ~1s). Reduced motion: an instant switch. Not yet tested on a real iOS device.
 
-- **Audit design system: overlay, menu, jarak dan motion (23 Nov 2026):**
-  - **Satu resepi modal `.ui-modal`** (`app/ui.css`) untuk borang Lapor, pratonton sosial dan foto sfera: permukaan `--color-card`, `--radius-card-lg`, `--shadow-overlay` (token baharu), backdrop `--color-scrim` (token baharu, tinta 60%), masuk 250ms opacity + scale .96 dan **keluar** .98 (transition, boleh disampuk). Dulu empat gaya: bayang `rgba(21,22,24,…)` mentah, backdrop 55/60/70%, masuk 450 atau 250ms, tiga daripadanya hilang serta-merta bila ditutup. Panel AIFA: `--shadow-overlay` + pop 250ms yang sama, juga keluar (`display` allow-discrete).
-  - **Satu permukaan menu `.ui-menu`** untuk dropdown nav, bahasa dan Kongsi: `--color-background`, border, `--radius-menu`, padding `--space-inline`, `--shadow-float`, pop 150ms dari tepi pemicu. Dulu dropdown nav tiada animasi dan Kongsi berlatar `--color-card` dengan CSS salinan penuh di `global.css`.
-  - **Token baharu:** `--color-surface-media` (latar foto/video, kad hero gelap; ganti `--color-black` di FlipCard, carousel, hero Tentang Kami), `--color-scrim`, `--shadow-overlay`. Lint `palette-primitive` kini juga menangkap `--color-black`.
-  - **Jarak:** gap antara kumpulan/blok (≥16px) kini peranan (`--gap-text/inline/group/cards/block`), bukan `--spacing-*`; override breakpoint yang menyalin nilai fluid dibuang (hero, Semakan terkini, Kenali, Artikel, artikel, footer). Lint baharu `group-gap-primitive`. Kepala seksyen: tajuk → lead `--gap-text` (8); tajuk seksyen → kandungan `--gap-block` (40 → 24) di semua halaman, termasuk Logo (dulu 72) dan "Semakan fakta terkini" telefon (dulu 32). H1 display → lede `--gap-group` (16) di kedua-dua hero. Diukur: antara seksyen 120 (1440) / 65 (390) di semua halaman.
-  - **Motion:** transisi route 1.2s → crossfade 250ms; hover logo agensi dan kad AIFA kini hanya untuk tetikus (`hover: hover`); titik carousel tidak lagi menganimasi `width` (snap; bar isi menunjukkan kemajuan).
-  - **Kod mati:** `gsap` dibuang dari `package.json`, blok `@media` kosong, `--fade`, komen tanpa peraturan.
-  - **Verdict H1 telefon di tengah optik:** ≤600px baris verdict sendiri, jadi `.typewriter__row` kini `justify-self: center` + `margin-inline-start: .12em` (separuh daripada kursor dan jaraknya), supaya huruf "palsu", "benar" dan "makluman" tepat di paksi tengah H1 (diukur 0.0px pada 320/390/600). Desktop tidak berubah (verdict mengikut "Semak dakwaan").
+- **Design system audit: overlays, menus, spacing and motion (23 Nov 2026):**
+  - **One `.ui-modal` recipe** (`app/ui.css`) for the Lapor form, the social preview and the sphere photo: surface `--color-card`, `--radius-card-lg`, `--shadow-overlay` (new token), backdrop `--color-scrim` (new token, ink 60%), enters in 250ms opacity + scale .96 and **leaves** at .98 (a transition, so it can be interrupted). There used to be four styles: raw `rgba(21,22,24,…)` shadows, 55/60/70% backdrops, 450 or 250ms entrances, three of them vanishing instantly on close. The AIFA panel: `--shadow-overlay` + the same 250ms pop, also on exit (`display` allow-discrete).
+  - **One `.ui-menu` surface** for the nav, language and Kongsi dropdowns: `--color-background`, border, `--radius-menu`, padding `--space-inline`, `--shadow-float`, a 150ms pop from the trigger edge. The nav dropdown used to have no animation, and Kongsi had a `--color-card` background with a full copy of the CSS in `global.css`.
+  - **New tokens:** `--color-surface-media` (behind photos/video, dark hero cards; replaces `--color-black` in FlipCard, the carousel and the About us hero), `--color-scrim`, `--shadow-overlay`. The `palette-primitive` lint now also catches `--color-black`.
+  - **Spacing:** gaps between groups/blocks (≥16px) are now roles (`--gap-text/inline/group/cards/block`), not `--spacing-*`; breakpoint overrides that copied the fluid values removed (hero, Semakan terkini, Kenali, Articles, article, footer). A new lint `group-gap-primitive`. Section heads: title → lead `--gap-text` (8); section title → content `--gap-block` (40 → 24) on every page, including Logo (was 72) and "Semakan fakta terkini" on phones (was 32). Display H1 → lede `--gap-group` (16) in both heroes. Measured: 120 between sections (1440) / 65 (390) on every page.
+  - **Motion:** route transition 1.2s → a 250ms crossfade; agency logo and AIFA card hover now mouse only (`hover: hover`); carousel dots no longer animate `width` (snap; the fill bar shows progress).
+  - **Dead code:** `gsap` removed from `package.json`, empty `@media` blocks, `--fade`, comments without rules.
+  - **Phone H1 verdict on the optical centre:** ≤600px the verdict has its own line, so `.typewriter__row` is now `justify-self: center` + `margin-inline-start: .12em` (half the caret and its gap), so the letters of "palsu", "benar" and "makluman" sit exactly on the H1's centre axis (measured 0.0px at 320/390/600). Desktop unchanged (the verdict follows "Semak dakwaan").
 
-- **Urutan Utama + jubin folder logo (23 Nov 2026):**
-  - **Utama:** seksyen "Pusat semakan fakta MCMC sejak 2017" (`Viewership`) kini paling bawah, selepas Kenali Sebenarnya.my dan tepat sebelum footer. Ritma kekal 120 (1440) / 65 (390) antara setiap seksyen.
-  - **Folder format (Logo):** jubin JPEG/PNG/SVG kini semua putih (`--color-tile` = `--color-card`); warna datang daripada ikon fail. Token `--gradient-tile-jpeg`, `--color-tile-png`, `--gradient-tile-svg` dibuang. `--shadow-tile` dilembutkan untuk jubin putih (garis .5px 8% + 0 12px 32px 14%).
-  - **H1 hero Tentang Kami** disemak: guna peranan `--text-display` sama seperti H1 Utama dan artikel (48 / 39 / 32 px pada 1440 / 768 / 390, 500, 1.2); lead 16/24 400 seperti lead lain. Konsisten.
+- **Home order + logo folder tiles (23 Nov 2026):**
+  - **Home:** the "Pusat semakan fakta MCMC sejak 2017" section (`Viewership`) is now last, after Kenali Sebenarnya.my and just before the footer. The rhythm stays 120 (1440) / 65 (390) between every section.
+  - **Format folder (Logo):** the JPEG/PNG/SVG tiles are now all white (`--color-tile` = `--color-card`); the colour comes from the file icons. Tokens `--gradient-tile-jpeg`, `--color-tile-png`, `--gradient-tile-svg` removed. `--shadow-tile` softened for white tiles (.5px 8% line + 0 12px 32px 14%).
+  - **About us hero H1** checked: it uses the same `--text-display` role as the Home and article H1 (48 / 39 / 32 px at 1440 / 768 / 390, 500, 1.2); lead 16/24 400 like the other leads. Consistent.
 
-- **Hero Tentang Kami: lead diredupkan + fakta dalam angka satu kolum (23 Nov 2026):**
-  - Lead hero (`.about-hero-text p`) kini `--color-text-secondary-inverse` (putih 80%, kembar graphite), jadi tajuk > lead seperti halaman lain. Scrim ≤600 sedikit lebih kuat dan tinggi (70% → 50% pada 50% → lutsinar pada 80%) kerana lead lebih banyak baris di telefon. Diukur pada piksel foto sebenar (piksel paling terang di bawah teks): lead ≥ 6.2:1 dari 320 hingga 1440; H1 ≥ 4:1 (teks besar, had 3:1).
-  - "Beberapa fakta tentang kami dalam angka": `.about-intro__facts-row` kini `flex-direction: column` di semua saiz skrin (satu fakta setiap baris, di tengah), jarak `--gap-block`. Grid 2 kolum ≤1100 dibuang.
-  - Petunjuk di bawah galeri sfera (`.sphere-hint`) kini `text-align: center`; ≤600px dua baris tetap: "Seret untuk memusingkan," / "pilih foto untuk melihatnya lebih besar." (dua `<span>` jadi block).
+- **About us hero: dimmed lead + facts in numbers in one column (23 Nov 2026):**
+  - The hero lead (`.about-hero-text p`) is now `--color-text-secondary-inverse` (white 80%, graphite's twin), so title > lead as on other pages. The ≤600 scrim slightly stronger and taller (70% → 50% at 50% → transparent at 80%) because the lead has more lines on phones. Measured on the real photo pixels (the brightest pixel under the text): lead ≥ 6.2:1 from 320 to 1440; H1 ≥ 4:1 (large text, 3:1 minimum).
+  - "Beberapa fakta tentang kami dalam angka": `.about-intro__facts-row` is now `flex-direction: column` at every screen size (one fact per row, centred), gap `--gap-block`. The 2-column grid at ≤1100 removed.
+  - The hint under the sphere gallery (`.sphere-hint`) is now `text-align: center`; ≤600px two fixed lines: "Seret untuk memusingkan," / "pilih foto untuk melihatnya lebih besar." (two `<span>`s as blocks).
 
-- **Bar verdict "Agensi rakan" (Tentang Kami) mengisi sekali bila kelihatan (23 Nov 2026):** `useFillOnView` dalam `AboutUs.js` (IntersectionObserver, 50% kelihatan, sekali sahaja). Setiap bar Palsu / Benar / Makluman didedahkan kiri → kanan dengan `clip-path: inset(0 100% 0 0 round …)` → `inset(0)` (hujung bulat kekal; `scaleX` akan memampatkannya), `--duration-slower` `--ease-out`, stagger tidak sekata 0 / 75 / 135ms. Tiada gerakan berterusan: data yang dibaca tidak patut bergerak. Tanpa JS dan `prefers-reduced-motion`: bar penuh serta-merta. Diuji 1440 / 390.
+- **The "Agensi rakan" verdict bars (About us) fill once when visible (23 Nov 2026):** `useFillOnView` in `AboutUs.js` (IntersectionObserver, 50% visible, once only). Each Palsu / Benar / Makluman bar is revealed left → right with `clip-path: inset(0 100% 0 0 round …)` → `inset(0)` (rounded ends kept; `scaleX` would squash them), `--duration-slower` `--ease-out`, an uneven 0 / 75 / 135ms stagger. No continuous motion: data being read should not move. Without JS and under `prefers-reduced-motion`: bars full straight away. Tested 1440 / 390.
 
-- **Kad Juara Dunia (Kenali Sebenarnya.my, Utama), 23 Nov 2026:** butang "Ketahui lebih lanjut" dibuang; kad kini eyebrow, tajuk, subtajuk dan teks sahaja. `.kenali__award-cta` dan import `Button` / `ArrowRight` yang tidak dipakai turut dibuang.
+- **Juara Dunia card (Kenali Sebenarnya.my, Home), 23 Nov 2026:** the "Ketahui lebih lanjut" button removed; the card is now eyebrow, title, subtitle and text only. `.kenali__award-cta` and the unused `Button` / `ArrowRight` imports removed too.
 
-- **Fakta dalam angka (23 Nov 2026):** satu lajur (satu fakta sebaris) hanya untuk telefon ≤600px. Desktop: satu baris `space-around`; tablet ≤1100px: grid 2 × 2.
+- **Facts in numbers (23 Nov 2026):** one column (one fact per row) only on phones ≤600px. Desktop: one `space-around` row; tablet ≤1100px: a 2 × 2 grid.
 
-- **"Ikuti kami" fluid (23 Nov 2026):** bulatan media sosial `--follow-disc: clamp(--size-control-sm 36, 29.5px + 1.55vw, --size-control-lg 48)` — 36 @≤390, 41 @768, 48 @≥1200; ikon = separuh bulatan (18 → 24). `::before` membesarkan kawasan sentuh kembali ke 44 (`--size-hit-area`). Senarai boleh `wrap`.
+- **Fluid "Ikuti kami" (23 Nov 2026):** the social media discs `--follow-disc: clamp(--size-control-sm 36, 29.5px + 1.55vw, --size-control-lg 48)` — 36 @≤390, 41 @768, 48 @≥1200; icon = half the disc (18 → 24). `::before` brings the touch area back to 44 (`--size-hit-area`). The list may `wrap`.
 
-- **Statistik Utama, pusat optik (23 Nov 2026):** angka + keterangan dalam setiap kad `.viewership-stat` kini di tengah (mendatar dan menegak), `text-align: center`. Padding bawah = `--pad-card` + 24, jadi kumpulan teks duduk 12px di atas pusat geometri (≈5% tinggi kad), iaitu pusat optik. Kad foto: satu lapisan rata **35%** hitam (atas permintaan; 50–60% terlalu gelap) + halo pada huruf sahaja (`text-shadow` 16px 80% + 6px 70% + 2px 50%). Diukur pada latar 4px di sekeliling huruf: p95 ≈ 5.3–6.1:1 (angka dan keterangan). Piksel paling terang: angka ≥ 4.0:1 (lulus AA teks besar 3:1); keterangan 3.9:1 desktop / 3.05:1 telefon — **di bawah AA 4.5:1 pada titik paling terang foto**. Jika perlu lulus penuh: 50% lapisan (≥4.72:1).
+- **Home statistics, optical centre (23 Nov 2026):** the number + description in each `.viewership-stat` card are now centred (horizontally and vertically), `text-align: center`. Bottom padding = `--pad-card` + 24, so the text group sits 12px above the geometric centre (≈5% of the card height), i.e. the optical centre. Photo cards: one flat **35%** black layer (on request; 50–60% was too dark) + a halo on the letters only (`text-shadow` 16px 80% + 6px 70% + 2px 50%). Measured on the 4px background around the letters: p95 ≈ 5.3–6.1:1 (number and description). Brightest pixel: number ≥ 4.0:1 (passes AA for large text, 3:1); description 3.9:1 desktop / 3.05:1 phone — **below AA 4.5:1 at the photo's brightest point**. To pass fully: a 50% layer (≥4.72:1).
 
 
-## Pembersihan untuk handover (23 Nov 2026)
-Diaudit dengan skrip (token ditakrif vs `var()` dirujuk; kelas CSS vs token `className` sebenar dalam JS, termasuk awalan dinamik seperti `ui-btn--${variant}`; `@keyframes` vs `animation`; aset `public/` vs laluan dalam kod).
-- **Token dibuang (tiada pengguna):** `--color-grey-62`, `--color-orange`, `--color-orange-dark`, `--color-selected`, `--font-weight-light`, `--shadow-subtle(-2/-3)`, `--gradient-scrim-card`, `--container-page`, `--container-rail`, `--size-icon-xl`, `--size-icon-display`, `--breakpoint-*` (diganti komen rujukan dalam `tokens.css`: 600 · 900 · 1100).
-- **Token dikekalkan walaupun belum dirujuk:** sub-token peranan tipografi (`--text-*--font-weight`, `--text-eyebrow--letter-spacing`) supaya setiap peranan lengkap; `--color-brand`, `--spacing-28` (langkah skala), `--z-overlay` (skala z).
-- **CSS mati dibuang:** slider/posts/agencies lama (`.slider`, `.posts`, `.agencies`, `.agency*`, `@keyframes slideUp/agencySlide`), sisa galeri media sosial (dua komen tidak tertutup yang menelan peraturan), fungsi Tentang Kami (`.about-fn-*`, `@keyframes about-fn-in/fade`), `.card`, `.fc-dot`, `.verdict-tag`, `.kenali__title-icon`, komen `.section-label.big-title`.
-- **JS/data dibuang:** `components/ui/filledIcons.js` (tiada butang jeda lagi), eksport `howItWorks`, bendera `paused` dalam `Latest.js`.
-- **Aset dibuang (≈5.9 MB):** 7 foto `posts/sebenarnya-*` tidak dirujuk, `about/hero.jpg`, `about/berita-wsis.webp`, `carousel/hero-ktmb|str|lesen.jpg`, 6 potret `carousel/human-*.jpg` (avatar pengunjung sudah dipotong ke `images/avatars/`), `bento/gold-award-medal.webp`, `public/fonts/inter/` (Manrope sahaja, via `next/font`).
-- **Pustaka UI dikekalkan walaupun tidak dipakai di laman** (untuk CMS + sambungan pelayar): `Tabs`, `ButtonGroup`, varian `Button` `link` / `icon-sm` / `icon-lg`, `Badge` `lg`, `Verdict` `single`.
-- Selepas pembersihan: `lint:ds` bersih, build lulus, tiada imej yang dirujuk hilang dalam `out/`, pendakap CSS seimbang.
+## Clean-up for the handover (23 Nov 2026)
+Audited with scripts (tokens defined vs `var()` referenced; CSS classes vs real `className` tokens in JS, including dynamic prefixes such as `ui-btn--${variant}`; `@keyframes` vs `animation`; `public/` assets vs paths in the code).
+- **Tokens removed (no users):** `--color-grey-62`, `--color-orange`, `--color-orange-dark`, `--color-selected`, `--font-weight-light`, `--shadow-subtle(-2/-3)`, `--gradient-scrim-card`, `--container-page`, `--container-rail`, `--size-icon-xl`, `--size-icon-display`, `--breakpoint-*` (replaced by a reference comment in `tokens.css`: 600 · 900 · 1100).
+- **Tokens kept although not referenced yet:** type role sub-tokens (`--text-*--font-weight`, `--text-eyebrow--letter-spacing`) so every role is complete; `--color-brand`, `--spacing-28` (a scale step), `--z-overlay` (the z scale).
+- **Dead CSS removed:** the old slider/posts/agencies (`.slider`, `.posts`, `.agencies`, `.agency*`, `@keyframes slideUp/agencySlide`), leftovers of the social media gallery (two unclosed comments that swallowed rules), the About us functions (`.about-fn-*`, `@keyframes about-fn-in/fade`), `.card`, `.fc-dot`, `.verdict-tag`, `.kenali__title-icon`, the `.section-label.big-title` comment.
+- **JS/data removed:** `components/ui/filledIcons.js` (no pause buttons any more), the `howItWorks` export, the `paused` flag in `Latest.js`.
+- **Assets removed (≈5.9 MB):** 7 unreferenced `posts/sebenarnya-*` photos, `about/hero.jpg`, `about/berita-wsis.webp`, `carousel/hero-ktmb|str|lesen.jpg`, 6 `carousel/human-*.jpg` portraits (the visitor avatars are already cropped into `images/avatars/`), `bento/gold-award-medal.webp`, `public/fonts/inter/` (Manrope only, through `next/font`).
+- **UI library kept although unused on the site** (for the CMS + browser extension): `Tabs`, `ButtonGroup`, `Button` variants `link` / `icon-sm` / `icon-lg`, `Badge` `lg`, `Verdict` `single`.
+- After the clean-up: `lint:ds` clean, the build passes, no referenced image missing in `out/`, CSS braces balanced.
 
-## Skala saiz komponen sm · md · lg (23 Nov 2026, rujukan shadcn/ui + elevenlabs.io)
+## Component size scale sm · md · lg (23 Nov 2026, shadcn/ui + elevenlabs.io reference)
 
-Masalah: di telefon butang, search, chip dan badge terasa terlalu besar dan tidak konsisten (Button 44, search 56, Verdict 44, Tabs 50, Badge 28/44, dan `global.css` menulis 44/48/52/56 secara manual).
+Problem: on phones buttons, search, chips and badges felt too large and inconsistent (Button 44, search 56, Verdict 44, Tabs 50, Badge 28/44, and `global.css` wrote 44/48/52/56 by hand).
 
-- **Satu skala kawalan fluid** dalam `tokens.css`: `sm` 32→36 · `md` 40→44 · `lg` 44→48 · `xl` 48→56, dari 375px ke 1280px dengan `clamp()` (formula sama dengan peranan taip). Desktop kekal seperti dahulu; telefon 4–8px lebih padat. Padding sisi ikut skala (`--space-control-x-sm/-x/-x-lg`).
-- **Sasaran sentuh 44 kekal:** `.ui-btn::after` dan `.ui-chip::after` membesar ke `--size-hit-area` apabila kawalan lebih pendek.
-- **Skala badge (tetap, bukan sasaran):** `--size-badge-sm` 20 · `--size-badge` 24 · `--size-badge-lg` 32. `Badge` size sm/md/lg; `Verdict` pill = lg 32, overlay/tint = md 24. `.peek-modal__badge` = badge lg.
-- **API:** `Button` size sm · md · **lg (baharu)** · icon-sm · icon · icon-lg. `Chip` size sm · md · lg (baharu). `Badge` sm · md · lg (lg dahulu 44, kini 32). `SearchField` lg (lalai) · **md (baharu)** · sm. `Input` / `Select` size sm · md · lg (baharu). `'default'` masih diterima sebagai md.
-- **Kawalan bersarang diterbitkan:** butang "Semak" = `search − 2 × (inset 4 + border)`; tab = `track − 2 × (segment + border)`; bulatan ikon `.fc-read` = `lg − 2 × 6`.
-- **`global.css` kini guna token:** `.menu-toggle` md, `.fc-read` lg, `.social-peek__logo` + `.kenali__icons` lg, titik carousel lg, `.aifa-toggle` xl (override 52px telefon dibuang), `.aifa-links a` sm, `.folder__chip` sm dengan Label/14, `.post-back` hit-area.
-- Diukur pada runtime (Chrome headless, 375 / 1280): Button 40 / 44, Chip 40 / 44, search Home 48 / 56 (butang 38 / 46), search Artikel 40 / 44, Select 40 / 44, Verdict pill 32, overlay/tint 24, Badge 24, `.fc-read` 44 / 48, logo sosial 44 / 48. `::after` setiap kawalan 40px = 44.
+- **One fluid control scale** in `tokens.css`: `sm` 32→36 · `md` 40→44 · `lg` 44→48 · `xl` 48→56, from 375px to 1280px with `clamp()` (the same formula as the type roles). Desktop stays as before; phones are 4–8px denser. Side padding follows the scale (`--space-control-x-sm/-x/-x-lg`).
+- **The 44 touch target stays:** `.ui-btn::after` and `.ui-chip::after` grow to `--size-hit-area` when the control is shorter.
+- **Badge scale (fixed, not targets):** `--size-badge-sm` 20 · `--size-badge` 24 · `--size-badge-lg` 32. `Badge` size sm/md/lg; `Verdict` pill = lg 32, overlay/tint = md 24. `.peek-modal__badge` = lg badge.
+- **API:** `Button` size sm · md · **lg (new)** · icon-sm · icon · icon-lg. `Chip` size sm · md · lg (new). `Badge` sm · md · lg (lg was 44, now 32). `SearchField` lg (default) · **md (new)** · sm. `Input` / `Select` size sm · md · lg (new). `'default'` is still accepted as md.
+- **Nested controls are derived:** the "Semak" button = `search − 2 × (inset 4 + border)`; a tab = `track − 2 × (segment + border)`; the `.fc-read` icon circle = `lg − 2 × 6`.
+- **`global.css` now uses tokens:** `.menu-toggle` md, `.fc-read` lg, `.social-peek__logo` + `.kenali__icons` lg, carousel dots lg, `.aifa-toggle` xl (the 52px phone override removed), `.aifa-links a` sm, `.folder__chip` sm with Label/14, `.post-back` hit area.
+- Measured at runtime (headless Chrome, 375 / 1280): Button 40 / 44, Chip 40 / 44, Home search 48 / 56 (button 38 / 46), Articles search 40 / 44, Select 40 / 44, Verdict pill 32, overlay/tint 24, Badge 24, `.fc-read` 44 / 48, social logos 44 / 48. Every 40px control's `::after` = 44.
 
-## Audit ukuran hardcode + lint diperluas (23 Nov 2026)
+## Hard-coded size audit + wider lint (23 Nov 2026)
 
-- **Press:** semua `:active` kini `var(--press-scale)` (.97); dahulu .94 / .95 / .96 / .97 bercampur (`.fc-read`, `.aifa-toggle`, `.about-hero-follow`, `.sphere-node`, `.social-peek__logo`, `.ui-navlink`, `.ui-lang__trigger`).
-- **Disc ikon borang aduan:** `.claim-icon` dan `.claim-file-icon` = `--size-control` (40→44; override 38px telefon dibuang), `.claim-done-icon` = `--size-control-xl` (48→56), bulat `--radius-full`.
-- **Titik:** taip AIFA dan titik carousel = `--size-dot` (8); titik aktif = 4 × dot.
-- **Menu:** Kongsi `--size-menu` (220, dahulu 180); panel nav ringkas `--size-menu-lg` (260, token baharu).
-- **Token baharu:** `--color-hairline-strong` (cincin logo kecil atas foto), `--radius-tail` (sudut bubble chat), `--underline-offset` (4) + `--underline-thickness` (1) untuk setiap garis bawah (footer, "Semua artikel", borang, `Button` link/ghost).
-- **Breakpoint:** `@media (min-width: 901px)` pada Logo kit ditukar ke asas desktop + `@media (max-width: 900px)`; render sama (grid/subgrid ≥901, flex ≤900).
-- **`lint:ds` baharu:** `raw-colour-fn`, `press-scale`, `control-size` (32–56px), `dot-size`, `underline`, `breakpoint-direction`; `raw-radius` kini baca juga `border-*-*-radius`. Diuji pada commit sebelum ini: 26 temuan, kini bersih.
-- **Sengaja tidak diubah:** geometri ilustrasi FormatFolder, saiz flip card / slaid hero / marquee, lebar bacaan (400–1500px) dan ukuran panel AIFA / modal aduan: perlu keputusan reka bentuk (skala measure + knob panel) dahulu.
+- **Press:** every `:active` is now `var(--press-scale)` (.97); it used to be a mix of .94 / .95 / .96 / .97 (`.fc-read`, `.aifa-toggle`, `.about-hero-follow`, `.sphere-node`, `.social-peek__logo`, `.ui-navlink`, `.ui-lang__trigger`).
+- **Claim form icon discs:** `.claim-icon` and `.claim-file-icon` = `--size-control` (40→44; the 38px phone override removed), `.claim-done-icon` = `--size-control-xl` (48→56), round `--radius-full`.
+- **Dots:** the AIFA typing dots and carousel dots = `--size-dot` (8); the active dot = 4 × dot.
+- **Menus:** Kongsi `--size-menu` (220, was 180); the compact nav panel `--size-menu-lg` (260, a new token).
+- **New tokens:** `--color-hairline-strong` (the ring of a small logo on a photo), `--radius-tail` (chat bubble corner), `--underline-offset` (4) + `--underline-thickness` (1) for every underline (footer, "Semua artikel", forms, `Button` link/ghost).
+- **Breakpoint:** the `@media (min-width: 901px)` on the Logo kit became a desktop base + `@media (max-width: 900px)`; the same render (grid/subgrid ≥901, flex ≤900).
+- **New `lint:ds` rules:** `raw-colour-fn`, `press-scale`, `control-size` (32–56px), `dot-size`, `underline`, `breakpoint-direction`; `raw-radius` now also reads `border-*-*-radius`. Tested on the previous commit: 26 findings, now clean.
+- **Deliberately unchanged:** the FormatFolder illustration geometry, the flip card / hero slide / marquee sizes, reading widths (400–1500px) and the AIFA panel / claim modal sizes: they need a design decision first (a measure scale + panel knobs).
+
+## Design system becomes a package (24–26 Nov 2026)
+
+From here the design system's history is in [`plan.md`](plan.md) (Handover to other products) and [`../design-system/CHANGELOG.md`](../design-system/CHANGELOG.md): the docs tidied, the `/design-system` style guide, `design-system/base.css`, shape roles, the Tailwind 3.4 preset, compact density and dashboard components, the app shell, dialogs, charts and meters, the `@sebenarnya/design-system` package (released as `ds-v0.1.0`) and the contribution process.
