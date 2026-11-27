@@ -1,0 +1,11 @@
+# Design system: tokens, components, lint, release and its docs need the owner's review.
+# docs/contributing.md explains how to propose a change.
+/design-system/                          @endahbyu
+/scripts/lint-ds.mjs                     @endahbyu
+/.github/workflows/design-system-release.yml @endahbyu
+/docs/design.md                          @endahbyu
+/docs/design-system-rules.md             @endahbyu
+/docs/adopting-cms.md                    @endahbyu
+/docs/adopting-extension.md              @endahbyu
+/docs/contributing.md                    @endahbyu
+/docs/README.md                          @endahbyu

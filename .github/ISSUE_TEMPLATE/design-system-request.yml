@@ -1,0 +1,55 @@
+name: Design system request
+description: Ask for a component, variant, token or motion pattern the design system does not have yet.
+title: "[Design system] "
+labels: ["design-system"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before asking: check `/design-system/` on the website and `docs/design-system-rules.md` § 3.
+        If only one product needs it, you may build it in that product from design-system components
+        and tokens (see `docs/contributing.md`). The owner answers within 2 working days.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What do you need?
+      options:
+        - New component
+        - New variant or prop of an existing component
+        - New token (colour, size, spacing, radius, shadow, motion)
+        - Motion / animation pattern
+        - Change to an existing component or token
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: need
+    attributes:
+      label: The need
+      description: What the user is trying to do, and why the current components or tokens do not cover it.
+      placeholder: "In the CMS article list editors need to pick an agency from ~40 names; a Select is too long to scan."
+    validations:
+      required: true
+  - type: checkboxes
+    id: products
+    attributes:
+      label: Which products need it?
+      options:
+        - label: Website
+        - label: CMS
+        - label: Browser extension
+  - type: input
+    id: reference
+    attributes:
+      label: Reference (optional)
+      description: A shadcn/ui component, a Lucide icon, another product's pattern…
+      placeholder: "https://ui.shadcn.com/docs/components/combobox"
+  - type: textarea
+    id: screens
+    attributes:
+      label: Screenshots or sketch (optional)
+  - type: input
+    id: workaround
+    attributes:
+      label: Built locally meanwhile? (optional)
+      description: Link to the product code marked TODO(design-system), if you built it in the product while waiting.

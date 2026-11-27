@@ -6,6 +6,9 @@ CMS when a token changes.
 
 **Ground rules (read first)**
 
+- **Need a component, token or animation that does not exist?** Follow
+  [`contributing.md`](contributing.md); never install another UI library or restyle a component.
+
 - The design system is a package. **Never copy or edit its files**; install new versions.
 - **Only preset classes.** The preset replaces Tailwind's colours, type sizes, spacing, radius,
   weights and breakpoints, so `bg-red-500`, `text-sm`, `rounded-lg`, `font-bold` do not exist.
