@@ -5,7 +5,7 @@ export default function Collaborators() {
   return (
     <section className="partners container" aria-label="Sumber kenyataan rasmi">
       <div className="partners-inner">
-        <p className="partners-label">Kenyataan rasmi daripada</p>
+        <p className="partners-label">Dengan Kerjasama</p>
 
         <div className="partners-ticker">
           <div className="partners-track">
