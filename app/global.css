@@ -2000,6 +2000,19 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .marquee-card__tag { background: var(--color-surface-overlay); color: var(--color-foreground); }
 .marquee-card__title { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--font-weight-medium); text-wrap: balance; }
 
+/* Galeri heading: centred, underlined like the reference gallery header */
+.gallery-title {
+  margin: var(--gap-block) 0 0;
+  font-size: var(--text-heading);
+  line-height: var(--text-heading--line-height);
+  font-weight: var(--text-heading--font-weight);
+  text-align: center;
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary);
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+}
+
 /* Galeri — two-column photo grid (components/GalleryGrid.js). Sections fill the columns in order. */
 .gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-cards); width: 100%; }
 .gallery-grid__section { display: grid; gap: var(--gap-cards); margin: 0; padding: 0; list-style: none; }

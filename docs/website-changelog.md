@@ -638,3 +638,4 @@ From here the design system's history is in [`plan.md`](plan.md) (Handover to ot
 
 - **Galeri** (`components/GalleryGrid.js`, `.gallery-grid*`) replaces the 3D sphere (`SphereGallery.js` removed). A two-column grid of sections from `aboutNews.gallery`: `single` = one tall photo, `grid` = 2 × 2 squares; a lone last section spans both columns as a 3:1 strip. ≤900px: one column.
 - Tiles take `--radius-card`, gaps `--gap-cards`; hover zooms the photo 1.05, press `--press-scale`. Every photo still opens in the image-only `.ui-modal` (`.gallery-dialog`).
+- The "Galeri" heading is now visible (`.gallery-title`, `heading` role, centred, underlined in `--color-primary`).
