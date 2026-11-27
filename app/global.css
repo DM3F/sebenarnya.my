@@ -1944,7 +1944,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .about-intro__card { flex: none; min-height: 240px; }
 }
 
-/* Berita dan Galeri: two-row news marquee, then the photo sphere */
+/* Berita dan Galeri: two-row news marquee, then the photo grid */
 .about-news { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--side); }
 .about-news__head { display: flex; flex-direction: column; align-items: center; gap: var(--gap-text); text-align: center; }
 .about-news__head .about-title { margin: 0; }
@@ -2000,80 +2000,50 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .marquee-card__tag { background: var(--color-surface-overlay); color: var(--color-foreground); }
 .marquee-card__title { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--font-weight-medium); text-wrap: balance; }
 
-/* Galeri — photos on a 3D sphere (components/SphereGallery.js). Node positions come from JS. */
-.sphere-gallery { display: flex; flex-direction: column; align-items: center; gap: var(--gap-group); }
-.sphere-stage {
-  position: relative;
-  isolation: isolate; /* nodes carry inline z-index ≈1000: keep them inside the stage, under the AIFA button */
-  width: 100%;
-  max-width: 960px;
-  aspect-ratio: 1;
-  cursor: grab;
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.sphere-stage:active { cursor: grabbing; }
-.sphere-node {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-full);
-  background: none;
-  cursor: pointer;
-  opacity: 0; /* until the first frame places it */
-  will-change: transform;
-}
-/* Invisible hit area: at least 24px on screen however far back the node sits (set from JS as --node-hit) */
-.sphere-node::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--node-hit, 100%);
-  height: var(--node-hit, 100%);
-  border-radius: var(--radius-full);
-  translate: -50% -50%;
-}
-.sphere-node__disc {
+/* Galeri — two-column photo grid (components/GalleryGrid.js). Sections fill the columns in order. */
+.gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-cards); width: 100%; }
+.gallery-grid__section { display: grid; gap: var(--gap-cards); margin: 0; padding: 0; list-style: none; }
+.gallery-grid__section--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.gallery-grid__section--grid .gallery-grid__tile { aspect-ratio: 1; }
+.gallery-grid__section--single .gallery-grid__tile { height: 100%; min-height: 320px; }
+/* A lone last section takes the whole row as a wide banner */
+.gallery-grid__section:last-of-type:nth-of-type(odd) { grid-column: 1 / -1; }
+.gallery-grid__section--single:last-of-type:nth-of-type(odd) .gallery-grid__tile { aspect-ratio: 3 / 1; height: auto; min-height: 0; }
+.gallery-grid__section li { display: flex; }
+.gallery-grid__tile {
   display: block;
   width: 100%;
-  height: 100%;
+  padding: 0;
   overflow: hidden;
-  border: 2px solid color-mix(in srgb, var(--color-foreground-inverse) 20%, transparent); /* ds-allow: decorative sphere rim */
-  border-radius: var(--radius-full);
+  border: 0;
+  border-radius: var(--radius-card);
   background: var(--color-muted);
-  box-shadow: var(--shadow-float);
-  transition: transform var(--duration-base) var(--ease-out);
+  cursor: zoom-in;
 }
-.sphere-node__disc img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-.sphere-node:active .sphere-node__disc { transform: scale(var(--press-scale)); }
-.sphere-node:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
-.sphere-hint { margin: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); text-align: center; }
-@media (max-width: 600px) { .sphere-hint span { display: block; } } /* phones: "Seret untuk memusingkan," / "pilih foto untuk melihatnya lebih besar." */
+.gallery-grid__tile img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: transform var(--duration-slower) var(--ease-out); }
+.gallery-grid__tile:active img { transform: scale(var(--press-scale)); }
+.gallery-grid__tile:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 
 /* Photo dialog: image only, no text box */
-.sphere-dialog {
+.gallery-dialog {
   max-width: min(960px, calc(100vw - 32px));
   max-height: calc(100dvh - 48px);
   background: transparent;
   box-shadow: none;
   overflow: visible;
 }
-.sphere-dialog img {
+.gallery-dialog img {
   display: block;
   max-width: 100%;
   max-height: calc(100dvh - 48px);
   border-radius: var(--radius-card-lg);
   object-fit: contain;
 }
-.sphere-dialog .sphere-dialog__close { position: absolute; top: var(--spacing-12); right: var(--spacing-12); }
+.gallery-dialog .gallery-dialog__close { position: absolute; top: var(--spacing-12); right: var(--spacing-12); }
 
 
 @media (hover: hover) and (pointer: fine) {
-  .sphere-node:hover .sphere-node__disc { transform: scale(1.2); }
+  .gallery-grid__tile:hover img { transform: scale(1.05); }
 }
 
 @media (max-width: 1100px) {
@@ -2081,6 +2051,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 
 @media (max-width: 900px) {
+  .gallery-grid { grid-template-columns: minmax(0, 1fr); }
+  .gallery-grid__section--single .gallery-grid__tile { aspect-ratio: 4 / 3; height: auto; min-height: 0; }
   .about-hero-card { min-height: 560px; padding: var(--spacing-32) var(--spacing-24) var(--spacing-40); }
 }
 
@@ -2095,7 +2067,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .marquee__track { animation: none; }
   .marquee__row { overflow-x: auto; }
   .marquee__set[aria-hidden='true'] { display: none; }
-  .sphere-node__disc,
+  .gallery-grid__tile img,
   .about-hero-follow a,
   .aifa-card { transition: none; }
   .aifa-card:hover { transform: none; }
