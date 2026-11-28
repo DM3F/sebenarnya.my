@@ -45,7 +45,7 @@ export default function Footer() {
       </div>
 
       <p className="site-footer__copy">
-        &copy; 2023 Suruhanjaya Komunikasi dan Multimedia Malaysia.
+        &copy; 2026 Suruhanjaya Komunikasi dan Multimedia Malaysia.
       </p>
     </footer>
   );
