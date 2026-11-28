@@ -132,8 +132,9 @@ function Intro() {
 }
 
 // Bagaimana kami menyemak fakta: a framed head (badge, title, lead), then a vertical timeline.
-// Each stage: step number (sticky beside its stage on wide screens) | rail with a dot | title,
-// text and photo. An ordered list, so the order is announced; the rail is decoration.
+// Wide screens: the rail runs down the middle and stages alternate sides (text | photo, then
+// photo | text). Narrow: one column with the rail on the leading edge. An ordered list, so the
+// order is announced; the rail is decoration.
 function Process() {
   return (
     <section className="about-process" aria-labelledby="about-process-title">
@@ -147,13 +148,13 @@ function Process() {
         <ol className="process">
           {process.steps.map((step, i) => (
             <li className="process__step" key={step.title}>
-              <p className="process__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
-              <span className="process__rail" aria-hidden="true" />
-              <div className="process__body">
+              <div className="process__info">
+                <p className="process__num" aria-hidden="true">({String(i + 1).padStart(2, '0')})</p>
                 <h3 className="process__title">{step.title}</h3>
                 <p className="process__text">{step.text}</p>
-                <img className="process__img" src={step.image} alt={step.alt} loading="lazy" />
               </div>
+              <span className="process__rail" aria-hidden="true" />
+              <img className="process__img" src={step.image} alt={step.alt} loading="lazy" />
             </li>
           ))}
         </ol>
