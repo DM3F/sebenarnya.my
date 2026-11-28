@@ -1069,7 +1069,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   padding: var(--spacing-20) var(--spacing-12);
   border-radius: var(--radius-field);
   background: var(--color-card);
-  box-shadow: var(--shadow-header); /* hairline + soft fall-off: just enough lift off the page */
+  /* Barely-there lift: only enough to separate the white card from the page background */
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--color-foreground) 4%, transparent);
 }
 
 .partners-logo img {
