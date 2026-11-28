@@ -273,6 +273,9 @@
 }
 .ui-badge .ui-icon { width: var(--badge-icon); height: var(--badge-icon); }
 .ui-badge--outline { --badge-bg: var(--color-background); --badge-border: var(--color-border); }
+/* Eyebrow: the section label above a heading, the same everywhere. No fill, a hairline in the
+   text colour (currentColor), so it works on light pages and dark cards alike. */
+.ui-badge--eyebrow { --badge-bg: transparent; --badge-border: currentColor; color: inherit; }
 .ui-badge--media {
   --badge-bg: var(--color-surface-overlay);
   backdrop-filter: blur(var(--blur-overlay));
