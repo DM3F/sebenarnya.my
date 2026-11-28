@@ -32,19 +32,14 @@ export default function Hero() {
         <div className="hero-content container">
           <div className="hero-heading">
             <h1 className="hero-title">
-              {/* Line 1 at display size (two lines on phones); line 2 is the smaller promise and may wrap */}
+              {/* Three lines at one size on wide screens; on phones line 1 splits in two and lines 2–3 may wrap */}
               <span>
                 <span className="hero-title__part">Tidak pasti?</span>{' '}
                 <span className="hero-title__part">Jangan kongsi</span>
               </span>{' '}
-              <span className="hero-title__sub">
-                Semakan Berasaskan Fakta, Pengesahan Bersumberkan Maklumat Rasmi.
-              </span>
+              <span className="hero-title__line">Semakan Berasaskan Fakta,</span>{' '}
+              <span className="hero-title__line">Pengesahan Bersumberkan Maklumat Rasmi.</span>
             </h1>
-            <p className="hero-lede">
-              <span>Portal rujukan rasmi yang disahkan terus oleh kementerian dan agensi.</span>{' '}
-              <span>Tampal tajuk mesej tular di sini, atau tanya AIFA 24 jam di WhatsApp.</span>
-            </p>
           </div>
 
           <div className="hero-search-group">

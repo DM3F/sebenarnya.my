@@ -20,7 +20,6 @@ const LINES = '.hero-title > span';
 // The first-screen chunks of each page, in reading order. Only the ones present on a page run.
 const CHUNKS = [
   // Utama
-  '.hero-lede',
   '.hero-search-group',
   // Tentang Kami
   '.about-hero-card',
