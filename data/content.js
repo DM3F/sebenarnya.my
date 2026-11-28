@@ -136,22 +136,25 @@ export const socialLinks = [
   },
 ];
 
-/* Footer */
+/* Footer (components/Footer.js): statement, then these columns; the Sosial column comes from `socialLinks` */
+// The no-break space keeps "dan" with the last line, as designed
+export const footerStatement = 'Rujukan utama anda untuk semakan fakta dan\u00a0maklumat yang sahih';
+
 export const footerColumns = [
   {
-    title: 'Semak dan Lapor',
+    title: 'Semak dan lapor',
     links: [
       { label: 'Artikel', href: '/article/' },
       { label: 'AIFA', href: '/aifa/' },
-      { label: 'Salur Kepada Kami', href: '/submit-claim/' },
+      { label: 'Salur kepada kami', href: '/submit-claim/' },
     ],
   },
-
   {
-    title: 'Sebenarnya.my',
+    title: 'Tentang kami',
     links: [
-      { label: 'Tentang Kami', href: '/about-us/' },
-      { label: 'Berita dan Galeri', href: '/about-us/#berita-galeri' },
+      { label: 'Tentang kami', href: '/about-us/' },
+      { label: 'Berita dan galeri', href: '/about-us/#berita-galeri' },
+      { label: 'Muat turun logo', href: '/about-us/#logo' },
     ],
   },
 ];
