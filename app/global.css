@@ -1921,25 +1921,13 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .about-intro { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--side); }
 .about-intro__head { display: flex; justify-content: space-between; align-items: start; gap: var(--gap-block); }
 .about-intro__label {
-  /* grey dot + label, as in the design */
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-inline);
+  /* holds the eyebrow badge (Badge variant="eyebrow"); h2 for the outline */
+  display: flex;
   flex: none;
   width: auto; /* h2 defaults to full width elsewhere */
   margin: 0;
-  font-size: var(--text-title);
-  line-height: var(--text-title--line-height);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-muted-foreground);
-  white-space: nowrap;
-}
-.about-intro__label::before {
-  content: '';
-  width: var(--spacing-12);
-  height: var(--spacing-12);
-  border-radius: var(--radius-full);
-  background: var(--color-border-strong);
+  font-size: inherit;
+  color: var(--color-foreground);
 }
 /* Lead: intro size, reading line height; name in bold, second sentence muted (smoke 5.3:1) */
 .about-intro__lead {
@@ -2003,12 +1991,10 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 
 /* Bagaimana kami menyemak fakta (components/AboutUs.js › Process) -----------------------
-   A hairline frame (sides; the head closes with a bottom rule, the end with a top rule), as in
-   the reference block. Inside: ordered stages on a vertical rail.
+   Head (eyebrow, title, lead) closed by a hairline, then ordered stages on a vertical rail.
    Wide (>900): rail down the middle, stages alternate: text | photo, then photo | text; the text
    hugs the rail (end-aligned on the left side). Narrow: rail on the leading edge, text then photo. */
 .about-process { padding: 0 var(--side); }
-.about-process__frame { border-inline: var(--border-width) solid var(--color-border); }
 .about-process__head {
   display: flex;
   flex-direction: column;
@@ -2019,9 +2005,35 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 .about-process__head .about-title { margin: 0; }
 .about-process__lead { max-width: 42em; margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
-.about-process__end { height: calc(var(--space-section) / 2); border-top: var(--border-width) solid var(--color-border); }
 
-.process { margin: 0; padding: 0; list-style: none; }
+.process { position: relative; margin: 0; padding: 0; list-style: none; }
+
+/* One continuous rail for the whole list (the stage cells only carry their dots):
+   track in hairline grey, fill in ink scaled to --p, pointer at the fill's end.
+   --rail-x is the rail's centre: the middle on wide screens, the leading column on narrow. */
+.process-wrap { --rail-x: 50%; --p: 0; --p-px: 0px; position: relative; }
+.process__track,
+.process__fill {
+  position: absolute;
+  inset-block: 0;
+  left: var(--rail-x);
+  width: var(--border-width);
+  translate: -50% 0;
+  background: var(--color-border);
+}
+.process__fill { background: var(--color-foreground); transform: scaleY(var(--p)); transform-origin: top; }
+.process__pointer {
+  position: absolute;
+  top: 0;
+  left: var(--rail-x);
+  z-index: 1;
+  width: var(--spacing-16);
+  height: var(--spacing-16);
+  border-radius: var(--radius-full);
+  background: var(--color-foreground);
+  box-shadow: 0 0 0 var(--spacing-4) var(--color-background);
+  transform: translate(-50%, -50%) translateY(var(--p-px));
+}
 .process__step {
   --rail-w: var(--spacing-48);
   display: grid;
@@ -2063,16 +2075,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 .process__text { max-width: 30em; margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
-/* Rail: a hairline through every stage, joined end to end, with a dot level with the row's middle */
+/* Stage dot, level with the row's middle: grey until the pointer passes it, then ink */
 .process__rail { grid-area: rail; position: relative; align-self: stretch; }
-.process__rail::before {
-  content: '';
-  position: absolute;
-  inset-block: 0;
-  left: 50%;
-  width: var(--border-width);
-  background: var(--color-border);
-}
 .process__rail::after {
   content: '';
   position: absolute;
@@ -2081,10 +2085,11 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   width: var(--spacing-12);
   height: var(--spacing-12);
   border-radius: var(--radius-full);
-  background: var(--color-foreground);
+  background: var(--color-border-strong);
   box-shadow: 0 0 0 var(--spacing-4) var(--color-background); /* gap where the dot cuts the rail */
   translate: -50% -50%;
 }
+.process__step[data-reached] .process__rail::after { background: var(--color-foreground); }
 .process__img {
   grid-area: media;
   display: block;
@@ -2097,6 +2102,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 
 @media (max-width: 900px) {
+  .process-wrap { --rail-x: calc(var(--pad-card-lg) + var(--spacing-12)); }
   .process__step,
   .process__step:nth-child(even) {
     --rail-w: var(--spacing-24);
@@ -2481,13 +2487,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   padding: var(--space-section) var(--space-page-x) 0;
   text-align: center;
 }
-.page-notice__eyebrow {
-  margin: 0 0 var(--gap-group);
-  font-size: var(--text-label-sm);
-  line-height: var(--text-label-sm--line-height);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-muted-foreground);
-}
+.page-notice__eyebrow { align-self: center; margin: 0 0 var(--gap-group); }
 .page-notice__actions {
   display: flex;
   flex-wrap: wrap;
@@ -2606,18 +2606,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 /* Award: the one ink surface in the section. Short copy only: eyebrow, headline,
    one line of context; no button (the full story lives on Tentang Kami). */
 .kenali__card--award { justify-content: space-between; gap: var(--gap-group); background: var(--color-primary); color: var(--color-primary-foreground); }
-.kenali__award-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--gap-inline);
-  margin: 0;
-  font-size: var(--text-eyebrow);
-  line-height: var(--text-eyebrow--line-height);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--color-muted-foreground-inverse);
-}
+.kenali__award-eyebrow.ui-badge { color: var(--color-muted-foreground-inverse); } /* eyebrow badge on the ink card: hairline + text in the dimmed inverse tier (7:1) */
 .kenali__award-body { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap-text); }
 .kenali__award-title { margin: 0; font-size: var(--text-heading); line-height: var(--text-heading--line-height); font-weight: var(--text-heading--font-weight); text-wrap: balance; } /* a sentence-long title: panel heading role */
 .kenali__award-text {

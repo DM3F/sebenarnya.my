@@ -1,6 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Button } from '@/components/ui';
+import { Badge, Button } from '@/components/ui';
 import { withBase } from '@/lib/basePath';
 
 export const metadata = {
@@ -14,7 +14,7 @@ export default function NotFound() {
 
       <main className="main" id="main" tabIndex={-1}>
         <section className="page-notice" aria-labelledby="not-found-title">
-          <p className="page-notice__eyebrow">Ralat 404</p>
+          <Badge variant="eyebrow" className="page-notice__eyebrow">Ralat 404</Badge>
           <h1 className="post-title" id="not-found-title">Halaman ini tidak dijumpai</h1>
           <p className="post-subtitle">
             Pautan mungkin sudah lama atau tersalah taip. Cuba semak dakwaan dari halaman utama atau lihat semua artikel.

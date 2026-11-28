@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
 import GalleryGrid from '@/components/GalleryGrid';
@@ -94,7 +95,9 @@ function Intro() {
   return (
     <section className="about-intro" aria-labelledby="about-intro-title">
       <div className="about-intro__head">
-        <h2 className="about-intro__label" id="about-intro-title">{intro.label}</h2>
+        <h2 className="about-intro__label" id="about-intro-title">
+          <Badge variant="eyebrow">{intro.label}</Badge>
+        </h2>
         <p className="about-intro__lead">
           <strong>{intro.lead.strong}</strong> {intro.lead.text} <span>{intro.lead.muted}</span>
         </p>
@@ -135,16 +138,24 @@ function Intro() {
 // Wide screens: the rail runs down the middle and stages alternate sides (text | photo, then
 // photo | text). Narrow: one column with the rail on the leading edge. An ordered list, so the
 // order is announced; the rail is decoration.
+// Scroll progress: the rail fills in ink from the top down to a pointer that sits level with the
+// middle of the viewport, and each stage's dot turns ink once the pointer passes it.
 function Process() {
+  const wrapRef = useScrollProgress();
+
   return (
     <section className="about-process" aria-labelledby="about-process-title">
       <div className="about-process__frame">
         <div className="about-process__head">
-          <Badge variant="outline">{process.badge}</Badge>
+          <Badge variant="eyebrow">{process.badge}</Badge>
           <h2 className="about-title" id="about-process-title">{process.title}</h2>
           <p className="about-process__lead">{process.lead}</p>
         </div>
 
+        <div className="process-wrap" ref={wrapRef}>
+          <span className="process__track" aria-hidden="true" />
+          <span className="process__fill" aria-hidden="true" />
+          <span className="process__pointer" aria-hidden="true" />
         <ol className="process">
           {process.steps.map((step, i) => (
             <li className="process__step" key={step.title}>
@@ -158,11 +169,47 @@ function Process() {
             </li>
           ))}
         </ol>
-
-        <div className="about-process__end" aria-hidden="true" />
+        </div>
       </div>
     </section>
   );
+}
+
+// Progress of the viewport's middle through the timeline (0 → 1), written as --p on the wrapper
+// (fill scale, pointer offset); each stage gets data-reached once its dot is above that line.
+// One rAF per scroll frame, transform only. Without JS the rail is simply unfilled.
+function useScrollProgress() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const wrap = ref.current;
+    if (!wrap) return;
+    const steps = [...wrap.querySelectorAll('.process__step')];
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const box = wrap.getBoundingClientRect();
+      const line = window.innerHeight / 2;
+      const p = Math.min(1, Math.max(0, (line - box.top) / box.height));
+      wrap.style.setProperty('--p', p.toFixed(4));
+      wrap.style.setProperty('--p-px', `${(p * box.height).toFixed(1)}px`);
+      steps.forEach((s) => {
+        const dot = s.querySelector('.process__rail');
+        const r = dot.getBoundingClientRect();
+        const marker = window.matchMedia('(max-width: 900px)').matches ? r.top + 42 : r.top + r.height / 2;
+        s.toggleAttribute('data-reached', marker <= line);
+      });
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+  return ref;
 }
 
 // Berita dan Galeri: two rows of news photos drifting in opposite directions (top row left, bottom
