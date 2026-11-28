@@ -1,11 +1,13 @@
 # Design system rules — Sebenarnya.my
 
 Rules for anyone (people or coding agents) writing UI in this repo. Taste and
-visual direction live in [`design.md`](design.md); exact component specs in
-[`design-system-handoff.md`](design-system-handoff.md). This file says **how to
-write the code** so the system stays easy to update.
+visual direction live in [`design.md`](design.md); the doc map and how to use the
+system in other products (CMS dashboard, browser extension) is in
+[`README.md`](README.md). This file is the technical spec: it says **how to write
+the code** so the system stays easy to update. Website page notes and history are
+in [`website-changelog.md`](website-changelog.md) (not a spec).
 
-**Source of truth:** the code (`app/tokens.css`, `app/ui.css`, `components/ui/`)
+**Source of truth:** the code (`design-system/tokens.css`, `design-system/base.css`, `design-system/ui.css`, `design-system/react/`)
 and these docs. The Paper file is no longer a reference — its canvas does not
 match the current design, so never copy values or layouts from it.
 
@@ -18,9 +20,9 @@ Stack: Next.js 16 (App Router, static export), React 19, JavaScript, plain CSS
 
 | Tier | Where | Examples | Who may use it |
 |---|---|---|---|
-| 1 · Primitive | `app/tokens.css` (top) | `--color-grey-95`, `--text-16`, `--leading-body`, `--spacing-44` | Only tokens.css itself |
-| 2 · Semantic | `app/tokens.css` | `--color-primary`, `--color-input`, `--text-label`, `--size-control`, `--radius-control`, `--focus-ring-*` | Every component |
-| 3 · Component | `app/ui.css`, top of each block | `--btn-bg`, `--chip-height`, `--field-border`, `--verdict-dot` | That component and its variants |
+| 1 · Primitive | `design-system/tokens.css` (top) | `--color-grey-95`, `--text-16`, `--leading-body`, `--spacing-44` | Only tokens.css itself |
+| 2 · Semantic | `design-system/tokens.css` | `--color-primary`, `--color-input`, `--text-label`, `--size-control`, `--radius-control`, `--focus-ring-*` | Every component |
+| 3 · Component | `design-system/ui.css`, top of each block | `--btn-bg`, `--chip-height`, `--field-border`, `--verdict-dot` | That component and its variants |
 
 Decision guide:
 
@@ -37,7 +39,7 @@ Decision guide:
 | Type roles | `--text-display · heading-lg · heading · title · intro · article · body · body-sm · label · label-sm · eyebrow · badge · verdict · caption · stat`, each with `--line-height`, and where it applies `--font-weight` / `--letter-spacing` (Tailwind v4 shape: `--text-label--line-height`) |
 | Size | `--size-control-sm · control · control-lg · control-xl` (fluid control scale, below) `· hit-area (44) · badge-sm (20) · badge (24) · badge-lg (32) · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu (220) · menu-lg (260)` |
 | Space roles | Content: `--gap-inline · gap-text · gap-group · gap-cards · gap-block`, cards: `--pad-card-sm · pad-card · pad-card-lg`; controls: `--space-control-x-sm · control-x · control-x-lg` (fluid) `· field-x · badge-x-sm/-x/-x-lg · inline-tight · stack · segment`; page: `--space-page-x · section · page-top` |
-| Shape | `--radius-control (pill) · field (8) · menu · menu-item · media (12) · card (20) · card-lg (24) · tail (4, chat bubble corner)` |
+| Shape | `--radius-control (pill) · badge (pill) · field (8) · menu · menu-item · media (card − 8 = 12) · card (20) · card-lg (24) · tail (4, chat bubble corner)`; `--radius-full` for true circles only |
 | Focus & effects | `--border-width · underline-thickness · underline-offset · focus-ring-width · focus-ring-offset · focus-ring-color · blur-overlay · press-scale · transition-colors · shadow-*` |
 | Motion | `--duration-fast/base/slow/slower · ease-out/in-out/emphasized` |
 
@@ -129,8 +131,13 @@ Four rules:
    container. A column gutter inside a card equals the card padding.
 3. **Nested radius = outer − inset**: media inset 8px in a 20px card gets 12.
    Full-bleed media inherits the card radius through `overflow: hidden`.
-4. **Pill (`--radius-control`) is for controls only**: buttons, chips, tabs, search.
-   Cards are never pills.
+4. **Pick the shape by role, never by look.** `--radius-control` for anything you
+   press (buttons, chips, tabs, search, icon buttons, carousel controls, round social
+   buttons); `--radius-badge` for static pill labels (Badge, Verdict, photo pills);
+   `--radius-full` only for true circles (avatars, dots, decorative icon discs,
+   progress tracks). Both roles are pills today, but a rebrand changes each with one
+   line in tokens.css, so a control written with `--radius-full` would be left behind.
+   Cards are never pills; `--radius-media` follows `--radius-card` by itself.
 
 Exceptions: a full-screen modal on a phone uses `sm` (= the 16px page gutter).
 Hero stages (`.about-hero-card`) are layout, not cards: they use section spacing.
@@ -142,9 +149,20 @@ A `--spacing-*` step is only for geometry inside one component: gaps of 12px or 
 control padding, offsets. Don't add breakpoint overrides for a role (it is already
 fluid). The rare exception (header chrome, carousel dot hit areas) carries `ds-allow`.
 
+### Density: default and compact
+
+`data-density="compact"` on `<html>` or an app shell makes everything inside denser by
+changing token values only (tokens.css › DENSITY): controls sm 32 · md 36 · lg 40 · xl 44,
+table rows 40, card padding 12 · 16 · 24, tighter card and block gaps, page gutter 24.
+Type roles do not change. Sizes are fixed, not fluid. The hit area drops from 44 to 24
+(WCAG 2.2 AA 2.5.8) so targets do not overlap 36–40px rows: **compact is for mouse-first
+desktop tools only** (CMS). The public website and anything used on a phone stay default.
+Never write density-specific CSS in a component; if compact needs a different value, it
+is a token in the DENSITY block.
+
 ### Overlays: one menu, one modal
 
-- **Menu** (`.ui-menu`, `app/ui.css`): nav dropdown, language and Kongsi menus share one
+- **Menu** (`.ui-menu`, `design-system/ui.css`): nav dropdown, language and Kongsi menus share one
   surface — `--color-background`, 1px `--color-border`, `--radius-menu`, `--space-inline`
   padding, `--shadow-float` — and one 150ms pop-in (opacity + scale .96) from the trigger
   edge. A menu adds `.ui-menu` and sets only its width and `transform-origin`.
@@ -212,12 +230,12 @@ Easing `--ease-out` by default. Ambient loops
 
 1. No hex/rgb colours outside `tokens.css`.
 2. No palette primitives (`--color-grey-*`, `--color-red`…) in components.
-3. `app/ui.css`: **no raw lengths** (`px`); use roles. Exceptions carry `/* ds-allow: reason */`.
+3. `design-system/ui.css`: **no raw lengths** (`px`); use roles. Exceptions carry `/* ds-allow: reason */`.
 3d. **Details:** focus rings, motion and border widths only from tokens; `<Icon>` sizes by name.
 3c. **Layout:** only the four breakpoints, `max-width` only (no `min-width` media queries); z-index above 5 must be a `--z-*` layer.
 3b. **Spacing & radius, every file except tokens.css:** no raw `px` in padding, margin or gap, no raw `px` radius, no `--radius-lg` (use `--radius-card-lg`). Optical nudges and overlaps carry `/* ds-allow: reason */`.
 3a. **Type, every file except tokens.css:** only type roles. No `--text-16`/`--leading-*` steps, no raw `font-size` (px, `clamp()`, `calc()`), no `px` line-height, no `fontSize` in JSX, no role that tokens.css does not define. Percent/em tweaks are fine.
-4. Icons: Lucide only, always through `components/ui/Icon.js`.
+4. Icons: Lucide only, always through `design-system/react/Icon.js`.
 5. No `rem` (the root is 62.5% and the CSS is reused in the extension).
 6. Font weights only from `--font-weight-*`; nothing above 600.
 7. Manrope only (`--font-sans`).
@@ -231,7 +249,7 @@ Run it before every commit; it exits 1 on failure.
 
 ## 3. Components — use these, don't rebuild them
 
-Import from `@/components/ui`. API mirrors shadcn/ui (variant + size props).
+Import from `@sebenarnya/design-system` in other products, `@/components/ui` in this website (it re-exports `design-system/react`). API mirrors shadcn/ui (variant + size props).
 
 | Need | Component | Notes |
 |---|---|---|
@@ -245,6 +263,33 @@ Import from `@/components/ui`. API mirrors shadcn/ui (variant + size props).
 | Form | `Field` + `Input` / `Textarea` / `Select` | Field wires id, `aria-invalid`, `aria-describedby`. `pill` for toolbar fields. `size` sm · md (default) · lg on Input and Select. |
 | Navigation | `NavLink`, `DropdownMenu` | `current` sets `aria-current="page"`. |
 | Icon | `Icon` | 1.75px stroke, `currentColor`, `aria-hidden`. |
+
+**Dashboard components** (CMS, extension, tools). Native elements, no Radix; API mirrors shadcn/ui.
+
+| Need | Component | Notes |
+|---|---|---|
+| Quiet action (toolbar, pagination, row action) | `Button variant="quiet"` | No fill, no underline, tinted on hover (shadcn's ghost). Our `ghost` keeps its underline. |
+| A surface for one subject | `Card` + `CardHeader` `CardTitle` `CardDescription` `CardAction` `CardContent` `CardFooter` | variant muted (default) · outline (work panels) · raised (on taupe). size sm · md · lg. |
+| Rows of data | `Table` + `TableHeader` `TableBody` `TableFooter` `TableRow` `TableHead` `TableCell` | `label` names the scroll region. `TableHead sort onSort` → sortable (aria-sort). `TableRow selected`. `align="num"` for figures, `check` for the selection column. Row height `--size-row`. |
+| Choice sent with a form | `Checkbox` | `label` always (also when hidden), `hint`, `indeterminate`, `onCheckedChange`. |
+| Setting that applies at once | `Switch` | `role="switch"`. If it needs Save, use Checkbox. |
+| One of a few visible options | `RadioGroup` | `items`, `value`, `onValueChange`, orientation. Over ~5 options: Select. |
+| Pages of a list | `Pagination` | `page`, `pageCount`, `onPageChange` or `href(page)`. |
+| Where this page sits | `Breadcrumb` | `items`; last item is the current page. |
+| Message that stays | `Alert` | default · success · destructive (role="alert"). Colour on the icon and edge only. There is no warning colour (design.md § 8, decision 8): write a warning in words in a default Alert. |
+| Confirmation that goes away | `toast()` + `<Toaster />` once | 5s, pauses on hover/focus, polite. Not for errors the user must act on: use Alert. |
+| Name of an icon-only control | `Tooltip` | Hover after 400ms, focus at once, Escape hides. Never essential information. |
+| Loading | `Skeleton` | text · circle · block. Put `aria-busy` on the loading region. |
+| Person or agency | `Avatar` | Initials fallback. sm · md. |
+| Nothing here yet | `EmptyState` | Say what will appear and how to add the first one. |
+| Divider | `Separator` | Decorative by default. |
+| One number that matters | `Stat` | `label`, `value` (formatted), `delta` (%), `deltaLabel`, optional `trend` sparkline. Change by sign, arrow and words, never red/green. |
+| Progress, score, quota | `Meter` | `role="meter"`; ink fill on a stone track; `valueText` is shown and read out. |
+| Ranking (per agency, top claims) | `BarList` | Sorted largest first; numbers printed, bars show proportion. |
+| One measure over time | `BarChart` | Monochrome, ≤24px columns 2px apart, hairline grid, latest value labelled, hover tooltip, screen-reader table. ≤ ~31 columns; aggregate beyond. Two measures with different scales: two charts, never a second axis. |
+| A short task in a window (edit a title) | `Dialog` | Native `<dialog>` on the shared `.ui-modal` surface. `title`, `description`, `footer`, size sm (400) · md (520) · lg (720). Escape, the X or a scrim click close it; `busy` blocks closing while saving. First focus: the control with `data-autofocus`, else the first control. |
+| A decision before an action (padam, terbit) | `ConfirmDialog`, or `await confirmDialog({…})` with `<ConfirmDialogHost />` once | `role="alertdialog"`: no X, no scrim close; Escape = Batal. `onConfirm` may return a promise: the button shows `pendingLabel`, the dialog closes on success and shows the error on failure. `variant="destructive"` adds the warning mark and starts focus on Batal. **The action button is never red** (design.md): say the verb ("Padam", not "Ya"). |
+| Frame of a tool | `AppShell` + `Sidebar` (`SidebarHeader` `SidebarContent` `SidebarGroup` `SidebarItem` `SidebarFooter`) + `Topbar` + `SidebarTrigger` + `PageContent` + `PageHeader` | Compact by default. Sidebar `--size-sidebar`; items take the control shape, current page = muted fill + medium, `count` for numbers to act on. ≤900: drawer (trigger opens; Escape, scrim or a link closes; focus moves in and back; page inert). One `PageHeader` per page: title (`heading` role), one-line description, main actions. |
 
 A page-specific class may position a component (`margin`, `grid-area`,
 `align-self`). It must not restyle it (colour, height, radius, font). If a
@@ -266,4 +311,4 @@ design needs a new look, add a variant in `ui.css` first.
 2. Need a new look? Add a variant (knob reassignment) in `ui.css`.
 3. Need a new value? Add a semantic token in `tokens.css` (and a primitive only if the raw value is new).
 4. Run `npm run lint:ds` and `npm run build`.
-5. Update this file and `design-system-handoff.md` if the API changed.
+5. Update this file (and `README.md` if the file layout changed) when the API changes. Website-only notes go in `website-changelog.md`.

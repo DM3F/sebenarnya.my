@@ -6,7 +6,7 @@ import { rankArticles } from '@/lib/searchArticles';
 import { articleHref, formatDate } from '@/lib/articles';
 import { withBase } from '@/lib/basePath';
 import { ArrowRight, MessageSquareText, X } from 'lucide-react';
-import Icon from '@/components/ui/Icon';
+import { Icon } from '@/components/ui';
 import { Chip, IconButton, Verdict } from '@/components/ui';
 
 // AIFA chatbot: a floating assistant on every page.

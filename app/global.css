@@ -4,7 +4,7 @@
    ========================================================================== */
 
 /* Font: Manrope is loaded in app/layout.js (next/font) as --font-manrope.
-   Design tokens live in app/tokens.css. Only layout and motion helpers are defined here. */
+   Design tokens live in design-system/tokens.css. Only layout and motion helpers are defined here. */
 
 /* Variables */
 :root {
@@ -17,70 +17,17 @@
    new page plays its own entrance (PageEnter). Opacity only, so reduced motion keeps it. */
 ::view-transition-group(root) { animation-duration: var(--duration-base); animation-timing-function: var(--ease-out); }
 
-/* Base */
+/* Base element defaults live in design-system/base.css (shared with the dashboard and extension).
+   Only what is specific to this website stays here. */
 html {
-  font-size: 62.5%;
-  line-height: 1.15;
+  font-size: 62.5%; /* website only: third-party rem; the design system itself is px */
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
+  /* Anchor jumps (#logo, #main) land below the sticky header; Header.js keeps --header-height current */
+  /* Fallback ≈ header row (control + 16 above/below) for the browser's own jump before hydration */
+  scroll-padding-top: var(--header-height, calc(var(--size-control) + 2 * var(--spacing-16)));
 }
 
-html,
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: transparent;
-}
-
-body {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: var(--text-body); /* body text; was 20, which leaked into anything without its own size */
-  font-weight: var(--font-weight-regular);
-  line-height: var(--text-body--line-height);
-  word-wrap: break-word;
-  word-break: break-word;
-  color: var(--color-foreground);
-  background-color: var(--color-background);
-}
-
-h1, h2, h3, h4, h5, h6 {
-  width: 100%;
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--text-heading--line-height);
-}
-
-a {
-  text-decoration: none;
-  color: var(--color-foreground);
-}
-
-b, strong { font-weight: var(--font-weight-medium); }
-small { font-size: 80%; }
-img { border-style: none; }
-
-button,
-input,
-select,
-textarea {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: 100%;
-  line-height: 1.15;
-}
-
-input {
-  line-height: 1.3;
-  color: var(--color-foreground);
-  border: none;
-  border-radius: 0;
-  outline: none;
-  background-color: transparent;
-  box-shadow: none;
-}
-
-input::placeholder { color: var(--color-foreground); }
+h1, h2, h3, h4, h5, h6 { width: 100%; }
 
 /* Layout */
 .site {
@@ -112,12 +59,36 @@ input::placeholder { color: var(--color-foreground); }
   padding-left: var(--side);
 }
 
-/* Header — layout only; controls come from components/ui (app/ui.css) */
+/* Header — layout only; controls come from design-system/react (design-system/ui.css) */
+/* Sticky: stays at the top while the page scrolls. Its parent (.site) spans the whole page,
+   so it sticks all the way to the footer. */
 .header {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: var(--z-sticky);
   color: var(--color-foreground);
   background-color: var(--color-background);
+}
+
+/* Soft shadow once the page has scrolled (data-scrolled, set in Header.js).
+   It lives on a pseudo-element so only opacity animates: no repaint of the shadow each frame.
+   z-index -1 inside the header's stacking context: the shadow falls below, the content stays on top. */
+.header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  box-shadow: var(--shadow-header);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.header[data-scrolled]::after { opacity: 1; }
+
+/* Forced colours drop box-shadows: keep the edge as a system-colour line instead */
+@media (forced-colors: active) {
+  .header[data-scrolled]::after { box-shadow: none; border-bottom: var(--border-width) solid CanvasText; }
 }
 
 .header-inner {
@@ -185,7 +156,7 @@ input::placeholder { color: var(--color-foreground); }
   margin: 0;
   padding: 0 var(--spacing-10);
   border: 0;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: transparent;
   cursor: pointer;
 }
@@ -398,10 +369,11 @@ input::placeholder { color: var(--color-foreground); }
 .latest-checks__title { text-wrap: balance; }
 .latest-checks__lead { margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
+/* Two gliding rows, opposite directions (Figma: 40px between rows at desktop) */
 .latest-checks__carousel {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-group);
+  gap: var(--gap-block);
 }
 
 /* Endless glide (components/Latest.js): cards move by transform on a ring, so the
@@ -417,10 +389,21 @@ input::placeholder { color: var(--color-foreground); }
 .latest-checks__rail { display: flex; gap: var(--gap-cards); }
 .latest-checks__rail > .fc { flex: 0 0 340px; will-change: transform; }
 
-.latest-checks__controls {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--gap-inline);
+/* Pause button + progress dots, centred under the rows. Same pill and dots as the hero
+   carousel; the long dot fills as its card glides off the first row. */
+.latest-checks__controls { display: flex; justify-content: center; align-items: center; gap: var(--gap-inline); }
+.latest-checks__dots { display: flex; align-items: center; gap: var(--spacing-16); /* ds-allow: keeps the 24px dot hit areas from overlapping */ height: var(--size-control-lg); padding: 0 var(--spacing-20); border-radius: var(--radius-full); background: var(--color-muted); }
+.latest-checks__dots:hover { background: var(--color-muted-strong); }
+.latest-checks__dots button { position: relative; width: var(--size-dot); height: var(--size-dot); padding: 0; border: 0; border-radius: var(--radius-full); background: var(--color-border-strong); cursor: pointer; }
+/* Invisible 24×44 hit area for the 8px dots (WCAG 2.5.8) */
+.latest-checks__dots button::before { content: ""; position: absolute; inset: -18px -8px; }
+.latest-checks__dots button:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.latest-checks__dots button.on { width: calc(4 * var(--size-dot)); background: var(--color-border); }
+.latest-checks__dots button.on i { position: absolute; inset: 0; border-radius: inherit; background: var(--color-foreground); transform-origin: left; transform: scaleX(0); }
+@media (forced-colors: active) {
+  .latest-checks__dots button { background: CanvasText; }
+  .latest-checks__dots button.on { background: Canvas; border: var(--border-width) solid CanvasText; }
+  .latest-checks__dots button.on i { background: CanvasText; }
 }
 
 /* "Lihat lagi": outline pill with a foreground edge */
@@ -627,7 +610,7 @@ input::placeholder { color: var(--color-foreground); }
   gap: var(--spacing-12);
   height: var(--size-control-lg); /* lg control */
   padding: var(--spacing-6) var(--spacing-6) var(--spacing-6) var(--space-control-x);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: var(--color-primary);
   color: var(--color-primary-foreground);
   font-family: var(--font-sans);
@@ -847,7 +830,7 @@ input::placeholder { color: var(--color-foreground); }
 
 /* Dots + pause */
 .hero-carousel .gctl { display: flex; justify-content: center; align-items: center; gap: var(--gap-inline); margin-top: var(--gap-group); }
-.hero-carousel .dots { display: flex; align-items: center; gap: var(--spacing-16); /* ds-allow: keeps the 24px dot hit areas from overlapping */ height: var(--size-control-lg); padding: 0 var(--spacing-20); border-radius: var(--radius-full); background: var(--color-muted); }
+.hero-carousel .dots { display: flex; align-items: center; gap: var(--spacing-16); /* ds-allow: keeps the 24px dot hit areas from overlapping */ height: var(--size-control-lg); padding: 0 var(--spacing-20); border-radius: var(--radius-control); background: var(--color-muted); }
 .hero-carousel .dots button { position: relative; width: var(--size-dot); height: var(--size-dot); padding: 0; border: 0; border-radius: var(--radius-full); background: var(--color-border-strong); cursor: pointer; } /* width snaps: animating it relayouts every frame; the fill bar shows progress */
 /* Invisible 24×44 hit area for the 8px dots (WCAG 2.5.8); gap 16 keeps them from overlapping */
 .hero-carousel .dots button::before { content: ""; position: absolute; inset: -18px -8px; }
@@ -940,12 +923,12 @@ input::placeholder { color: var(--color-foreground); }
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  /* One even overlay over the whole photo (no bands). Measured on the real pixels: see handoff doc. */
+  /* One even overlay over the whole photo (no bands). Measured on the real pixels: see docs/website-changelog.md. */
   background: color-mix(in srgb, var(--color-foreground) 35%, transparent);
 }
 .viewership-stats .viewership-stat--image dt,
 .viewership-stats .viewership-stat--image dd { color: inherit; } /* must outrank .viewership-stats dt / dd below */
-/* Light overlay keeps the photo bright; a soft halo hugs only the glyphs so white text still reads (measured, see handoff) */
+/* Light overlay keeps the photo bright; a soft halo hugs only the glyphs so white text still reads (measured, see docs/website-changelog.md) */
 .viewership-stat--image dt,
 .viewership-stat--image dd { text-shadow: 0 0 var(--spacing-16) color-mix(in srgb, var(--color-foreground) 80%, transparent), 0 0 var(--spacing-6) color-mix(in srgb, var(--color-foreground) 70%, transparent), 0 0 var(--spacing-2) color-mix(in srgb, var(--color-foreground) 50%, transparent); }
 
@@ -1071,13 +1054,20 @@ input::placeholder { color: var(--color-foreground); }
   gap: var(--gap-group);
 }
 
-.articles-search { flex: 1 1 360px; min-width: 0; }
+/* Grows to fill the row but stops at the Figma width (822px), so on wide screens the
+   filters and count sit right after it instead of the field stretching edge to edge */
+.articles-search {
+  --articles-search-max: 822px; /* ds-allow: Figma "Search" container width */
+  flex: 1 1 360px;
+  min-width: 0;
+  max-width: var(--articles-search-max);
+}
 
 /* Native <select> styled as a pill, with a Lucide chevron on top */
 .articles-select { flex: none; }
 
 .articles-count {
-  margin: 0 0 0 auto;
+  margin: 0; /* follows the selects (Figma), not pushed to the far edge */
   font-family: var(--font-sans);
   font-size: var(--text-body-sm);
   line-height: var(--text-body-sm--line-height);
@@ -1383,7 +1373,7 @@ input::placeholder { color: var(--color-foreground); }
   height: var(--size-control-xl); /* xl control, like the primary search: 48 → 56 */
   padding: 0 var(--space-control-x) 0 calc(var(--space-control-x) - var(--spacing-2)); /* icon side 2px less (optical) */
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   color: var(--color-foreground-inverse);
   background: var(--color-brand-strong);
   box-shadow: var(--shadow-float); /* neutral elevation: it floats, but no red glow */
@@ -1488,7 +1478,7 @@ input::placeholder { color: var(--color-foreground); }
 
 .aifa-links { display: flex; flex-wrap: wrap; gap: var(--gap-inline); margin-top: var(--gap-text); }
 
-.aifa-links a { min-height: var(--size-control-sm); padding: var(--spacing-6) var(--spacing-12); border: var(--border-width-hairline) solid var(--color-border); border-radius: var(--radius-full); color: var(--color-foreground); background: var(--color-background); font-family: var(--font-sans); font-size: var(--text-body-sm); text-decoration: none; }
+.aifa-links a { min-height: var(--size-control-sm); padding: var(--spacing-6) var(--spacing-12); border: var(--border-width-hairline) solid var(--color-border); border-radius: var(--radius-control); color: var(--color-foreground); background: var(--color-background); font-family: var(--font-sans); font-size: var(--text-body-sm); text-decoration: none; }
 
 .aifa-links a:hover { border-color: var(--color-link); color: var(--color-link); }
 
@@ -1802,7 +1792,7 @@ input::placeholder { color: var(--color-foreground); }
   place-items: center;
   width: var(--follow-disc);
   height: var(--follow-disc);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: var(--color-card);
   color: var(--color-foreground);
   transition: transform var(--duration-fast) var(--ease-out);
@@ -1901,7 +1891,7 @@ input::placeholder { color: var(--color-foreground); }
 .about-intro__card--pill { display: flex; align-items: center; justify-content: center; background: var(--color-muted-strong) center / cover no-repeat; }
 .about-intro__pill {
   padding: var(--spacing-10) var(--spacing-20);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-badge);
   background: var(--color-background);
   font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--font-weight-medium);
 }
@@ -1954,7 +1944,7 @@ input::placeholder { color: var(--color-foreground); }
   .about-intro__card { flex: none; min-height: 240px; }
 }
 
-/* Berita dan Galeri: two-row news marquee, then the photo sphere */
+/* Berita dan Galeri: two-row news marquee, then the photo grid */
 .about-news { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--side); }
 .about-news__head { display: flex; flex-direction: column; align-items: center; gap: var(--gap-text); text-align: center; }
 .about-news__head .about-title { margin: 0; }
@@ -2010,80 +2000,50 @@ input::placeholder { color: var(--color-foreground); }
 .marquee-card__tag { background: var(--color-surface-overlay); color: var(--color-foreground); }
 .marquee-card__title { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--font-weight-medium); text-wrap: balance; }
 
-/* Galeri — photos on a 3D sphere (components/SphereGallery.js). Node positions come from JS. */
-.sphere-gallery { display: flex; flex-direction: column; align-items: center; gap: var(--gap-group); }
-.sphere-stage {
-  position: relative;
-  isolation: isolate; /* nodes carry inline z-index ≈1000: keep them inside the stage, under the AIFA button */
-  width: 100%;
-  max-width: 960px;
-  aspect-ratio: 1;
-  cursor: grab;
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.sphere-stage:active { cursor: grabbing; }
-.sphere-node {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-full);
-  background: none;
-  cursor: pointer;
-  opacity: 0; /* until the first frame places it */
-  will-change: transform;
-}
-/* Invisible hit area: at least 24px on screen however far back the node sits (set from JS as --node-hit) */
-.sphere-node::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--node-hit, 100%);
-  height: var(--node-hit, 100%);
-  border-radius: var(--radius-full);
-  translate: -50% -50%;
-}
-.sphere-node__disc {
+/* Galeri — two-column photo grid (components/GalleryGrid.js). Sections fill the columns in order. */
+.gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-cards); width: 100%; }
+.gallery-grid__section { display: grid; gap: var(--gap-cards); margin: 0; padding: 0; list-style: none; }
+.gallery-grid__section--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.gallery-grid__section--grid .gallery-grid__tile { aspect-ratio: 1; }
+.gallery-grid__section--single .gallery-grid__tile { height: 100%; min-height: 320px; }
+/* A lone last section takes the whole row as a wide banner */
+.gallery-grid__section:last-of-type:nth-of-type(odd) { grid-column: 1 / -1; }
+.gallery-grid__section--single:last-of-type:nth-of-type(odd) .gallery-grid__tile { aspect-ratio: 3 / 1; height: auto; min-height: 0; }
+.gallery-grid__section li { display: flex; }
+.gallery-grid__tile {
   display: block;
   width: 100%;
-  height: 100%;
+  padding: 0;
   overflow: hidden;
-  border: 2px solid color-mix(in srgb, var(--color-foreground-inverse) 20%, transparent); /* ds-allow: decorative sphere rim */
-  border-radius: var(--radius-full);
+  border: 0;
+  border-radius: var(--radius-card);
   background: var(--color-muted);
-  box-shadow: var(--shadow-float);
-  transition: transform var(--duration-base) var(--ease-out);
+  cursor: zoom-in;
 }
-.sphere-node__disc img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-.sphere-node:active .sphere-node__disc { transform: scale(var(--press-scale)); }
-.sphere-node:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
-.sphere-hint { margin: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); text-align: center; }
-@media (max-width: 600px) { .sphere-hint span { display: block; } } /* phones: "Seret untuk memusingkan," / "pilih foto untuk melihatnya lebih besar." */
+.gallery-grid__tile img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: transform var(--duration-slower) var(--ease-out); }
+.gallery-grid__tile:active img { transform: scale(var(--press-scale)); }
+.gallery-grid__tile:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 
 /* Photo dialog: image only, no text box */
-.sphere-dialog {
+.gallery-dialog {
   max-width: min(960px, calc(100vw - 32px));
   max-height: calc(100dvh - 48px);
   background: transparent;
   box-shadow: none;
   overflow: visible;
 }
-.sphere-dialog img {
+.gallery-dialog img {
   display: block;
   max-width: 100%;
   max-height: calc(100dvh - 48px);
   border-radius: var(--radius-card-lg);
   object-fit: contain;
 }
-.sphere-dialog .sphere-dialog__close { position: absolute; top: var(--spacing-12); right: var(--spacing-12); }
+.gallery-dialog .gallery-dialog__close { position: absolute; top: var(--spacing-12); right: var(--spacing-12); }
 
 
 @media (hover: hover) and (pointer: fine) {
-  .sphere-node:hover .sphere-node__disc { transform: scale(1.2); }
+  .gallery-grid__tile:hover img { transform: scale(1.05); }
 }
 
 @media (max-width: 1100px) {
@@ -2091,6 +2051,8 @@ input::placeholder { color: var(--color-foreground); }
 }
 
 @media (max-width: 900px) {
+  .gallery-grid { grid-template-columns: minmax(0, 1fr); }
+  .gallery-grid__section--single .gallery-grid__tile { aspect-ratio: 4 / 3; height: auto; min-height: 0; }
   .about-hero-card { min-height: 560px; padding: var(--spacing-32) var(--spacing-24) var(--spacing-40); }
 }
 
@@ -2105,7 +2067,7 @@ input::placeholder { color: var(--color-foreground); }
   .marquee__track { animation: none; }
   .marquee__row { overflow-x: auto; }
   .marquee__set[aria-hidden='true'] { display: none; }
-  .sphere-node__disc,
+  .gallery-grid__tile img,
   .about-hero-follow a,
   .aifa-card { transition: none; }
   .aifa-card:hover { transform: none; }
@@ -2135,15 +2097,16 @@ input::placeholder { color: var(--color-foreground); }
 .logo-kit__head { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .logo-kit-intro { margin: var(--gap-text) 0 0; color: var(--color-text-secondary); text-wrap: pretty; }
 
-/* Fluid: two cards side by side while each gets ≥320px, one column below that */
-.logo-kit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--gap-cards); padding-top: var(--gap-block); }
+/* Desktop: logo · icon · terms in three equal columns (Figma). ≤1100 the two cards share a row
+   (fluid, each ≥320px) with the terms full width under them; ≤900 everything stacks. */
+.logo-kit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-cards); padding-top: var(--gap-block); }
 .logo-card {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--gap-group); /* preview → folder, one step inside the card */
   min-width: 0;
-  padding: var(--pad-card-lg);
+  padding: var(--pad-card-sm); /* folder nearly fills the card width, as in Figma */
   border-radius: var(--radius-card-lg);
   background: var(--color-muted);
 }
@@ -2154,28 +2117,36 @@ input::placeholder { color: var(--color-foreground); }
 /* Desktop: both cards share row lines, so previews and folders align; stacked (≤900) each card is its own column */
 .logo-kit-grid { row-gap: 0; }
 .logo-card { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: var(--gap-group); }
-@media (max-width: 900px) {
-  .logo-kit-grid { row-gap: var(--gap-cards); }
-  .logo-card { display: flex; grid-row: auto; grid-template-rows: none; }
-}
-
-/* Logo terms of use (demo copy until MCMC provides the official text) */
+/* Logo terms of use (demo copy until MCMC provides the official text).
+   Desktop: the third card, as tall as the two file cards, text centred vertically. */
 .logo-terms {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: var(--gap-group) var(--pad-card-lg);
-  margin-top: var(--gap-cards);
-  padding: var(--pad-card-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap-group);
+  grid-row: span 2; /* the file cards' two subgrid rows */
+  min-width: 0;
+  padding: var(--pad-card);
   border-radius: var(--radius-card-lg);
   background: var(--color-muted);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
-  color: var(--color-text-secondary); /* body copy graphite; the title is ink */
+  color: var(--color-text-secondary);
 }
-.logo-terms__body { max-width: var(--measure-text); }
-.logo-terms__body p { margin: 0; text-wrap: pretty; }
-.logo-terms__title { margin: 0; color: var(--color-foreground); }
-.logo-terms__list { display: grid; gap: var(--gap-text); margin: var(--gap-group) 0; padding-left: var(--spacing-20); }
+.logo-terms > * { max-width: var(--measure-text); }
+.logo-terms p { margin: 0; text-wrap: pretty; }
+.logo-terms__list { display: grid; gap: var(--gap-text); margin: 0; padding-inline-start: var(--spacing-20); }
+
+@media (max-width: 1100px) {
+  .logo-kit-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+  .logo-card { padding: var(--pad-card-lg); }
+  .logo-terms { grid-column: 1 / -1; grid-row: auto; margin-top: var(--gap-cards); padding: var(--pad-card-lg); }
+}
+@media (max-width: 900px) {
+  .logo-kit-grid { row-gap: var(--gap-cards); }
+  .logo-card { display: flex; grid-row: auto; grid-template-rows: none; }
+  .logo-terms { margin-top: 0; } /* the grid's row gap spaces it now */
+}
 
 /* ── Format folder (components/FormatFolder.js) ────────────────────────────
    Drawn on a 391 × 286 stage (the canvas card) and scaled to the card width by a unitless ratio
@@ -2264,7 +2235,7 @@ input::placeholder { color: var(--color-foreground); }
   left: 50%;
   margin-bottom: var(--spacing-10);
   padding: var(--spacing-4) var(--spacing-10);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-badge);
   background: var(--color-folder-label);
   -webkit-backdrop-filter: blur(var(--blur-overlay));
   backdrop-filter: blur(var(--blur-overlay));
@@ -2308,7 +2279,7 @@ input::placeholder { color: var(--color-foreground); }
   height: var(--size-control-sm);
   padding: 0 var(--space-control-x-sm);
   border: var(--border-width-hairline) solid var(--color-foreground-inverse);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   color: var(--color-folder-chip);
   font-size: var(--text-label-sm);
   line-height: var(--text-label-sm--line-height);
@@ -2331,10 +2302,6 @@ input::placeholder { color: var(--color-foreground); }
   .folder[data-wide] .folder__tile { transform: rotate(var(--rot)); }
 }
 
-
-@media (max-width: 600px) {
-  .logo-terms { grid-template-columns: 1fr; } /* keeps --pad-card-lg (fluid 32 → 24) like every large card */
-}
 
 /* Single-message pages: /submit-claim/ landing and 404 (app/not-found.js) */
 .page-notice {
@@ -2420,7 +2387,7 @@ input::placeholder { color: var(--color-foreground); }
   place-items: center;
   width: var(--size-control-lg); /* same disc as .social-peek__logo */
   height: var(--size-control-lg);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: var(--color-background);
   color: var(--color-foreground);
 }
@@ -2459,7 +2426,7 @@ input::placeholder { color: var(--color-foreground); }
   top: var(--spacing-24);
   left: var(--spacing-24);
   padding: var(--spacing-8) var(--spacing-16);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-badge);
   background: var(--color-surface-overlay);
   font-size: var(--text-label);
   line-height: var(--text-label--line-height);
@@ -2569,8 +2536,7 @@ input::placeholder { color: var(--color-foreground); }
 .claim-done h3,
 .about-intro__facts-title,
 .folder__title,
-.kenali__card-title,
-.logo-terms__title {
+.kenali__card-title {
   font-size: var(--text-title);
   line-height: var(--text-title--line-height);
   font-weight: var(--font-weight-medium);
@@ -2615,7 +2581,7 @@ input::placeholder { color: var(--color-foreground); }
   height: var(--size-control-lg);
   padding: 0;
   border: 0;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control);
   background: var(--color-background);
   color: var(--color-foreground);
   cursor: pointer;
@@ -2651,7 +2617,7 @@ input::placeholder { color: var(--color-foreground); }
   gap: var(--space-inline-tight);
   min-height: var(--size-badge-lg); /* lg badge */
   padding: 0 var(--space-badge-x-lg);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-badge);
   background: var(--color-muted);
   font-size: var(--text-label-sm);
   line-height: var(--text-label-sm--line-height);

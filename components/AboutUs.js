@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
-import SphereGallery from '@/components/SphereGallery';
+import GalleryGrid from '@/components/GalleryGrid';
 import CountUp from '@/components/CountUp';
 import { withBase } from '@/lib/basePath';
 import { aboutHero as hero, aboutIntro as intro, aboutNews, articleStatus, articles, socialLinks } from '@/data/content';
@@ -184,7 +184,7 @@ function Intro() {
 }
 
 // Berita dan Galeri: two rows of news photos drifting in opposite directions (top row left, bottom
-// row right), then the photo sphere. Each row renders its cards twice so the loop is seamless; the
+// row right), then the photo grid. Each row renders its cards twice so the loop is seamless; the
 // copy is hidden from assistive tech. Hover pauses it. With reduced motion the rows stop and
 // scroll by hand instead.
 function NewsMarquee({ rows }) {
@@ -215,7 +215,7 @@ function NewsMarquee({ rows }) {
   );
 }
 
-// Berita dan Galeri: the marquee of news, then the photo sphere
+// Berita dan Galeri: the marquee of news, then the photo grid
 function NewsGallery() {
   const { marquee, gallery } = aboutNews;
 
@@ -231,7 +231,7 @@ function NewsGallery() {
       <NewsMarquee rows={marquee} />
 
       <h3 className="sr-only">{aboutNews.galleryTitle}</h3>
-      <SphereGallery items={gallery} />
+      <GalleryGrid sections={gallery} />
     </section>
   );
 }

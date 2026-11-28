@@ -1,0 +1,27 @@
+{
+  "name": "@sebenarnya/design-system",
+  "version": "0.1.0",
+  "description": "Sebenarnya.my design system: tokens, base and component CSS, React components, Tailwind 3.4 preset and lint.",
+  "license": "UNLICENSED",
+  "repository": { "type": "git", "url": "https://github.com/DM3F/sebenarnya.my.git", "directory": "design-system" },
+  "type": "module",
+  "sideEffects": ["*.css"],
+  "main": "./react/index.js",
+  "types": "./react/index.d.ts",
+  "exports": {
+    ".": { "types": "./react/index.d.ts", "default": "./react/index.js" },
+    "./react": { "types": "./react/index.d.ts", "default": "./react/index.js" },
+    "./tokens.css": "./tokens.css",
+    "./base.css": "./base.css",
+    "./ui.css": "./ui.css",
+    "./tailwind-preset": "./tailwind-preset.cjs",
+    "./package.json": "./package.json"
+  },
+  "bin": { "sebenarnya-lint-ds": "./bin/lint-ds.mjs" },
+  "files": ["react", "bin", "tokens.css", "base.css", "ui.css", "tailwind-preset.cjs", "README.md", "CHANGELOG.md"],
+  "peerDependencies": {
+    "lucide-react": ">=0.400.0",
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0"
+  }
+}
