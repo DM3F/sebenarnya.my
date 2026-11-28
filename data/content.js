@@ -211,10 +211,10 @@ export const heroSlides = [
 // `sep` = thousands separator (1,016); `suffix` = sign after the number (20+);
 // `image` = card with a photo background and light text
 export const viewershipStats = [
-  { value: 1016, sep: true, text: 'Artikel semakan dari Januari 2022 hingga Mei 2026.' },
+  { value: 4135, sep: true, text: 'Artikel diterbitkan sejak Mac 2017 sehingga 15 Nov 2026.' },
   { value: 20, suffix: '+', text: 'Kementerian dan agensi yang mengesahkan semakan kami.' },
-  { value: 200, unit: 'ribu', text: 'Mesej diproses Aifa, pembantu AI, sejak Januari 2025.' },
-  { value: 275, unit: 'juta+', image: '/images/about/viewership-bg.jpg', text: 'Lawatan ke portal dari Mac 2017 hingga September 2021.' },
+  { value: 253493, sep: true, text: 'Mesej diproses oleh AIFA Chatbot setakat 15 Nov 2026.' },
+  { value: 456, unit: 'juta+', image: '/images/about/viewership-bg.jpg', text: 'Lawatan sejak pelancaran pada Mac 2017.' },
 ];
 
 /* About us page (app/about-us) */
