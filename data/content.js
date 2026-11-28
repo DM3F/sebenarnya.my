@@ -325,6 +325,39 @@ export const aboutProcess = {
   ],
 };
 
+// "Peranan Sebenarnya.my" (components/AboutUs.js › Roles): four cards that stack while the page
+// scrolls. Images are existing site photos for now.
+export const aboutRoles = {
+  badge: 'Peranan',
+  title: 'Peranan Sebenarnya.my',
+  cards: [
+    {
+      title: 'Semakan dan Pengesahan Fakta',
+      text: 'Menyemak kesahihan maklumat yang tular melalui pengesahan bersama kementerian, jabatan dan agensi berkaitan.',
+      image: aboutImg('news-semakan-fakta.jpg'),
+      alt: 'Dua pegawai membandingkan artikel tular dengan dokumen rasmi',
+    },
+    {
+      title: 'Membendung Penyebaran Maklumat Palsu',
+      text: 'Membantu memperbetulkan maklumat yang mengelirukan serta mengurangkan risiko penyebaran maklumat tidak sahih.',
+      image: aboutImg('galeri-1.jpg'),
+      alt: 'Dua orang menyemak mesej di telefon bersama-sama',
+    },
+    {
+      title: 'Meningkatkan Literasi Digital',
+      text: 'Memupuk pemikiran kritis dan amalan menyemak kesahihan maklumat sebelum berkongsi.',
+      image: aboutImg('berita-warga-emas.jpg'),
+      alt: 'Warga emas belajar menyemak maklumat di tablet bersama anak muda',
+    },
+    {
+      title: 'Menggalakkan Penglibatan Masyarakat',
+      text: 'Menyediakan saluran kepada orang ramai untuk mengemukakan maklumat yang diragui kesahihannya bagi tujuan semakan lanjut.',
+      image: aboutImg('galeri-2.jpg'),
+      alt: 'Sesi dialog komuniti di ruang menunggu',
+    },
+  ],
+};
+
 // News and gallery. News = two marquee rows; gallery = photo grid (GalleryGrid.js), `caption` is the photo's accessible name.
 export const aboutNews = {
   title: 'Berita dan Galeri',

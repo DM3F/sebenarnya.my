@@ -530,6 +530,10 @@ function Components({ vw }) {
               <Badge variant={v} size="lg" icon={Calendar}>24 Nov 2026</Badge>
             </Demo>
           ))}
+          <Demo code='<Badge variant="eyebrow">'>
+            <Badge variant="eyebrow">Proses semakan</Badge>
+            <Badge variant="eyebrow">Visi dan Misi</Badge>
+          </Demo>
           <Demo code='<Badge variant="media">' dark>
             <Badge variant="media">Video</Badge>
             <Badge variant="media" size="lg">Instagram</Badge>

@@ -78,6 +78,7 @@ Almost everything is warm achromatic (±97%). Chromatic colours are locked to sp
 | Label (buttons, nav, chips) | 16 / 1.5 (small: 14) | 500 | Sentence case. |
 | Small / meta | 14 / 1.5 · caption 12 / 1.5 | 400–500 | Dates, meta, small labels. Smoke. |
 | Eyebrow | 13 / 1.5 | 500 (verdict 600) | UPPERCASE, tracking +0.04em (the only tracking that is not 0): verdicts, eyebrows, footer headings. |
+| Eyebrow badge | 13 / 1.5 | 400 | Natural case, smoke text, soft pill edge (35% of the text colour), no fill: the section label above a heading (`Badge variant="eyebrow"`). |
 
 The role tokens live in `design-system/tokens.css` (`--text-display`, `--text-heading-lg` = Section, `--text-heading`, `--text-title`, `--text-intro`, `--text-article` (article body only, 16 → 18), `--text-body` (16, Lead included), `--text-stat` = Numbers … + `--line-height`). Large sizes are **fluid** with `clamp()` between 375px and 1280px, so each size is one smooth range (e.g. Display 32 → 48) with no media queries. The "Type roles" block at the end of `app/global.css` maps each website class to its role. Full table: `docs/design-system-rules.md` › Type roles.
 

@@ -1,5 +1,5 @@
 import { Globe, MessageSquareText, Smartphone, Trophy } from 'lucide-react';
-import { Icon } from '@/components/ui';
+import { Badge, Icon } from '@/components/ui';
 import CountUp from '@/components/CountUp';
 import { withBase } from '@/lib/basePath';
 import SocialPeek from '@/components/SocialPeek';
@@ -62,10 +62,9 @@ export default function KenaliSebenarnya() {
         </figure>
 
         <article className="kenali__card kenali__card--award">
-          <p className="kenali__award-eyebrow">
-            <Icon icon={Trophy} />
+          <Badge variant="eyebrow" icon={Trophy} className="kenali__award-eyebrow">
             WSIS Prizes 2026 · Geneva
-          </p>
+          </Badge>
           <div className="kenali__award-body">
             <h3 className="kenali__award-title">Sebenarnya.my Diiktiraf di WSIS Prizes 2026</h3>
             <p className="kenali__award-text">

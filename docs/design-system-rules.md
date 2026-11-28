@@ -256,7 +256,8 @@ Import from `@sebenarnya/design-system` in other products, `@/components/ui` in 
 | Any action | `Button` | `variant`: filled · outline · secondary · ghost · media · link. `size`: sm · md (default) · lg · icon-sm · icon · icon-lg. `icon` / `iconEnd` take a Lucide component. `href` renders a link (`as={Link}` for next/link). One filled button per view. |
 | Icon-only action | `IconButton` | `label` is required (becomes `aria-label`). Default variant outline. |
 | Suggestion / filter | `Chip`, `ChipRow` | `size`: sm · md (default) · lg. `pressed` makes it a toggle (`aria-pressed`). `dot="palsu"` adds a verdict dot. |
-| Static label | `Badge` | variant muted · outline · media; size sm (20) · md (24, default) · lg (32). Not clickable. |
+| Static label | `Badge` | variant muted · outline · media · eyebrow; size sm (20) · md (24, default) · lg (32). Not clickable. |
+| Section eyebrow (label above a section heading) | `Badge variant="eyebrow"` | 13px regular, smoke text (`--color-muted-foreground`), no fill, soft 1px edge (35% of the text colour); the one eyebrow style on every page. On a dark card set `--badge-fg` to an inverse tier. |
 | Verdict | `Verdict` | Always dot + word (+ agency). variant pill (lg badge 32) · overlay (on photos, 24) · tint (24) · plain (inherits colour). tone default · single. |
 | Segmented / language | `Tabs` | `mode="tabs"` (tablist, arrow keys) or `mode="toggle"` (aria-pressed). |
 | Search | `SearchField` | size lg (default, xl 48 → 56 + "Semak") · md (44 → 48) · sm (40 → 44). `buttonLabel={null}` for live filtering. |

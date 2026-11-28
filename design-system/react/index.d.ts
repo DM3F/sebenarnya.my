@@ -66,7 +66,8 @@ export declare function ChipRow(props: { label?: ReactNode; className?: string; 
 
 /* ── Labels ───────────────────────────────────────────────────────────── */
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?: 'muted' | 'outline' | 'media';
+  /** eyebrow = section label above a heading (no fill, smoke text, regular weight, soft edge). */
+  variant?: 'muted' | 'outline' | 'media' | 'eyebrow';
   size?: 'sm' | 'md' | 'lg';
   icon?: IconComponent;
 }

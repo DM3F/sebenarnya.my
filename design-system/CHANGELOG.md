@@ -3,6 +3,16 @@
 Install a version: `npm install https://github.com/DM3F/sebenarnya.my/releases/download/ds-vX.Y.Z/sebenarnya-design-system-X.Y.Z.tgz`.
 How versions are numbered and released: [`docs/contributing.md`](../docs/contributing.md).
 
+## 0.2.0 — 28 Nov 2026
+
+- **Badge:** new `variant="eyebrow"` for the section label above a heading: 13px regular, smoke
+  text, no fill, soft 1px edge (35% of the text colour). On dark surfaces set `--badge-fg` to an
+  inverse tier and the edge follows.
+- **Verdict:** four verdicts: `palsu`, `penjelasan` (green, replaces `benar`), `waspada` (new,
+  amber) and `makluman`. Tokens `--color-verdict-penjelasan(-dot)` and
+  `--color-verdict-waspada(-dot)`; `--color-verdict-benar(-dot)` removed. Chip `dot` takes the
+  same four keys. **Breaking:** `type="benar"` now falls back to `makluman`; use `penjelasan`.
+
 ## 0.1.0 — 26 Nov 2026
 
 First release.
