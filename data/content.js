@@ -246,19 +246,22 @@ export const aboutHero = {
 
 // Statement under the hero (Tentang Kami, section 2): two short lines, one idea.
 export const aboutIntro = {
-  label: 'Tentang kami',
-  lead: 'Di Sebenarnya.my, kami bukan sekadar menyemak berita — kami melindungi kepercayaan. Sejak 2017, kami menjadi rujukan rakyat untuk maklumat sahih, daripada khabar angin harian hingga isu nasional.',
-  card: {
-    strong: 'Semakan berasaskan sumber rasmi',
-    muted: 'setiap dakwaan dirujuk kepada agensi yang berkaitan sebelum',
-    end: 'jawapan diterbitkan.',
+  label: 'Visi dan Misi',
+  // Lead: name in bold, what it is, then the muted second sentence
+  lead: {
+    strong: 'Sebenarnya.my',
+    text: 'merupakan portal semakan fakta yang dibangunkan oleh Suruhanjaya Komunikasi dan Multimedia Malaysia (MCMC) dan dilancarkan pada Mac 2017.',
+    muted: 'Portal ini berfungsi sebagai pusat sehenti yang menyediakan maklumat sahih, penjelasan rasmi dan hasil semakan fakta melalui kerjasama dengan kementerian dan agensi kerajaan.',
   },
-  pill: 'Bersama lebih 20 agensi',
+  vision: {
+    tag: '/Visi',
+    text: 'Menjadi platform semakan fakta yang dipercayai dan menjadi rujukan utama masyarakat Malaysia dalam mendapatkan maklumat yang sahih, tepat dan berwibawa.',
+  },
+  pill: 'Bersama lebih 20+ agensi',
   pillImage: '/images/about/agencies-bg.jpg',
-  verdicts: {
-    value: '20+',
-    title: 'Agensi rakan',
-    text: 'Kementerian dan agensi persekutuan yang mengesahkan dakwaan bersama kami.',
+  mission: {
+    tag: '/Misi',
+    text: 'Memperkasa masyarakat melalui semakan fakta, pengesahan maklumat bersama agensi berkaitan dan penyebaran maklumat rasmi bagi membendung berita palsu serta membudayakan amalan semak sebelum sebar.',
   },
   factsTitle: 'Beberapa fakta tentang kami dalam angka',
   facts: [
