@@ -12,7 +12,7 @@ export default function AboutPage() {
     <div className="site">
       <Header />
 
-      <main className="main" id="main" tabIndex={-1}>
+      <main className="main main--roomy" id="main" tabIndex={-1}>
         {/* Hero, Who We Are, What We Do, How It Works */}
         <AboutUs />
       </main>
