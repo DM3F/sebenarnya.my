@@ -140,6 +140,13 @@ export const socialLinks = [
 // The no-break space keeps "dan" with the last line, as designed
 export const footerStatement = 'Rujukan utama anda untuk semakan fakta dan\u00a0maklumat yang sahih';
 
+// Legal links on the copyright line. `href: null` = page not ready: shown as text marked "akan datang"
+// (not clickable); add the URL and it becomes a link.
+export const footerLegal = [
+  { label: 'Terma', href: null },
+  { label: 'Privasi', href: null },
+];
+
 export const footerColumns = [
   {
     title: 'Semak dan lapor',
