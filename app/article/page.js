@@ -11,7 +11,7 @@ export default function ArticlePage() {
     <div className="site">
       <Header />
 
-      <main className="main" id="main" tabIndex={-1}>
+      <main className="main main--roomy" id="main" tabIndex={-1}>
         <Articles />
       </main>
 

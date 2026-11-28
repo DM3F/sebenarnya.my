@@ -53,10 +53,13 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
    content's width: wide tracks (carousels, logo ticker) scroll inside instead of widening the page */
 .main > * { box-sizing: border-box; width: 100%; min-width: 0; }
 
-/* Roomy pages (Tentang Kami first): every section carries its own white space, 120 above and below
-   on wide screens and 60 on phones, instead of the shared row gap. The hero keeps its own frame. */
+/* Roomy pages (every public page): each section carries its own white space, 120 above and below
+   on wide screens and 60 on phones, instead of the shared row gap. Heroes keep their own frame.
+   On Utama the hero, carousel and agency logos are one group, so they sit half a pad apart. */
 .main--roomy { --section-pad: var(--spacing-120); row-gap: 0; padding-bottom: 0; }
-.main--roomy > section:not(.about-hero) { padding-block: var(--section-pad); }
+.main.main--roomy > :where(:not(.about-hero, .hero)) { padding-block: var(--section-pad); }
+.main.main--roomy > .hero-carousel { padding-block: calc(var(--section-pad) / 2) 0; }
+.main.main--roomy > .partners { padding-top: calc(var(--section-pad) / 2); }
 @media (max-width: 600px) { .main--roomy { --section-pad: calc(var(--spacing-120) / 2); } }
 
 .container {
@@ -1034,6 +1037,9 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   flex: 1;
   min-width: 0;
   overflow: hidden;
+  /* Room above and below so the cards' soft shadow is not clipped; the negative margin keeps the layout */
+  padding-block: var(--spacing-12);
+  margin-block: calc(-1 * var(--spacing-12));
   border-radius: var(--radius-field);
 }
 
@@ -1063,6 +1069,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   padding: var(--spacing-20) var(--spacing-12);
   border-radius: var(--radius-field);
   background: var(--color-card);
+  box-shadow: var(--shadow-header); /* hairline + soft fall-off: just enough lift off the page */
 }
 
 .partners-logo img {
@@ -2220,7 +2227,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .roles-card::before { background: linear-gradient(0deg, color-mix(in srgb, var(--color-surface-media) 90%, transparent) 0%, color-mix(in srgb, var(--color-surface-media) 60%, transparent) 55%, color-mix(in srgb, var(--color-surface-media) 10%, transparent) 100%); }
 }
 
-/* Berita dan Galeri: two-row news marquee, then the photo grid */
+/* Berita dan Galeri: one two-row marquee of news and gallery photos; each card opens a photo modal */
 .about-news { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--side); }
 .about-news__head { display: flex; flex-direction: column; align-items: center; gap: var(--gap-text); text-align: center; }
 .about-news__head .about-title { margin: 0; }
@@ -2232,7 +2239,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 /* Marquee: two rows drift in opposite directions at ~28px/s (the Framer feel). Each track holds two
    identical sets, so moving it by exactly one set (-50%) loops without a jump. Duration = one set's
    width ÷ speed, so it is set per breakpoint with the card height. */
-.marquee { --card-h: 340px; --marquee-duration: 77s; --marquee-gap: 10px; }
+.marquee { --card-h: 340px; --marquee-duration: 95s; --marquee-gap: 10px; }
 .marquee__rows { display: flex; flex-direction: column; gap: var(--marquee-gap); }
 .marquee__row { overflow: hidden; border-radius: var(--radius-card); }
 .marquee__track {
@@ -2259,7 +2266,22 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 .marquee-card--wide { aspect-ratio: 529 / 340; }
 .marquee-card--narrow { aspect-ratio: 166 / 340; }
-.marquee-card img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; }
+.marquee-card__button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: zoom-in;
+}
+.marquee-card__button:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: calc(-1 * var(--focus-ring-width)); }
+.marquee-card img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; pointer-events: none; transition: transform var(--duration-slower) var(--ease-out); }
+.marquee-card__button:active img { transform: scale(var(--press-scale)); }
 /* Dark foot so white text stays readable on any photo (≥ 4.5:1) */
 .marquee-card__body {
   position: absolute;
@@ -2274,31 +2296,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 .marquee-card--narrow .marquee-card__body { padding: var(--pad-card-sm); }
 .marquee-card__tag { background: var(--color-surface-overlay); color: var(--color-foreground); }
-.marquee-card__title { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--font-weight-medium); text-wrap: balance; }
-
-/* Galeri — two-column photo grid (components/GalleryGrid.js). Sections fill the columns in order. */
-.gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-cards); width: 100%; }
-.gallery-grid__section { display: grid; gap: var(--gap-cards); margin: 0; padding: 0; list-style: none; }
-.gallery-grid__section--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.gallery-grid__section--grid .gallery-grid__tile { aspect-ratio: 1; }
-.gallery-grid__section--single .gallery-grid__tile { height: 100%; min-height: 320px; }
-/* A lone last section takes the whole row as a wide banner */
-.gallery-grid__section:last-of-type:nth-of-type(odd) { grid-column: 1 / -1; }
-.gallery-grid__section--single:last-of-type:nth-of-type(odd) .gallery-grid__tile { aspect-ratio: 3 / 1; height: auto; min-height: 0; }
-.gallery-grid__section li { display: flex; }
-.gallery-grid__tile {
-  display: block;
-  width: 100%;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-  border-radius: var(--radius-card);
-  background: var(--color-muted);
-  cursor: zoom-in;
-}
-.gallery-grid__tile img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: transform var(--duration-slower) var(--ease-out); }
-.gallery-grid__tile:active img { transform: scale(var(--press-scale)); }
-.gallery-grid__tile:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.marquee-card__title { display: block; margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--font-weight-medium); text-wrap: balance; }
 
 /* Photo dialog: image only, no text box */
 .gallery-dialog {
@@ -2319,23 +2317,21 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 
 
 @media (hover: hover) and (pointer: fine) {
-  .gallery-grid__tile:hover img { transform: scale(1.05); }
+  .marquee-card__button:hover img { transform: scale(1.05); }
 }
 
 @media (max-width: 1100px) {
-  .marquee { --card-h: 280px; --marquee-duration: 63s; }
+  .marquee { --card-h: 280px; --marquee-duration: 79s; }
 }
 
 @media (max-width: 900px) {
-  .gallery-grid { grid-template-columns: minmax(0, 1fr); }
-  .gallery-grid__section--single .gallery-grid__tile { aspect-ratio: 4 / 3; height: auto; min-height: 0; }
   .about-hero-card { min-height: 560px; padding: var(--spacing-32) var(--spacing-24) var(--spacing-40); }
 }
 
 @media (max-width: 600px) {
   .about-hero { padding: var(--spacing-8) var(--spacing-12); }
   .about-hero-card { min-height: 520px; }
-  .marquee { --card-h: 220px; --marquee-duration: 50s; }
+  .marquee { --card-h: 220px; --marquee-duration: 63s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2343,7 +2339,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .marquee__track { animation: none; }
   .marquee__row { overflow-x: auto; }
   .marquee__set[aria-hidden='true'] { display: none; }
-  .gallery-grid__tile img,
+  .marquee-card__button img,
   .about-hero-follow a,
   .aifa-card { transition: none; }
   .aifa-card:hover { transform: none; }
@@ -2596,10 +2592,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   margin-top: var(--gap-group);
 }
 
-/* Page rhythm (design.md §5). .main puts var(--space-section) between every section.
-   Close groups get half: the hero carousel belongs to the hero, the agency logos to the carousel. */
-.hero + .hero-carousel { margin-top: calc(-1 * var(--space-section) / 2); }
-.hero-carousel + .partners { margin-top: calc(-1 * var(--space-section) / 2); }
+/* Page rhythm (design.md §5): see .main--roomy at the top. Close groups get half a pad:
+   the hero carousel belongs to the hero, the agency logos to the carousel. */
 
 /* ── Kenali Sebenarnya.my (components/KenaliSebenarnya.js) ─────────────────
    3-column bento: tall photo in the middle, stat card spanning two rows on the right.

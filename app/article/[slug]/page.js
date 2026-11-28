@@ -32,7 +32,7 @@ export default async function ArticlePage({ params }) {
     <div className="site">
       <Header />
 
-      <main className="main" id="main" tabIndex={-1}>
+      <main className="main main--roomy" id="main" tabIndex={-1}>
         <ArticleDetail article={article} />
         {/* More fact-checks with the same verdict, same carousel as the home page */}
         <Latest key={article.slug} status={article.status} exclude={article.slug} />
