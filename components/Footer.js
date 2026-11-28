@@ -1,11 +1,11 @@
-import { footerColumns, footerStatement, socialLinks } from '@/data/content';
+import { footerColumns, footerLegal, footerStatement, socialLinks } from '@/data/content';
 import { withBase } from '@/lib/basePath';
 
 /**
- * Footer on the night band.
+ * Footer on a dark band.
  * Row 1: statement on the leading side, three link columns on the trailing side.
  * Row 2: the "Tidak pasti jangan kongsi" badge and the sebenarnya.my wordmark.
- * Row 3: copyright above a hairline.
+ * Row 3: copyright and the legal links, one line above a hairline.
  * Column headings are labels, not page headings.
  */
 export default function Footer() {
@@ -60,9 +60,24 @@ export default function Footer() {
           />
         </div>
 
-        <p className="site-footer__copy">
-          &copy; 2026 Suruhanjaya Komunikasi dan Multimedia Malaysia. Hak cipta terpelihara.
-        </p>
+        <div className="site-footer__bottom">
+          <p className="site-footer__copy">
+            &copy; 2026 Suruhanjaya Komunikasi dan Multimedia Malaysia. Hak cipta terpelihara.
+          </p>
+          <ul className="site-footer__legal" aria-label="Maklumat undang-undang">
+            {footerLegal.map((l) => (
+              <li key={l.label}>
+                {l.href ? (
+                  <a href={l.href}>{l.label}</a>
+                ) : (
+                  <span className="site-footer__legal-pending">
+                    {l.label} <span className="site-footer__soon">(akan datang)</span>
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </footer>
   );

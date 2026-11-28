@@ -613,7 +613,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
    three tiers (white 21:1 · 80% white 13.1:1 · 60% white 7.4:1 on --color-surface-media) */
 .site-footer {
   --footer-row-gap: calc(var(--space-section) * .6); /* 38 → 72: the design's row and column spacing */
-  padding: var(--space-section) var(--space-page-x) var(--spacing-40);
+  padding: var(--space-section) var(--space-page-x) calc(var(--size-control-xl) + var(--spacing-48)); /* bottom clears the floating Tanya AIFA button */
   background: var(--color-surface-media);
   color: var(--color-foreground-inverse);
 }
@@ -661,7 +661,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   padding: 0;
   list-style: none;
 }
-.site-footer__col a {
+.site-footer__col a,
+.site-footer__legal a {
   display: inline-block;
   font-family: var(--font-sans);
   font-size: var(--text-body);
@@ -671,13 +672,15 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   text-underline-offset: var(--underline-offset);
   white-space: nowrap;
 }
-.site-footer__col a:focus-visible {
+.site-footer__col a:focus-visible,
+.site-footer__legal a:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color-inverse);
   outline-offset: var(--focus-ring-offset);
   border-radius: var(--radius-sm);
 }
 @media (hover: hover) and (pointer: fine) {
-  .site-footer__col a:hover {
+  .site-footer__col a:hover,
+  .site-footer__legal a:hover {
     color: var(--color-foreground-inverse);
     text-decoration: underline;
     text-decoration-thickness: var(--underline-thickness);
@@ -690,10 +693,30 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .site-footer__wordmark { flex: 1 1 0; min-width: 0; display: block; width: 100%; height: auto; }
 
 /* Row 3: copyright on a hairline */
-.site-footer__copy {
-  margin: calc(var(--spacing-40) - var(--footer-row-gap)) 0 0; /* 40 under the wordmark, not the row gap */
+/* Row 3: copyright | legal links on one line, on a hairline; they stack when the line runs out */
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--gap-text) var(--gap-block);
+  margin-top: calc(var(--spacing-40) - var(--footer-row-gap)); /* 40 under the wordmark, not the row gap */
   padding-top: var(--spacing-24);
   border-top: var(--border-width) solid var(--color-footer-divider);
+}
+.site-footer__legal {
+  display: flex;
+  gap: var(--gap-block);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-footer__legal a,
+.site-footer__legal-pending { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
+/* Not linked yet: plain text in the muted tier so it does not read as a link */
+.site-footer__legal-pending { font-family: var(--font-sans); color: var(--color-muted-foreground-inverse); }
+.site-footer__copy {
+  margin: 0;
   font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
@@ -707,12 +730,12 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 /* Phones: two link columns, smaller brand row */
 @media (max-width: 600px) {
-  .site-footer { padding-bottom: calc(var(--size-control-xl) + var(--spacing-48)); } /* clear the floating Tanya AIFA button */
   .site-footer__links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-block) var(--gap-cards); width: 100%; }
   .site-footer__col a { white-space: normal; }
   .site-footer__brand { gap: var(--spacing-12); }
   .site-footer__badge { width: 56px; } /* ds-allow: badge size on phones */
-  .site-footer__copy { margin-top: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
+  .site-footer__bottom { margin-top: 0; }
+  .site-footer__copy { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
 }
 
 /* ==========================================================================
@@ -1062,29 +1085,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
    Articles page (app/article/page.js, components/Articles.js)
    ========================================================================== */
 /* Hidden visually, still read by screen readers */
-/* TextRoll (components/TextRoll.js): desktop nav hover. The visible row rolls up out of a
-   one-line window while its copy rolls in from below, letter by letter from the centre
-   (--d = 35ms × distance from the middle letter). Transform only; reduced motion = no roll. */
-.text-roll { position: relative; display: inline-block; overflow: hidden; vertical-align: top; }
-.text-roll__row { display: block; white-space: pre; }
-.text-roll__row--next { position: absolute; inset: 0; }
-.text-roll__char { display: inline-block; }
-.text-roll__row--next .text-roll__char { transform: translateY(100%); }
-:where(:hover, :focus-visible) > .text-roll .text-roll__char { transform: translateY(-100%); }
-:where(:hover, :focus-visible) > .text-roll .text-roll__row--next .text-roll__char { transform: translateY(0); }
-@media (prefers-reduced-motion: no-preference) {
-  .text-roll__char { transition: transform var(--duration-base) var(--ease-in-out) var(--d); } /* ≈ the reference 0.3s easeInOut */
-}
-@media (prefers-reduced-motion: reduce) {
-  :where(:hover, :focus-visible) > .text-roll .text-roll__char,
-  .text-roll__row--next .text-roll__char { transform: none; }
-  .text-roll__row--next { visibility: hidden; }
-}
-/* Desktop nav: the roll is the hover cue, so the pill fill stays for press only */
-@media (hover: hover) and (pointer: fine) {
-  .nav-desktop .ui-navlink:hover { background: transparent; }
-}
-
 .sr-only {
   position: absolute;
   overflow: hidden;
@@ -2000,6 +2000,118 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .about-intro__lead { flex: none; }
   .about-intro__cards { flex-direction: column; height: auto; }
   .about-intro__card { flex: none; min-height: 240px; }
+}
+
+/* Bagaimana kami menyemak fakta (components/AboutUs.js › Process) -----------------------
+   A hairline frame (sides; the head closes with a bottom rule, the end with a top rule), as in
+   the reference block. Inside: ordered stages on a vertical rail.
+   Wide (>900): rail down the middle, stages alternate: text | photo, then photo | text; the text
+   hugs the rail (end-aligned on the left side). Narrow: rail on the leading edge, text then photo. */
+.about-process { padding: 0 var(--side); }
+.about-process__frame { border-inline: var(--border-width) solid var(--color-border); }
+.about-process__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-group);
+  padding: var(--gap-block) var(--pad-card-lg);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+.about-process__head .about-title { margin: 0; }
+.about-process__lead { max-width: 42em; margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
+.about-process__end { height: calc(var(--space-section) / 2); border-top: var(--border-width) solid var(--color-border); }
+
+.process { margin: 0; padding: 0; list-style: none; }
+.process__step {
+  --rail-w: var(--spacing-48);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--rail-w) minmax(0, 1fr);
+  grid-template-areas: "info rail media";
+  align-items: center;
+  column-gap: var(--gap-block);
+  padding-inline: var(--pad-card-lg);
+}
+.process__step:nth-child(even) { grid-template-areas: "media rail info"; }
+
+.process__info {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--gap-text);
+  padding-block: var(--gap-block);
+  text-align: end;
+}
+.process__step:nth-child(even) .process__info { align-items: flex-start; text-align: start; }
+.process__num {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
+  font-weight: var(--font-weight-regular);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted-foreground);
+}
+.process__title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-heading-lg);
+  line-height: var(--text-heading-lg--line-height);
+  font-weight: var(--text-heading-lg--font-weight);
+  color: var(--color-foreground);
+  text-wrap: balance;
+}
+.process__text { max-width: 30em; margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
+
+/* Rail: a hairline through every stage, joined end to end, with a dot level with the row's middle */
+.process__rail { grid-area: rail; position: relative; align-self: stretch; }
+.process__rail::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: var(--border-width);
+  background: var(--color-border);
+}
+.process__rail::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  border-radius: var(--radius-full);
+  background: var(--color-foreground);
+  box-shadow: 0 0 0 var(--spacing-4) var(--color-background); /* gap where the dot cuts the rail */
+  translate: -50% -50%;
+}
+.process__img {
+  grid-area: media;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin-block: var(--gap-block);
+  border-radius: var(--radius-card);
+  object-fit: cover;
+  background: var(--color-muted-strong);
+}
+
+@media (max-width: 900px) {
+  .process__step,
+  .process__step:nth-child(even) {
+    --rail-w: var(--spacing-24);
+    grid-template-columns: var(--rail-w) minmax(0, 1fr);
+    grid-template-areas: "rail info" "rail media";
+    align-items: start;
+    column-gap: var(--gap-group);
+  }
+  .process__info,
+  .process__step:nth-child(even) .process__info { align-items: flex-start; text-align: start; padding-bottom: 0; }
+  .process__num { font-size: var(--text-body); line-height: var(--text-body--line-height); }
+  .process__title { font-size: var(--text-heading); line-height: var(--text-heading--line-height); font-weight: var(--text-heading--font-weight); }
+  .process__img { aspect-ratio: 16 / 10; margin-top: var(--gap-group); }
+  .process__rail { grid-row: 1 / span 2; }
+  .process__rail::after { top: calc(var(--gap-block) + var(--spacing-12)); translate: -50% 0; }
 }
 
 /* Berita dan Galeri: two-row news marquee, then the photo grid */

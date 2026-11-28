@@ -140,6 +140,13 @@ export const socialLinks = [
 // The no-break space keeps "dan" with the last line, as designed
 export const footerStatement = 'Rujukan utama anda untuk semakan fakta dan\u00a0maklumat yang sahih';
 
+// Legal links on the copyright line. `href: null` = page not ready: shown as text marked "akan datang"
+// (not clickable); add the URL and it becomes a link.
+export const footerLegal = [
+  { label: 'Terma', href: null },
+  { label: 'Privasi', href: null },
+];
+
 export const footerColumns = [
   {
     title: 'Semak dan lapor',
@@ -269,6 +276,52 @@ export const aboutIntro = {
     { value: '1,016', label: 'Artikel semakan' },
     { value: '200 ribu', label: 'Mesej diproses Aifa' },
     { value: '20+', label: 'Agensi rakan' },
+  ],
+};
+
+// "Bagaimana kami menyemak fakta" (components/AboutUs.js › Process): six stages, in order.
+// Images are existing site photos for now; swap in real process photos when ready.
+export const aboutProcess = {
+  badge: 'Proses semakan',
+  title: 'Bagaimana kami menyemak fakta',
+  lead: 'Setiap maklumat yang diterima akan melalui enam (6) peringkat semakan bagi memastikan kesahihannya sebelum hasil semakan diterbitkan kepada umum.',
+  steps: [
+    {
+      title: 'Penerimaan Laporan',
+      text: 'Menerima laporan daripada umum yang mengandungi dakwaan, pautan atau tangkap layar maklumat yang diragui kesahihannya.',
+      image: post('fakechat.jpg'),
+      alt: 'Tangkap layar perbualan yang memaparkan mesej tular',
+    },
+    {
+      title: 'Analisis Awal',
+      text: 'Melaksanakan saringan dan penjelasan maklumat menggunakan teknologi Kecerdasan Buatan (AI) bagi tujuan analisis awal.',
+      image: post('sebenarnya-fc-digital-desk.jpg'),
+      alt: 'Meja kerja dengan komputer untuk menganalisis maklumat',
+    },
+    {
+      title: 'Semakan Agensi',
+      text: 'Mengemukakan maklumat kepada agensi berkaitan untuk penelitian dan siasatan lanjut.',
+      image: aboutImg('news-semakan-fakta.jpg'),
+      alt: 'Dua pegawai membandingkan artikel tular dengan dokumen rasmi',
+    },
+    {
+      title: 'Pengesahan Maklumat',
+      text: 'Agensi berkaitan mengesahkan kesahihan maklumat berdasarkan hasil semakan dan siasatan yang dijalankan.',
+      image: aboutImg('news-sidang-media.jpg'),
+      alt: 'Podium sidang media dengan beberapa mikrofon',
+    },
+    {
+      title: 'Penerbitan Hasil Semakan',
+      text: 'Menerbitkan hasil semakan yang telah disahkan melalui portal Sebenarnya.my.',
+      image: aboutImg('news-telefon.jpg'),
+      alt: 'Tangan memegang telefon pintar dengan tanda semak pengesahan',
+    },
+    {
+      title: 'Penyebaran Maklumat',
+      text: 'Hasil semakan dikongsi melalui platform media sosial untuk membendung berita palsu.',
+      image: post('sebenarnya-fc-phone-sharing.jpg'),
+      alt: 'Dua orang menyemak mesej di telefon',
+    },
   ],
 };
 
