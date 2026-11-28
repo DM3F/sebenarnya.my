@@ -53,6 +53,12 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
    content's width: wide tracks (carousels, logo ticker) scroll inside instead of widening the page */
 .main > * { box-sizing: border-box; width: 100%; min-width: 0; }
 
+/* Roomy pages (Tentang Kami first): every section carries its own white space, 120 above and below
+   on wide screens and 60 on phones, instead of the shared row gap. The hero keeps its own frame. */
+.main--roomy { --section-pad: var(--spacing-120); row-gap: 0; padding-bottom: 0; }
+.main--roomy > section:not(.about-hero) { padding-block: var(--section-pad); }
+@media (max-width: 600px) { .main--roomy { --section-pad: calc(var(--spacing-120) / 2); } }
+
 .container {
   max-width: var(--max-width);
   margin-right: auto;
@@ -2019,7 +2025,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   left: var(--rail-x);
   width: var(--border-width);
   translate: -50% 0;
-  background: var(--color-border);
+  background: var(--color-muted-strong); /* faint until filled, so the ink progress stands out */
 }
 .process__fill { background: var(--color-foreground); transform: scaleY(var(--p)); transform-origin: top; }
 .process__pointer {
@@ -2085,7 +2091,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   width: var(--spacing-12);
   height: var(--spacing-12);
   border-radius: var(--radius-full);
-  background: var(--color-border-strong);
+  background: var(--color-border); /* soft until reached; ink once the pointer passes */
   box-shadow: 0 0 0 var(--spacing-4) var(--color-background); /* gap where the dot cuts the rail */
   translate: -50% -50%;
 }
