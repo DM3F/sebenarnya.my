@@ -289,7 +289,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   text-wrap: balance;
 }
 
-/* H1 line 1: "Tidak pasti?" and "Jangan kongsi" never break inside */
+/* H1 line 1: "Hai, kami" and "Sebenarnya.my" never break inside */
 .hero-title__part { white-space: nowrap; }
 
 .hero-search-group {
@@ -609,93 +609,110 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .fc-photo, .fc-read, .fc-read-icon { transition: none; }
 }
 
-/* Footer (components/Footer.js) */
+/* Footer (components/Footer.js): night band, white text in three tiers
+   (white 18.6:1 · 80% white 12:1 · 60% white 7.2:1 on --color-surface-night) */
 .site-footer {
-  --footer-side: var(--space-page-x);
+  --footer-row-gap: calc(var(--space-section) * .6); /* 38 → 72: the design's row and column spacing */
+  padding: var(--space-section) var(--space-page-x) var(--spacing-40);
+  background: var(--color-surface-night);
+  color: var(--color-foreground-inverse);
+}
+.site-footer__inner {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-block);
-  padding: var(--space-section) var(--footer-side) var(--spacing-32);
-  border-top: var(--border-width) solid var(--color-border);
-  background: var(--color-background);
-  color: var(--color-foreground);
+  gap: var(--footer-row-gap);
+  max-width: 1248px; /* ds-allow: content width at the 1440 design */
+  margin-inline: auto;
 }
 
+/* Row 1: statement | link columns */
 .site-footer__top {
   display: flex;
   justify-content: space-between;
-  gap: var(--gap-block);
+  align-items: flex-start;
+  gap: var(--gap-block) var(--footer-row-gap);
 }
-
-.site-footer__brand {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-group);
-  max-width: 400px;
-}
-.site-footer__brand .logo-link img { width: 180px; height: auto; }
-
-.site-footer__text {
+.site-footer__statement {
+  max-width: 12em; /* three lines, broken as designed */
   margin: 0;
   font-family: var(--font-sans);
-  font-size: var(--text-body);
-  line-height: var(--text-body--line-height);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-text-secondary);
+  font-size: var(--text-heading-lg);
+  line-height: var(--text-heading-lg--line-height);
+  font-weight: var(--font-weight-regular); /* a statement, not a heading */
+  color: var(--color-foreground-inverse);
+  text-wrap: balance;
 }
 
-.site-footer__links { display: flex; gap: var(--gap-block); }
-.site-footer__col { display: flex; flex-direction: column; gap: var(--gap-group); width: 180px; }
-
+.site-footer__links { display: flex; gap: var(--footer-row-gap); }
+.site-footer__col { display: flex; flex-direction: column; gap: var(--spacing-12); }
 .site-footer__heading {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--color-muted-foreground);
-}
-
-.site-footer__col ul {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-cards);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.site-footer__col a {
-  display: inline-block;
-  font-family: var(--font-sans);
-  font-size: var(--text-label);
-  line-height: var(--text-label--line-height);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-foreground);
-  text-decoration: none;
-  text-underline-offset: var(--underline-offset);
-}
-.site-footer__col a:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); border-radius: var(--radius-sm); }
-@media (hover: hover) and (pointer: fine) {
-  .site-footer__col a:hover { text-decoration: underline; text-decoration-thickness: var(--underline-thickness); }
-}
-
-.site-footer__copy {
   margin: 0;
   font-family: var(--font-sans);
   font-size: var(--text-body-sm);
   line-height: var(--text-body-sm--line-height);
-  color: var(--color-muted-foreground);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-muted-foreground-inverse);
+}
+.site-footer__col ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-footer__col a {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  color: var(--color-text-secondary-inverse);
+  text-decoration: none;
+  text-underline-offset: var(--underline-offset);
+  white-space: nowrap;
+}
+.site-footer__col a:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color-inverse);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__col a:hover {
+    color: var(--color-foreground-inverse);
+    text-decoration: underline;
+    text-decoration-thickness: var(--underline-thickness);
+  }
 }
 
-@media (max-width: 1100px) {
-  .site-footer__top { flex-direction: column; gap: var(--gap-block); }
-  .site-footer__links { flex-wrap: wrap; }
+/* Row 2: badge + wordmark, the wordmark fills the rest of the row and scales with it */
+.site-footer__brand { display: flex; align-items: center; gap: var(--gap-cards); }
+.site-footer__badge { flex: none; display: block; width: 124px; height: auto; } /* ds-allow: badge size from the design */
+.site-footer__wordmark { flex: 1 1 0; min-width: 0; display: block; width: 100%; height: auto; }
+
+/* Row 3: copyright on a hairline */
+.site-footer__copy {
+  margin: calc(var(--spacing-40) - var(--footer-row-gap)) 0 0; /* 40 under the wordmark, not the row gap */
+  padding-top: var(--spacing-24);
+  border-top: var(--border-width) solid var(--color-border-inverse);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  color: var(--color-muted-foreground-inverse); /* the design's #707070 is 3.75:1 here; 60% white is 7.2:1 */
 }
+
+/* Columns move under the statement once both no longer fit side by side */
+@media (max-width: 1100px) {
+  .site-footer__top { flex-direction: column; }
+  .site-footer__statement { max-width: 18em; }
+}
+/* Phones: two link columns, smaller brand row */
 @media (max-width: 600px) {
-  .site-footer__links { gap: var(--gap-block) var(--gap-cards); }
-  .site-footer__col { width: calc(50% - var(--spacing-12)); gap: var(--gap-group); }
-  .site-footer__text { font-size: var(--text-body); line-height: var(--text-body--line-height); }
+  .site-footer { padding-bottom: calc(var(--size-control-xl) + var(--spacing-48)); } /* clear the floating Tanya AIFA button */
+  .site-footer__links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-block) var(--gap-cards); width: 100%; }
+  .site-footer__col a { white-space: normal; }
+  .site-footer__brand { gap: var(--spacing-12); }
+  .site-footer__badge { width: 56px; } /* ds-allow: badge size on phones */
+  .site-footer__copy { margin-top: 0; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
 }
 
 /* ==========================================================================
@@ -2576,13 +2593,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   font-weight: var(--font-weight-display);
   letter-spacing: var(--text-stat--letter-spacing);
 }
-.site-footer__heading {
-  font-size: var(--text-eyebrow);
-  line-height: var(--text-eyebrow--line-height);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-label);
-}
-.site-footer__text { font-size: var(--text-body); line-height: var(--text-body--line-height); }
 /* Captions under numbers: regular weight (light 300 is too thin below 18px) */
 .viewership-stats dd { font-weight: var(--font-weight-regular); }
 
@@ -2683,10 +2693,10 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .articles-chips.has-overflow .articles-chips__arrow { display: none; }
 }
 
-/* Hero H1: three lines at one size. The widest, "Pengesahan Bersumberkan Maklumat Rasmi.", is
+/* Hero H1: three lines at one size ("Hai, kami Sebenarnya.my" first). The widest, "Pengesahan Bersumberkan Maklumat Rasmi.", is
    ≈21em, so below the display size the title scales with the viewport to fit the content width.
    Under 900px that would shrink it below the H2, so there lines 2 and 3 wrap instead and only
-   line 1 (≈12.5em) sets the size. */
+   line 1 sets the size. */
 .hero-title > span { white-space: nowrap; }
 .hero .hero-title { width: fit-content; max-width: 100%; font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 21.5)); }
 @media (max-width: 900px) {
@@ -2694,7 +2704,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 12.8)); }
 }
 
-/* Phones: "Tidak pasti?" / "Jangan kongsi" each on their own line (widest ≈7.5em, so the size is
+/* Phones: "Hai, kami" / "Sebenarnya.my" each on their own line (widest ≈7.5em, so the size is
    capped at content width / 7.8); lines 2 and 3 keep wrapping at that size. */
 @media (max-width: 600px) {
   .hero-title__part { display: block; }
