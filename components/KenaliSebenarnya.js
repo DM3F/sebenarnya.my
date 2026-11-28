@@ -6,7 +6,7 @@ import SocialPeek from '@/components/SocialPeek';
 
 // "Kenali Sebenarnya.my": a 3-column bento about the service.
 // Desktop areas: channels | photo (3 rows) | visitors
-//                poster   | photo          | award "Juara Dunia" (2 rows)
+//                poster   | photo          | award: WSIS Prizes 2026 (2 rows)
 //                social   | photo          | award
 
 export default function KenaliSebenarnya() {
@@ -54,10 +54,9 @@ export default function KenaliSebenarnya() {
         </article>
 
         <figure className="kenali__card kenali__card--poster">
-          {/* Square poster in a short card: shown whole (object-fit: contain) on white, trophy and lettering never cropped */}
           <img
-            src={withBase('/images/bento/wsis-prize-award.webp')}
-            alt="Poster Anugerah WSIS 2026 dengan trofi, World Summit on the Information Society, Geneva, Switzerland"
+            src={withBase('/images/bento/wsis-champion-sijil.jpg')}
+            alt="Wakil MCMC menerima sijil Champion WSIS Prizes 2026 bagi Portal Sebenarnya.my di Forum WSIS, Geneva"
             loading="lazy"
           />
         </figure>
@@ -65,15 +64,19 @@ export default function KenaliSebenarnya() {
         <article className="kenali__card kenali__card--award">
           <p className="kenali__award-eyebrow">
             <Icon icon={Trophy} />
-            Pengiktirafan tertinggi · WSIS PBB
+            WSIS Prizes 2026 · Geneva
           </p>
           <div className="kenali__award-body">
-            <h3 className="kenali__award-title">Juara Dunia</h3>
-            <p className="kenali__award-sub">dalam Kepercayaan Digital &amp; Semakan Fakta Awam</p>
+            <h3 className="kenali__award-title">Sebenarnya.my Diiktiraf di WSIS Prizes 2026</h3>
             <p className="kenali__award-text">
-              Apabila khabar angin tular tersebar pantas, fakta yang sahih mesti bergerak lebih pantas. Sebenarnya.my
-              meraih penghormatan antarabangsa tertinggi di Anugerah WSIS PBB di Geneva — diiktiraf sebagai perisai utama
-              Malaysia yang melindungi <strong>33 juta rakyat</strong> bersama <strong>lebih 20 agensi persekutuan</strong>.
+              Sebenarnya.my, portal semakan fakta rasmi Malaysia yang dibangunkan oleh MCMC, telah menerima pengiktirafan
+              antarabangsa sebagai <strong>Champion Project di WSIS Prizes 2026</strong> yang berlangsung di Geneva,
+              Switzerland.
+            </p>
+            <p className="kenali__award-text">
+              Pengiktirafan ini mencerminkan komitmen berterusan MCMC dalam memperkukuh kepercayaan digital melalui
+              penyampaian maklumat sahih, semakan fakta yang berwibawa serta kerjasama strategik dengan agensi kerajaan
+              bagi membendung penyebaran maklumat palsu.
             </p>
           </div>
         </article>

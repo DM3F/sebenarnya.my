@@ -2442,8 +2442,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   color: var(--color-muted-foreground-inverse);
 }
 .kenali__award-body { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap-text); }
-.kenali__award-title { margin: 0; text-wrap: balance; }
-.kenali__award-sub { margin: 0; font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--font-weight-medium); text-wrap: balance; } /* title role: one step above the paragraph */
+.kenali__award-title { margin: 0; font-size: var(--text-heading); line-height: var(--text-heading--line-height); font-weight: var(--text-heading--font-weight); text-wrap: balance; } /* a sentence-long title: panel heading role */
 .kenali__award-text {
   margin: 0;
   font-size: var(--text-body);
@@ -2451,18 +2450,11 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   color: var(--color-muted-foreground-inverse);
   text-wrap: pretty;
 }
-.kenali__award-text strong { font-weight: var(--font-weight-medium); color: var(--color-foreground-inverse); } /* the two facts read first */
+.kenali__award-text strong { font-weight: var(--font-weight-medium); color: var(--color-foreground-inverse); } /* the award name reads first */
 
-/* Poster: square artwork shown whole on white with a hairline edge (never cropped) */
-.kenali__card--poster {
-  display: grid;
-  place-items: center;
-  padding: var(--pad-card-sm);
-  background: var(--color-card);
-  box-shadow: inset 0 0 0 var(--border-width) var(--color-border);
-}
-.kenali__card--poster img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.kenali__card--poster { min-height: 300px; } /* room for the square poster to stay legible (≈276px) */
+/* WSIS photo (certificate handover): fills the card, cropped to keep both people and the certificate */
+.kenali__card--poster { padding: 0; min-height: 300px; background: var(--color-muted-strong); }
+.kenali__card--poster img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 
 @media (max-width: 1100px) {
   .kenali__grid {
@@ -2486,7 +2478,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .kenali__card--photo { min-height: 360px; }
   /* Square poster fills the card on phones. No min-height here: with aspect-ratio it would force
      the width to 300 + padding and push the page sideways at 320 (the square is tall enough). */
-  .kenali__card--poster { aspect-ratio: 1; min-height: 0; }
+  .kenali__card--poster { aspect-ratio: 3 / 2; min-height: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .kenali__card--photo img { transition: none; } }
 
@@ -2504,8 +2496,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .kenali__title,
 .about-title,
 .logo-kit-title,
-.hero-carousel h3,
-.kenali__award-title {
+.hero-carousel h3 {
   font-size: var(--text-heading-lg);
   line-height: var(--text-heading-lg--line-height);
   font-weight: var(--text-heading-lg--font-weight); /* same weight as the hero H1 */

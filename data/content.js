@@ -270,11 +270,12 @@ export const aboutIntro = {
 export const aboutNews = {
   title: 'Berita dan Galeri',
   intro: 'Ikuti perkembangan terkini, pengiktirafan dan aktiviti Sebenarnya.my bersama masyarakat.',
-  // DEMO copy and AI-generated photos: replace with real MCMC news before launch. Cards with a `title` are
+  // The three WSIS 2026 cards are real photos; the rest are DEMO copy with AI-generated photos: replace
+  // with real MCMC news before launch. Cards with a `title` are
   // the wide ones; the rest are narrow photo cards. Row 1 drifts left, row 2 right (NewsMarquee in AboutUs.js).
   marquee: [
     [
-      { tag: 'Kempen', title: 'Kempen kesedaran penipuan dalam talian sampai ke setiap negeri', image: aboutImg('news-penipuan.jpg'), alt: 'Wanita menyemak mesej mencurigakan pada telefon pintar di kafe' },
+      { tag: 'Pengiktirafan', title: 'Sebenarnya.my diiktiraf Champion Project di WSIS Prizes 2026', image: aboutImg('news-wsis-champion.jpg'), alt: 'Wakil Malaysia memegang sijil WSIS Prizes 2026 di pentas Forum WSIS, Geneva' },
       { tag: 'Semakan', image: aboutImg('news-telefon.jpg'), alt: 'Tangan memegang telefon pintar dengan tanda semak pengesahan' },
       { tag: 'Infrastruktur', title: 'Capaian jalur lebar kini sampai ke lebih banyak kampung', image: aboutImg('news-jalur-lebar.jpg'), alt: 'Juruteknik memasang peralatan jalur lebar di menara berhampiran kampung' },
       { tag: 'Penyiaran', image: aboutImg('news-penyiaran.jpg'), alt: 'Penyampai radio bercakap di hadapan mikrofon di studio' },
@@ -282,8 +283,8 @@ export const aboutNews = {
       { tag: 'Pendidikan', image: aboutImg('news-sekolah.jpg'), alt: 'Pelajar sekolah menggunakan komputer riba dalam bengkel keselamatan digital' },
     ],
     [
-      { tag: 'Komuniti', image: aboutImg('news-keluarga.jpg'), alt: 'Sebuah keluarga melihat telefon pintar bersama-sama di ruang tamu' },
-      { tag: 'Literasi digital', title: 'Program celik digital bersama warga emas diteruskan', image: aboutImg('news-celik-digital.jpg'), alt: 'Warga emas belajar menggunakan tablet bersama seorang sukarelawan' },
+      { tag: 'WSIS 2026', image: aboutImg('news-wsis-pentas.jpg'), alt: 'Wakil Malaysia mengangkat trofi WSIS di podium Forum WSIS, Geneva' },
+      { tag: 'Geneva', title: 'Delegasi Malaysia di Forum WSIS 2026, Geneva', image: aboutImg('news-wsis-delegasi.jpg'), alt: 'Delegasi Malaysia duduk di meja persidangan berlabel Malaysia di Forum WSIS' },
       { tag: 'Teknologi', image: aboutImg('news-gentian.jpg'), alt: 'Gentian optik bercahaya biru dalam jarak dekat' },
       { tag: 'Keselamatan siber', title: 'Kenali ciri mesej penipuan yang menyamar sebagai agensi', image: aboutImg('news-siber.jpg'), alt: 'Komputer riba dan telefon memaparkan amaran pancingan data' },
       { tag: 'Kenyataan media', image: aboutImg('news-sidang-media.jpg'), alt: 'Podium sidang media dengan beberapa mikrofon dan wartawan' },
