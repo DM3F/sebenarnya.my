@@ -5,7 +5,7 @@ import LogoKit from '@/components/LogoKit';
 import GalleryGrid from '@/components/GalleryGrid';
 import CountUp from '@/components/CountUp';
 import { withBase } from '@/lib/basePath';
-import { aboutHero as hero, aboutIntro as intro, aboutNews, socialLinks } from '@/data/content';
+import { aboutHero as hero, aboutIntro as intro, aboutNews, aboutProcess as process, socialLinks } from '@/data/content';
 
 // "275 juta+" → <CountUp 275/> juta+ ; "1,016" keeps its thousands separator
 function StatValue({ text }) {
@@ -27,6 +27,7 @@ export default function AboutUs() {
     <>
       <Hero />
       <Intro />
+      <Process />
       <NewsGallery />
       <LogoKit headingLevel={2} />
     </>
@@ -125,6 +126,39 @@ function Intro() {
             </div>
           ))}
         </dl>
+      </div>
+    </section>
+  );
+}
+
+// Bagaimana kami menyemak fakta: a framed head (badge, title, lead), then a vertical timeline.
+// Each stage: step number (sticky beside its stage on wide screens) | rail with a dot | title,
+// text and photo. An ordered list, so the order is announced; the rail is decoration.
+function Process() {
+  return (
+    <section className="about-process" aria-labelledby="about-process-title">
+      <div className="about-process__frame">
+        <div className="about-process__head">
+          <Badge variant="outline">{process.badge}</Badge>
+          <h2 className="about-title" id="about-process-title">{process.title}</h2>
+          <p className="about-process__lead">{process.lead}</p>
+        </div>
+
+        <ol className="process">
+          {process.steps.map((step, i) => (
+            <li className="process__step" key={step.title}>
+              <p className="process__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+              <span className="process__rail" aria-hidden="true" />
+              <div className="process__body">
+                <h3 className="process__title">{step.title}</h3>
+                <p className="process__text">{step.text}</p>
+                <img className="process__img" src={step.image} alt={step.alt} loading="lazy" />
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div className="about-process__end" aria-hidden="true" />
       </div>
     </section>
   );

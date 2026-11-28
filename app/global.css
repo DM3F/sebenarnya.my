@@ -2002,6 +2002,118 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .about-intro__card { flex: none; min-height: 240px; }
 }
 
+/* Bagaimana kami menyemak fakta (components/AboutUs.js › Process) -----------------------
+   A hairline frame (sides; the head closes with a bottom rule, the end with a top rule), as in
+   the reference block. Inside: ordered stages on a vertical rail.
+   Wide: number (sticky while its stage scrolls) | rail + dot | title, text, photo.
+   Narrow (≤900): rail on the leading edge, number above the title. */
+.about-process { padding: 0 var(--side); }
+.about-process__frame { border-inline: var(--border-width) solid var(--color-border); }
+.about-process__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-group);
+  padding: var(--gap-block) var(--pad-card-lg);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+.about-process__head .about-title { margin: 0; }
+.about-process__lead { max-width: 42em; margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
+.about-process__end { height: calc(var(--space-section) / 2); border-top: var(--border-width) solid var(--color-border); }
+
+.process { margin: 0; padding: 0; list-style: none; }
+.process__step {
+  --rail-w: var(--spacing-48);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--rail-w) minmax(0, 2fr);
+  grid-template-areas: "num rail body";
+  column-gap: var(--gap-cards);
+  padding-inline: var(--pad-card-lg);
+}
+.process__num {
+  grid-area: num;
+  position: sticky;
+  top: calc(var(--header-height, var(--spacing-72)) + var(--gap-block));
+  align-self: start;
+  margin: 0;
+  padding-block: var(--gap-block);
+  font-family: var(--font-sans);
+  font-size: var(--text-heading-lg);
+  line-height: var(--text-heading-lg--line-height);
+  font-weight: var(--font-weight-regular);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted-foreground);
+  text-align: end;
+}
+/* Rail: a hairline through every stage, joined end to end; the dot sits level with the title */
+.process__rail { grid-area: rail; position: relative; }
+.process__rail::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: var(--border-width);
+  background: var(--color-border);
+}
+.process__rail::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--gap-block) + var(--spacing-10));
+  left: 50%;
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  border-radius: var(--radius-full);
+  background: var(--color-foreground);
+  box-shadow: 0 0 0 var(--spacing-4) var(--color-background); /* gap where the dot cuts the rail */
+  translate: -50% 0;
+}
+.process__body {
+  grid-area: body;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-text);
+  padding-block: var(--gap-block);
+}
+.process__title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-heading);
+  line-height: var(--text-heading--line-height);
+  font-weight: var(--text-heading--font-weight);
+  color: var(--color-foreground);
+}
+.process__text { max-width: 36em; margin: 0; color: var(--color-text-secondary); text-wrap: pretty; }
+.process__img {
+  display: block;
+  width: 100%;
+  max-width: 560px; /* ds-allow: photo width in the stage column */
+  aspect-ratio: 16 / 10;
+  margin-top: var(--gap-group);
+  border-radius: var(--radius-card);
+  object-fit: cover;
+  background: var(--color-muted-strong);
+}
+
+@media (max-width: 900px) {
+  .process__step {
+    --rail-w: var(--spacing-24);
+    grid-template-columns: var(--rail-w) minmax(0, 1fr);
+    grid-template-areas: "rail num" "rail body";
+    column-gap: var(--gap-group);
+  }
+  .process__num {
+    position: static;
+    padding-block: var(--gap-block) 0;
+    font-size: var(--text-heading);
+    line-height: var(--text-heading--line-height);
+    text-align: start;
+  }
+  .process__body { padding-top: var(--gap-text); }
+  .process__rail { grid-row: 1 / span 2; }
+  .process__rail::after { top: calc(var(--gap-block) + var(--spacing-8)); }
+}
+
 /* Berita dan Galeri: two-row news marquee, then the photo grid */
 .about-news { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--side); }
 .about-news__head { display: flex; flex-direction: column; align-items: center; gap: var(--gap-text); text-align: center; }
