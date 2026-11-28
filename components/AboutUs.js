@@ -6,7 +6,7 @@ import LogoKit from '@/components/LogoKit';
 import GalleryGrid from '@/components/GalleryGrid';
 import CountUp from '@/components/CountUp';
 import { withBase } from '@/lib/basePath';
-import { aboutHero as hero, aboutIntro as intro, aboutNews, aboutProcess as process, socialLinks } from '@/data/content';
+import { aboutHero as hero, aboutIntro as intro, aboutNews, aboutProcess as process, aboutRoles as roles, socialLinks } from '@/data/content';
 
 // "275 juta+" → <CountUp 275/> juta+ ; "1,016" keeps its thousands separator
 function StatValue({ text }) {
@@ -29,6 +29,7 @@ export default function AboutUs() {
       <Hero />
       <Intro />
       <Process />
+      <Roles />
       <NewsGallery />
       <LogoKit headingLevel={2} />
     </>
@@ -210,6 +211,122 @@ function useScrollProgress() {
     };
   }, []);
   return ref;
+}
+
+// Peranan Sebenarnya.my: a tilt-stack. The section is n stages tall; one sticky stage holds the
+// head and a deck where each card slides up tilted, lands flat, then tips back and dims as the
+// next one lands on it. Scroll drives it (no timers); transform and opacity only. Reduced motion:
+// cards crossfade in place. Every card's text is in the DOM, so nothing is hidden from readers.
+const ROLE_PERSPECTIVE = 1400;
+const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+const pad2 = (n) => String(n).padStart(2, '0');
+
+// Where card i sits at scroll position p (0 = first card, n - 1 = last)
+function rolePose(p, i, reduced) {
+  const enter = i === 0 ? 1 : clamp(p - (i - 1), 0, 1);
+  const depth = clamp(p - i, 0, 3);
+  if (reduced) return { y: 0, scale: 1, rx: 0, rz: 0, shade: Math.min(depth, 1) * 0.5, opacity: enter };
+  const e = easeOut(enter);
+  return {
+    y: (1 - e) * 130 - depth * 3.2,
+    scale: (1 - depth * 0.07) * (0.9 + 0.1 * e),
+    rx: (1 - e) * 22 - depth * 9,
+    rz: (1 - e) * (i % 2 ? 5 : -5),
+    shade: Math.min(depth, 2) * 0.34,
+    opacity: depth > 2.6 ? clamp((3 - depth) / 0.4, 0, 1) : 1,
+  };
+}
+
+function Roles() {
+  const trackRef = useRef(null);
+  const stageRef = useRef(null);
+  const cardsRef = useRef([]);
+  const shadesRef = useRef([]);
+  const countRef = useRef(null);
+  const railRef = useRef(null);
+  const n = roles.cards.length;
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const stage = stageRef.current;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let frame = 0;
+    let last = -1;
+
+    const paint = () => {
+      frame = 0;
+      const top = parseFloat(getComputedStyle(stage).top) || 0;
+      const travel = Math.max(1, track.offsetHeight - stage.offsetHeight);
+      const progress = clamp((top - track.getBoundingClientRect().top) / travel, 0, 1);
+      const p = progress * Math.max(n - 1, 0);
+      for (let i = 0; i < n; i++) {
+        const q = rolePose(p, i, mq.matches);
+        const card = cardsRef.current[i];
+        card.style.transform = `translate3d(0, ${q.y.toFixed(3)}%, 0) perspective(${ROLE_PERSPECTIVE}px) rotateX(${q.rx.toFixed(3)}deg) rotateZ(${q.rz.toFixed(3)}deg) scale(${q.scale.toFixed(4)})`;
+        card.style.opacity = String(q.opacity);
+        shadesRef.current[i].style.opacity = String(q.shade);
+      }
+      const idx = Math.round(p);
+      if (idx !== last) {
+        last = idx;
+        countRef.current.textContent = pad2(idx + 1);
+      }
+      railRef.current.style.transform = `scaleX(${progress.toFixed(4)})`;
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(paint); };
+
+    paint();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    mq.addEventListener('change', schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      mq.removeEventListener('change', schedule);
+    };
+  }, [n]);
+
+  return (
+    <section className="about-roles" aria-labelledby="about-roles-title">
+      <div className="roles-track" ref={trackRef} style={{ '--roles-n': n }}>
+        <div className="roles-stage" ref={stageRef}>
+          <div className="roles-head">
+            <div className="roles-head__text">
+              <Badge variant="eyebrow">{roles.badge}</Badge>
+              <h2 className="about-title" id="about-roles-title">{roles.title}</h2>
+            </div>
+            <p className="roles-count" aria-hidden="true">
+              <b ref={countRef}>01</b> / {pad2(n)}
+              <span className="roles-count__rail"><i ref={railRef} /></span>
+            </p>
+          </div>
+
+          <ol className="roles-deck">
+            {roles.cards.map((c, i) => (
+              <li
+                key={c.title}
+                className="roles-card"
+                ref={(el) => { cardsRef.current[i] = el; }}
+                style={{ zIndex: i + 1 }}
+              >
+                <img src={c.image} alt={c.alt} loading={i < 2 ? 'eager' : 'lazy'} draggable="false" />
+                <div className="roles-card__body">
+                  <span className="roles-card__num" aria-hidden="true">{pad2(i + 1)}</span>
+                  <div className="roles-card__copy">
+                    <h3 className="roles-card__title">{c.title}</h3>
+                    <p className="roles-card__text">{c.text}</p>
+                  </div>
+                </div>
+                <span className="roles-card__shade" ref={(el) => { shadesRef.current[i] = el; }} aria-hidden="true" />
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 // Berita dan Galeri: two rows of news photos drifting in opposite directions (top row left, bottom
