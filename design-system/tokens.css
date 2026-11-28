@@ -32,7 +32,6 @@
   --color-grey-43: #6f6a63;   /* smoke */
   --color-grey-41: #6b6a68;
   --color-grey-25: #44403b;   /* graphite */
-  --color-grey-8: #121316;    /* night: footer band */
   --color-black: #000000;     /* ink */
   --color-red: #e8302a;       /* Kebenaran red */
   --color-red-dark: #c8211c;
@@ -60,8 +59,6 @@
   --color-text-secondary-inverse: color-mix(in srgb, var(--color-white) 80%, transparent);  /* body text on dark: graphite's twin · ≈7.3:1 on graphite */
   --color-muted-foreground-inverse: color-mix(in srgb, var(--color-white) 60%, transparent); /* dimmed text on dark: smoke's twin · ≈7:1 on black */
   --color-surface-inverse: var(--color-grey-25);  /* dark card on a light page (graphite) */
-  --color-surface-night: var(--color-grey-8);     /* full-width dark band (footer) · white 18.6:1, 80% white 12:1, 60% white 7.2:1 */
-  --color-border-inverse: color-mix(in srgb, var(--color-white) 30%, transparent); /* divider on dark surfaces (decorative) */
   --color-ring: var(--color-foreground);           /* focus: ink ring (on dark/photo surfaces --focus-ring-color-inverse) */
   --color-link: var(--color-foreground);           /* links are ink + underline, like every other text */
   --color-destructive: var(--color-red-dark);      /* error text */

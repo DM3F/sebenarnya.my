@@ -9,6 +9,8 @@
 /* Variables */
 :root {
   --max-width: 1600px;
+  /* Website-only colour role (not in the design-system package): hairline on the dark footer, decorative */
+  --color-footer-divider: color-mix(in srgb, var(--color-foreground-inverse) 30%, transparent);
   --side: var(--space-page-x); /* legacy alias: .container and About sections */
 }
 
@@ -607,12 +609,12 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .fc-photo, .fc-read, .fc-read-icon { transition: none; }
 }
 
-/* Footer (components/Footer.js): night band, white text in three tiers
-   (white 18.6:1 · 80% white 12:1 · 60% white 7.2:1 on --color-surface-night) */
+/* Footer (components/Footer.js): dark band on the design system's dark-stage surface, white text in
+   three tiers (white 21:1 · 80% white 13.1:1 · 60% white 7.4:1 on --color-surface-media) */
 .site-footer {
   --footer-row-gap: calc(var(--space-section) * .6); /* 38 → 72: the design's row and column spacing */
   padding: var(--space-section) var(--space-page-x) var(--spacing-40);
-  background: var(--color-surface-night);
+  background: var(--color-surface-media);
   color: var(--color-foreground-inverse);
 }
 .site-footer__inner {
@@ -634,8 +636,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   max-width: 12em; /* three lines, broken as designed */
   margin: 0;
   font-family: var(--font-sans);
-  font-size: var(--text-heading-lg);
-  line-height: var(--text-heading-lg--line-height);
+  font-size: var(--text-heading); /* 20 → 24: one step under the page's section H2 (heading-lg), so the footer never outranks content */
+  line-height: var(--text-body--line-height); /* wraps to three lines: reading line height */
   font-weight: var(--font-weight-regular); /* a statement, not a heading */
   color: var(--color-foreground-inverse);
   text-wrap: balance;
@@ -691,11 +693,11 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .site-footer__copy {
   margin: calc(var(--spacing-40) - var(--footer-row-gap)) 0 0; /* 40 under the wordmark, not the row gap */
   padding-top: var(--spacing-24);
-  border-top: var(--border-width) solid var(--color-border-inverse);
+  border-top: var(--border-width) solid var(--color-footer-divider);
   font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
-  color: var(--color-muted-foreground-inverse); /* the design's #707070 is 3.75:1 here; 60% white is 7.2:1 */
+  color: var(--color-muted-foreground-inverse); /* the design's #707070 is 4.2:1 on black; 60% white is 7.4:1 */
 }
 
 /* Columns move under the statement once both no longer fit side by side */
