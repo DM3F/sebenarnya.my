@@ -32,11 +32,7 @@ export default function Hero() {
         <div className="hero-content container">
           <div className="hero-heading">
             <h1 className="hero-title">
-              {/* Three lines at one size on wide screens; on phones line 1 splits in two and lines 2–3 may wrap */}
-              <span>
-                <span className="hero-title__part">Hai, kami</span>{' '}
-                <span className="hero-title__part">Sebenarnya.my</span>
-              </span>{' '}
+              {/* Two lines at one size on wide screens; below 900px each line may wrap */}
               <span className="hero-title__line">Semakan Berasaskan Fakta,</span>{' '}
               <span className="hero-title__line">Pengesahan Bersumberkan Maklumat Rasmi.</span>
             </h1>

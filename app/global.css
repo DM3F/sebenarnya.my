@@ -289,8 +289,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   text-wrap: balance;
 }
 
-/* H1 line 1: "Hai, kami" and "Sebenarnya.my" never break inside */
-.hero-title__part { white-space: nowrap; }
 
 .hero-search-group {
   display: flex;
@@ -2707,10 +2705,9 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .articles-chips.has-overflow .articles-chips__arrow { display: none; }
 }
 
-/* Hero H1: three lines at one size ("Hai, kami Sebenarnya.my" first). The widest, "Pengesahan Bersumberkan Maklumat Rasmi.", is
-   ≈21em, so below the display size the title scales with the viewport to fit the content width.
-   Under 900px that would shrink it below the H2, so there lines 2 and 3 wrap instead and only
-   line 1 sets the size. */
+/* Hero H1: two lines at one size. The wider, "Pengesahan Bersumberkan Maklumat Rasmi.", is ≈21em,
+   so below the display size the title scales with the viewport to fit the content width.
+   Under 900px that would shrink it below the H2, so there both lines wrap instead. */
 .hero-title > span { white-space: nowrap; }
 .hero .hero-title { width: fit-content; max-width: 100%; font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 21.5)); }
 @media (max-width: 900px) {
@@ -2718,9 +2715,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 12.8)); }
 }
 
-/* Phones: "Hai, kami" / "Sebenarnya.my" each on their own line (widest ≈7.5em, so the size is
-   capped at content width / 7.8); lines 2 and 3 keep wrapping at that size. */
+/* Phones: the longest word ("Bersumberkan") is ≈6.5em, so the size is capped at content width / 7.8 */
 @media (max-width: 600px) {
-  .hero-title__part { display: block; }
   .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 7.8)); }
 }
