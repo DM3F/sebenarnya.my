@@ -90,7 +90,7 @@ function Hero() {
 }
 
 // About: label + lead, three cards (story, partners, verdict mix), facts in numbers
-const VERDICT_BARS = ['palsu', 'benar', 'makluman'];
+const VERDICT_BARS = ['palsu', 'penjelasan', 'waspada', 'makluman'];
 
 // Atom: three orbits and a nucleus (line icon, currentColor)
 function AtomMark() {

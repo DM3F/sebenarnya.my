@@ -182,7 +182,7 @@ export const heroSlides = [
   {
     slug: 'amaran-hujan-lebat-pantai-timur-november',
     image: withBase('/images/carousel/hero-cuaca.jpg'),
-    eyebrow: 'Makluman | METMalaysia',
+    eyebrow: 'Waspada | METMalaysia',
     title: 'Hujan lebat tiga hari',
     titleEm: 'di Pantai Timur.',
     text: 'Amaran hujan lebat dari 12 hingga 14 November 2026. Ikuti kemas kini rasmi.',
@@ -379,10 +379,11 @@ export const partners = [
 
 /* Articles page (app/article/page.js) */
 
-// Category labels. The filter bar shows the three verdicts only (components/Articles.js).
+// Category labels. The filter bar shows the four verdicts only (components/Articles.js).
 export const articleCategories = [
   { id: 'palsu', label: 'Palsu' },
-  { id: 'benar', label: 'Benar' },
+  { id: 'penjelasan', label: 'Penjelasan' },
+  { id: 'waspada', label: 'Waspada' },
   { id: 'makluman', label: 'Makluman' },
   { id: 'bencana', label: 'Bencana' },
   { id: 'ekonomi', label: 'Ekonomi' },
@@ -415,18 +416,25 @@ export const articleStatus = {
       lead: 'Makluman rasmi lain daripada kementerian dan agensi berkaitan.',
     },
   },
-  benar: {
-    label: 'Benar',
+  penjelasan: {
+    label: 'Penjelasan',
     related: {
-      title: 'Fakta benar lain',
-      lead: 'Dakwaan lain yang disahkan benar oleh kementerian dan agensi berkaitan.',
+      title: 'Penjelasan lain',
+      lead: 'Penjelasan rasmi lain daripada kementerian dan agensi berkaitan.',
+    },
+  },
+  waspada: {
+    label: 'Waspada',
+    related: {
+      title: 'Amaran waspada lain',
+      lead: 'Amaran lain daripada kementerian dan agensi berkaitan supaya orang ramai berwaspada.',
     },
   },
 };
 
 const agencyLogo = (name) => withBase(`/images/authors/agency-${name}.webp`);
 
-// `status` = card tag (palsu / makluman / benar)
+// `status` = card tag (palsu / penjelasan / waspada / makluman)
 // `categories` = filter-bar ids this article also appears under
 // `date` = YYYY-MM-DD
 // `slug` = page address (/article/<slug>); `lead` + `explanation` = article body
@@ -450,7 +458,7 @@ export const articles = [
     explanation: 'Kawasan yang terlibat termasuk Kelantan, Terengganu dan utara Pahang. Orang ramai dinasihatkan untuk sentiasa merujuk saluran rasmi METMalaysia bagi kemas kini terkini dan tidak bergantung pada mesej yang dikongsi semula.',
     image: post('rain.jpg'),
     alt: 'Jalan bandar dan penunggang basikal',
-    status: 'makluman',
+    status: 'waspada',
     categories: ['bencana'],
     date: '2026-11-05',
     agency: { name: agency.met, image: agencyLogo('met') },
@@ -462,7 +470,7 @@ export const articles = [
     explanation: 'Sebarang penutupan sekolah akan diumumkan secara rasmi oleh KPM atau Jabatan Pendidikan Negeri. Ibu bapa dinasihatkan untuk merujuk pengumuman rasmi sekolah dan tidak mempercayai mesej yang tidak bersumber.',
     image: post('sebenarnya-fc-public-waiting.jpg'),
     alt: 'Ibu bapa menunggu di ruang legar',
-    status: 'benar',
+    status: 'penjelasan',
     categories: ['pendidikan'],
     date: '2026-10-30',
     agency: { name: agency.kpm, image: agencyLogo('kpm') },
@@ -510,7 +518,7 @@ export const articles = [
     explanation: 'Gaji penjawat awam akan dibayar mengikut jadual biasa yang telah diumumkan. Sebarang perubahan tarikh pembayaran hanya akan dimaklumkan melalui pekeliling dan saluran rasmi JPA.',
     image: post('sebenarnya-fc-digital-desk.jpg'),
     alt: 'Telefon pintar dan buku nota di atas meja',
-    status: 'benar',
+    status: 'penjelasan',
     categories: ['urus-tadbir'],
     date: '2026-09-20',
     agency: { name: agency.jpa, image: agencyLogo('jpa') },
@@ -522,7 +530,7 @@ export const articles = [
     explanation: 'Penipu biasanya mendakwa mangsa terlibat dalam kes jenayah dan meminta wang dipindahkan ke akaun tertentu. PDRM tidak pernah meminta orang ramai memindahkan wang melalui panggilan telefon.',
     image: post('call.jpg'),
     alt: 'Menyemak telefon di kedai kopi',
-    status: 'makluman',
+    status: 'waspada',
     categories: ['keselamatan', 'jenayah'],
     date: '2026-08-12',
     agency: { name: agency.pdrm, image: agencyLogo('pdrm') },
@@ -546,7 +554,7 @@ export const articles = [
     explanation: 'Bayaran zakat secara dalam talian adalah sah apabila dibuat melalui portal rasmi pusat zakat negeri. Orang ramai dinasihatkan agar tidak membuat bayaran melalui akaun peribadi atau pautan yang tidak disahkan.',
     image: post('sebenarnya-fc-senior-dialogue.jpg'),
     alt: 'Warga emas berbual di ruang komuniti',
-    status: 'benar',
+    status: 'penjelasan',
     categories: ['agama'],
     date: '2026-03-18',
     agency: { name: 'JAPEN (Jabatan Penerangan Malaysia)', image: agencyLogo('japen') },
@@ -625,7 +633,7 @@ export const articles = [
     lead: 'Menurut Jabatan Meteorologi Malaysia (MET Malaysia), amaran ramalan cuaca signifikan dikeluarkan bagi beberapa kawasan di Semenanjung Malaysia bermula 24 hingga 26 Oktober 2026.',
     image: post('heavyrain.jpg'),
     alt: 'Hujan lebat di kawasan bandar',
-    status: 'makluman',
+    status: 'waspada',
     categories: ['bencana'],
     date: '2026-10-23',
     agency: { name: agency.met, image: agencyLogo('met') },
@@ -746,7 +754,7 @@ export const articles = [
     lead: 'Menurut kenyataan Keretapi Tanah Melayu Berhad (KTMB), pihak KTMB memberikan penjelasan berhubung pencerobohan sebuah kenderaan awam ke kawasan landasan di Stesen Pelabuhan Klang dan mengingatkan orang ramai agar sentiasa mematuhi garis panduan keselamatan.',
     image: post('car.jpg'),
     alt: 'Kenderaan di kawasan landasan kereta api',
-    status: 'benar',
+    status: 'penjelasan',
     categories: ['pengangkutan',  'keselamatan'],
     date: '2026-10-13',
     agency: { name: agency.ktmb, image: null },

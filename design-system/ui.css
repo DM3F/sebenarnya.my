@@ -229,7 +229,8 @@
 }
 .ui-chip--palsu    { --chip-dot: var(--color-verdict-palsu-dot); }
 .ui-chip--makluman { --chip-dot: var(--color-verdict-makluman-dot); }
-.ui-chip--benar    { --chip-dot: var(--color-verdict-benar-dot); }
+.ui-chip--penjelasan { --chip-dot: var(--color-verdict-penjelasan-dot); }
+.ui-chip--waspada   { --chip-dot: var(--color-verdict-waspada-dot); }
 
 .ui-chip-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-inline); }
 .ui-chip-row__label {
@@ -345,8 +346,8 @@
    tone:    default (word in ink) · single (word in the verdict colour)
    ------------------------------------------------------------------------- */
 .ui-verdict {
-  --verdict-dot: var(--color-verdict-benar-dot);
-  --verdict-text: var(--color-verdict-benar);
+  --verdict-dot: var(--color-verdict-penjelasan-dot);
+  --verdict-text: var(--color-verdict-penjelasan);
   --verdict-height: var(--size-badge-lg); /* lg badge: a label, not a control */
   --verdict-pad: 0 var(--space-badge-x-lg) 0 var(--space-badge-x);
   --verdict-gap: var(--space-inline);
@@ -373,7 +374,8 @@
 }
 .ui-verdict--palsu    { --verdict-dot: var(--color-verdict-palsu-dot);    --verdict-text: var(--color-verdict-palsu); }
 .ui-verdict--makluman { --verdict-dot: var(--color-verdict-makluman-dot); --verdict-text: var(--color-verdict-makluman); }
-.ui-verdict--benar    { --verdict-dot: var(--color-verdict-benar-dot);    --verdict-text: var(--color-verdict-benar); }
+.ui-verdict--penjelasan { --verdict-dot: var(--color-verdict-penjelasan-dot);    --verdict-text: var(--color-verdict-penjelasan); }
+.ui-verdict--waspada  { --verdict-dot: var(--color-verdict-waspada-dot);  --verdict-text: var(--color-verdict-waspada); }
 
 .ui-verdict__dot {
   width: var(--size-dot);

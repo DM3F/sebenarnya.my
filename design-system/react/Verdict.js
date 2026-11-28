@@ -1,16 +1,17 @@
 const WORDS = {
   palsu: 'Palsu',
+  penjelasan: 'Penjelasan',
+  waspada: 'Waspada',
   makluman: 'Makluman',
-  benar: 'Benar',
 };
 
 /**
  * Verdict — always dot + word (+ agency), so meaning never relies on colour alone.
- *   type:    palsu | makluman | benar — the only three verdicts (design.md §2)
+ *   type:    palsu | penjelasan | waspada | makluman — the only four verdicts
  *   tone:    default (word in ink) | single (word in the verdict colour)
  *   variant: pill (default, lg badge 32) | overlay (md badge 24, on photos) | tint (md badge 24) | plain (no surface)
  */
-export default function Verdict({ type = 'benar', tone = 'default', variant = 'pill', agency, label, className = '' }) {
+export default function Verdict({ type = 'penjelasan', tone = 'default', variant = 'pill', agency, label, className = '' }) {
   const key = WORDS[type] ? type : 'makluman';
   const word = label ?? WORDS[key];
   return (

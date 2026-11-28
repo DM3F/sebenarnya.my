@@ -9,7 +9,7 @@ import { Button, Verdict } from '@/components/ui';
 
 // Each slide points at an article; it links to that article and falls back to its image.
 // `eyebrow` is "Verdict | Agency" (e.g. "Palsu | KPDN"); the verdict sets the dot colour.
-const VERDICTS = ['palsu', 'makluman', 'benar'];
+const VERDICTS = ['palsu', 'penjelasan', 'waspada', 'makluman'];
 const slides = heroSlides.map((s) => {
   const article = getArticle(s.slug);
   const [verdict = '', agency = ''] = s.eyebrow.split('|').map((x) => x.trim());

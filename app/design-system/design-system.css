@@ -149,7 +149,7 @@
   line-height: var(--text-label--line-height);
   font-weight: var(--text-label--font-weight);
 }
-.dsg-ratio { font-variant-numeric: tabular-nums; color: var(--color-verdict-benar); font-weight: var(--font-weight-medium); }
+.dsg-ratio { font-variant-numeric: tabular-nums; color: var(--color-verdict-penjelasan); font-weight: var(--font-weight-medium); }
 .dsg-ratio--fail { color: var(--color-destructive); }
 
 /* ── Tables ───────────────────────────────────────────────────────────────── */

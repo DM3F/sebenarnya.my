@@ -6,6 +6,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button, Chip, IconButton, Input, SearchField, Select, Verdict } from '@/components/ui';
 import { articles, articleStatus } from '@/data/content';
 import { matchesQuery } from '@/lib/searchArticles';
+import ShareButton from '@/components/ShareButton';
+import { withBase } from '@/lib/basePath';
 import { agencyInitials, articleHref, formatDate, readingMinutes } from '@/lib/articles';
 
 const DATE_OPTIONS = [
@@ -25,8 +27,8 @@ const SORT_OPTIONS = [
   { id: 'za', label: 'Tajuk Z–A', compare: (a, b) => b.title.localeCompare(a.title, 'ms', { sensitivity: 'base' }) },
 ];
 
-// Category chips: three verdicts only
-const CHIP_IDS = ['palsu', 'benar', 'makluman'];
+// Category chips: the four verdicts
+const CHIP_IDS = ['palsu', 'penjelasan', 'waspada', 'makluman'];
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -258,6 +260,7 @@ function GridCard({ article }) {
         <img src={article.image} alt={article.alt} loading="lazy" />
         <AgencyAvatar agency={article.agency} />
       </div>
+      <ShareButton compact title={article.title} href={withBase(`${articleHref(article)}/`)} className="articles-card__share" />
       <div className="articles-card__body">
         <p className="articles-card__meta">
           <Verdict type={article.status} variant="tint" label={articleStatus[article.status]?.label} />

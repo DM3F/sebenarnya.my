@@ -19,9 +19,9 @@ import {
 const ROWS = [
   { id: 1, title: 'Pautan bantuan tunai melalui WhatsApp', verdict: 'palsu', agency: 'KPDN', views: 18240, date: '2026-11-24', status: 'Diterbitkan' },
   { id: 2, title: 'Amaran hujan lebat di Pantai Timur', verdict: 'makluman', agency: 'MetMalaysia', views: 9310, date: '2026-11-23', status: 'Diterbitkan' },
-  { id: 3, title: 'Sekolah di Selangor beroperasi seperti biasa', verdict: 'benar', agency: 'KPM', views: 4120, date: '2026-11-22', status: 'Draf' },
+  { id: 3, title: 'Sekolah di Selangor beroperasi seperti biasa', verdict: 'penjelasan', agency: 'KPM', views: 4120, date: '2026-11-22', status: 'Draf' },
   { id: 4, title: 'Harga RON95 naik minggu depan', verdict: 'palsu', agency: 'KKMM', views: 27650, date: '2026-11-21', status: 'Diterbitkan' },
-  { id: 5, title: 'Lesen memandu tamat tempoh boleh diperbaharui dalam talian', verdict: 'benar', agency: 'JPJ', views: 6480, date: '2026-11-20', status: 'Semakan' },
+  { id: 5, title: 'Lesen memandu tamat tempoh boleh diperbaharui dalam talian', verdict: 'penjelasan', agency: 'JPJ', views: 6480, date: '2026-11-20', status: 'Semakan' },
 ];
 const fmtDate = (iso) => new Date(iso).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' });
 const fmtNum = (n) => n.toLocaleString('ms-MY');
@@ -78,7 +78,8 @@ function ChecksPanel({ header = true }) {
           <option value="semua">Semua verdict</option>
           <option value="palsu">Palsu</option>
           <option value="makluman">Makluman</option>
-          <option value="benar">Benar</option>
+          <option value="penjelasan">Penjelasan</option>
+          <option value="waspada">Waspada</option>
         </Select>
       </div>
       <Table label="Senarai semakan fakta">

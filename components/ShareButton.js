@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check, Share } from 'lucide-react';
 import { Icon } from '@/components/ui';
-import { Button } from '@/components/ui';
+import { Button, IconButton } from '@/components/ui';
 
 // Share links; {url} and {text} are filled in when the menu opens
 const TARGETS = [
@@ -13,8 +13,10 @@ const TARGETS = [
   { label: 'Telegram', href: 'https://t.me/share/url?url={url}&text={text}' },
 ];
 
-// "Kongsi" button: uses the phone's share sheet when there is one, otherwise a menu
-export default function ShareButton({ title }) {
+// "Kongsi" button: uses the phone's share sheet when there is one, otherwise a menu.
+// `href` shares another page (e.g. an article from a card); default is the current page.
+// `compact` draws an icon-only disc for use over a photo.
+export default function ShareButton({ title, href, compact = false, className = '' }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [url, setUrl] = useState('');
@@ -34,7 +36,7 @@ export default function ShareButton({ title }) {
   }, [open]);
 
   const share = async () => {
-    const pageUrl = window.location.href;
+    const pageUrl = href ? new URL(href, window.location.href).href : window.location.href;
     if (navigator.share) {
       try {
         await navigator.share({ title, url: pageUrl });
@@ -60,10 +62,14 @@ export default function ShareButton({ title }) {
   const fill = (href) => href.replace('{url}', encodeURIComponent(url)).replace('{text}', encodeURIComponent(title));
 
   return (
-    <div className="share" ref={wrapRef}>
-      <Button variant="outline" icon={Share} className="share-btn" aria-expanded={open} onClick={share}>
-        Kongsi
-      </Button>
+    <div className={`share${compact ? ' share--compact' : ''} ${className}`.trim()} ref={wrapRef}>
+      {compact ? (
+        <IconButton icon={Share} label={`Kongsi: ${title}`} variant="media" size="icon-sm" className="share-btn" aria-expanded={open} onClick={share} />
+      ) : (
+        <Button variant="outline" icon={Share} className="share-btn" aria-expanded={open} onClick={share}>
+          Kongsi
+        </Button>
+      )}
 
       {open && (
         <div className="ui-menu share-menu">
