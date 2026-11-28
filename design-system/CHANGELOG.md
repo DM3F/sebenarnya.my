@@ -5,8 +5,9 @@ How versions are numbered and released: [`docs/contributing.md`](../docs/contrib
 
 ## 0.2.0 — 28 Nov 2026
 
-- **Badge:** new `variant="eyebrow"` for the section label above a heading: 13px medium, no
-  fill, 1px hairline in the text colour (`currentColor`), so it works on light and dark surfaces.
+- **Badge:** new `variant="eyebrow"` for the section label above a heading: 13px regular, smoke
+  text, no fill, soft 1px edge (35% of the text colour). On dark surfaces set `--badge-fg` to an
+  inverse tier and the edge follows.
 - **Verdict:** four verdicts: `palsu`, `penjelasan` (green, replaces `benar`), `waspada` (new,
   amber) and `makluman`. Tokens `--color-verdict-penjelasan(-dot)` and
   `--color-verdict-waspada(-dot)`; `--color-verdict-benar(-dot)` removed. Chip `dot` takes the

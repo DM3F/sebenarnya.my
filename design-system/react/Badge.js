@@ -3,7 +3,7 @@ import Icon from './Icon';
 /**
  * Badge — non-interactive pill label (category, source, award, platform).
  *   variant: muted (default) · outline · media (on photos and dark panels)
- *            · eyebrow (section label above a heading: no fill, hairline in the text colour)
+ *            · eyebrow (section label above a heading: no fill, smoke text, regular weight, soft edge)
  *   size:    sm (20, 12px text) · md (24, default) · lg (32, 14px text)
  */
 export default function Badge({ variant = 'muted', size = 'md', icon, className = '', children, ...props }) {

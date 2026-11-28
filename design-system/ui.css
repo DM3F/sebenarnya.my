@@ -273,9 +273,15 @@
 }
 .ui-badge .ui-icon { width: var(--badge-icon); height: var(--badge-icon); }
 .ui-badge--outline { --badge-bg: var(--color-background); --badge-border: var(--color-border); }
-/* Eyebrow: the section label above a heading, the same everywhere. No fill, a hairline in the
-   text colour (currentColor), so it works on light pages and dark cards alike. */
-.ui-badge--eyebrow { --badge-bg: transparent; --badge-border: currentColor; color: inherit; }
+/* Eyebrow: the section label above a heading, the same everywhere (design.md: eyebrows are smoke).
+   No fill, regular weight, smoke text (5.3:1) and a soft edge mixed from the text colour, so on a
+   dark card it is enough to set --badge-fg to an inverse tier. */
+.ui-badge--eyebrow {
+  --badge-bg: transparent;
+  --badge-fg: var(--color-muted-foreground);
+  --badge-border: color-mix(in srgb, var(--badge-fg) 35%, transparent);
+  font-weight: var(--font-weight-regular);
+}
 .ui-badge--media {
   --badge-bg: var(--color-surface-overlay);
   backdrop-filter: blur(var(--blur-overlay));
