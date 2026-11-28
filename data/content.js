@@ -362,42 +362,33 @@ export const aboutRoles = {
 export const aboutNews = {
   title: 'Berita dan Galeri',
   intro: 'Ikuti perkembangan terkini, pengiktirafan dan aktiviti Sebenarnya.my bersama masyarakat.',
-  // The three WSIS 2026 cards are real photos; the rest are DEMO copy with AI-generated photos: replace
-  // with real MCMC news before launch. Cards with a `title` are
-  // the wide ones; the rest are narrow photo cards. Row 1 drifts left, row 2 right (NewsMarquee in AboutUs.js).
+  // News and gallery share one marquee. The three WSIS 2026 cards and the `Galeri` photos are real;
+  // the rest are DEMO copy with AI-generated photos: replace with real MCMC news before launch.
+  // Cards with a `title` are the wide ones; the rest are narrow photo cards. Every card opens its
+  // photo in a pop-up. Row 1 drifts left, row 2 right (NewsMarquee in AboutUs.js).
   marquee: [
     [
       { tag: 'Pengiktirafan', title: 'Sebenarnya.my diiktiraf Champion Project di WSIS Prizes 2026', image: aboutImg('news-wsis-champion.jpg'), alt: 'Wakil Malaysia memegang sijil WSIS Prizes 2026 di pentas Forum WSIS, Geneva' },
       { tag: 'Semakan', image: aboutImg('news-telefon.jpg'), alt: 'Tangan memegang telefon pintar dengan tanda semak pengesahan' },
+      { tag: 'Galeri', image: aboutImg('galeri-1.jpg'), alt: 'Semak dahulu, sebelum berkongsi' },
       { tag: 'Infrastruktur', title: 'Capaian jalur lebar kini sampai ke lebih banyak kampung', image: aboutImg('news-jalur-lebar.jpg'), alt: 'Juruteknik memasang peralatan jalur lebar di menara berhampiran kampung' },
       { tag: 'Penyiaran', image: aboutImg('news-penyiaran.jpg'), alt: 'Penyampai radio bercakap di hadapan mikrofon di studio' },
+      { tag: 'Galeri', image: aboutImg('galeri-3.jpg'), alt: 'Perkongsian bersama warga emas' },
       { tag: 'Semakan fakta', title: 'Semak dahulu sebelum berkongsi: panduan kenal berita palsu', image: aboutImg('news-semakan-fakta.jpg'), alt: 'Dua pegawai membandingkan artikel tular dengan dokumen rasmi' },
       { tag: 'Pendidikan', image: aboutImg('news-sekolah.jpg'), alt: 'Pelajar sekolah menggunakan komputer riba dalam bengkel keselamatan digital' },
+      { tag: 'Galeri', image: aboutImg('galeri-5.jpg'), alt: 'Bual santai di kopitiam' },
     ],
     [
       { tag: 'WSIS 2026', image: aboutImg('news-wsis-pentas.jpg'), alt: 'Wakil Malaysia mengangkat trofi WSIS di podium Forum WSIS, Geneva' },
+      { tag: 'Galeri', image: aboutImg('galeri-2.jpg'), alt: 'Sesi dialog komuniti' },
       { tag: 'Geneva', title: 'Delegasi Malaysia di Forum WSIS 2026, Geneva', image: aboutImg('news-wsis-delegasi.jpg'), alt: 'Delegasi Malaysia duduk di meja persidangan berlabel Malaysia di Forum WSIS' },
       { tag: 'Teknologi', image: aboutImg('news-gentian.jpg'), alt: 'Gentian optik bercahaya biru dalam jarak dekat' },
+      { tag: 'Galeri', image: aboutImg('galeri-4.jpg'), alt: 'Kempen kesedaran penipuan dalam talian' },
       { tag: 'Keselamatan siber', title: 'Kenali ciri mesej penipuan yang menyamar sebagai agensi', image: aboutImg('news-siber.jpg'), alt: 'Komputer riba dan telefon memaparkan amaran pancingan data' },
       { tag: 'Kenyataan media', image: aboutImg('news-sidang-media.jpg'), alt: 'Podium sidang media dengan beberapa mikrofon dan wartawan' },
+      { tag: 'Galeri', image: aboutImg('galeri-6.jpg'), alt: 'Celik digital setiap hari' },
       { tag: '5G', title: 'Liputan 5G diperluas ke pusat bandar dan kawasan industri', image: aboutImg('news-5g.jpg'), alt: 'Garis langit Kuala Lumpur pada waktu senja dengan jaluran cahaya rangkaian' },
     ],
-  ],
-  galleryTitle: 'Galeri',
-  // Sections fill a two-column grid in order: `single` = one tall photo, `grid` = 2 × 2 squares.
-  // A lone last section spans both columns.
-  gallery: [
-    { type: 'single', images: [{ image: aboutImg('galeri-1.jpg'), caption: 'Semak dahulu, sebelum berkongsi' }] },
-    {
-      type: 'grid',
-      images: [
-        { image: aboutImg('galeri-2.jpg'), caption: 'Sesi dialog komuniti' },
-        { image: aboutImg('galeri-3.jpg'), caption: 'Perkongsian bersama warga emas' },
-        { image: aboutImg('galeri-4.jpg'), caption: 'Kempen kesedaran penipuan dalam talian' },
-        { image: aboutImg('galeri-5.jpg'), caption: 'Bual santai di kopitiam' },
-      ],
-    },
-    { type: 'single', images: [{ image: aboutImg('galeri-6.jpg'), caption: 'Celik digital setiap hari' }] },
   ],
 };
 

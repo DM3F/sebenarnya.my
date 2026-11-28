@@ -16,7 +16,7 @@ export default function SubmitClaimPage() {
     <div className="site">
       <Header />
 
-      <main className="main" id="main" tabIndex={-1}>
+      <main className="main main--roomy" id="main" tabIndex={-1}>
         <section className="page-notice" aria-labelledby="claim-page-title">
           <h1 className="post-title" id="claim-page-title">Lapor berita tular</h1>
           <p className="post-subtitle">

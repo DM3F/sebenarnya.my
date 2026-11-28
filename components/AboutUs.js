@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { Badge } from '@/components/ui';
+import { useEffect, useRef, useState } from 'react';
+import { X } from 'lucide-react';
+import { Badge, IconButton } from '@/components/ui';
 import LogoKit from '@/components/LogoKit';
-import GalleryGrid from '@/components/GalleryGrid';
 import CountUp from '@/components/CountUp';
 import { withBase } from '@/lib/basePath';
 import { aboutHero as hero, aboutIntro as intro, aboutNews, aboutProcess as process, aboutRoles as roles, socialLinks } from '@/data/content';
@@ -329,11 +329,25 @@ function Roles() {
   );
 }
 
-// Berita dan Galeri: two rows of news photos drifting in opposite directions (top row left, bottom
-// row right), then the photo grid. Each row renders its cards twice so the loop is seamless; the
-// copy is hidden from assistive tech. Hover pauses it. With reduced motion the rows stop and
-// scroll by hand instead.
+// Berita dan Galeri: two rows of news and gallery photos drifting in opposite directions (top row
+// left, bottom row right). Each row renders its cards twice so the loop is seamless; the copy is
+// hidden from assistive tech and skipped by Tab. Hover pauses it. With reduced motion the rows stop
+// and scroll by hand instead. Every card is a button that opens its photo in the shared modal
+// (image only; Esc, the close button or the backdrop closes it, focus returns to the card).
 function NewsMarquee({ rows }) {
+  const dialogRef = useRef(null);
+  const [selected, setSelected] = useState(null);
+
+  const open = (item) => {
+    setSelected(item);
+    dialogRef.current?.showModal();
+    dialogRef.current?.focus(); // no focus ring on the close button at open
+    document.documentElement.style.overflow = 'hidden';
+  };
+  const onClose = () => {
+    document.documentElement.style.overflow = '';
+  };
+
   return (
     <div className="marquee">
       <div className="marquee__rows">
@@ -344,11 +358,19 @@ function NewsMarquee({ rows }) {
                 <ul className="marquee__set" key={copy} aria-hidden={copy === 1 ? 'true' : undefined} aria-label={copy === 0 ? `Berita, baris ${r + 1}` : undefined}>
                   {row.map((n) => (
                     <li className={`marquee-card marquee-card--${n.title ? 'wide' : 'narrow'}`} key={n.image}>
-                      <img src={n.image} alt={copy === 0 ? n.alt : ''} loading="lazy" draggable="false" />
-                      <div className="marquee-card__body">
-                        <Badge className="marquee-card__tag">{n.tag}</Badge>
-                        {n.title && <p className="marquee-card__title">{n.title}</p>}
-                      </div>
+                      <button
+                        type="button"
+                        className="marquee-card__button"
+                        aria-haspopup="dialog"
+                        tabIndex={copy === 1 ? -1 : undefined}
+                        onClick={() => open(n)}
+                      >
+                        <img src={n.image} alt={copy === 0 ? n.alt : ''} loading="lazy" draggable="false" />
+                        <span className="marquee-card__body">
+                          <Badge className="marquee-card__tag">{n.tag}</Badge>
+                          {n.title && <span className="marquee-card__title">{n.title}</span>}
+                        </span>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -357,13 +379,25 @@ function NewsMarquee({ rows }) {
           </div>
         ))}
       </div>
+
+      <dialog
+        tabIndex={-1}
+        className="ui-modal gallery-dialog"
+        ref={dialogRef}
+        aria-label={selected?.title ?? selected?.alt}
+        onClose={onClose}
+        onClick={(e) => e.target === e.currentTarget && dialogRef.current.close()}
+      >
+        {selected && <img src={selected.image} alt={selected.alt} />}
+        <IconButton variant="media" icon={X} label="Tutup foto" className="gallery-dialog__close" onClick={() => dialogRef.current.close()} />
+      </dialog>
     </div>
   );
 }
 
-// Berita dan Galeri: the marquee of news, then the photo grid
+// Berita dan Galeri: one marquee of news and gallery photos
 function NewsGallery() {
-  const { marquee, gallery } = aboutNews;
+  const { marquee } = aboutNews;
 
   return (
     <section className="about-news" id="berita-galeri" aria-labelledby="about-news-title">
@@ -375,9 +409,6 @@ function NewsGallery() {
       </div>
 
       <NewsMarquee rows={marquee} />
-
-      <h3 className="sr-only">{aboutNews.galleryTitle}</h3>
-      <GalleryGrid sections={gallery} />
     </section>
   );
 }

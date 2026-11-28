@@ -14,7 +14,7 @@ export default function HomePage() {
       {/* Header */}
       <Header />
 
-      <main className="main" id="main" tabIndex={-1}>
+      <main className="main main--roomy" id="main" tabIndex={-1}>
         {/* Hero + latest fact-checks slider */}
         <Hero />
 

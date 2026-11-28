@@ -12,7 +12,7 @@ export default function NotFound() {
     <div className="site">
       <Header />
 
-      <main className="main" id="main" tabIndex={-1}>
+      <main className="main main--roomy" id="main" tabIndex={-1}>
         <section className="page-notice" aria-labelledby="not-found-title">
           <Badge variant="eyebrow" className="page-notice__eyebrow">Ralat 404</Badge>
           <h1 className="post-title" id="not-found-title">Halaman ini tidak dijumpai</h1>
