@@ -279,11 +279,9 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   gap: var(--gap-group);
 }
 
-/* Each <span> is one line on wide screens; on narrow ones they wrap naturally */
-.hero-title,
-.hero-lede { margin: 0; }
-.hero-title > span,
-.hero-lede > span { display: block; }
+/* Each <span> is one line on wide screens */
+.hero-title { margin: 0; }
+.hero-title > span { display: block; }
 
 .hero-title {
   font-family: var(--font-sans);
@@ -293,21 +291,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 
 /* H1 line 1: "Tidak pasti?" and "Jangan kongsi" never break inside */
 .hero-title__part { white-space: nowrap; }
-/* H1 line 2: the promise, one role smaller so the long line stays readable; wraps and balances */
-.hero-title .hero-title__sub {
-  margin-top: var(--gap-text);
-  font-size: var(--text-heading);
-  line-height: var(--text-heading--line-height);
-  white-space: normal;
-  text-wrap: balance;
-}
-
-.hero-lede {
-  font-family: var(--font-sans);
-  font-size: var(--text-body);
-  line-height: var(--text-body--line-height);
-  color: var(--color-text-secondary);
-}
 
 .hero-search-group {
   display: flex;
@@ -326,13 +309,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 /* Popular searches (ChipRow) under the search bar */
 .hero-popular { justify-content: center; }
 
-@media (max-width: 900px) {
-  .hero-lede > span { display: inline; }
-  .hero-lede { text-wrap: pretty; max-width: 34em; }
-}
-
 @media (max-width: 600px) {
-  .hero-lede { font-size: var(--text-body); line-height: var(--text-body--line-height); }
   .hero-inner { padding-top: var(--spacing-48); }
 }
 
@@ -876,6 +853,17 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   color: var(--color-foreground);
 }
 
+.viewership-why { display: flex; flex-direction: column; gap: var(--gap-text); }
+.viewership-why__title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-foreground);
+  text-wrap: balance;
+}
+
 .viewership-lead {
   font-family: var(--font-sans);
   font-weight: var(--font-weight-regular);
@@ -1029,7 +1017,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   padding: var(--spacing-20) var(--spacing-12);
   border-radius: var(--radius-field);
   background: var(--color-card);
-  box-shadow: inset 0 0 0 var(--border-width) var(--color-hairline-strong);
 }
 
 .partners-logo img {
@@ -2696,13 +2683,19 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .articles-chips.has-overflow .articles-chips__arrow { display: none; }
 }
 
-/* Hero H1: line 1 "Tidak pasti? Jangan kongsi" (≈12.3em wide) scales with the viewport below the
-   display size to fit the content width; line 2 (.hero-title__sub) wraps instead. */
+/* Hero H1: three lines at one size. The widest, "Pengesahan Bersumberkan Maklumat Rasmi.", is
+   ≈21em, so below the display size the title scales with the viewport to fit the content width.
+   Under 900px that would shrink it below the H2, so there lines 2 and 3 wrap instead and only
+   line 1 (≈12.5em) sets the size. */
 .hero-title > span { white-space: nowrap; }
-.hero .hero-title { width: fit-content; max-width: 100%; font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 12.8)); }
+.hero .hero-title { width: fit-content; max-width: 100%; font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 21.5)); }
+@media (max-width: 900px) {
+  .hero-title > .hero-title__line { white-space: normal; text-wrap: balance; }
+  .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 12.8)); }
+}
 
-/* Phones: "Tidak pasti?" / "Jangan kongsi" each on their own line; the widest is ≈7.5em, so the
-   display size is capped at content width / 7.8. Line 2 wraps at its own size. */
+/* Phones: "Tidak pasti?" / "Jangan kongsi" each on their own line (widest ≈7.5em, so the size is
+   capped at content width / 7.8); lines 2 and 3 keep wrapping at that size. */
 @media (max-width: 600px) {
   .hero-title__part { display: block; }
   .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 7.8)); }
