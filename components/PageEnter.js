@@ -14,7 +14,7 @@ import { useEffect } from 'react';
  * animation is cancelled) everything is visible. Reduced motion: no entrance at all.
  */
 
-// The hero H1's lines (Utama): mask rise. The Typewriter lives inside, so the DOM is never rebuilt.
+// The hero H1's lines (Utama): mask rise.
 const LINES = '.hero-title > span';
 
 // The first-screen chunks of each page, in reading order. Only the ones present on a page run.

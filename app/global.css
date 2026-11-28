@@ -291,29 +291,16 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   text-wrap: balance;
 }
 
-/* Rotating verdict in the H1 (components/Typewriter.js): same weight as the rest of the line */
-.hero-title__part { white-space: nowrap; } /* "Tidak pasti?", "Jangan kongsi", "Semak dakwaan" never break inside */
-.typewriter {
-  display: inline-grid; /* the typed row + ghost words share one cell → slot = widest word + caret */
-  text-align: start;
+/* H1 line 1: "Tidak pasti?" and "Jangan kongsi" never break inside */
+.hero-title__part { white-space: nowrap; }
+/* H1 line 2: the promise, one role smaller so the long line stays readable; wraps and balances */
+.hero-title .hero-title__sub {
+  margin-top: var(--gap-text);
+  font-size: var(--text-heading);
+  line-height: var(--text-heading--line-height);
+  white-space: normal;
+  text-wrap: balance;
 }
-.typewriter > * { grid-area: 1 / 1; white-space: pre; }
-.typewriter__row { justify-self: start; } /* typed from the slot's start; "Semak dakwaan" stays put */
-.typewriter__ghost { visibility: hidden; }
-/* Text caret: a thin bar about cap height, in the heading's ink. Blinks while the word rests, solid
-   while characters go in or out (data-busy), like a real cursor. Hard on/off, the OS blink rate. */
-.typewriter__caret {
-  display: inline-block;
-  width: .06em;
-  height: .82em;
-  margin-inline-start: .06em;
-  vertical-align: -.06em;
-  background: currentColor;
-  animation: typewriter-caret 1.06s step-end infinite; /* ds-allow: caret blink at the OS rate (530ms on / off), not a UI transition */
-}
-.typewriter[data-busy] .typewriter__caret { animation: none; }
-@keyframes typewriter-caret { 50% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .typewriter__caret { animation: none; } }
 
 .hero-lede {
   font-family: var(--font-sans);
@@ -2675,21 +2662,14 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .articles-chips.has-overflow .articles-chips__arrow { display: none; }
 }
 
-/* Hero H1: two lines above 600 ("Tidak pasti? Jangan kongsi" / "Semak dakwaan <verdict>").
-   Each line is ≈12.3em wide (verdict slot = "makluman"), so below the display size the title scales
-   with the viewport to fit the content width. */
+/* Hero H1: line 1 "Tidak pasti? Jangan kongsi" (≈12.3em wide) scales with the viewport below the
+   display size to fit the content width; line 2 (.hero-title__sub) wraps instead. */
 .hero-title > span { white-space: nowrap; }
 .hero .hero-title { width: fit-content; max-width: 100%; font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 12.8)); }
 
-/* Phones: four lines, "Tidak pasti?" / "Jangan kongsi" / "Semak dakwaan" / <verdict>. Each part is a
-   block that never breaks inside. The verdict has a line to itself, so it is centred on the title's
-   axis whatever its length: "palsu" and "benar" sit in the middle like "makluman", not at the start
-   of a makluman-wide slot. The caret hangs off the end (.12em), so the row is nudged by half of it
-   and the letters, not letters + caret, are what is centred. The line height never changes (ghosts).
-   The widest line is ≈7.5em, so the display size (32+, above the 28px H2) is capped at content
-   width / 7.8 and every line fits (32px from 320 up). */
+/* Phones: "Tidak pasti?" / "Jangan kongsi" each on their own line; the widest is ≈7.5em, so the
+   display size is capped at content width / 7.8. Line 2 wraps at its own size. */
 @media (max-width: 600px) {
   .hero-title__part { display: block; }
-  .typewriter__row { justify-self: center; margin-inline-start: .12em; } /* .12em = caret width + its gap */
   .hero .hero-title { font-size: min(var(--text-display), calc((100vw - 2 * var(--side)) / 7.8)); }
 }

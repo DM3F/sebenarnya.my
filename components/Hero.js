@@ -4,10 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Chip, ChipRow, SearchField } from '@/components/ui';
 import { keywords, searchArticles } from '@/lib/searchArticles';
-import Typewriter from '@/components/Typewriter';
-
-// The three verdicts the H1 cycles through
-const VERDICTS = ['palsu', 'benar', 'makluman'];
 
 // Popular searches under the search bar; each one returns at least one fact-check
 const POPULAR = ['Bantuan tunai', 'RON95', 'Hujan lebat', 'Lesen memandu'];
@@ -36,15 +32,13 @@ export default function Hero() {
         <div className="hero-content container">
           <div className="hero-heading">
             <h1 className="hero-title">
-              {/* Two lines on wide screens; on phones each part is its own line (four in all) */}
+              {/* Line 1 at display size (two lines on phones); line 2 is the smaller promise and may wrap */}
               <span>
                 <span className="hero-title__part">Tidak pasti?</span>{' '}
                 <span className="hero-title__part">Jangan kongsi</span>
               </span>{' '}
-              <span>
-                <span className="hero-title__part">Semak dakwaan</span>{' '}
-                <Typewriter words={VERDICTS} />
-                <span className="sr-only">palsu, benar atau makluman</span>
+              <span className="hero-title__sub">
+                Semakan Berasaskan Fakta, Pengesahan Bersumberkan Maklumat Rasmi.
               </span>
             </h1>
             <p className="hero-lede">
