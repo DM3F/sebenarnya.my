@@ -1898,37 +1898,65 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .about-intro { display: flex; flex-direction: column; gap: var(--gap-block); padding: 0 var(--side); }
 .about-intro__head { display: flex; justify-content: space-between; align-items: start; gap: var(--gap-block); }
 .about-intro__label {
-  /* plain eyebrow text (no pill) */
+  /* grey dot + label, as in the design */
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-inline);
   flex: none;
-  width: auto;
+  width: auto; /* h2 defaults to full width elsewhere */
   margin: 0;
-  font-size: var(--text-label-sm);
-  line-height: var(--text-label-sm--line-height);
-  font-weight: var(--font-weight-medium);
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
+  font-weight: var(--font-weight-regular);
   color: var(--color-muted-foreground);
   white-space: nowrap;
 }
+.about-intro__label::before {
+  content: '';
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  border-radius: var(--radius-full);
+  background: var(--color-border-strong);
+}
+/* Lead: intro size, reading line height; name in bold, second sentence muted (smoke 5.3:1) */
 .about-intro__lead {
-  flex: 0 1 700px;
+  flex: 0 1 1114px; /* ds-allow: lead measure from the design */
   margin: 0;
+  font-size: var(--text-intro);
+  line-height: var(--text-body--line-height);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
   text-wrap: pretty;
 }
+.about-intro__lead strong { font-weight: inherit; color: var(--color-foreground); } /* ink, not bold: 600 is for verdicts only */
+.about-intro__lead span { color: var(--color-muted-foreground); }
+
 .about-intro__cards { display: flex; gap: var(--gap-cards); height: 340px; }
 .about-intro__card { flex: 1 1 0; min-width: 0; border-radius: var(--radius-card-lg); }
-.about-intro__card--story {
-  display: flex; flex-direction: column; justify-content: space-between;
+/* Visi (ink) and Misi (taupe): "/tag" on top, statement at the bottom */
+.about-intro__card--vision,
+.about-intro__card--mission {
+  display: flex; flex-direction: column; justify-content: space-between; gap: var(--gap-group);
   padding: var(--pad-card-lg);
-  background: var(--color-primary);
-  color: var(--color-primary-foreground);
 }
-.about-intro__mark { width: var(--spacing-48); height: var(--spacing-48); }
-.about-intro__story { display: flex; flex-direction: column; gap: var(--gap-group); }
-.about-intro__story-text {
+.about-intro__card--vision { background: var(--color-primary); color: var(--color-primary-foreground); }
+.about-intro__card--mission { background: var(--color-muted); color: var(--color-muted-foreground); }
+.about-intro__card-tag {
   margin: 0;
-  font-weight: var(--font-weight-medium);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-muted-foreground);
 }
-.about-intro__story-text span { color: var(--color-muted-foreground-inverse); } /* smoke on black was 3.86:1 */
+.about-intro__card--vision .about-intro__card-tag { color: var(--color-muted-foreground-inverse); } /* smoke on black is 3.86:1 */
+.about-intro__card-text {
+  max-width: 26em;
+  margin: 0;
+  font-size: var(--text-title);
+  line-height: var(--text-body--line-height);
+  text-wrap: pretty;
+}
+.about-intro__card--vision .about-intro__card-text { font-weight: var(--font-weight-medium); }
 .about-intro__card--pill { display: flex; align-items: center; justify-content: center; background: var(--color-muted-strong) center / cover no-repeat; }
 .about-intro__pill {
   padding: var(--spacing-10) var(--spacing-20);
@@ -1936,40 +1964,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   background: var(--color-background);
   font-size: var(--text-label); line-height: var(--text-label--line-height); font-weight: var(--font-weight-medium);
 }
-.about-intro__card--stats {
-  display: flex; flex-direction: column; justify-content: space-between;
-  padding: var(--pad-card-lg);
-  background: var(--color-muted);
-}
-.about-intro__stat { display: flex; flex-direction: column; gap: var(--gap-text); }
-.about-intro__stat p { margin: 0; }
-.about-intro__stat-value { font-weight: var(--font-weight-display); }
-.about-intro__stat-title { font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--font-weight-medium); }
-.about-intro__stat-text { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); color: var(--color-muted-foreground); }
-.about-intro__bars { display: flex; flex-direction: column; gap: var(--gap-text); margin: 0; padding: 0; list-style: none; }
-.about-intro__bars li {
-  display: flex; align-items: center; gap: var(--gap-group);
-  font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); font-variant-numeric: tabular-nums;
-  color: var(--color-muted-foreground); /* chart labels: smoke (design.md §4) */
-}
-.about-intro__bar-label { flex-shrink: 0; width: 90px; }
-.about-intro__bar { flex: 1 1 0; height: 12px; border-radius: var(--radius-full); background: var(--color-hairline); }
-.about-intro__bar::before {
-  content: ''; display: block; width: var(--w); height: 100%;
-  border-radius: var(--radius-full);
-  background: var(--color-foreground);
-}
-/* Fill once on view (components/AboutUs.js › useFillOnView): each bar is uncovered left to right
-   with clip-path, so the rounded ends keep their shape (scaleX would squash them). Ease-out,
-   --duration-slower, a short uneven stagger so the three read as one motion. */
-.about-intro__bars[data-armed] .about-intro__bar::before {
-  clip-path: inset(0 100% 0 0 round var(--radius-full));
-  transition: clip-path var(--duration-slower) var(--ease-out);
-}
-.about-intro__bars[data-shown] .about-intro__bar::before { clip-path: inset(0 0 0 0 round var(--radius-full)); }
-.about-intro__bars li:nth-child(2) .about-intro__bar::before { transition-delay: calc(var(--duration-fast) / 2); }
-.about-intro__bars li:nth-child(3) .about-intro__bar::before { transition-delay: calc(var(--duration-fast) * .9); }
-.about-intro__bar-n { min-width: 2ch; text-align: right; }
 .about-intro__facts { display: flex; flex-direction: column; align-items: center; gap: var(--gap-group); }
 .about-intro__facts-title { width: auto; margin: 0; text-align: center; font-weight: var(--font-weight-medium); }
 .about-intro__facts-row { display: flex; justify-content: space-around; gap: var(--gap-group); width: 100%; margin: 0; } /* desktop: one row */
@@ -2555,8 +2549,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   font-weight: var(--text-heading--font-weight);
 }
 /* Big intro paragraphs: same size as a heading, but they are text, not headings */
-.viewership-kicker,
-.about-intro__story-text {
+.viewership-kicker {
   font-size: var(--text-intro);
   line-height: var(--text-intro--line-height);
   font-weight: var(--text-intro--font-weight);
@@ -2575,7 +2568,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 .viewership-lead,
 .about-hero-text p,
-.about-intro__lead,
 .about-news-intro,
 .kenali__lead,
 .latest-checks__lead,
@@ -2586,7 +2578,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   line-height: var(--text-body--line-height);
 }
 .viewership-stats dt,
-.about-intro__stat-value,
 .about-intro__facts-row dt {
   font-size: var(--text-stat);
   line-height: var(--text-stat--line-height);
