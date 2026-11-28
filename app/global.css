@@ -1951,7 +1951,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   padding: var(--pad-card-lg);
 }
 .about-intro__card--vision { background: var(--color-primary); color: var(--color-primary-foreground); }
-.about-intro__card--mission { background: var(--color-muted); color: var(--color-muted-foreground); }
+.about-intro__card--mission { background: var(--color-muted); color: var(--color-text-secondary); } /* statement in graphite, as strong as Visi's white */
 .about-intro__card-tag {
   margin: 0;
   font-size: var(--text-body);
@@ -1967,7 +1967,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   line-height: var(--text-body--line-height);
   text-wrap: pretty;
 }
-.about-intro__card--vision .about-intro__card-text { font-weight: var(--font-weight-medium); }
+.about-intro__card-text { font-weight: var(--font-weight-medium); } /* both statements: same weight */
 .about-intro__card--pill { display: flex; align-items: center; justify-content: center; background: var(--color-muted-strong) center / cover no-repeat; }
 .about-intro__pill {
   padding: var(--spacing-10) var(--spacing-20);
@@ -2000,7 +2000,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   flex-direction: column;
   align-items: flex-start;
   gap: var(--gap-group);
-  padding: var(--gap-block) var(--pad-card-lg);
+  padding-block: var(--gap-block); /* text on the page gutter, the same edge as every other section */
   border-bottom: var(--border-width) solid var(--color-border);
 }
 .about-process__head .about-title { margin: 0; }
@@ -2041,7 +2041,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   grid-template-areas: "info rail media";
   align-items: center;
   column-gap: var(--gap-block);
-  padding-inline: var(--pad-card-lg);
 }
 .process__step:nth-child(even) { grid-template-areas: "media rail info"; }
 
@@ -2065,11 +2064,12 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   color: var(--color-muted-foreground);
 }
 .process__title {
+  /* H3 under the section's H2: one role down (heading), so the outline reads in size too */
   margin: 0;
   font-family: var(--font-sans);
-  font-size: var(--text-heading-lg);
-  line-height: var(--text-heading-lg--line-height);
-  font-weight: var(--text-heading-lg--font-weight);
+  font-size: var(--text-heading);
+  line-height: var(--text-heading--line-height);
+  font-weight: var(--text-heading--font-weight);
   color: var(--color-foreground);
   text-wrap: balance;
 }
@@ -2102,7 +2102,7 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 
 @media (max-width: 900px) {
-  .process-wrap { --rail-x: calc(var(--pad-card-lg) + var(--spacing-12)); }
+  .process-wrap { --rail-x: var(--spacing-12); } /* centre of the 24px rail column on the gutter */
   .process__step,
   .process__step:nth-child(even) {
     --rail-w: var(--spacing-24);
@@ -2114,7 +2114,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   .process__info,
   .process__step:nth-child(even) .process__info { align-items: flex-start; text-align: start; padding-bottom: 0; }
   .process__num { font-size: var(--text-body); line-height: var(--text-body--line-height); }
-  .process__title { font-size: var(--text-heading); line-height: var(--text-heading--line-height); font-weight: var(--text-heading--font-weight); }
   .process__img { aspect-ratio: 16 / 10; margin-top: var(--gap-group); }
   .process__rail { grid-row: 1 / span 2; }
   .process__rail::after { top: calc(var(--gap-block) + var(--spacing-12)); translate: -50% 0; }
@@ -2200,10 +2199,11 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 .roles-card__copy { display: flex; flex-direction: column; gap: var(--gap-text); max-width: 32em; }
 .roles-card__title {
+  /* H3 under the section's H2: heading role */
   margin: 0;
-  font-size: var(--text-heading-lg);
-  line-height: var(--text-heading-lg--line-height);
-  font-weight: var(--text-heading-lg--font-weight);
+  font-size: var(--text-heading);
+  line-height: var(--text-heading--line-height);
+  font-weight: var(--text-heading--font-weight);
   color: var(--color-foreground-inverse);
   text-wrap: balance;
 }
@@ -2212,7 +2212,6 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 @media (max-width: 600px) {
   .roles-head { flex-direction: column; align-items: flex-start; }
   .roles-card::before { background: linear-gradient(0deg, color-mix(in srgb, var(--color-surface-media) 90%, transparent) 0%, color-mix(in srgb, var(--color-surface-media) 60%, transparent) 55%, color-mix(in srgb, var(--color-surface-media) 10%, transparent) 100%); }
-  .roles-card__title { font-size: var(--text-heading); line-height: var(--text-heading--line-height); }
 }
 
 /* Berita dan Galeri: two-row news marquee, then the photo grid */
