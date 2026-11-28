@@ -1062,6 +1062,29 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
    Articles page (app/article/page.js, components/Articles.js)
    ========================================================================== */
 /* Hidden visually, still read by screen readers */
+/* TextRoll (components/TextRoll.js): desktop nav hover. The visible row rolls up out of a
+   one-line window while its copy rolls in from below, letter by letter from the centre
+   (--d = 35ms × distance from the middle letter). Transform only; reduced motion = no roll. */
+.text-roll { position: relative; display: inline-block; overflow: hidden; vertical-align: top; }
+.text-roll__row { display: block; white-space: pre; }
+.text-roll__row--next { position: absolute; inset: 0; }
+.text-roll__char { display: inline-block; }
+.text-roll__row--next .text-roll__char { transform: translateY(100%); }
+:where(:hover, :focus-visible) > .text-roll .text-roll__char { transform: translateY(-100%); }
+:where(:hover, :focus-visible) > .text-roll .text-roll__row--next .text-roll__char { transform: translateY(0); }
+@media (prefers-reduced-motion: no-preference) {
+  .text-roll__char { transition: transform var(--duration-base) var(--ease-in-out) var(--d); } /* ≈ the reference 0.3s easeInOut */
+}
+@media (prefers-reduced-motion: reduce) {
+  :where(:hover, :focus-visible) > .text-roll .text-roll__char,
+  .text-roll__row--next .text-roll__char { transform: none; }
+  .text-roll__row--next { visibility: hidden; }
+}
+/* Desktop nav: the roll is the hover cue, so the pill fill stays for press only */
+@media (hover: hover) and (pointer: fine) {
+  .nav-desktop .ui-navlink:hover { background: transparent; }
+}
+
 .sr-only {
   position: absolute;
   overflow: hidden;
