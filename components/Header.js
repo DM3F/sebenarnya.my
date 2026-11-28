@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 import { Button, DropdownMenu, LanguageMenu, NavLink } from '@/components/ui';
-import TextRoll from '@/components/TextRoll';
 import { claimLink, navLinks } from '@/data/content';
 import { withBase } from '@/lib/basePath';
 
@@ -70,7 +69,7 @@ export default function Header() {
               <li key={link.label}>
                 {link.children ? (
                   <DropdownMenu
-                    label={<TextRoll>{link.label}</TextRoll>}
+                    label={link.label}
                     current={link.children.some((c) => isCurrent(pathname, c.href))}
                     items={link.children.map((c) => ({
                       label: c.label,
@@ -80,7 +79,7 @@ export default function Header() {
                   />
                 ) : (
                   <NavLink href={withBase(link.href)} current={isCurrent(pathname, link.href)}>
-                    <TextRoll>{link.label}</TextRoll>
+                    {link.label}
                   </NavLink>
                 )}
               </li>
