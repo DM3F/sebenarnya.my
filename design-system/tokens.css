@@ -39,6 +39,8 @@
   --color-azure: #2f5fd0;
   --color-green: #1fa463;
   --color-green-dark: #137a49;
+  --color-amber: #f08c00;      /* Waspada verdict dot */
+  --color-amber-dark: #9a5300; /* Waspada verdict word (≈5.6:1 on white) */
 
   /* ══ 2. SEMANTIC — colour ═══════════════════════════════════════════════ */
   --color-background: var(--color-grey-99);        /* page canvas, controls */
@@ -87,8 +89,10 @@
   --color-verdict-palsu-dot: var(--color-red);
   --color-verdict-makluman: var(--color-azure);
   --color-verdict-makluman-dot: var(--color-blue);
-  --color-verdict-benar: var(--color-green-dark);
-  --color-verdict-benar-dot: var(--color-green);
+  --color-verdict-penjelasan: var(--color-green-dark);
+  --color-verdict-penjelasan-dot: var(--color-green);
+  --color-verdict-waspada: var(--color-amber-dark);
+  --color-verdict-waspada-dot: var(--color-amber);
 
   /* ── Font weight — every headline (Display & Heading) is medium ───────── */
   --font-weight-regular: 400;  /* body; display via --font-weight-display */

@@ -35,7 +35,7 @@ Decision guide:
 
 | Family | Tokens |
 |---|---|
-| Colour | `--color-background · foreground · card · muted · muted-strong · accent · secondary(-hover/-foreground) · primary(-hover/-foreground) · input · border · border-strong · ring · link · destructive · disabled(-foreground) · surface-overlay · surface-media · scrim · brand · verdict-{palsu,makluman,benar}(-dot)` (three verdicts only: Palsu, Makluman, Benar) |
+| Colour | `--color-background · foreground · card · muted · muted-strong · accent · secondary(-hover/-foreground) · primary(-hover/-foreground) · input · border · border-strong · ring · link · destructive · disabled(-foreground) · surface-overlay · surface-media · scrim · brand · verdict-{palsu,penjelasan,waspada,makluman}(-dot)` (four verdicts only: Palsu, Penjelasan, Waspada, Makluman) |
 | Type roles | `--text-display · heading-lg · heading · title · intro · article · body · body-sm · label · label-sm · eyebrow · badge · verdict · caption · stat`, each with `--line-height`, and where it applies `--font-weight` / `--letter-spacing` (Tailwind v4 shape: `--text-label--line-height`) |
 | Size | `--size-control-sm · control · control-lg · control-xl` (fluid control scale, below) `· hit-area (44) · badge-sm (20) · badge (24) · badge-lg (32) · icon-sm/icon/icon-lg/icon-xl · dot · textarea · menu (220) · menu-lg (260)` |
 | Space roles | Content: `--gap-inline · gap-text · gap-group · gap-cards · gap-block`, cards: `--pad-card-sm · pad-card · pad-card-lg`; controls: `--space-control-x-sm · control-x · control-x-lg` (fluid) `· field-x · badge-x-sm/-x/-x-lg · inline-tight · stack · segment`; page: `--space-page-x · section · page-top` |

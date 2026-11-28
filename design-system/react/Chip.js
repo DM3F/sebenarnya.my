@@ -2,7 +2,7 @@
  * Chip — taupe pill for suggestions and filters.
  *   href:    renders a link
  *   pressed: makes it a toggle (aria-pressed); selected = ink fill
- *   dot:     verdict key (palsu | makluman | benar) for a filter dot
+ *   dot:     verdict key (palsu | penjelasan | waspada | makluman) for a filter dot
  *   size:    sm · md (default) · lg — same heights as Button
  */
 export default function Chip({ href, pressed, dot, size = 'md', className = '', children, ...props }) {

@@ -11,7 +11,7 @@ import type {
 
 /** A Lucide icon component, e.g. `import { ArrowRight } from 'lucide-react'`. */
 export type IconComponent = ComponentType<SVGProps<SVGSVGElement> & { size?: number | string; strokeWidth?: number | string; absoluteStrokeWidth?: boolean }>;
-export type VerdictType = 'palsu' | 'makluman' | 'benar';
+export type VerdictType = 'palsu' | 'penjelasan' | 'waspada' | 'makluman';
 type Div = HTMLAttributes<HTMLDivElement>;
 
 /* ── Icon ─────────────────────────────────────────────────────────────── */
@@ -73,13 +73,13 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 /** Static label. Not clickable. */
 export declare function Badge(props: BadgeProps): ReactElement;
 export interface VerdictProps {
-  /** The only three verdicts. */
+  /** The only four verdicts. */
   type?: VerdictType;
   tone?: 'default' | 'single';
   variant?: 'pill' | 'overlay' | 'tint' | 'plain';
   /** e.g. "KPDN" — shown as "· KPDN". */
   agency?: string;
-  /** Override the word (default Palsu / Makluman / Benar). */
+  /** Override the word (default Palsu / Penjelasan / Waspada / Makluman). */
   label?: string;
   className?: string;
 }

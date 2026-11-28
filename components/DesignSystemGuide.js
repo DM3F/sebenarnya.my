@@ -194,7 +194,8 @@ const CONTRAST_PAIRS = [
   ['destructive', 'background', 4.5, 'Ralat'],
   ['verdict-palsu', 'background', 4.5, 'Verdict Palsu'],
   ['verdict-makluman', 'background', 4.5, 'Verdict Makluman'],
-  ['verdict-benar', 'background', 4.5, 'Verdict Benar'],
+  ['verdict-penjelasan', 'background', 4.5, 'Verdict Penjelasan'],
+  ['verdict-waspada', 'background', 4.5, 'Verdict Waspada'],
   ['foreground-inverse', 'surface-media', 4.5, 'Teks atas gelap'],
   ['text-secondary-inverse', 'surface-media', 4.5, 'Perenggan atas gelap'],
   ['muted-foreground-inverse', 'surface-media', 4.5, 'Meta atas gelap'],
@@ -508,7 +509,7 @@ function Components({ vw }) {
             </ChipRow>
           </Demo>
           <Demo code="pressed · dot" wide>
-            {[['semua', 'Semua'], ['palsu', 'Palsu'], ['makluman', 'Makluman'], ['benar', 'Benar']].map(([id, label]) => (
+            {[['semua', 'Semua'], ['palsu', 'Palsu'], ['penjelasan', 'Penjelasan'], ['waspada', 'Waspada'], ['makluman', 'Makluman']].map(([id, label]) => (
               <Chip key={id} pressed={chip === id} dot={id === 'semua' ? undefined : id} onClick={() => setChip(id)}>{label}</Chip>
             ))}
           </Demo>
@@ -536,12 +537,13 @@ function Components({ vw }) {
           <Demo code='<Verdict type="…" agency="…">' wide>
             <Verdict type="palsu" agency="KPDN" />
             <Verdict type="makluman" agency="MOH" />
-            <Verdict type="benar" agency="JPJ" />
+            <Verdict type="penjelasan" agency="JPJ" />
+            <Verdict type="waspada" agency="PDRM" />
           </Demo>
           <Demo code='tone="single" · variant="tint" · "plain"' wide>
             <Verdict type="palsu" tone="single" />
             <Verdict type="makluman" variant="tint" />
-            <Verdict type="benar" variant="plain" tone="single" />
+            <Verdict type="penjelasan" variant="plain" tone="single" />
           </Demo>
           <Demo code='variant="overlay" (atas foto)' wide>
             <span className="dsg-photo">

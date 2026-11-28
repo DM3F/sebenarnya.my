@@ -485,7 +485,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .fc { --dot: var(--color-verdict-makluman-dot); --verdict: var(--color-verdict-makluman); }
 .fc--palsu    { --dot: var(--color-verdict-palsu-dot);    --verdict: var(--color-verdict-palsu); }
 .fc--makluman { --dot: var(--color-verdict-makluman-dot); --verdict: var(--color-verdict-makluman); }
-.fc--benar    { --dot: var(--color-verdict-benar-dot);    --verdict: var(--color-verdict-benar); }
+.fc--penjelasan { --dot: var(--color-verdict-penjelasan-dot);    --verdict: var(--color-verdict-penjelasan); }
+.fc--waspada  { --dot: var(--color-verdict-waspada-dot);  --verdict: var(--color-verdict-waspada); }
 
 .fc, .fc *, .fc *::before, .fc *::after { box-sizing: border-box; }
 /* Both faces are exactly 480 tall, so the card never changes height when it flips */
@@ -1172,6 +1173,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 }
 .articles-card__media > img { width: 100%; height: 100%; object-fit: cover; }
 .articles-card__media .agency-avatar { position: absolute; left: var(--spacing-16); bottom: var(--spacing-16); }
+/* Share sits over the photo's top-right corner, above the card-wide link (z-index 2) */
+.articles-card .articles-card__share { position: absolute; top: var(--spacing-16); right: var(--spacing-16); z-index: 3; }
 .articles-card__body { display: flex; flex-direction: column; gap: var(--gap-group); }
 /* Verdict · date · read time */
 .articles-card__meta {
@@ -1315,6 +1318,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
   translate: -50% 0;
   transform-origin: top center; /* pops from the Kongsi button above it */
 }
+/* Icon-only share on a card photo: menu opens from the button's right edge */
+.share--compact .share-menu { left: auto; right: 0; translate: none; transform-origin: top right; }
 
 .post-back:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 
