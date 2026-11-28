@@ -1106,7 +1106,8 @@ h1, h2, h3, h4, h5, h6 { width: 100%; }
 .card-link::after { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; }
 .card-link:focus-visible { outline: none; }
 
-.articles-card:focus-within { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--spacing-8); border-radius: var(--radius-card); }
+/* Ring the card only when its title link has keyboard focus; a click on the share button must not ring the card */
+.articles-card:has(.card-link:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--spacing-8); border-radius: var(--radius-card); }
 
 /* Agency avatar (logo or monogram) */
 .agency-avatar {
